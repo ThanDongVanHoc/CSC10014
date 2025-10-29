@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Button đổi màu từ Backend</title>
+    <style>
+        #colorButton {
+            padding: 15px 30px;
+            font-size: 18px;
+            background-color: lightblue;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+    </style>
+</head>
+<body>
+    <button id="colorButton">Bấm để đổi màu</button>
+    <script src="{{ url_for('static', filename='main.js') }}"></script>
+</body>
+</html>
