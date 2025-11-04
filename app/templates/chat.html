@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VietConnect</title>
+
+    <link rel="icon" type="image/png" sizes="50x50" href="{{ url_for('static', filename='images/logo.png') }}">
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css" />
+
+    <style>
+        :root{
+            --navbar-color : white; 
+            --primary-color: #00b37e; 
+            --dark-blue: #0d2c54; 
+            --text-light: #555;
+            --bg-light: #f4f8f7;
+            --brand: #00b37e;
+            --muted: #6b7280;
+            
+            --brand: #00b37e;
+            --brand-600: #009966;
+            --muted: #6b7280;
+            --bg: #fbfdff;
+            --card: #ffffff;
+            --radius: 12px;
+            --glass: rgba(255,255,255,0.6);
+            --shadow: 0 6px 20px rgba(13, 17, 23, 0.08);
+            --navbar-color: white;
+        }
+
+
+        [data-theme="dark"] {
+            --navbar-color : black; 
+            --brand: #00d58a;
+            --muted: #9aa1a8;
+            --bg: #0b0e12;
+            --card: blue; 
+            --glass: rgba(255,255,255,0.03);
+            --shadow: 0 8px 30px rgba(2,6,23,0.6);
+            --navbar-color: #0b0e12;
+        }
+
+        body{
+            background-color: var(--bg);
+            height:100%;
+            margin:0;
+            color: #0b1220
+        }
+
+        /*This is navigation-bar*/
+
+        .navigation-bar{
+            display : flex; 
+            align-items: center; 
+            justify-content: space-between;
+            padding: 15px 60px;
+
+            background-color: var(--navbar-color);
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        /*This is logo section */
+        .logo{
+            display : flex;
+        }
+
+        .logo-text{
+            font-size: 25px;
+            font-weight: 600;
+            color: #333;
+            padding-top: 7px;
+        }
+
+        .logo-img{
+            width : 45px;
+            height: 45px; 
+        }
+
+        /*This is meu section */
+        .menu{
+            display : flex;            
+            gap: 40px; 
+            transition: all 0.3s ease;
+        }
+
+        .menu a {
+            position: relative;
+            text-decoration: none;
+            color: black;
+            font-size : 20px; 
+            font-weight : 550; 
+            position: relative;
+            transition: color 0.3s;
+        }
+
+        .menu a.active::after {
+            content: "";
+            position: absolute;
+            bottom: -6px;
+            left: 0;
+            width: 100%;     
+            height: 2px;
+            background-color: #00b37e;
+            border-radius: 2px;
+        }
+        
+        .menu a::after {
+            content: "";
+            position: absolute;
+            bottom: -6px;
+            left: 0;
+            width: 0%;
+            height: 2px;
+            background-color: #00b37e;
+            border-radius: 2px;
+            transition: width 0.3s ease;
+        }
+
+        .menu a:hover::after {
+            width: 100%;
+        }
+
+        .menu a:hover {
+            color: #00b37e;
+         }
+
+        /*This is authentical button section */
+
+         .auth-buttons{
+            display: flex;
+            gap: 10px;
+         }
+
+        .signup-btn {
+            background-color: #00b37e;
+            color: white;
+            border: none;
+            padding: 8px 18px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: 500;
+        }
+
+        .signin-btn {
+            background-color: white;
+            color: darkblue;
+            border: 1px solid Black;
+            padding: 8px 18px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: 500;
+        }
+
+        .signup-btn:hover {
+            background-color: #00b37e;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            transform: translateY(-1px);
+        }
+
+        
+        .signup-btn:active{
+            transform: translateY(0);
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+            background-color: #00b37e;
+        }
+
+        .signin-btn:hover {
+            background-color: #eaf9f4;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            transform: translateY(-1px);
+        }
+
+        
+        .signin-btn:active{
+            transform: translateY(0);
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+            background-color: #eaf9f4;
+        }
+
+
+        .chat {
+            display:flex;
+            flex-direction:column;
+            gap:12px;
+            height: calc(100vh - 120px);
+        }
+    .chat .card {
+      background:var(--card);
+      border-radius:var(--radius);
+      box-shadow:var(--shadow);
+      overflow:hidden;
+      display:flex;
+      flex-direction:column;
+      height:100%;
+    }
+    .chat-header{padding:12px 14px;border-bottom:1px solid #eee;display:flex;justify-content:space-between;align-items:center}
+    .chat-messages{padding:14px;overflow:auto;flex:1;display:flex;flex-direction:column;gap:10px;background:var(--bg)}
+    .msg{max-width:80%;padding:10px;border-radius:10px}
+    .msg.user{align-self:flex-end;background:#e6ffef}
+    .msg.bot{align-self:flex-start;background:#f6f8fb}
+    .chat-input{display:flex;padding:12px;border-top:1px solid #eee;gap:8px}
+    .chat-input input{flex:1;padding:10px;border-radius:8px;border:1px solid #ddd}
+    .chat-input button{padding:10px 14px;border-radius:8px;border:0;background:var(--brand);color:#fff;cursor:pointer; transition: background 0.3s, transform 0.3s;}
+    .chat-input button:hover{background:var(--brand-600); transform: translateY(-1px);}
+
+        .sidebar {
+      background: var(--card);
+      color: #0b1220;
+      border-radius:var(--radius);
+      overflow:hidden;
+      display:flex;
+      flex-direction:column;
+      height: calc(100vh - 120px);
+      box-shadow: var(--shadow);
+    }
+    .sidebar .top {
+      padding:12px;
+      display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #eee
+    }
+    .sidebar h3{margin:0;font-size:14px}
+    .sidebar .controls{display:flex;gap:8px}
+    .sidebar button{background:transparent;border:0;color:var(--muted);cursor:pointer;padding:8px;border-radius:8px; transition: background 0.3s;}
+    .sidebar button:hover{background:rgba(0,0,0,0.04);}
+    .sidebar .search {padding:10px;border-bottom:1px solid #eee; padding-right: 25px;}
+    .sidebar .search input{width:100%;padding:8px;border-radius:8px;border:1px solid #ddd;background:var(--bg);color:#0b1220}
+    .convo-list{overflow:auto;padding:8px;display:flex;flex-direction:column;gap:8px}
+    .convo-item{padding:10px;border-radius:10px;background:rgba(0,0,0,0.02);cursor:pointer;display:flex;align-items:center;gap:8px; transition: background 0.3s;}
+    .convo-item:hover{background:rgba(0,0,0,0.04);}
+    .convo-item.active{outline:2px solid rgba(0,179,126,0.15)}
+    .convo-title{font-weight:600;font-size:13px}
+    .convo-sub{font-size:12px;color:var(--muted);margin-top:4px}
+
+    .app {
+      display:grid;
+      grid-template-columns: 260px 520px 1fr; /* history | chat | map */
+      gap:18px;
+      max-width:1400px;
+      margin:18px auto;
+      padding:0 18px 40px;
+      align-items:start;
+    }
+
+    .app.sidebar-hidden {
+      grid-template-columns: 520px 1fr;
+    }
+
+    .app.sidebar-hidden .sidebar {
+      display: none;
+    }
+
+    #map{height: calc(100vh - 120px); border-radius:var(--radius); box-shadow:var(--shadow); overflow:hidden}
+
+    @media (max-width:1100px){
+      .app{grid-template-columns: 1fr; padding-bottom:80px}
+      .sidebar{height:220px;order:1}
+      .chat{order:2;height:420px}
+      #map{order:3;height:420px}
+      .app.sidebar-hidden {grid-template-columns: 1fr;}
+    }
+
+    .user-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: #f9f9f9;
+    border-radius: 12px;
+    padding: 8px 14px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+.avatar {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    border: 2px solid #ddd;
+    object-fit: cover;
+    transition: transform 0.2s ease;
+}
+.avatar:hover {
+    transform: scale(1.05);
+}
+
+.user-text {
+    display: flex;
+    flex-direction: column;
+}
+
+.greeting {
+    font-size: 15px;
+    color: #333;
+}
+
+.logout-link {
+    font-size: 14px;
+    color: #e53935;
+    text-decoration: none;
+    margin-top: 2px;
+}
+.logout-link:hover {
+    text-decoration: underline;
+}
+    </style>
+</head>
+
+<body>
+    <header class = "navigation-bar">
+        <div class = "logo">
+            <img src="{{ url_for('static', filename='images/logo.png') }}" class = "logo-img" alt = "Free5 team">
+
+            <div class = "logo-text">VietConnect</div>
+        </div>
+
+        <nav class = "menu">
+            <a href="{{url_for('home_page')}}">Home</a>
+            <a href="404.html">Services & Events</a>
+            <a href="404.html">About Us</a>
+            <a href="404.html">Support</a>
+        </nav>
+        {% if not session.user_id %}
+        <div class="auth-buttons">
+            <a href="{{ url_for('signup_page') }}" class="btn signup-btn">Sign Up</a>
+            <a href="{{ url_for('signin_page') }}" class="btn signin-btn">Sign In</a>
+        </div>
+        {% else %}
+        <div class="user-info">
+            <img src="{{ url_for('static', filename='images/hcmus_avatar.jpg') }}" alt="User Avatar" class="avatar">
+            <div class="user-text">
+                <span class="greeting">Chào, <strong>{{ session.fullname }}</strong>!</span>
+                <a href="{{ url_for('logout') }}" class="logout-link">Log out</a>
+            </div>
+        </div>
+        {% endif %}
+
+    </header>
+
+    <button id="showSidebar" style="display:none; position:fixed; left:0; top:50%; background:var(--brand); color:white; border:none; padding:10px; border-radius:0 8px 8px 0; cursor:pointer; transform:translateY(-50%);">Hiện</button>
+
+   <button id="showSidebar" style="display:none; position:fixed; left:0; top:50%; background:var(--brand); color:white; border:none; padding:10px; border-radius:0 8px 8px 0; cursor:pointer; transform:translateY(-50%);">Hiện</button>
+
+    <div class="app">
+        <!-- HISTORY SIDEBAR -->
+        <aside class="sidebar" aria-label="Conversations">
+        <div class="top">
+            <h3>History</h3>
+            <div class="controls">
+            <button id="btnNew">New chat</button>
+            <button id="btnDeleteSelected" title="Delete Selected Conversation" >Delete</button>
+            <button id="hideBtn">Hide</button>
+            </div>
+        </div>
+
+        <div class="search">
+            <input id="searchInput" placeholder="Search chats..." />
+        </div>
+
+        <div id="convoList" class="convo-list" role="list">
+            <!-- conversations injected here -->
+        </div>
+        </aside>
+
+        <!-- CHAT PANEL -->
+        <section class="chat">
+        <div class="card">
+            <div class="chat-header">
+            <div>
+                <strong id="convTitle">Chưa chọn đoạn chat</strong>
+                <div style="font-size:12px;color:var(--muted)">Type issues like "lost visa"</div>
+            </div>
+            <div>
+                <button id="btnAttach" class="btn">Attach</button>
+            </div>
+            </div>
+
+            <div id="chatMessages" class="chat-messages" aria-live="polite">
+            <!-- messages appended here -->
+            </div>
+
+            <div class="chat-input">
+            <input id="chatInput" placeholder="Describe your problem, e.g. 'I lost my visa'..." aria-label="message input" />
+            <button id="sendBtn">Send</button>
+            </div>
+        </div>
+        </section>
+
+        <!-- MAP -->
+        <aside>
+          <div id="map"></div>
+        </aside>
+    </div>
+
+    <!-- scripts -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
+  
+    <script>
+        const currentLocation = location.href; 
+        const menuItem = document.querySelectorAll('.menu a')
+
+        for(let i = 0; i < menuItem.length; i ++){
+            if(menuItem[i].href == currentLocation){
+                menuItem[i].classList.add('active'); 
+            }
+        }
+
+        const buttons = document.querySelectorAll('button');
+
+        buttons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const link = btn.getAttribute('href');
+                if(link != nullptr)
+                    window.location.href = link;  
+            });
+        });
+
+
+        /***********************
+         * Conversation storage (localStorage)
+         ***********************/
+
+        const STORAGE_KEY = 'vc_conversations_v1';
+
+        function uid() {
+        return 'c-' + Date.now().toString(36) + '-' + Math.random().toString(36).slice(2,8);
+        }
+
+        function loadConversations() {
+        try {
+            const raw = localStorage.getItem(STORAGE_KEY);
+            return raw ? JSON.parse(raw) : [];
+        } catch(e) { return []; }
+        }
+        function saveConversations(list) {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(list));
+        }
+
+        let conversations = loadConversations();
+        let selectedId = conversations.length ? conversations[0].id : null;
+
+        // UI refs
+        const convoListEl = document.getElementById('convoList');
+        const searchInput = document.getElementById('searchInput');
+        const btnNew = document.getElementById('btnNew');
+        const btnDeleteSelected = document.getElementById('btnDeleteSelected');
+        const convTitle = document.getElementById('convTitle');
+        const chatMessages = document.getElementById('chatMessages');
+        const chatInput = document.getElementById('chatInput');
+        const sendBtn = document.getElementById('sendBtn');
+        const hideBtn = document.getElementById('hideBtn');
+        const showBtn = document.getElementById('showSidebar');
+        const app = document.querySelector('.app');
+
+        function renderConversations(filter='') {
+        convoListEl.innerHTML = '';
+        const f = filter.trim().toLowerCase();
+        conversations.forEach(c => {
+            const title = c.title || (c.messages[0] ? c.messages[0].text.slice(0,40) : 'New chat');
+            if (f && !title.toLowerCase().includes(f) && !c.id.includes(f)) return;
+            const d = document.createElement('div');
+            d.className = 'convo-item' + (c.id === selectedId ? ' active' : '');
+            d.dataset.id = c.id;
+            d.innerHTML = `<div style="flex:1"><div class="convo-title">${title}</div><div class="convo-sub">${new Date(c.updated_at).toLocaleString()}</div></div>`;
+            d.addEventListener('click', () => {
+            selectConversation(c.id);
+            });
+            convoListEl.appendChild(d);
+        });
+        if (!selectedId && conversations.length) {
+            selectedId = conversations[0].id;
+        }
+        }
+
+        function createConversation(title='Đoạn chat mới') {
+        const c = {
+            id: uid(),
+            title,
+            messages: [],
+            created_at: Date.now(),
+            updated_at: Date.now()
+        };
+        conversations.unshift(c);
+        saveConversations(conversations);
+        selectedId = c.id;
+        renderConversations(searchInput.value);
+        loadSelectedConversation();
+        }
+
+        function deleteConversation(id) {
+        conversations = conversations.filter(c => c.id !== id);
+        saveConversations(conversations);
+        if (selectedId === id) selectedId = conversations.length ? conversations[0].id : null;
+        renderConversations(searchInput.value);
+        loadSelectedConversation();
+        }
+
+        function selectConversation(id) {
+        selectedId = id;
+        renderConversations(searchInput.value);
+        loadSelectedConversation();
+        }
+
+        function loadSelectedConversation() {
+        chatMessages.innerHTML = '';
+        const conv = conversations.find(c => c.id === selectedId);
+        if (!conv) {
+            convTitle.textContent = 'Chưa chọn đoạn chat';
+            return;
+        }
+        convTitle.textContent = conv.title || ('Đoạn chat');
+        conv.messages.forEach(m => {
+            appendMessageToUI(m.role, m.text);
+        });
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        function appendMessageToUI(role, text) {
+        const d = document.createElement('div');
+        d.className = 'msg ' + (role === 'user' ? 'user' : 'bot');
+        d.innerHTML = text.replace(/\n/g, '<br>');
+        chatMessages.appendChild(d);
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        function addMessageToConversation(role, text) {
+        if (!selectedId) {
+            createConversation();
+        }
+        const conv = conversations.find(c => c.id === selectedId);
+        if (!conv) return;
+        conv.messages.push({role, text, t: Date.now()});
+        conv.updated_at = Date.now();
+        // update title to first user message snippet
+        const firstUser = conv.messages.find(m => m.role === 'user');
+        if (firstUser) conv.title = firstUser.text.slice(0,40);
+        saveConversations(conversations);
+        renderConversations(searchInput.value);
+        }
+
+        // events
+        btnNew.addEventListener('click', () => createConversation('Đoạn chat mới'));
+        btnDeleteSelected.addEventListener('click', () => {
+            if (!selectedId) return alert('Chưa chọn cuộc hội thoại nào.');
+            if (!confirm('Xóa đoạn chat này?')) return;
+            deleteConversation(selectedId);
+        });
+        searchInput.addEventListener('input', (e) => renderConversations(e.target.value));
+
+        hideBtn.addEventListener('click', () => {
+            app.classList.add('sidebar-hidden');
+            showBtn.style.display = 'block';
+        });
+
+        showBtn.addEventListener('click', () => {
+            app.classList.remove('sidebar-hidden');
+            showBtn.style.display = 'none';
+        });
+
+        // send chat: post to /chat and store messages
+        async function sendChat(message) {
+        if (!message.trim()) return;
+        addMessageToConversation('user', message);
+        appendMessageToUI('user', message);
+        chatInput.value = '';
+        try {
+            const resp = await fetch('/chat', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({message})
+            });
+            const data = await resp.json();
+            const reply = data.reply || 'Không có trả lời.';
+            addMessageToConversation('bot', reply);
+            appendMessageToUI('bot', reply);
+        } catch(err) {
+            console.error(err);
+            const errMsg = 'Lỗi liên hệ assistant. Thử lại sau.';
+            addMessageToConversation('bot', errMsg);
+            appendMessageToUI('bot', errMsg);
+        }
+        }
+
+        sendBtn.addEventListener('click', () => {
+        const txt = chatInput.value.trim();
+        if (!txt) return;
+        sendChat(txt);
+        });
+        chatInput.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            sendBtn.click();
+        }
+        });
+
+        // init UI
+        if (!conversations.length) {
+            createConversation('New chats');
+        } else {
+            renderConversations();
+            loadSelectedConversation();
+        }
+
+
+        const map = L.map('map').setView([10.762622, 106.660172], 12);
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom: 20, attribution:'&copy; OSM contributors'}).addTo(map);
+        let mainMarker = null;
+       
+        function setMarker(latlng, text) {
+            if (mainMarker) 
+                map.removeLayer(mainMarker);
+
+            mainMarker = L.marker(latlng).addTo(map);
+            mainMarker.bindPopup(text || ("Location: " + latlng.toString())).openPopup();
+            map.setView(latlng, 14);
+        }
+
+        const geocoder = L.Control.geocoder({defaultMarkGeocode:false})
+        .on('markgeocode', function(e){ setMarker(e.geocode.center, e.geocode.name); }).addTo(map);
+
+        const locateControl = L.control({position:'topright'});
+        locateControl.onAdd = function(){
+            const el = L.DomUtil.create('div','');
+            el.style.background='white'; el.style.padding='6px'; el.style.borderRadius='8px'; el.style.boxShadow='0 2px 6px rgba(0,0,0,0.12)';
+            el.innerHTML = '<button id="useGPS" style="background:transparent;border:0;cursor:pointer">📍 My GPS</button>';
+            return el;
+        };
+
+        locateControl.addTo(map);
+        document.addEventListener('click',(e)=> {
+        if (e.target && e.target.id === 'useGPS') {
+            if (!navigator.geolocation) return alert('Không hỗ trợ Geolocation');
+            navigator.geolocation.getCurrentPosition(pos => {
+            setMarker([pos.coords.latitude, pos.coords.longitude], 'Bạn ở đây');
+            }, err => alert('Không lấy được vị trí: ' + err.message));
+        }
+        });
+
+    </script>
+
+</body>
+
+</html>

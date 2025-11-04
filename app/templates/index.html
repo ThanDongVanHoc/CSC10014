@@ -2,21 +2,513 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Button đổi màu từ Backend</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VietConnect</title>
+    <link rel="stylesheet" href="style.css">
+
+    <link rel="icon" type="image/png" sizes="50x50" href="{{ url_for('static', filename='images/logo.png') }}">
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+
     <style>
-        #colorButton {
-            padding: 15px 30px;
-            font-size: 18px;
-            background-color: lightblue;
+        :root{
+            --navbar-color : white; 
+            --primary-color: #00b37e; 
+            --dark-blue: #0d2c54; 
+            --text-light: #555;
+            --bg-light: #f4f8f7;
+            --brand: #00b37e;
+            --muted: #6b7280;
+            
+            --brand: #00b37e;
+            --brand-600: #009966;
+            --muted: #6b7280;
+            --bg: #fbfdff;
+            --card: #ffffff;
+            --radius: 12px;
+            --glass: rgba(255,255,255,0.6);
+            --shadow: 0 6px 20px rgba(13, 17, 23, 0.08);
+            --navbar-color: white;
+        }
+
+
+        [data-theme="dark"] {
+            --navbar-color : black; 
+            --brand: #00d58a;
+            --muted: #9aa1a8;
+            --bg: #0b0e12;
+            --card: blue; 
+            --glass: rgba(255,255,255,0.03);
+            --shadow: 0 8px 30px rgba(2,6,23,0.6);
+            --navbar-color: #0b0e12;
+        }
+
+        body{
+            background-color: var(--bg);
+            height:100%;
+            margin:0;
+            color: #0b1220
+        }
+
+        /*This is navigation-bar*/
+
+        .navigation-bar{
+            display : flex; 
+            align-items: center; 
+            justify-content: space-between;
+            padding: 15px 60px;
+
+            background-color: var(--navbar-color);
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        /*This is logo section */
+        .logo{
+            display : flex;
+        }
+
+        .logo-text{
+            font-size: 25px;
+            font-weight: 600;
+            color: #333;
+            padding-top: 7px;
+        }
+
+        .logo-img{
+            width : 45px;
+            height: 45px; 
+        }
+
+        /*This is meu section */
+        .menu{
+            display : flex;            
+            gap: 40px; 
+            transition: all 0.3s ease;
+        }
+
+        .menu a {
+            position: relative;
+            text-decoration: none;
+            color: black;
+            font-size : 20px; 
+            font-weight : 550; 
+            position: relative;
+            transition: color 0.3s;
+        }
+
+        .menu a.active::after {
+            content: "";
+            position: absolute;
+            bottom: -6px;
+            left: 0;
+            width: 100%;     
+            height: 2px;
+            background-color: #00b37e;
+            border-radius: 2px;
+        }
+        
+        .menu a::after {
+            content: "";
+            position: absolute;
+            bottom: -6px;
+            left: 0;
+            width: 0%;
+            height: 2px;
+            background-color: #00b37e;
+            border-radius: 2px;
+            transition: width 0.3s ease;
+        }
+
+        .menu a:hover::after {
+            width: 100%;
+        }
+
+        .menu a:hover {
+            color: #00b37e;
+         }
+
+        /*This is authentical button section */
+
+         .auth-buttons{
+            display: flex;
+            gap: 10px;
+         }
+
+        .signup-btn {
+            background-color: #00b37e;
+            color: white;
             border: none;
-            border-radius: 5px;
+            padding: 8px 18px;
+            border-radius: 20px;
             cursor: pointer;
-            transition: background-color 0.3s;
+            font-weight: 500;
+        }
+
+        .signin-btn {
+            background-color: white;
+            color: darkblue;
+            border: 1px solid Black;
+            padding: 8px 18px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: 500;
+        }
+
+        .signup-btn:hover {
+            background-color: #00b37e;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            transform: translateY(-1px);
+        }
+
+        
+        .signup-btn:active{
+            transform: translateY(0);
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+            background-color: #00b37e;
+        }
+
+        .signin-btn:hover {
+            background-color: #eaf9f4;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            transform: translateY(-1px);
+        }
+
+        
+        .signin-btn:active{
+            transform: translateY(0);
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+            background-color: #eaf9f4;
+        }
+
+
+        /* This is container part*/
+        .container{
+            max-width: 1200px;
+            margin: 0 auto; 
+            padding: 40px 20px; 
+        }
+
+        .container-section{
+            display : grid; 
+            grid-template-columns: 1fr 460px;
+            gap: 36px; 
+            align-items: center;
+            margin-top : 22px; 
+        }
+
+        .container-section h1{
+            font-size:36px;
+            line-height:1.05;
+            margin:0
+        }
+
+        .container-section p{
+            color:var(--muted);
+            margin-top:14px;
+            font-size:16px
+        }
+
+        .introduction{
+
+        }
+
+        .main-button{
+            display : inline-flex; 
+            align-items: center;
+            gap : 8px; 
+            cursor: pointer; 
+            font-weight : 600; 
+            border:1px solid transparent; 
+            font-size : 15px; 
+            border-radius:999px;
+            padding:8px 14px;
+        }
+
+        .get-started{
+            background: var(--brand);
+            color: white;
+            padding: 12px 24px; 
+            font-size: 16px;
+            font-weight: 700;
+        }
+
+        .learn-more {
+            background: transparent;
+            color: var(--muted);
+            border: 2px solid rgba(0,0,0,0.08);
+            padding: 12px 24px;
+            font-size: 16px;
+            font-weight: 700;
+        }
+
+        .get-started:hover {
+            background: var(--brand-600);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(0, 179, 126, 0.3);
+        }
+
+        .learn-more:hover {
+            background-color: #f9f9f9;
+            transform: translateY(-1px);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            border-color: #aaa;
+        }
+
+        .get-started:active {
+            transform: translateY(0);
+        }
+
+        .learn-more:active {
+            transform: translateY(0);
+        }
+
+        /*This is freatures css*/
+        .features{
+            display : grid; 
+            grid-template-columns: 1fr 1fr 1fr;
+            gap:18px;
+            margin-top:44px;
+        }
+    
+
+        .card{
+            background:var(--card);
+            border-radius: 12px; 
+            padding: 18px; 
+            box-shadow: var(--shadow);
+            min-height:120px;
+            display : flex; 
+            align-items: flex-start;
+            gap : 12px; 
+        }
+   
+   
+        .card .icon{
+            width:44px;
+            height:44px;
+            border-radius:10px;
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            background:var(--glass);
+        }
+        
+        .card h3{
+            margin:0;
+            font-size:18px;
+        }
+        .card p{
+            margin:6px 0 0;
+            color:var(--muted);
+            font-size:16px;
+        }
+
+        .how-it-work{
+            box-shadow:var(--shadow);
+            padding:20px;
+            border-radius:12px;
+            background:var(--card);
+        }
+        
+            .user-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: #f9f9f9;
+            border-radius: 12px;
+            padding: 8px 14px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+        }
+
+        .avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            border: 2px solid #ddd;
+            object-fit: cover;
+            transition: transform 0.2s ease;
+        }
+        .avatar:hover {
+            transform: scale(1.05);
+        }
+
+        .user-text {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .greeting {
+            font-size: 15px;
+            color: #333;
+        }
+
+        .logout-link {
+            font-size: 14px;
+            color: #e53935;
+            text-decoration: none;
+            margin-top: 2px;
+        }
+        .logout-link:hover {
+            text-decoration: underline;
         }
     </style>
 </head>
+
 <body>
-    <button id="colorButton">Bấm để đổi màu</button>
-    <script src="{{ url_for('static', filename='main.js') }}"></script>
+
+    <header class = "navigation-bar">
+        <div class = "logo">
+            <img src="{{ url_for('static', filename='images/logo.png') }}" class = "logo-img" alt = "Free5 team">
+
+            <div class = "logo-text">VietConnect</div>
+        </div>
+
+        <nav class = "menu">
+            <a href="index.html">Home</a>
+            <a href="404.html">Services & Events</a>
+            <a href="404.html">About Us</a>
+            <a href="404.html">Support</a>
+        </nav>
+
+        
+        {% if not session.user_id %}
+            <div class = "auth-buttons">
+                <button href ="{{ url_for('auth.signup_page') }}" class="signup-btn">Sign Up</button>
+                <button href = "{{ url_for('auth.signin_page') }}" class = "signin-btn">Sign In</button>
+            </div>
+        {% else %}
+            <div class="user-info">
+                <img src="{{ url_for('static', filename='images/hcmus_avatar.jpg') }}" alt="User Avatar" class="avatar">
+                <div class="user-text">
+                    <span class="greeting">Chào, <strong>{{ session.fullname }}</strong>!</span>
+                    <a href="{{ url_for('auth.logout') }}" class="logout-link">Log out</a>
+                </div>
+            </div>
+        {% endif %}
+
+    </header>
+
+
+
+    <main class = "container">
+        <section class = "container-section">
+            <div class = "introduction">
+                <div style = "display:inline-block;padding:6px 10px;border-radius:999px;background:rgba(0,0,0,0.04);font-weight:600">Ho Chi Minh City • Multilingual • 24/7</div>
+                
+                <h1>Security, healthcare and administrative assistance for foreign residents in Ho Chi Minh City — powered by AI & people.</h1>
+                <p>VietConnect combines an AI chatbot, multilingual agents and local resources to help foreign residents access medical care, safety services and administrative processes quickly and clearly.</p>
+
+                <div style = "display : flex; gap : 12px; margin-top : 22px;">
+                    <button  class = "main-button get-started" href = "{{url_for('chat_page')}}">Get Started - It's free</button>
+                    <button  class = "main-button learn-more" href="404.html"  id="learnMore">Learn More</button>
+                </div>
+
+                <div style = "color : --var(muted); margin-top:12px;">Safe. Fast. Vietnamese + English + 中文 + 日本語</div>
+
+            </div>
+
+
+            <div>
+                <img style = "width : 500px; "src="{{ url_for('static', filename='images/logo.png') }}">
+            </div>
+
+
+        </section>
+
+
+        <section class = "features">
+            <div class = "card">
+                <div class = "icon"></div>
+                <div>
+                    <h3>Security & Emergency</h3>
+                    <p>Alert system, emergency call, and help communicating with local authorities in your language.</p>
+                </div>
+            </div>
+
+            <div class = "card">
+                <div class = "icon"></div>
+                <div>
+                    <h3>Healthcare Assistance</h3>
+                    <p>Appointment booking, medical translation, first-aid guidance and connections to trusted clinics.</p>
+                </div>
+            </div>
+
+            <div class = "card">
+                <div class = "icon"></div>
+                <div>
+                    <h3>Administrative Help</h3>
+                    <p>Support for residency registration, documentation, job applications and administrative checklists & templates.</p>
+                </div>
+            </div>
+        </section>
+
+
+
+        <section style = "display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; margin-top: 36px;">
+            <div class = "how-it-work">
+                <h3 style = "font-size: 18px; ">How it works</h3>
+                <ol style="margin-top:12px; padding-left:18px; color:var(--muted);">
+                    <li style = "margin-top: 20px;"><strong>Chat & AI triage:</strong> Quick replies and emergency level classification.</li>
+                    <li style = "margin-top: 16px;"><strong>Agent handoff:</strong> Escalation to multilingual human agents when needed.</li>
+                    <li style = "margin-top: 16px;"><strong>Local network:</strong> Connections to hospitals, police and local services.</li>
+                </ol>
+            </div>
+
+
+            <div style = "display: flex; flex-direction: column; gap: 12px; padding : 0 4px; ">
+                <div  style = "flex : 1; align-items: center;" class = "card">
+                    <div>
+                        <h3>Multilingual support</h3>
+                        <p>Live translation and multilingual support when you need it.</p>
+                    </div>
+                </div>
+
+                <div style = "flex : 1; align-items: center;" class = "card">
+                    <div>
+                        <h3>Privacy first</h3>
+                        <p>User data is encrypted and shared only with user consent.</p>
+                    </div>
+
+                </div>
+            </div>
+
+        </section>
+
+        
+        <footer style = "margin-top: 48px; padding: 32px; border-radius: 14px; color:var(--muted); font-size:14px">
+            <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap">
+                <div>
+                <strong>VietConnect</strong>
+                <div style = "color : --var(muted)">© 2025 VietConnect • Designed for foreign residents in Ho Chi Minh City</div>
+                </div>
+                <div style = "color : --var(muted); font-size: 16px;">Need help? <a href="support.html">Contact support</a></div>
+            </div>
+        </footer>
+    </main>
+
+
+
+    <script>
+        const currentLocation = location.href; 
+        const menuItem = document.querySelectorAll('.menu a')
+
+        for(let i = 0; i < menuItem.length; i ++){
+            if(menuItem[i].href == currentLocation){
+                menuItem[i].classList.add('active'); 
+            }
+        }
+
+        const buttons = document.querySelectorAll('button');
+
+        buttons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const link = btn.getAttribute('href');
+                window.location.href = link;  
+            });
+        });
+
+    </script>
+
 </body>
+
 </html>
