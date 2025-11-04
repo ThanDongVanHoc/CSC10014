@@ -4,8 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Sign in to VietConnect</title>
-  <link rel="icon" type="image/png" href="../assets/images/icon.png">
-
+  <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/logo.png') }}">
+  
   <style>
 
     body {
@@ -190,22 +190,23 @@
 
 <body>
     <div class = "log-in">
-        <img src="../assets/images/icon.png" alt="VietConnect Logo" class = "logo">
+        <img src="{{ url_for('static', filename='images/logo.png') }}" alt="VietConnect Logo" class = "logo">
 
         <h2 style = "margin-bottom: 35px; text-align: center;">Sign in to VietConnect</h2>
-        <form>
-            <div class = "form-group">
-                <label>Username or email address</label>
-                <input class = "signin-input" type="text" placeholder="Your full name" required>
-            </div>
+      
+        <form action = "/signin" method = "POST">
+          <div class = "form-group">
+              <label>Username or email address</label>
+              <input id = "email" name = "email" class = "signin-input" type="email" placeholder="allmyexhatesme@4fun.com" required>
+          </div>
 
-            <div class = "form-group">
-                <label>Password <a href = "forgot-password.html" class = forgot>Forgot password ?</a> </label>
-                <input class = "signin-input" type = "email" placeholder="allmyexhatesme@4fun.com" required>
-            </div>
+          <div class = "form-group">
+              <label>Password <a href = "forgot-password.html" class = forgot>Forgot password ?</a> </label>
+              <input id = "password" name = "password" class = "signin-input" type = "password" placeholder="Your password" required>
+          </div>
 
-            <button class = "signin-btn">Sign in</button>
-        </form>
+       <button type="submit" class = "signin-btn">Sign in</button>
+    </form>
 
 
         <div class="divider">or</div>
@@ -213,12 +214,18 @@
         <button class="oauth-btn"><img src="https://www.svgrepo.com/show/475656/google-color.svg" width="18">Continue with Google</button>
 
         <div class="footer">
-            New to VietConnect? <a href="signup.html" style = "color : blue;">Create an account</a>
+            New to VietConnect? <a href = "{{url_for('signup_page')}}" style = "color : blue;">Create an account</a>
         </div>
 
 
     </div>    
 
+    <script>
+        const form = document.getElementById('form');
+        form.addEventListener('submit', (e) =>{
+            form.submit();
+        })
 
+    </script>
 </body>
 </html>

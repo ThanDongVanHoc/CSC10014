@@ -5,7 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>VietConnect</title>
     <link rel="stylesheet" href="style.css">
-    <link rel="icon" type="image/png" sizes="50x50" href="../assets/images/icon.png">
+
+    <link rel="icon" type="image/png" sizes="50x50" href="{{ url_for('static', filename='images/logo.png') }}">
+    
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
 
     <style>
@@ -307,7 +309,48 @@
             border-radius:12px;
             background:var(--card);
         }
+        
+            .user-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: #f9f9f9;
+            border-radius: 12px;
+            padding: 8px 14px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+        }
 
+        .avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            border: 2px solid #ddd;
+            object-fit: cover;
+            transition: transform 0.2s ease;
+        }
+        .avatar:hover {
+            transform: scale(1.05);
+        }
+
+        .user-text {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .greeting {
+            font-size: 15px;
+            color: #333;
+        }
+
+        .logout-link {
+            font-size: 14px;
+            color: #e53935;
+            text-decoration: none;
+            margin-top: 2px;
+        }
+        .logout-link:hover {
+            text-decoration: underline;
+        }
     </style>
 </head>
 
@@ -315,7 +358,7 @@
 
     <header class = "navigation-bar">
         <div class = "logo">
-            <img src = "../assets/images/icon.png" class = "logo-img" alt = "Free5 team">
+            <img src="{{ url_for('static', filename='images/logo.png') }}" class = "logo-img" alt = "Free5 team">
 
             <div class = "logo-text">VietConnect</div>
         </div>
@@ -327,10 +370,22 @@
             <a href="404.html">Support</a>
         </nav>
 
-        <div class = "auth-buttons">
-            <button href = "signup.html" class="signup-btn">Sign Up</button>
-            <button href = "signin.html" class = "signin-btn">Sign In</button>
-        </div>
+        
+        {% if not session.user_id %}
+            <div class = "auth-buttons">
+                <button href ="{{ url_for('signup_page') }}" class="signup-btn">Sign Up</button>
+                <button href = "{{ url_for('signin_page') }}" class = "signin-btn">Sign In</button>
+            </div>
+        {% else %}
+            <div class="user-info">
+                <img src="{{ url_for('static', filename='images/hcmus_avatar.jpg') }}" alt="User Avatar" class="avatar">
+                <div class="user-text">
+                    <span class="greeting">Chào, <strong>{{ session.fullname }}</strong>!</span>
+                    <a href="{{ url_for('logout') }}" class="logout-link">Log out</a>
+                </div>
+            </div>
+        {% endif %}
+
     </header>
 
 
@@ -344,7 +399,7 @@
                 <p>VietConnect combines an AI chatbot, multilingual agents and local resources to help foreign residents access medical care, safety services and administrative processes quickly and clearly.</p>
 
                 <div style = "display : flex; gap : 12px; margin-top : 22px;">
-                    <button  class = "main-button get-started" href = "signup.html">Get Started - It's free</button>
+                    <button  class = "main-button get-started" href = "{{url_for('chat_page')}}">Get Started - It's free</button>
                     <button  class = "main-button learn-more" href="404.html"  id="learnMore">Learn More</button>
                 </div>
 
@@ -354,7 +409,7 @@
 
 
             <div>
-                <img style = "width : 500px; "src = "../assets/images/icon.png">
+                <img style = "width : 500px; "src="{{ url_for('static', filename='images/logo.png') }}">
             </div>
 
 
@@ -424,13 +479,12 @@
             <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap">
                 <div>
                 <strong>VietConnect</strong>
-                <div class="muted">© 2025 VietConnect • Designed for foreign residents in Ho Chi Minh City</div>
+                <div style = "color : --var(muted)">© 2025 VietConnect • Designed for foreign residents in Ho Chi Minh City</div>
                 </div>
                 <div style = "color : --var(muted); font-size: 16px;">Need help? <a href="support.html">Contact support</a></div>
             </div>
         </footer>
     </main>
-
 
 
 
