@@ -1,0 +1,129 @@
+from flask import Flask, render_template, request, redirect, flash, url_for, session
+from flask_sqlalchemy import SQLAlchemy
+from werkzeug.security import generate_password_hash, check_password_hash
+from datetime import timedelta
+from .auth import auth_bp
+from .chat import chat_bp
+
+
+#Factory Pattern
+def create_app(test_config = None):
+    app = Flask(__name__)
+    # app = Flask(__name__)
+    app.config.from_pyfile('config.py', silent=True)
+    app.secret_key = 'secret-key' 
+    app.permanent_session_lifetime = timedelta(days = 1)
+    app.register_blueprint(auth_bp)
+    app.register_blueprint(chat_bp)
+
+    '''
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///users.db'
+    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
+    db = SQLAlchemy(app)
+
+    class User(db.Model):
+        id = db.Column(db.Integer, primary_key=True)
+        fullname = db.Column(db.String(100), nullable=False)
+        email = db.Column(db.String(120), unique=True, nullable=False)
+        phone = db.Column(db.String(20))
+        lang = db.Column(db.String(10))
+        password_hash = db.Column(db.String(200), nullable=False)
+
+
+    with app.app_context():
+        db.create_all()
+
+
+    @app.route('/signup', methods=['GET'])
+    def signup_page():
+        if "user" in session:
+            return render_template('index.html')
+        return render_template('signup.html')
+
+
+    @app.route('/signup', methods=['POST'])
+    def signup_post():
+        fullname = request.form['fullname']
+        email = request.form['email']
+        phone = request.form.get('phone')
+        lang = request.form.get('lang')
+        password = request.form['password']
+        confirm = request.form['confirm']
+
+        if not fullname or not email or not password:
+            flash('Please fill in all required fields.')
+            return redirect(url_for('signup_page'))
+
+        if password != confirm:
+            flash('Passwords do not match!')
+            return redirect(url_for('signup_page'))
+
+        existing_user = User.query.filter_by(email=email).first()
+        if existing_user:
+            flash('Email already exists!')
+            return redirect(url_for('signup_page'))
+
+        hashed_pw = generate_password_hash(password)
+        new_user = User(fullname=fullname, email=email, phone=phone, lang=lang, password_hash=hashed_pw)
+        db.session.add(new_user)
+        db.session.commit()
+
+        session['user_id'] = new_user.id
+        session['fullname'] = new_user.fullname
+
+        flash('Account created successfully!')
+        return redirect(url_for('chat_page'))
+
+
+    @app.route('/signin')
+    def signin():
+        return render_template('signin.html') 
+
+    @app.route('/signin', methods = ['POST'])
+    def signin_page():
+        email = request.form['email']
+        password = request.form['password']
+        user = User.query.filter_by(email = email).first()
+
+        if not user or not check_password_hash(user.password_hash, password):
+            flash('Email hoặc mật khẩu không chính xác.')
+            return redirect(url_for('signin_page'))
+        
+        session['user_id'] = user.id
+        session['fullname'] = user.fullname
+
+        return redirect(url_for('chat_page'))
+    '''
+
+    '''
+    @app.route('/logout')
+    def logout():
+        session.pop('user_id', None)
+        session.pop('fullname', None)
+        return redirect(url_for('home_page'))
+    '''
+    
+    # @app.route('/chat')
+    # def chat_page():
+    #     '''
+    #     return render_template('chat.html')
+    #     '''
+    #     pass
+
+
+    '''
+    @app.route('/show-users')
+    def show_users():
+        users = User.query.all()
+        output = ""
+        for u in users:
+            output += f"{u.id} - {u.fullname} - {u.email}<br>"
+        return output
+    '''
+
+    @app.route('/')
+    def home_page():
+        return render_template('index.html')
+    return app
+

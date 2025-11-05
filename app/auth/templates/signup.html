@@ -7,7 +7,7 @@
     <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/logo.png') }}">
 
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/signup.css') }}">
+  <link rel="stylesheet" href="{{ url_for('auth.static', filename='css/signup.css') }}">
 
 </head>
 <body>
@@ -22,7 +22,7 @@
       </div>
       <nav style="display:flex;gap:12px;align-items:center">
         <a href="{{url_for('home_page')}}" class="muted">Home</a>
-        <a href="{{url_for('signin_page')}}" class="muted">Sign In</a>
+        <a href="{{url_for('auth.signin_page')}}" class="muted">Sign In</a>
       </nav>
     </header>
 
@@ -47,12 +47,12 @@
           </ul>
         </div>
 
-        <div style="margin-top:20px;color:var(--muted);font-size:13px">Already have an account? <a href="{{url_for('signin_page')}}">Sign in</a></div>
+        <div style="margin-top:20px;color:var(--muted);font-size:13px">Already have an account? <a href="{{url_for('auth.signin_page')}}">Sign in</a></div>
       </section>
 
       <aside class="right">
 
-        <form id="signupForm" novalidate  action = "/signup" method = "POST">
+        <form id="signupForm" novalidate  action = "/auth/signup" method = "POST">
           <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
             <h2 style="margin:0">Sign up</h2>
             <small class="muted">It takes less than a minute</small>
@@ -133,7 +133,7 @@
   </div>
 
   <script>
-      src="{{ url_for('static', filename='script/signup.js') }}"
+      src="{{ url_for('auth.static', filename='script/signup.js') }}"
   </script>
 </body>
 </html>

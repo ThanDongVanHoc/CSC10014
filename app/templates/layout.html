@@ -28,8 +28,8 @@
         
         {% if not session.user_id %}
             <div class = "auth-buttons">
-                <button href ="{{ url_for('signup_page') }}" class="signup-btn">Sign Up</button>
-                <button href = "{{ url_for('signin_page') }}" class = "signin-btn">Sign In</button>
+                <button href ="{{ url_for('auth.signup_page') }}" class="signup-btn">Sign Up</button>
+                <button href = "{{ url_for('auth.signin_page') }}" class = "signin-btn">Sign In</button>
             </div>
         {% else %}
             <div class="user-info">

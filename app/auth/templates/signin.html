@@ -6,7 +6,7 @@
   <title>Sign in to VietConnect</title>
   <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/logo.png') }}">
   
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/signin.css') }}">
+  <link rel="stylesheet" href="{{ url_for('auth.static', filename='css/signin.css') }}">
 
 </head>
 
@@ -16,7 +16,7 @@
 
         <h2 style = "margin-bottom: 35px; text-align: center;">Sign in to VietConnect</h2>
       
-        <form action = "/signin" method = "POST">
+        <form action = "/auth/signin" method = "POST">
           <div class = "form-group">
               <label>Username or email address</label>
               <input id = "email" name = "email" class = "signin-input" type="email" placeholder="allmyexhatesme@4fun.com" required>
@@ -36,14 +36,14 @@
         <button class="oauth-btn"><img src="https://www.svgrepo.com/show/475656/google-color.svg" width="18">Continue with Google</button>
 
         <div class="footer">
-            New to VietConnect? <a href = "{{url_for('signup_page')}}" style = "color : blue;">Create an account</a>
+            New to VietConnect? <a href = "{{url_for('auth.signup_page')}}" style = "color : blue;">Create an account</a>
         </div>
 
 
     </div>    
 
     <script> 
-        src="{{ url_for('static', filename='script/signin.js') }}"
+        src="{{ url_for('auth.static', filename='script/signin.js') }}"
     </script>
 </body>
 </html>
