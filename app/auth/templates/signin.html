@@ -8,7 +8,9 @@
   
   <link rel="stylesheet" href="{{ url_for('auth.static', filename='css/signin.css') }}">
 
-</head>
+      <h2 style="margin-bottom: 35px; text-align: center">
+        Sign in to VietConnect
+      </h2>
 
 <body>
     <div class = "log-in">
@@ -39,11 +41,44 @@
             New to VietConnect? <a href = "{{url_for('auth.signup_page')}}" style = "color : blue;">Create an account</a>
         </div>
 
+        <div class="form-group">
+          <label
+            >Password
+            <a href="forgot-password.html" class="forgot">Forgot password ?</a>
+          </label>
+          <input
+            id="password"
+            name="password"
+            class="signin-input"
+            type="password"
+            placeholder="Your password"
+            required
+          />
+        </div>
 
-    </div>    
+        <button type="submit" class="signin-btn">Sign in</button>
+      </form>
+
+      <div class="divider">or</div>
+
+      <a href="{{ url_for('auth.google_login') }}" class="oauth-btn">
+        <img
+          src="https://www.svgrepo.com/show/475656/google-color.svg"
+          width="18"
+        />
+        Continue with Google
+      </a>
+
+      <div class="footer">
+        New to VietConnect?
+        <a href="{{url_for('auth.signup_page')}}" style="color: blue"
+          >Create an account</a
+        >
+      </div>
+    </div>
 
     <script> 
         src="{{ url_for('auth.static', filename='script/signin.js') }}"
     </script>
-</body>
+  </body>
 </html>
