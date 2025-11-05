@@ -1,0 +1,166 @@
+/* This is container part*/
+.container{
+    max-width: 1200px;
+    margin: 0 auto; 
+    padding: 40px 20px; 
+}
+
+.container-section{
+    display : grid; 
+    grid-template-columns: 1fr 460px;
+    gap: 36px; 
+    align-items: center;
+    margin-top : 22px; 
+}
+
+.container-section h1{
+    font-size:36px;
+    line-height:1.05;
+    margin:0
+}
+
+.container-section p{
+    color:var(--muted);
+    margin-top:14px;
+    font-size:16px
+}
+
+.main-button{
+    display : inline-flex; 
+    align-items: center;
+    gap : 8px; 
+    cursor: pointer; 
+    font-weight : 600; 
+    border:1px solid transparent; 
+    font-size : 15px; 
+    border-radius:999px;
+    padding:8px 14px;
+}
+
+.get-started{
+    background: var(--brand);
+    color: white;
+    padding: 12px 24px; 
+    font-size: 16px;
+    font-weight: 700;
+}
+
+.learn-more {
+    background: transparent;
+    color: var(--muted);
+    border: 2px solid rgba(0,0,0,0.08);
+    padding: 12px 24px;
+    font-size: 16px;
+    font-weight: 700;
+}
+
+.get-started:hover {
+    background: var(--brand-600);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(0, 179, 126, 0.3);
+}
+
+.learn-more:hover {
+    background-color: #f9f9f9;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border-color: #aaa;
+}
+
+.get-started:active {
+    transform: translateY(0);
+}
+
+.learn-more:active {
+    transform: translateY(0);
+}
+
+/*This is freatures css*/
+.features{
+    display : grid; 
+    grid-template-columns: 1fr 1fr 1fr;
+    gap:18px;
+    margin-top:44px;
+}
+
+
+.card{
+    background:var(--card);
+    border-radius: 12px; 
+    padding: 18px; 
+    box-shadow: var(--shadow);
+    min-height:120px;
+    display : flex; 
+    align-items: flex-start;
+    gap : 12px; 
+}
+
+
+.card .icon{
+    width:44px;
+    height:44px;
+    border-radius:10px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:var(--glass);
+}
+
+.card h3{
+    margin:0;
+    font-size:18px;
+}
+.card p{
+    margin:6px 0 0;
+    color:var(--muted);
+    font-size:16px;
+}
+
+.how-it-work{
+    box-shadow:var(--shadow);
+    padding:20px;
+    border-radius:12px;
+    background:var(--card);
+}
+
+    .user-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: #f9f9f9;
+    border-radius: 12px;
+    padding: 8px 14px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+.avatar {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    border: 2px solid #ddd;
+    object-fit: cover;
+    transition: transform 0.2s ease;
+}
+.avatar:hover {
+    transform: scale(1.05);
+}
+
+.user-text {
+    display: flex;
+    flex-direction: column;
+}
+
+.greeting {
+    font-size: 15px;
+    color: #333;
+}
+
+.logout-link {
+    font-size: 14px;
+    color: #e53935;
+    text-decoration: none;
+    margin-top: 2px;
+}
+.logout-link:hover {
+    text-decoration: underline;
+}
