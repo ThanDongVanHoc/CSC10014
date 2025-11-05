@@ -1,48 +1,39 @@
 from flask import Flask, render_template, request, redirect, flash, url_for, session
-from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import timedelta
 from .auth import auth_bp
+from .db import init_app
 import os
+import pathlib
 
-# 1. Xác định thư mục cơ sở (nơi chứa app.py)
+# Xác định thư mục cơ sở (nơi chứa app.py)
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
-# 2. Xây dựng đường dẫn tuyệt đối đến thư mục 'static' (BASE_DIR + ../ + static)
+# Xây dựng đường dẫn tuyệt đối đến thư mục 'static' (BASE_DIR + ../ + static)
 STATIC_FOLDER_PATH = os.path.join(BASE_DIR, '..', 'static')
 
 #Factory Pattern
 def create_app(test_config = None):
     app = Flask(__name__, instance_relative_config=True, static_folder=STATIC_FOLDER_PATH)
     app.config.from_pyfile('config.py', silent=True)
-    app.secret_key = 'secret-key' 
+    app.config.from_mapping(SECRET_KEY = 'dev') 
+    
+    #Tao instance path, neu da co roi thi thoi
+    try:
+        os.makedirs(app.instance_path)
+    except OSError:
+        pass
+
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///client.db'
+
     app.permanent_session_lifetime = timedelta(days = 1)
+
+    #Đăng kí auth
     app.register_blueprint(auth_bp)
-
+    #
+    init_app(app)
     '''
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///users.db'
-    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-
-    db = SQLAlchemy(app)
-
-    class User(db.Model):
-        id = db.Column(db.Integer, primary_key=True)
-        fullname = db.Column(db.String(100), nullable=False)
-        email = db.Column(db.String(120), unique=True, nullable=False)
-        phone = db.Column(db.String(20))
-        lang = db.Column(db.String(10))
-        password_hash = db.Column(db.String(200), nullable=False)
-
-
-    with app.app_context():
-        db.create_all()
-
-
-    @app.route('/signup', methods=['GET'])
-    def signup_page():
-        if "user" in session:
-            return render_template('index.html')
-        return render_template('signup.html')
+    
 
 
     @app.route('/signup', methods=['POST'])
@@ -99,22 +90,12 @@ def create_app(test_config = None):
         return redirect(url_for('chat_page'))
     '''
 
-    '''
-    @app.route('/logout')
-    def logout():
-        session.pop('user_id', None)
-        session.pop('fullname', None)
-        return redirect(url_for('home_page'))
-    '''
-
     @app.route('/chat')
     def chat_page():
         '''
         return render_template('chat.html')
         '''
         pass
-
-
     '''
     @app.route('/show-users')
     def show_users():
