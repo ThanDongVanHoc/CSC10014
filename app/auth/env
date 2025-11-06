@@ -1,3 +1,0 @@
-GOOGLE_CLIENT_ID="964769269288-o10kakd3l00pbaf9d39kq704l5nbqabq.apps.googleusercontent.com"
-GOOGLE_CLIENT_SECRET="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"
-GOOGLE_REDIRECT_URI="http://127.0.0.1:5000/auth/callback"
