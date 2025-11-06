@@ -1,0 +1,73 @@
+{% extends "layout.html" %}
+
+{% block css %}
+    <link rel="stylesheet" href="{{ url_for('chat.static', filename='css/chat.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css" />
+{% endblock %}
+
+{% block content %}
+    <button id="showSidebar" style="display:none; position:fixed; left:0; top:50%; background:var(--brand); color:white; border:none; padding:10px; border-radius:0 8px 8px 0; cursor:pointer; transform:translateY(-50%);">Hiện</button>
+
+   <button id="showSidebar" style="display:none; position:fixed; left:0; top:50%; background:var(--brand); color:white; border:none; padding:10px; border-radius:0 8px 8px 0; cursor:pointer; transform:translateY(-50%);">Hiện</button>
+
+    <div class="app">
+        <!-- HISTORY SIDEBAR -->
+        <aside class="sidebar" aria-label="Conversations">
+        <div class="top">
+            <h3>History</h3>
+            <div class="controls">
+            <button id="btnNew">New chat</button>
+            <button id="btnDeleteSelected" title="Delete Selected Conversation" >Delete</button>
+            <button id="hideBtn">Hide</button>
+            </div>
+        </div>
+
+        <div class="search">
+            <input id="searchInput" placeholder="Search chats..." />
+        </div>
+
+        <div id="convoList" class="convo-list" role="list">
+            <!-- conversations injected here -->
+        </div>
+        </aside>
+
+        <!-- CHAT PANEL -->
+        <section class="chat">
+        <div class="card">
+            <div class="chat-header">
+            <div>
+                <strong id="convTitle">Chưa chọn đoạn chat</strong>
+                <div style="font-size:12px;color:var(--muted)">Type issues like "lost visa"</div>
+            </div>
+            <div>
+                <button id="btnAttach" class="btn">Attach</button>
+            </div>
+            </div>
+
+            <div id="chatMessages" class="chat-messages" aria-live="polite">
+            <!-- messages appended here -->
+            </div>
+
+            <div class="chat-input">
+            <input id="chatInput" placeholder="Describe your problem, e.g. 'I lost my visa'..." aria-label="message input" />
+            <button id="sendBtn">Send</button>
+            </div>
+        </div>
+        </section>
+
+        <!-- MAP -->
+        <aside>
+          <div id="map"></div>
+        </aside>
+    </div>
+{% endblock %}
+
+
+
+{% block script %}
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
+    <script src="{{ url_for('chat.static', filename='scripts/chat.js') }}"></script>
+{% endblock %}
