@@ -378,7 +378,7 @@
             </div>
         {% else %}
             <div class="user-info">
-                <img src="{{ url_for('static', filename='images/hcmus_avatar.jpg') }}" alt="User Avatar" class="avatar">
+                <img src="{{ session.avatar }}" alt="User Avatar" class="avatar">
                 <div class="user-text">
                     <span class="greeting">Chào, <strong>{{ session.fullname }}</strong>!</span>
                     <a href="{{ url_for('auth.logout') }}" class="logout-link">Log out</a>

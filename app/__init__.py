@@ -68,26 +68,6 @@ def create_app(test_config = None):
 
         flash('Account created successfully!')
         return redirect(url_for('chat_page'))
-
-
-    @app.route('/signin')
-    def signin():
-        return render_template('signin.html') 
-
-    @app.route('/signin', methods = ['POST'])
-    def signin_page():
-        email = request.form['email']
-        password = request.form['password']
-        user = User.query.filter_by(email = email).first()
-
-        if not user or not check_password_hash(user.password_hash, password):
-            flash('Email hoặc mật khẩu không chính xác.')
-            return redirect(url_for('signin_page'))
-        
-        session['user_id'] = user.id
-        session['fullname'] = user.fullname
-
-        return redirect(url_for('chat_page'))
     '''
 
     @app.route('/chat')

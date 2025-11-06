@@ -1,304 +1,603 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Sign Up — VietConnect</title>
-    <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/logo.png') }}">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Sign Up — VietConnect</title>
+    <link
+      rel="icon"
+      type="image/png"
+      href="{{ url_for('static', filename='images/logo.png') }}"
+    />
 
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
-  <style>
-    :root{
-      --navbar-color : white; 
-      --primary-color: #00b37e; 
-      --dark-blue: #0d2c54; 
-      --text-light: #555;
-      --bg-light: #f4f8f7;
-      --brand: #00b37e;
-      --brand-600: #009966;
-      --muted: #6b7280;
-      --bg: #fbfdff;
-      --card: #ffffff;
-      --radius: 12px;
-      --glass: rgba(255,255,255,0.6);
-      --shadow: 0 6px 20px rgba(13, 17, 23, 0.08);
-      --navbar-color: white;
-      --max-width: 1100px;
-    }
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --navbar-color: white;
+        --primary-color: #00b37e;
+        --dark-blue: #0d2c54;
+        --text-light: #555;
+        --bg-light: #f4f8f7;
+        --brand: #00b37e;
+        --brand-600: #009966;
+        --muted: #6b7280;
+        --bg: #fbfdff;
+        --card: #ffffff;
+        --radius: 12px;
+        --glass: rgba(255, 255, 255, 0.6);
+        --shadow: 0 6px 20px rgba(13, 17, 23, 0.08);
+        --navbar-color: white;
+        --max-width: 1100px;
+      }
 
-    [data-theme="dark"] {
-      --navbar-color : #0b0e12;
-      --brand: #00d58a;
-      --muted: #9aa1a8;
-      --bg: #0b0e12;
-      --card: #071023;
-      --glass: rgba(255,255,255,0.03);
-      --shadow: 0 8px 30px rgba(2,6,23,0.6);
-    }
+      [data-theme="dark"] {
+        --navbar-color: #0b0e12;
+        --brand: #00d58a;
+        --muted: #9aa1a8;
+        --bg: #0b0e12;
+        --card: #071023;
+        --glass: rgba(255, 255, 255, 0.03);
+        --shadow: 0 8px 30px rgba(2, 6, 23, 0.6);
+      }
 
-    *{box-sizing:border-box}
-    html,body{height:100%;margin:0;font-family:Inter,system-ui,-apple-system,'Segoe UI',Roboto,'Helvetica Neue',Arial;color:var(--dark-blue);background:var(--bg)}
+      * {
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        height: 100%;
+        margin: 0;
+        font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto,
+          "Helvetica Neue", Arial;
+        color: var(--dark-blue);
+        background: var(--bg);
+      }
 
-    .site-wrap{max-width:var(--max-width);margin:36px auto;padding:20px}
+      .site-wrap {
+        max-width: var(--max-width);
+        margin: 36px auto;
+        padding: 20px;
+      }
 
-    header.nav{display:flex;justify-content:space-between;align-items:center;padding:12px 18px;background:var(--navbar-color);border-radius:14px;box-shadow:var(--shadow)}
-    .logo{display:flex;gap:12px;align-items:center}
-    .logo img{width:44px;height:44px;border-radius:8px}
-    .logo .brand{font-weight:700;font-size:18px}
+      header.nav {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 12px 18px;
+        background: var(--navbar-color);
+        border-radius: 14px;
+        box-shadow: var(--shadow);
+      }
+      .logo {
+        display: flex;
+        gap: 12px;
+        align-items: center;
+      }
+      .logo img {
+        width: 44px;
+        height: 44px;
+        border-radius: 8px;
+      }
+      .logo .brand {
+        font-weight: 700;
+        font-size: 18px;
+      }
 
-    .card{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden}
+      .card {
+        background: var(--card);
+        border-radius: var(--radius);
+        box-shadow: var(--shadow);
+        overflow: hidden;
+      }
 
-    .grid{display:grid;grid-template-columns:1fr 460px;gap:28px;align-items:center}
-    @media (max-width:980px){.grid{grid-template-columns:1fr;}.intro-graphic{order:2}}
+      .grid {
+        display: grid;
+        grid-template-columns: 1fr 460px;
+        gap: 28px;
+        align-items: center;
+      }
+      @media (max-width: 980px) {
+        .grid {
+          grid-template-columns: 1fr;
+        }
+        .intro-graphic {
+          order: 2;
+        }
+      }
 
-    /* left column */
-    .left{padding:36px}
-    .kicker{display:inline-block;background:rgba(0,0,0,0.04);padding:6px 12px;border-radius:999px;font-weight:600;margin-bottom:18px}
-    h1{font-size:28px;line-height:1.05;margin:0 0 14px}
-    p.lead{color:var(--muted);margin:0 0 22px}
+      /* left column */
+      .left {
+        padding: 36px;
+      }
+      .kicker {
+        display: inline-block;
+        background: rgba(0, 0, 0, 0.04);
+        padding: 6px 12px;
+        border-radius: 999px;
+        font-weight: 600;
+        margin-bottom: 18px;
+      }
+      h1 {
+        font-size: 28px;
+        line-height: 1.05;
+        margin: 0 0 14px;
+      }
+      p.lead {
+        color: var(--muted);
+        margin: 0 0 22px;
+      }
 
-    .features{display:flex;gap:10px;margin-top:18px}
-    .pill{background:var(--glass);padding:10px;border-radius:10px;font-weight:600}
+      .features {
+        display: flex;
+        gap: 10px;
+        margin-top: 18px;
+      }
+      .pill {
+        background: var(--glass);
+        padding: 10px;
+        border-radius: 10px;
+        font-weight: 600;
+      }
 
-    /* right column (form) */
-    .right{padding:28px}
-    form{display:flex;flex-direction:column;gap:12px}
+      /* right column (form) */
+      .right {
+        padding: 28px;
+      }
+      form {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
 
-    label{font-size:14px;font-weight:600}
-    .field{display:flex;flex-direction:column;gap:6px}
-    input[type="text"],input[type="email"],input[type="password"],select{
-      padding:12px 14px;border-radius:12px;border:1px solid rgba(11,18,32,0.06);background:transparent;font-size:14px;outline:none
-    }
-    input:focus{box-shadow:0 6px 20px rgba(0,179,126,0.08);border-color:var(--brand)}
+      label {
+        font-size: 14px;
+        font-weight: 600;
+      }
+      .field {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+      }
+      input[type="text"],
+      input[type="email"],
+      input[type="password"],
+      select {
+        padding: 12px 14px;
+        border-radius: 12px;
+        border: 1px solid rgba(11, 18, 32, 0.06);
+        background: transparent;
+        font-size: 14px;
+        outline: none;
+      }
+      input:focus {
+        box-shadow: 0 6px 20px rgba(0, 179, 126, 0.08);
+        border-color: var(--brand);
+      }
 
-    .row{display:flex;gap:12px}
-    .row > *{flex:1}
+      .row {
+        display: flex;
+        gap: 12px;
+      }
+      .row > * {
+        flex: 1;
+      }
 
-    .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:12px 16px;border-radius:999px;border:none;cursor:pointer;font-weight:700}
-    .btn.primary{background:var(--brand);color:white}
-    .btn.ghost{background:transparent;border:1px solid rgba(11,18,32,0.06)}
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        padding: 12px 16px;
+        border-radius: 999px;
+        border: none;
+        cursor: pointer;
+        font-weight: 700;
+      }
+      .btn.primary {
+        background: var(--brand);
+        color: white;
+      }
+      .btn.ghost {
+        background: transparent;
+        border: 1px solid rgba(11, 18, 32, 0.06);
+      }
 
-    .muted{color:var(--muted);font-size:13px}
-    .terms{display:flex;gap:12px;align-items:center}
+      .muted {
+        color: var(--muted);
+        font-size: 13px;
+      }
+      .terms {
+        display: flex;
+        gap: 12px;
+        align-items: center;
+      }
 
-    .socials{display:flex;gap:10px;margin:6px 0}
-    .socials button{flex:1;padding:10px;border-radius:10px;border:1px solid rgba(11,18,32,0.06);background:transparent;cursor:pointer}
+      .socials {
+        display: flex;
+        gap: 10px;
+        margin: 6px 0;
+      }
+      .socials button {
+        flex: 1;
+        padding: 10px;
+        border-radius: 10px;
+        border: 1px solid rgba(11, 18, 32, 0.06);
+        background: transparent;
+        cursor: pointer;
+      }
 
-    .divider{display:flex;align-items:center;gap:12px;color:var(--muted);font-size:13px}
-    .divider:before,.divider:after{content:'';flex:1;height:1px;background:rgba(11,18,32,0.04);border-radius:2px}
+      .divider {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        color: var(--muted);
+        font-size: 13px;
+      }
+      .divider:before,
+      .divider:after {
+        content: "";
+        flex: 1;
+        height: 1px;
+        background: rgba(11, 18, 32, 0.04);
+        border-radius: 2px;
+      }
 
-    .note{font-size:13px;color:var(--muted)}
+      .note {
+        font-size: 13px;
+        color: var(--muted);
+      }
 
-    .error{color:#e23a3a;font-size:13px}
-    .success{color:#0b8f5a;font-weight:700}
+      .error {
+        color: #e23a3a;
+        font-size: 13px;
+      }
+      .success {
+        color: #0b8f5a;
+        font-weight: 700;
+      }
 
-    .pw-meter{height:8px;border-radius:999px;background:rgba(11,18,32,0.06);overflow:hidden}
-    .pw-meter > span{display:block;height:100%;width:0%;transition:width 220ms ease}
+      .pw-meter {
+        height: 8px;
+        border-radius: 999px;
+        background: rgba(11, 18, 32, 0.06);
+        overflow: hidden;
+      }
+      .pw-meter > span {
+        display: block;
+        height: 100%;
+        width: 0%;
+        transition: width 220ms ease;
+      }
 
-    footer.page-foot{margin-top:18px;padding:20px;border-radius:12px;background:transparent;display:flex;justify-content:space-between;align-items:center}
+      footer.page-foot {
+        margin-top: 18px;
+        padding: 20px;
+        border-radius: 12px;
+        background: transparent;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
 
-    /* small helpers */
-    .text-right{text-align:right}
-  </style>
-</head>
-<body>
-  <div class="site-wrap">
-    <header class="nav">
-      <div class="logo">
-        <img src="{{ url_for('static', filename='images/logo.png') }}" alt="VietConnect logo" />
-        <div>
-          <div class="brand">VietConnect</div>
-          <div class="muted" style="font-size:12px">Ho Chi Minh City • Multilingual</div>
+      /* small helpers */
+      .text-right {
+        text-align: right;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="site-wrap">
+      <header class="nav">
+        <div class="logo">
+          <img
+            src="{{ url_for('static', filename='images/logo.png') }}"
+            alt="VietConnect logo"
+          />
+          <div>
+            <div class="brand">VietConnect</div>
+            <div class="muted" style="font-size: 12px">
+              Ho Chi Minh City • Multilingual
+            </div>
+          </div>
         </div>
-      </div>
-      <nav style="display:flex;gap:12px;align-items:center">
-        <a href="{{url_for('home_page')}}" class="muted">Home</a>
-        <a href="{{url_for('auth.signin_page')}}" class="muted">Sign In</a>
-      </nav>
-    </header>
+        <nav style="display: flex; gap: 12px; align-items: center">
+          <a href="{{url_for('home_page')}}" class="muted">Home</a>
+          <a href="{{url_for('auth.signin_page')}}" class="muted">Sign In</a>
+        </nav>
+      </header>
 
-    <main style="margin-top:20px" class="card grid">
-      <section class="left">
-        <div class="kicker">Create an account</div>
-        <h1>Welcome to VietConnect — Support for foreigners in Ho Chi Minh City</h1>
-        <p class="lead">Secure account to access multilingual assistance, medical and safety services, and step-by-step administrative help.</p>
+      <main style="margin-top: 20px" class="card grid">
+        <section class="left">
+          <div class="kicker">Create an account</div>
+          <h1>
+            Welcome to VietConnect — Support for foreigners in Ho Chi Minh City
+          </h1>
+          <p class="lead">
+            Secure account to access multilingual assistance, medical and safety
+            services, and step-by-step administrative help.
+          </p>
 
-        <div class="features">
-          <div class="pill">Emergency-ready</div>
-          <div class="pill">Multilingual</div>
-          <div class="pill">Privacy-first</div>
-        </div>
-
-        <div style="margin-top:22px">
-          <h3 style="margin:0 0 8px">Why sign up?</h3>
-          <ul style="margin:0;padding-left:18px;color:var(--muted)">
-            <li>Fast AI triage and direct agent handoff</li>
-            <li>Saved documents and templates for administrative tasks</li>
-            <li>Encrypted personal data and consent controls</li>
-          </ul>
-        </div>
-
-        <div style="margin-top:20px;color:var(--muted);font-size:13px">Already have an account? <a href="{{url_for('auth.signin_page')}}">Sign in</a></div>
-      </section>
-
-      <aside class="right">
-
-        <form id="signupForm" novalidate  action="{{ url_for('auth.signup_page') }}" method = "POST">
-          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
-            <h2 style="margin:0">Sign up</h2>
-            <small class="muted">It takes less than a minute</small>
+          <div class="features">
+            <div class="pill">Emergency-ready</div>
+            <div class="pill">Multilingual</div>
+            <div class="pill">Privacy-first</div>
           </div>
 
-          <div class="field">
-            <label for="fullname">Full name</label>
-            <input id="fullname" name="fullname" type="text" placeholder="It's me Nam" required />
-            <div class="error" id="err-name" aria-live="polite"></div>
+          <div style="margin-top: 22px">
+            <h3 style="margin: 0 0 8px">Why sign up?</h3>
+            <ul style="margin: 0; padding-left: 18px; color: var(--muted)">
+              <li>Fast AI triage and direct agent handoff</li>
+              <li>Saved documents and templates for administrative tasks</li>
+              <li>Encrypted personal data and consent controls</li>
+            </ul>
           </div>
 
-          <div class="field">
-            <label for="email">Email</label>
-            <input id="email" name="email" type="email" placeholder="you@example.com" required />
-            <div class="error" id="err-email" aria-live="polite"></div>
+          <div style="margin-top: 20px; color: var(--muted); font-size: 13px">
+            Already have an account?
+            <a href="{{url_for('auth.signin_page')}}">Sign in</a>
           </div>
+        </section>
 
-          <div class="row">
+        <aside class="right">
+          <form
+            id="signupForm"
+            novalidate
+            action="{{ url_for('auth.signup_page') }}"
+            method="POST"
+          >
+            <div
+              style="
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                margin-bottom: 6px;
+              "
+            >
+              <h2 style="margin: 0">Sign up</h2>
+              <small class="muted">It takes less than a minute</small>
+            </div>
+
             <div class="field">
-              <label for="phone">Phone (optional)</label>
-              <input id="phone" name="phone" type="text" placeholder="+84 9xx xxx xxx" />
+              <label for="fullname">Full name</label>
+              <input
+                id="fullname"
+                name="fullname"
+                type="text"
+                placeholder="It's me Nam"
+                required
+              />
+              <div class="error" id="err-name" aria-live="polite"></div>
             </div>
+
             <div class="field">
-              <label for="lang">Preferred language</label>
-              <select id="lang" name="lang">
-                <option value="en">English</option>
-                <option value="vi">Tiếng Việt</option>
-                <option value="zh">中文</option>
-                <option value="ja">日本語</option>
-              </select>
+              <label for="email">Email</label>
+              <input
+                id="email"
+                name="email"
+                type="email"
+                placeholder="you@example.com"
+                required
+              />
+              <div class="error" id="err-email" aria-live="polite"></div>
             </div>
-          </div>
 
-          <div class="field">
-            <label for="password">Password</label>
-            <div style="position:relative">
-              <input id="password" name="password" type="password" placeholder="Create a strong password" required />
-              <button type="button" id="togglePw" title="Show / Hide password" style="position:absolute;right:8px;top:8px;border:none;background:transparent;cursor:pointer">Show</button>
+            <div class="row">
+              <div class="field">
+                <label for="phone">Phone (optional)</label>
+                <input
+                  id="phone"
+                  name="phone"
+                  type="text"
+                  placeholder="+84 9xx xxx xxx"
+                />
+              </div>
+              <div class="field">
+                <label for="lang">Preferred language</label>
+                <select id="lang" name="lang">
+                  <option value="en">English</option>
+                  <option value="vi">Tiếng Việt</option>
+                  <option value="zh">中文</option>
+                  <option value="ja">日本語</option>
+                </select>
+              </div>
             </div>
-            <div class="pw-meter" aria-hidden="true"><span id="pwBar" style="background:linear-gradient(90deg,var(--brand),var(--brand-600));width:0%"></span></div>
-            <div class="note" id="pwNote">Use at least 8 characters including a number and a symbol.</div>
-            <div class="error" id="err-pw" aria-live="polite"></div>
-          </div>
 
-          <div class="field">
-            <label for="confirm">Confirm password</label>
-            <input id="confirm" name="confirm" type="password" placeholder="Repeat password" required />
-            <div class="error" id="err-confirm" aria-live="polite"></div>
-          </div>
+            <div class="field">
+              <label for="password">Password</label>
+              <div style="position: relative">
+                <input
+                  id="password"
+                  name="password"
+                  type="password"
+                  placeholder="Create a strong password"
+                  required
+                />
+                <button
+                  type="button"
+                  id="togglePw"
+                  title="Show / Hide password"
+                  style="
+                    position: absolute;
+                    right: 8px;
+                    top: 8px;
+                    border: none;
+                    background: transparent;
+                    cursor: pointer;
+                  "
+                >
+                  Show
+                </button>
+              </div>
+              <div class="pw-meter" aria-hidden="true">
+                <span
+                  id="pwBar"
+                  style="
+                    background: linear-gradient(
+                      90deg,
+                      var(--brand),
+                      var(--brand-600)
+                    );
+                    width: 0%;
+                  "
+                ></span>
+              </div>
+              <div class="note" id="pwNote">
+                Use at least 8 characters including a number and a symbol.
+              </div>
+              <div class="error" id="err-pw" aria-live="polite"></div>
+            </div>
 
-          <div class="terms">
-            <input id="agree" type="checkbox" />
-            <label for="agree" class="muted">I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>.</label>
-          </div>
-          <div class="error" id="err-terms"></div>
+            <div class="field">
+              <label for="confirm">Confirm password</label>
+              <input
+                id="confirm"
+                name="confirm"
+                type="password"
+                placeholder="Repeat password"
+                required
+              />
+              <div class="error" id="err-confirm" aria-live="polite"></div>
+            </div>
 
-          <button class="btn primary" type="submit">Create account</button>
+            <div class="terms">
+              <input id="agree" type="checkbox" />
+              <label for="agree" class="muted"
+                >I agree to the <a href="#">Terms of Service</a> and
+                <a href="#">Privacy Policy</a>.</label
+              >
+            </div>
+            <div class="error" id="err-terms"></div>
 
-          <div class="divider" style="margin-top:8px">OR</div>
+            <button class="btn primary" type="submit">Create account</button>
 
-          <div class="socials">
-            <button type="button" aria-label="Continue with Google"> <img src="https://www.svgrepo.com/show/475656/google-color.svg" width="18"> Continue with Google</button>
-            <button type="button" aria-label="Continue with Apple">Continue with Apple</button>
-          </div>
+            <div class="divider" style="margin-top: 8px">OR</div>
 
-          <div class="note">By creating an account, you consent to receive important service messages. Your personal data is protected and shared only with your consent.</div>
-        </form>
+            <div class="socials">
+              <a href="{{ url_for('auth.google_login') }}" class="oauth-btn">
+                <img
+                  src="https://www.svgrepo.com/show/475656/google-color.svg"
+                  width="18"
+                />
+                Continue with Google
+              </a>
+            </div>
 
+            <div class="note">
+              By creating an account, you consent to receive important service
+              messages. Your personal data is protected and shared only with
+              your consent.
+            </div>
+          </form>
+        </aside>
+      </main>
 
+      <footer class="page-foot">
+        <div class="muted">© 2025 VietConnect</div>
+        <div class="text-right muted">
+          Need help? <a href="support.html">Contact support</a>
+        </div>
+      </footer>
+    </div>
 
-      </aside>
-    </main>
+    <script>
+      const form = document.getElementById("signupForm");
+      const email = document.getElementById("email");
+      const fullname = document.getElementById("fullname");
+      const password = document.getElementById("password");
+      const confirm = document.getElementById("confirm");
+      const agree = document.getElementById("agree");
 
-    <footer class="page-foot">
-      <div class="muted">© 2025 VietConnect</div>
-      <div class="text-right muted">Need help? <a href="support.html">Contact support</a></div>
-    </footer>
-  </div>
+      const errName = document.getElementById("err-name");
+      const errEmail = document.getElementById("err-email");
+      const errPw = document.getElementById("err-pw");
+      const errConfirm = document.getElementById("err-confirm");
+      const errTerms = document.getElementById("err-terms");
 
-  <script>
-    const form = document.getElementById('signupForm');
-    const email = document.getElementById('email');
-    const fullname = document.getElementById('fullname');
-    const password = document.getElementById('password');
-    const confirm = document.getElementById('confirm');
-    const agree = document.getElementById('agree');
+      const pwBar = document.getElementById("pwBar");
+      const pwNote = document.getElementById("pwNote");
+      const togglePw = document.getElementById("togglePw");
 
-    const errName = document.getElementById('err-name');
-    const errEmail = document.getElementById('err-email');
-    const errPw = document.getElementById('err-pw');
-    const errConfirm = document.getElementById('err-confirm');
-    const errTerms = document.getElementById('err-terms');
+      function validateEmail(v) {
+        return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
+      }
+      function scorePassword(p) {
+        let score = 0;
+        if (p.length >= 8) score += 1;
+        if (/[A-Z]/.test(p)) score += 1;
+        if (/[0-9]/.test(p)) score += 1;
+        if (/[^A-Za-z0-9]/.test(p)) score += 1;
+        return score;
+      }
 
-    const pwBar = document.getElementById('pwBar');
-    const pwNote = document.getElementById('pwNote');
-    const togglePw = document.getElementById('togglePw');
+      password.addEventListener("input", () => {
+        const s = scorePassword(password.value);
+        const percent = (s / 4) * 100;
+        pwBar.style.width = percent + "%";
+        if (s <= 1)
+          pwNote.textContent =
+            "Weak — try longer password with numbers and symbols.";
+        else if (s == 2)
+          pwNote.textContent = "Fair — add uppercase or symbols.";
+        else if (s == 3) pwNote.textContent = "Good — nearly there.";
+        else pwNote.textContent = "Strong password.";
+      });
 
-    function validateEmail(v){return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v)}
-    function scorePassword(p){
-      let score=0;
-      if(p.length>=8) score+=1;
-      if(/[A-Z]/.test(p)) score+=1;
-      if(/[0-9]/.test(p)) score+=1;
-      if(/[^A-Za-z0-9]/.test(p)) score+=1;
-      return score; 
-    }
+      togglePw.addEventListener("click", () => {
+        const t = password.type === "password" ? "text" : "password";
+        password.type = t;
+        confirm.type = t;
+        togglePw.textContent = t === "text" ? "Hide" : "Show";
+      });
 
-    password.addEventListener('input', ()=>{
-      const s = scorePassword(password.value);
-      const percent = (s/4)*100;
-      pwBar.style.width = percent + '%';
-      if(s<=1) pwNote.textContent = 'Weak — try longer password with numbers and symbols.';
-      else if(s==2) pwNote.textContent = 'Fair — add uppercase or symbols.';
-      else if(s==3) pwNote.textContent = 'Good — nearly there.';
-      else pwNote.textContent = 'Strong password.';
-    });
+      form.addEventListener("submit", (e) => {
+        e.preventDefault();
+        let ok = true;
+        errName.textContent = "";
+        errEmail.textContent = "";
+        errPw.textContent = "";
+        errConfirm.textContent = "";
+        errTerms.textContent = "";
 
-    togglePw.addEventListener('click', ()=>{
-      const t = password.type === 'password' ? 'text' : 'password';
-      password.type = t; confirm.type = t;
-      togglePw.textContent = (t==='text') ? 'Hide' : 'Show';
-    });
+        if (!fullname.value.trim()) {
+          errName.textContent = "Please enter your full name.";
+          ok = false;
+        }
+        if (!validateEmail(email.value)) {
+          errEmail.textContent = "Enter a valid email address.";
+          ok = false;
+        }
+        if (scorePassword(password.value) < 2) {
+          errPw.textContent = "Please choose a stronger password.";
+          ok = false;
+        }
+        if (password.value !== confirm.value) {
+          errConfirm.textContent = "Passwords do not match.";
+          ok = false;
+        }
+        if (!agree.checked) {
+          errTerms.textContent = "You must agree to the terms to continue.";
+          ok = false;
+        }
 
-    form.addEventListener('submit',(e)=>{
-      e.preventDefault();
-      let ok = true;
-      errName.textContent = '';
-      errEmail.textContent = '';
-      errPw.textContent = '';
-      errConfirm.textContent = '';
-      errTerms.textContent = '';
+        if (!ok) return;
 
-      if(!fullname.value.trim()){errName.textContent = 'Please enter your full name.'; ok=false}
-      if(!validateEmail(email.value)){errEmail.textContent = 'Enter a valid email address.'; ok=false}
-      if(scorePassword(password.value) < 2){errPw.textContent = 'Please choose a stronger password.'; ok=false}
-      if(password.value !== confirm.value){errConfirm.textContent = 'Passwords do not match.'; ok=false}
-      if(!agree.checked){errTerms.textContent = 'You must agree to the terms to continue.'; ok=false}
+        const payload = {
+          name: fullname.value.trim(),
+          email: email.value.trim(),
+          phone: document.getElementById("phone").value.trim(),
+          lang: document.getElementById("lang").value,
+        };
 
-      if(!ok) return;
+        const successCard = document.createElement("div");
+        successCard.className = "card";
+        successCard.style.padding = "18px";
+        successCard.innerHTML = `<strong class="success">Account created</strong><div style="margin-top:8px;color:var(--muted)">Welcome, ${payload.name}! We've sent a confirmation email to ${payload.email}. Check your inbox to verify your email and complete setup.</div><div style="margin-top:12px;text-align:right"><a href=\"{{url_for('auth.signin_page')}}\" class=\"btn primary\">Go to Sign In</a></div>`;
 
-      const payload = {
-        name: fullname.value.trim(),
-        email: email.value.trim(),
-        phone: document.getElementById('phone').value.trim(),
-        lang: document.getElementById('lang').value
-      };
-
-      const successCard = document.createElement('div');
-      successCard.className = 'card';
-      successCard.style.padding = '18px';
-      successCard.innerHTML = `<strong class="success">Account created</strong><div style="margin-top:8px;color:var(--muted)">Welcome, ${payload.name}! We've sent a confirmation email to ${payload.email}. Check your inbox to verify your email and complete setup.</div><div style="margin-top:12px;text-align:right"><a href=\"{{url_for('auth.signin_page')}}\" class=\"btn primary\">Go to Sign In</a></div>`;
-
-      form.submit();
-    });
-
-  </script>
-</body>
+        form.submit();
+      });
+    </script>
+  </body>
 </html>

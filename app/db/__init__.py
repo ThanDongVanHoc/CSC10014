@@ -2,6 +2,7 @@ from flask_sqlalchemy import SQLAlchemy
 import click
 from sqlalchemy.orm import DeclarativeBase
 from flask.cli import with_appcontext
+from flask_migrate import Migrate
 
 # 1. Định nghĩa Base Class
 class Base(DeclarativeBase):
@@ -18,4 +19,5 @@ def init_db_command():
 
 def init_app(app):
     db.init_app(app)
+    migrate = Migrate(app, db)
     app.cli.add_command(init_db_command)
