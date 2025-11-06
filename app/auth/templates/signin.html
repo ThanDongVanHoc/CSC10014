@@ -1,44 +1,213 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Sign in to VietConnect</title>
-  <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/logo.png') }}">
-  
-  <link rel="stylesheet" href="{{ url_for('auth.static', filename='css/signin.css') }}">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sign in to VietConnect</title>
+    <link
+      rel="icon"
+      type="image/png"
+      href="{{ url_for('static', filename='images/logo.png') }}"
+    />
+
+    <style>
+      body {
+        font-family: "Segoe UI", sans-serif;
+        background-color: #f8f9fa;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      /*This Log-in css*/
+
+      .log-in {
+        width: 350px;
+        margin-top: 25px;
+        padding: 40px 50px;
+        border-radius: 15px;
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+        text-align: center;
+      }
+
+      .logo {
+        width: 80px;
+        margin-bottom: 5px;
+      }
+
+      /*This sgin-in css*/
+
+      .signin-btn {
+        width: 100%;
+        background-color: #00b37e;
+        border: none;
+        border-radius: 6px;
+        color: white;
+        font-weight: 600;
+        padding: 10px;
+        font-size: 15px;
+        cursor: pointer;
+        transition: 0.2s;
+      }
+
+      .signin-btn:hover {
+        background-color: #00b37e;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        transform: translateY(-1px);
+      }
+
+      .signin-btn:active {
+        transform: translateY(0);
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+        background-color: #00b37e;
+      }
+
+      /* Form format*/
+      .form-group {
+        margin-bottom: 15px;
+        text-align: left;
+      }
+
+      label {
+        display: block;
+        font-size: 15px;
+        margin-bottom: 5px;
+
+        font-weight: 500;
+
+        color: #333;
+      }
+
+      .signin-input {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        font-size: 15px;
+        border-radius: 6px;
+        margin-bottom: 15px;
+        transition: 0.2s;
+      }
+
+      .signin-input:focus {
+        outline: none;
+        border-color: #00b37e;
+        box-shadow: 0 0 4px rgba(0, 179, 126, 0.3);
+      }
+
+      /*this is forgot password css*/
+
+      .forgot {
+        float: right;
+        font-size: 15px;
+        color: var(--primary);
+        text-decoration: none;
+      }
+
+      .forgot:hover {
+        text-decoration: underline;
+      }
+
+      .divider {
+        display: flex;
+        align-items: center;
+        text-align: center;
+        color: var(--muted);
+        margin: 15px 0;
+      }
+
+      .divider::before,
+      .divider::after {
+        content: "";
+        flex: 1;
+        border-bottom: 1px solid black;
+      }
+
+      .divider:not(:empty)::before {
+        margin-right: 0.75em;
+      }
+      .divider:not(:empty)::after {
+        margin-left: 0.75em;
+      }
+
+      .oauth-btn {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        padding: 12px;
+        margin-top: 10px;
+        cursor: pointer;
+        transition: all 0.2s ease-in-out;
+
+        background-color: white;
+        color: var(--text, #333);
+        border: 1px solid #ccc;
+        border-radius: 8px;
+
+        font-size: 15px;
+        font-weight: 500;
+        line-height: 1;
+
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+      }
+
+      .oauth-btn:hover {
+        border-color: #aaa;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        background-color: #f9f9f9;
+        transform: translateY(-1px);
+      }
+
+      .oauth-btn:active {
+        transform: translateY(0);
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+        background-color: #f0f0f0;
+      }
+
+      /* This is footer*/
+
+      .footer {
+        margin-top: 20px;
+        font-size: 15px;
+        color: var(--muted);
+      }
+
+      .footer a {
+        color: black;
+        text-decoration: none;
+      }
+
+      .footer a:hover {
+        text-decoration: underline;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="log-in">
+      <img
+        src="{{ url_for('static', filename='images/logo.png') }}"
+        alt="VietConnect Logo"
+        class="logo"
+      />
 
       <h2 style="margin-bottom: 35px; text-align: center">
         Sign in to VietConnect
       </h2>
 
-<body>
-    <div class = "log-in">
-        <img src="{{ url_for('static', filename='images/logo.png') }}" alt="VietConnect Logo" class = "logo">
-
-        <h2 style = "margin-bottom: 35px; text-align: center;">Sign in to VietConnect</h2>
-      
-        <form action = "/auth/signin" method = "POST">
-          <div class = "form-group">
-              <label>Username or email address</label>
-              <input id = "email" name = "email" class = "signin-input" type="email" placeholder="allmyexhatesme@4fun.com" required>
-          </div>
-
-          <div class = "form-group">
-              <label>Password <a href = "forgot-password.html" class = forgot>Forgot password ?</a> </label>
-              <input id = "password" name = "password" class = "signin-input" type = "password" placeholder="Your password" required>
-          </div>
-
-       <button type="submit" class = "signin-btn">Sign in</button>
-    </form>
-
-
-        <div class="divider">or</div>
-        
-        <button class="oauth-btn"><img src="https://www.svgrepo.com/show/475656/google-color.svg" width="18">Continue with Google</button>
-
-        <div class="footer">
-            New to VietConnect? <a href = "{{url_for('auth.signup_page')}}" style = "color : blue;">Create an account</a>
+      <form action="{{ url_for('auth.signin_page') }}" method="POST">
+        <div class="form-group">
+          <label>Username or email address</label>
+          <input
+            id="email"
+            name="email"
+            class="signin-input"
+            type="email"
+            placeholder="allmyexhatesme@4fun.com"
+            required
+          />
         </div>
 
         <div class="form-group">
@@ -77,8 +246,11 @@
       </div>
     </div>
 
-    <script> 
-        src="{{ url_for('auth.static', filename='script/signin.js') }}"
+    <script>
+      const form = document.getElementById("form");
+      form.addEventListener("submit", (e) => {
+        form.submit();
+      });
     </script>
   </body>
 </html>
