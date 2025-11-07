@@ -367,15 +367,24 @@
                   name="phone"
                   type="text"
                   placeholder="+84 9xx xxx xxx"
+                  value="{{ form_data.phone or '' }}"
                 />
               </div>
               <div class="field">
                 <label for="lang">Preferred language</label>
                 <select id="lang" name="lang">
-                  <option value="en">English</option>
-                  <option value="vi">Tiếng Việt</option>
-                  <option value="zh">中文</option>
-                  <option value="ja">日本語</option>
+                  <option value="en" {% if form_data.lang == 'en' %}selected{% endif %}>
+                    English
+                  </option>
+                  <option value="vi" {% if form_data.lang == 'vi' %}selected{% endif %}>
+                    Tiếng Việt
+                  </option>
+                  <option value="zh" {% if form_data.lang == 'zh' %}selected{% endif %}>
+                    中文
+                  </option>
+                  <option value="ja" {% if form_data.lang == 'ja' %}selected{% endif %}>
+                    日本語
+                  </option>
                 </select>
               </div>
             </div>
@@ -422,7 +431,9 @@
               <div class="note" id="pwNote">
                 Use at least 8 characters including a number and a symbol.
               </div>
-              <div class="error" id="err-pw" aria-live="polite"></div>
+              <div class="error" id="err-pw" aria-live="polite">
+                {{ errors.password or '' }}
+              </div>
             </div>
 
             <div class="field">
@@ -434,24 +445,39 @@
                 placeholder="Repeat password"
                 required
               />
-              <div class="error" id="err-confirm" aria-live="polite"></div>
+              <div class="error" id="err-confirm" aria-live="polite">
+                {{ errors.confirm or '' }}
+              </div>
             </div>
 
             <div class="terms">
-              <input id="agree" name="agree" type="checkbox" required />
+              <input id="agree" type="checkbox" />
               <label for="agree" class="muted"
                 >I agree to the <a href="#">Terms of Service</a> and
                 <a href="#">Privacy Policy</a>.</label
               >
             </div>
-            <div class="error" id="err-terms"></div>
+            <div class="error" id="err-terms">
+                {{ errors.terms or '' }}
+            </div>
 
             <button class="btn primary" type="submit">Create account</button>
 
+            <div class="divider" style="margin-top: 8px">OR</div>
+
+            <div class="socials">
+              <a href="{{ url_for('auth.google_login') }}" class="oauth-btn">
+                <img
+                  src="https://www.svgrepo.com/show/475656/google-color.svg"
+                  width="18"
+                />
+                Continue with Google
+              </a>
+            </div>
+
             <div class="note">
-              By creating an account, you consent to receive important service
-              messages. Your personal data is protected and shared only with
-              your consent.
+              By creating an account, you consent to receive important service messages.
+              Your personal data is protected and shared only with your consent.
             </div>
           </form>
         </aside>
