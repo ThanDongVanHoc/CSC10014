@@ -142,15 +142,19 @@ function createConversation(title='Đoạn chat mới') {
     // send chat: post to /chat and store messages
     async function sendChat(message) {
         if (!message.trim()) return;
+        
         addMessageToConversation('user', message);
         appendMessageToUI('user', message);
+
         chatInput.value = '';
+        
         try {
             const resp = await fetch('/chat', {
-            method: 'POST',
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({message})
+              method: 'POST',
+              headers: {'Content-Type': 'application/json'},
+              body: JSON.stringify({message})
             });
+
             const data = await resp.json();
             const reply = data.reply || 'Không có trả lời.';
             addMessageToConversation('bot', reply);
@@ -160,19 +164,20 @@ function createConversation(title='Đoạn chat mới') {
             const errMsg = 'Lỗi liên hệ assistant. Thử lại sau.';
             addMessageToConversation('bot', errMsg);
             appendMessageToUI('bot', errMsg);
-    }
+        }
     }
 
     sendBtn.addEventListener('click', () => {
-    const txt = chatInput.value.trim();
-    if (!txt) return;
-    sendChat(txt);
+      const txt = chatInput.value.trim();
+      if (!txt) return;
+      sendChat(txt);
     });
+
     chatInput.addEventListener('keydown', (e) => {
-    if (e.key === 'Enter') {
-        e.preventDefault();
-        sendBtn.click();
-    }
+      if (e.key === 'Enter') {
+          e.preventDefault();
+          sendBtn.click();
+      }
     });
 
     // init UI
@@ -264,13 +269,15 @@ function createConversation(title='Đoạn chat mới') {
     };
 
     document.querySelectorAll('.transport-btns button').forEach(trans_btn => {
-        trans_btn.addEventListener('click', () => {
+        trans_btn.onclick = () => {
+          flag_pin = false;
+        }
+        trans_btn.addEventListener('click', () => {            
             document.querySelectorAll('.transport-btns button').forEach(btn => btn.classList.remove('active'));
                          
             trans_btn.classList.add('active'); 
             
             currentMode = trans_btn.dataset.travel;
-            flag_pin = false; 
             if (startMarker && endMarker) drawRoute();
         });
     });
@@ -279,6 +286,7 @@ function createConversation(title='Đoạn chat mới') {
         if(flag_pin)
             createPin(e.latlng, "Điểm được chọn");
     });
+
 
     function createPin(latlng, name) {
       const marker = L.marker(latlng, { icon: icons.blue }).addTo(map);
@@ -330,6 +338,11 @@ function createConversation(title='Đoạn chat mới') {
       });
 
       pinBtn.onclick = () =>{
+        const userNote = noteInput.value || "(No note !)"; 
+        isSaved = true; 
+        
+        map.removeLayer(marker);
+
         marker.closePopup(); 
         L.marker(latlng, { icon: icons.blue })
           .addTo(map).bindPopup(`<b>Saved Pin:</b><br>${userNote}`).openPopup();
@@ -367,11 +380,16 @@ function createConversation(title='Đoạn chat mới') {
         const mid = coords[Math.floor(coords.length / 2)];
         L.popup()
           .setLatLng(mid)
-          .setContent(`${currentMode.toUpperCase()}<br>📏 ${km} km<br>⏱️ ${mins} phút`)
+          .setContent(`${currentMode.toUpperCase()}<br>📏 ${km} km<br>⏱️ ${mins} minutes`)
           .openOn(map);
       } catch (err) {
         alert("Lỗi khi tải tuyến đường: " + err);
       }
     }
 
-    
+    window.addEventListener("beforeunload", () => {
+      console.log("Clearing session...");
+      localStorage.clear();
+      sessionStorage.clear(); 
+      navigator.sendBeacon("/chat/clear_session");
+    });
