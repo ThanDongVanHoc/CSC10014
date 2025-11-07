@@ -8,7 +8,6 @@ import os
 import pathlib
 from .auth.mail import init_mail
 
-
 #Factory Pattern
 def create_app(test_config = None):
     app = Flask(__name__)

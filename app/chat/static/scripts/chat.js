@@ -4,17 +4,18 @@
     const STORAGE_KEY = 'vc_conversations_v1';
 
     function uid() {
-    return 'c-' + Date.now().toString(36) + '-' + Math.random().toString(36).slice(2,8);
+        return 'c-' + Date.now().toString(36) + '-' + Math.random().toString(36).slice(2,8);
     }
 
     function loadConversations() {
-    try {
-        const raw = localStorage.getItem(STORAGE_KEY);
-        return raw ? JSON.parse(raw) : [];
-    } catch(e) { return []; }
+        try {
+            const raw = localStorage.getItem(STORAGE_KEY);
+            return raw ? JSON.parse(raw) : [];
+        } catch(e) { return []; }
     }
+
     function saveConversations(list) {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(list));
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(list));
     }
 
     let conversations = loadConversations();
@@ -140,25 +141,25 @@ function createConversation(title='Đoạn chat mới') {
 
     // send chat: post to /chat and store messages
     async function sendChat(message) {
-    if (!message.trim()) return;
-    addMessageToConversation('user', message);
-    appendMessageToUI('user', message);
-    chatInput.value = '';
-    try {
-        const resp = await fetch('/chat', {
-        method: 'POST',
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({message})
-        });
-        const data = await resp.json();
-        const reply = data.reply || 'Không có trả lời.';
-        addMessageToConversation('bot', reply);
-        appendMessageToUI('bot', reply);
-    } catch(err) {
-        console.error(err);
-        const errMsg = 'Lỗi liên hệ assistant. Thử lại sau.';
-        addMessageToConversation('bot', errMsg);
-        appendMessageToUI('bot', errMsg);
+        if (!message.trim()) return;
+        addMessageToConversation('user', message);
+        appendMessageToUI('user', message);
+        chatInput.value = '';
+        try {
+            const resp = await fetch('/chat', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({message})
+            });
+            const data = await resp.json();
+            const reply = data.reply || 'Không có trả lời.';
+            addMessageToConversation('bot', reply);
+            appendMessageToUI('bot', reply);
+        } catch(err) {
+            console.error(err);
+            const errMsg = 'Lỗi liên hệ assistant. Thử lại sau.';
+            addMessageToConversation('bot', errMsg);
+            appendMessageToUI('bot', errMsg);
     }
     }
 
@@ -183,17 +184,29 @@ function createConversation(title='Đoạn chat mới') {
     }
 
 
+    /// Map logic
+
     const map = L.map('map').setView([10.762622, 106.660172], 12);
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom: 20, attribution:'&copy; OSM contributors'}).addTo(map);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom: 19, attribution:'&copy; OSM contributors'}).addTo(map);
     let mainMarker = null;
-    
+
+    const redIcon = new L.Icon({
+        iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-red.png',
+        shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-shadow.png',
+        iconSize: [25, 41],
+        iconAnchor: [12, 41],
+        popupAnchor: [1, -34],
+        shadowSize: [41, 41]
+    });
+
+
     function setMarker(latlng, text) {
         if (mainMarker) 
             map.removeLayer(mainMarker);
 
         mainMarker = L.marker(latlng).addTo(map);
         mainMarker.bindPopup(text || ("Location: " + latlng.toString())).openPopup();
-        map.setView(latlng, 14);
+        map.setView(latlng, 17);
     }
 
     const geocoder = L.Control.geocoder({defaultMarkGeocode:false})
@@ -216,3 +229,149 @@ function createConversation(title='Đoạn chat mới') {
         }, err => alert('Không lấy được vị trí: ' + err.message));
     }
     });
+
+    hideBtn.addEventListener('click', () => {
+        map.invalidateSize();
+    });
+
+    /// More features
+
+    let startMarker = null;
+    let endMarker = null;
+    let routeLayer = null;
+    let currentMode = "driving";
+    let flag_pin = true; 
+
+    const icons = {
+      blue: new L.Icon({
+        iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-blue.png',
+        shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-shadow.png',
+        iconSize: [25, 41], iconAnchor: [12, 41],
+        popupAnchor: [1, -34], shadowSize: [41, 41]
+      }),
+      red: new L.Icon({
+        iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-red.png',
+        shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-shadow.png',
+        iconSize: [25, 41], iconAnchor: [12, 41],
+        popupAnchor: [1, -34], shadowSize: [41, 41]
+      }),
+      green: new L.Icon({
+        iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-green.png',
+        shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-shadow.png',
+        iconSize: [25, 41], iconAnchor: [12, 41],
+        popupAnchor: [1, -34], shadowSize: [41, 41]
+      })
+    };
+
+    document.querySelectorAll('.transport-btns button').forEach(trans_btn => {
+        trans_btn.addEventListener('click', () => {
+            document.querySelectorAll('.transport-btns button').forEach(btn => btn.classList.remove('active'));
+                         
+            trans_btn.classList.add('active'); 
+            
+            currentMode = trans_btn.dataset.travel;
+            flag_pin = false; 
+            if (startMarker && endMarker) drawRoute();
+        });
+    });
+
+    map.on('click', e => {
+        if(flag_pin)
+            createPin(e.latlng, "Điểm được chọn");
+    });
+
+    function createPin(latlng, name) {
+      const marker = L.marker(latlng, { icon: icons.blue }).addTo(map);
+      let isSaved = false; 
+
+      const popupDiv = document.createElement('div');
+      popupDiv.innerHTML = `
+        <b>${name}</b><br>
+        <small>${latlng.lat.toFixed(5)}, ${latlng.lng.toFixed(5)}</small>
+        <input type="text" placeholder="Note ..." class="note-input"><br>
+        <div class="pin-btns">
+          <button style="background:#4CAF50;color:white;">Start</button>
+          <button style="background:#F44336;color:white;">End</button>
+          <button style="background:#777;color:white;">Pin</button>
+        </div>
+      `;
+
+      const [startBtn, endBtn, pinBtn] = popupDiv.querySelectorAll('button');
+      const noteInput = popupDiv.querySelector('.note-input');
+
+      startBtn.onclick = () => {
+        if (startMarker){
+          map.removeLayer(startMarker);
+          L.marker(startMarker.getLatLng(), { icon: icons.blue }).addTo(map);
+        }        
+        startMarker = L.marker(latlng, { icon: icons.green })
+          .addTo(map).bindPopup("🏁 Start").openPopup();
+        map.closePopup();
+        if (endMarker) drawRoute();
+      };
+
+      endBtn.onclick = () => {
+        if (endMarker){
+          map.removeLayer(endMarker);
+          L.marker(endMarker.getLatLng(), { icon: icons.blue }).addTo(map);
+        }
+        
+        endMarker = L.marker(latlng, { icon: icons.red })
+          .addTo(map).bindPopup("🎯 Destination").openPopup();
+        map.closePopup();
+        if (startMarker) drawRoute();
+      };
+
+      marker.on('popupclose', function (e) {
+        if (!isSaved) {
+            map.removeLayer(marker);
+            console.log("Marker tạm thời đã bị xóa.");
+        }
+      });
+
+      pinBtn.onclick = () =>{
+        marker.closePopup(); 
+        L.marker(latlng, { icon: icons.blue })
+          .addTo(map).bindPopup(`<b>Saved Pin:</b><br>${userNote}`).openPopup();
+      };
+
+      marker.bindPopup(popupDiv).openPopup();
+    }
+
+
+    async function drawRoute() {
+      if (!startMarker || !endMarker) return;
+      if (routeLayer) map.removeLayer(routeLayer);
+
+      const s = startMarker.getLatLng();
+      const e = endMarker.getLatLng();
+      const url = `https://router.project-osrm.org/route/v1/${currentMode}/${s.lng},${s.lat};${e.lng},${e.lat}?overview=full&geometries=geojson`;
+
+      try {
+        const res = await fetch(url);
+        const data = await res.json();
+        if (!data.routes?.length) return alert("Không tìm thấy đường đi!");
+
+        const route = data.routes[0];
+        const coords = route.geometry.coordinates.map(c => [c[1], c[0]]);
+        const km = (route.distance / 1000).toFixed(1);
+        let mins = (route.duration / 60).toFixed(0);
+
+        const scale = { driving: 1, cycling: 3.3, walking: 10 };
+        mins = Math.round(mins * (scale[currentMode] || 1));
+
+
+        routeLayer = L.polyline(coords, { color: "#0078ff", weight: 5 }).addTo(map);
+        map.fitBounds(routeLayer.getBounds());
+
+        const mid = coords[Math.floor(coords.length / 2)];
+        L.popup()
+          .setLatLng(mid)
+          .setContent(`${currentMode.toUpperCase()}<br>📏 ${km} km<br>⏱️ ${mins} phút`)
+          .openOn(map);
+      } catch (err) {
+        alert("Lỗi khi tải tuyến đường: " + err);
+      }
+    }
+
+    

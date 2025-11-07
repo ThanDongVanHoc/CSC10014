@@ -4,3 +4,4 @@ from . import chat_bp
 @chat_bp.route('/')
 def chat_page():
     return render_template('chat.html')
+
