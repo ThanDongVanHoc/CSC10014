@@ -1,8 +1,33 @@
-{% extends "layout.html" %}
+{% extends "layout.html" %} {% block css %}
+<link
+  rel="stylesheet"
+  href="{{ url_for('static', filename='css/index.css') }}"
+/>
+{% endblock %} {% block content %}
+<main class="container">
+  <section class="container-section">
+    <div class="introduction">
+      <div
+        style="
+          display: inline-block;
+          padding: 6px 10px;
+          border-radius: 999px;
+          background: rgba(0, 0, 0, 0.04);
+          font-weight: 600;
+        "
+      >
+        Ho Chi Minh City • Multilingual • 24/7
+      </div>
 
-{% block css %}
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
-{% endblock %}
+      <h1>
+        Security, healthcare and administrative assistance for foreign residents
+        in Ho Chi Minh City — powered by AI & people.
+      </h1>
+      <p>
+        VietConnect combines an AI chatbot, multilingual agents and local
+        resources to help foreign residents access medical care, safety services
+        and administrative processes quickly and clearly.
+      </p>
 
 {% block content %}
         <main class = "container">

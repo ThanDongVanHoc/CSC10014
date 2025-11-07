@@ -19,8 +19,6 @@
         justify-content: center;
       }
 
-      /*This Log-in css*/
-
       .log-in {
         width: 350px;
         margin-top: 25px;
@@ -34,8 +32,6 @@
         width: 80px;
         margin-bottom: 5px;
       }
-
-      /*This sgin-in css*/
 
       .signin-btn {
         width: 100%;
@@ -62,9 +58,9 @@
         background-color: #00b37e;
       }
 
-      /* Form format*/
       .form-group {
-        margin-bottom: 15px;
+        /* Giảm margin-bottom để bù trừ cho thẻ lỗi */
+        margin-bottom: 0;
         text-align: left;
       }
 
@@ -72,9 +68,7 @@
         display: block;
         font-size: 15px;
         margin-bottom: 5px;
-
         font-weight: 500;
-
         color: #333;
       }
 
@@ -85,7 +79,7 @@
         border-radius: 8px;
         font-size: 15px;
         border-radius: 6px;
-        margin-bottom: 15px;
+        /* margin-bottom đã được bỏ khỏi đây */
         transition: 0.2s;
       }
 
@@ -95,7 +89,20 @@
         box-shadow: 0 0 4px rgba(0, 179, 126, 0.3);
       }
 
-      /*this is forgot password css*/
+      /* Tên class lỗi được đổi từ .error-message sang .error để đồng bộ */
+      .error {
+        color: #e23a3a; /* Sử dụng màu đỏ từ signup.html */
+        font-size: 13px; /* Sử dụng font size từ signup.html */
+        margin-top: 4px;
+        margin-bottom: 15px; /* Thêm khoảng cách sau lỗi */
+        text-align: left;
+        font-weight: 500;
+      }
+
+      /* Input có lỗi */
+      .signin-input.is-invalid {
+        border-color: #e23a3a; /* Sử dụng màu đỏ từ signup.html */
+      }
 
       .forgot {
         float: right;
@@ -166,8 +173,6 @@
         background-color: #f0f0f0;
       }
 
-      /* This is footer*/
-
       .footer {
         margin-top: 20px;
         font-size: 15px;
@@ -197,32 +202,39 @@
         Sign in to VietConnect
       </h2>
 
-      <form action="{{ url_for('auth.signin_page') }}" method="POST">
+      <form action="{{ url_for('auth.signin_page') }}" method="POST" id="form">
         <div class="form-group">
-          <label>Username or email address</label>
+          <label> Email address </label>
           <input
             id="email"
             name="email"
-            class="signin-input"
+            class="signin-input {% if errors.email %}is-invalid{% endif %}"
             type="email"
             placeholder="allmyexhatesme@4fun.com"
             required
+            value="{{ form_data.email or '' }}"
           />
+          {% if errors.email %}
+          <div class="error">{{ errors.email }}</div>
+          {% endif %}
         </div>
 
         <div class="form-group">
-          <label
-            >Password
+          <label>
+            Password
             <a href="forgot-password.html" class="forgot">Forgot password ?</a>
           </label>
           <input
             id="password"
             name="password"
-            class="signin-input"
+            class="signin-input {% if errors.password %}is-invalid{% endif %}"
             type="password"
             placeholder="Your password"
             required
           />
+          {% if errors.password %}
+          <div class="error">{{ errors.password }}</div>
+          {% endif %}
         </div>
 
         <button type="submit" class="signin-btn">Sign in</button>
@@ -249,7 +261,6 @@
     <script>
       const form = document.getElementById("form");
       form.addEventListener("submit", (e) => {
-        form.submit();
       });
     </script>
   </body>
