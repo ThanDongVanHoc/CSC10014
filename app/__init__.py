@@ -8,14 +8,10 @@ import os
 import pathlib
 from .auth.mail import init_mail
 
-# Xác định thư mục cơ sở (nơi chứa app.py)
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-# Xây dựng đường dẫn tuyệt đối đến thư mục 'static' (BASE_DIR + ../ + static)
-STATIC_FOLDER_PATH = os.path.join(BASE_DIR, '..', 'static')
 
 #Factory Pattern
 def create_app(test_config = None):
-    app = Flask(__name__, instance_relative_config=True, static_folder=STATIC_FOLDER_PATH)
+    app = Flask(__name__)
     app.config.from_pyfile('config.py', silent=True)
     app.config.from_mapping(SECRET_KEY = 'dev') 
     
