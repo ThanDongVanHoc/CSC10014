@@ -59,7 +59,13 @@
 
         <!-- MAP -->
         <aside>
-          <div id="map"></div>
+          <div id="map">
+            <div class="transport-btns">
+                <button data-travel="driving" class="active">Driving</button>
+                <button data-travel="Motorcycling"> Motorcycling</button>
+                <button data-travel="walking"> Walking</button>
+            </div>
+          </div>
         </aside>
     </div>
 {% endblock %}
@@ -69,5 +75,5 @@
 {% block script %}
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
-    <script src="{{ url_for('chat.static', filename='scripts/chat.js') }}"></script>
+    <script type = "module" src="{{ url_for('chat.static', filename='scripts/logic.js') }}"> </script>
 {% endblock %}
