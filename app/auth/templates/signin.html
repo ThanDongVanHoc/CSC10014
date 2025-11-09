@@ -46,7 +46,7 @@
         <div class="form-group">
           <label>
             Password
-            <a href="forgot-password.html" class="forgot">Forgot password ?</a>
+            <a href="{{ url_for('auth.reset_pass') }}" class="forgot">Forgot password ?</a>
           </label>
           <input
             id="password"

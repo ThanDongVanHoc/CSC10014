@@ -1,3 +1,12 @@
+/* static/css/signin.css */
+
+:root {
+  --brand-color: #00b37e;
+  --error-color: #e23a3a;
+  --primary: #00b37e;
+  --muted: #6b7280;
+}
+
 body {
         font-family: "Segoe UI", sans-serif;
         background-color: #f8f9fa;
@@ -124,37 +133,64 @@ body {
         margin-left: 0.75em;
       }
 
-    /*this is forgot password css*/
+.divider:not(:empty)::before {
+  margin-right: 0.75em;
+}
+.divider:not(:empty)::after {
+  margin-left: 0.75em;
+}
 
-    .forgot {
-      float: right;
-      font-size: 15px;
-      color: var(--primary);
-      text-decoration: none;
-    }
+.oauth-btn {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 12px;
+  margin-top: 10px;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  background-color: white;
+  color: var(--text, #333);
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 1;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
 
-    .forgot:hover {
-      text-decoration: underline;
-    }
+.oauth-btn:hover {
+  border-color: #aaa;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  background-color: #f9f9f9;
+  transform: translateY(-1px);
+}
 
-    .divider {
-      display: flex;
-      align-items: center;
-      text-align: center;
-      color: var(--muted);
-      margin: 15px 0;
-    }
+.oauth-btn:active {
+  transform: translateY(0);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  background-color: #f0f0f0;
+}
 
-    .divider::before,
-    .divider::after {
-      content: '';
-      flex: 1;
-      border-bottom: 1px solid black; 
-    }
+.footer {
+  margin-top: 20px;
+  font-size: 15px;
+  color: var(--muted);
+}
 
-        .divider:not(:empty)::before {
-      margin-right: 0.75em;
-    }
+.footer a {
+  color: black;
+  text-decoration: none;
+}
+
+.footer a:hover {
+  text-decoration: underline;
+}
+
+.divider:not(:empty)::before {
+  margin-right: 0.75em;
+}
     .divider:not(:empty)::after {
       margin-left: 0.75em;
     }

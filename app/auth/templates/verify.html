@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Enter Security Code - VietConnect</title>
+
+    <link
+      rel="icon"
+      type="image/png"
+      href="{{ url_for('static', filename='images/logo.png') }}"
+    />
+
+    <link
+      rel="stylesheet"
+      href="{{ url_for('auth.static', filename='css/auth-card.css') }}"
+    />
+
+    <style>
+      .actions {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 20px;
+        padding-top: 15px;
+        border-top: 1px solid #dadde1;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="verification-card">
+      <img
+        src="{{ url_for('static', filename='images/logo.png') }}"
+        alt="VietConnect Logo"
+        class="logo"
+      />
+      <h2>Enter Security Code</h2>
+      <p class="instruction">
+        Please check your mail for a text message with your code.<br />
+        Your code is 6 digits long.
+      </p>
+      <form action="{{ action_url }}" method="POST">
+        <div class="form-content">
+          <div class="phone-info">
+            We sent a code to:<br />
+            <strong> {{ email }} </strong>
+          </div>
+
+          <div class="input-field">
+            <label for="code" class="visually-hidden">Enter code</label>
+            <input
+              type="text"
+              id="code"
+              name="code"
+              placeholder="Enter code"
+              maxlength="6"
+              required
+              class="{% if errors.code %}is-invalid{% endif %}"
+            />
+            {% if errors.code %}
+            <div class="error">{{ errors.code }}</div>
+            {% endif %}
+          </div>
+        </div>
+
+        <div class="actions">
+          <a href="{{ resend_url }}" class="link-text"
+            >Didn't get a code?</a
+          >
+          <div class="buttons">
+            <a
+              href="{{ previous_url }}"
+              class="btn btn-cancel"
+              style="text-decoration: none; line-height: 36px"
+              >Cancel</a
+            >
+            <button type="submit" class="btn btn-primary">Continue</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </body>
+</html>

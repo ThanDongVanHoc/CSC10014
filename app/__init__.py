@@ -10,7 +10,7 @@ from .auth.mail import init_mail
 
 #Factory Pattern
 def create_app(test_config = None):
-    app = Flask(__name__)
+    app = Flask(__name__, instance_relative_config=True)
     app.config.from_pyfile('config.py', silent=True)
     app.config.from_mapping(SECRET_KEY = 'dev') 
     

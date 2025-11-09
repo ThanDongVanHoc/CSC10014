@@ -23,9 +23,9 @@ def send_verification_mail(recipient_email):
     <html>
         <body>
             <p>Hello,</p>
-            <p>This is your account registration verification code:</p>
+            <p>This is your account verification code:</p>
             <h2 style="color: #007bff; background-color: #f0f0f0; padding: 10px; border-radius: 5px; text-align: center;">{code}</h2>
-            <p>Please enter this code on the registration page. This code will expire in 5 minutes.</p>
+            <p>Please enter this code on the page. This code will expire in 5 minutes.</p>
             <p>Sincerely,</p>
             <p>Support Team</p>
         </body>
@@ -33,7 +33,7 @@ def send_verification_mail(recipient_email):
     """
 
     msg = Message(
-        subject="Your Registration Verification Code",
+        subject="Your Verification Code",
         recipients=[recipient_email],
         body=f"Your verification code is: {code}\n\nThis code will expire in 5 minutes.",
         html=html_body 
@@ -47,5 +47,4 @@ def send_verification_mail(recipient_email):
         }
         return True
     except Exception as e:
-        print ("loi")
         return False
