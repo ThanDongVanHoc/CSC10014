@@ -124,7 +124,42 @@ body {
         margin-left: 0.75em;
       }
 
-      .oauth-btn {
+    /*this is forgot password css*/
+
+    .forgot {
+      float: right;
+      font-size: 15px;
+      color: var(--primary);
+      text-decoration: none;
+    }
+
+    .forgot:hover {
+      text-decoration: underline;
+    }
+
+    .divider {
+      display: flex;
+      align-items: center;
+      text-align: center;
+      color: var(--muted);
+      margin: 15px 0;
+    }
+
+    .divider::before,
+    .divider::after {
+      content: '';
+      flex: 1;
+      border-bottom: 1px solid black; 
+    }
+
+        .divider:not(:empty)::before {
+      margin-right: 0.75em;
+    }
+    .divider:not(:empty)::after {
+      margin-left: 0.75em;
+    }
+z
+    .oauth-btn {
         width: 100%;
         display: flex;
         align-items: center;
