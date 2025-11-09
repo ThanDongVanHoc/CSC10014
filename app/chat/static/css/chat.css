@@ -35,7 +35,7 @@
 }
 .sidebar .top {
     padding:12px;
-    display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #eee
+    display:flex;align-items:center;justify-content:center;border-bottom:1px solid #eee
 }
 .sidebar h3{margin:0;font-size:14px}
 .sidebar .controls{display:flex;gap:8px}
@@ -162,4 +162,78 @@ box-shadow: 0 2px 6px rgba(0,0,0,0.1);
     border-radius: 4px;
     cursor: pointer;
     padding: 3px 6px;
+}
+
+
+.chat-item {
+    position: relative;
+    display: flex;
+    flex: 1; 
+    align-items: center;
+    justify-content: space-between;
+    transition: background-color 0.2s;
+}
+
+.chat-item:hover {
+    background-color: #f9f9f9;
+}
+
+.chat-name {
+    font-size: 15px;
+    font-weight: 500;
+    color: #333;
+}
+
+.chat-options {
+    position: relative;
+}
+
+.dots {
+    display: none;
+    cursor: pointer;
+    font-size: 20px;
+    line-height: 0;
+    padding: 4px;
+    user-select: none;
+}
+
+.chat-item:hover .dots,
+.dots-active {
+  display: inline-block;
+}
+
+
+
+.dropdown-menu {
+    display: none;
+    background-color: white;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    min-width: 140px;
+    z-index: 9999;
+}
+
+
+.dropdown-menu button {
+    display: block;
+    width: 100%;
+    padding: 8px 12px;
+    border: none;
+    background: white;
+    text-align: left;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.dropdown-menu button:hover {
+    background-color: #f0f0f0;
+}
+
+.dropdown-menu button:active {
+    background-color: #f0f0f0;
+}
+
+.chat-item.active {
+  background-color: #e6f7ff; /* màu highlight khi active */
 }

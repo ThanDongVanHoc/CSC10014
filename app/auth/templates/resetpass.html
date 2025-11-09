@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Reset Password - VietConnect</title>
+
+    <link
+      rel="icon"
+      type="image/png"
+      href="{{ url_for('static', filename='images/logo.png') }}"
+    />
+
+    <link
+      rel="stylesheet"
+      href="{{ url_for('auth.static', filename='css/auth-card.css') }}"
+    />
+
+    <style>
+      /* CSS cho layout của phần .actions */
+      .actions {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-top: 20px;
+        padding-top: 15px;
+        border-top: 1px solid #dadde1;
+        gap: 12px;
+      }
+
+      /* CSS cho 2 nút Cancel/Update chiếm 50% */
+      .buttons {
+        width: 100%;
+      }
+      .btn {
+        flex-grow: 1;
+        width: 50%;
+      }
+
+      /* CSS cho nút Show/Hide (vì trang verify không có) */
+      #togglePw {
+        position: absolute;
+        right: 10px;
+        top: 50%;
+        transform: translateY(-50%);
+        border: none;
+        background: transparent;
+        cursor: pointer;
+        color: var(--light-text);
+        font-size: 14px;
+        padding: 4px;
+      }
+
+      /* CSS cho phần ghi chú mật khẩu (vì trang verify không có) */
+      #pwNote {
+        font-size: 13px;
+        color: var(--light-text);
+        text-align: left;
+        margin-top: 4px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="verification-card">
+      <img
+        src="{{ url_for('static', filename='images/logo.png') }}"
+        alt="VietConnect Logo"
+        class="logo"
+      />
+
+      <h2>Reset Your Password</h2>
+
+      <p class="instruction">
+        Enter your email address and choose a new, strong password.
+      </p>
+
+      <form id="resetForm" action="{{ url_for('auth.reset_pass') }}" method="POST" novalidate>
+        <div class="form-content">
+          <div class="phone-info" style="margin-bottom: 4px">Email address</div>
+          <div class="input-field">
+            <label for="email" class="visually-hidden">Email</label>
+            <input
+              type="email"
+              id="email"
+              name="email"
+              placeholder="you@example.com"
+              required
+              value="{{ form_data.email or '' }}"
+            />
+          </div>
+          <div class="error" id="err-email" aria-live="polite">
+            {{ errors.email or '' }}
+          </div>
+
+          <div class="phone-info" style="margin-bottom: 4px; margin-top: 10px">
+            New Password
+          </div>
+          <div class="input-field" style="position: relative">
+            <label for="password" class="visually-hidden">New Password</label>
+            <input
+              type="password"
+              id="password"
+              name="password"
+              placeholder="Create a new password"
+              required
+            />
+            <button
+              type="button"
+              id="togglePw"
+              title="Show / Hide password"
+              style="
+                position: absolute;
+                right: 10px;
+                top: 50%;
+                transform: translateY(-50%);
+                border: none;
+                background: transparent;
+                cursor: pointer;
+                color: var(--light-text);
+                font-size: 14px;
+                padding: 4px;
+              "
+            >
+              Show
+            </button>
+          </div>
+          <div class="note" id="pwNote">
+            Use at least 8 characters including a number and a symbol.
+          </div>
+          <div class="error" id="err-pw" aria-live="polite">
+            {{ errors.password or '' }}
+          </div>
+
+          <div class="phone-info" style="margin-bottom: 4px; margin-top: 10px">
+            Confirm New Password
+          </div>
+          <div class="input-field">
+            <label for="confirm" class="visually-hidden"
+              >Confirm Password</label
+            >
+            <input
+              type="password"
+              id="confirm"
+              name="confirm"
+              placeholder="Repeat new password"
+              required
+            />
+          </div>
+          <div class="error" id="err-confirm" aria-live="polite">
+            {{ errors.confirm or '' }}
+          </div>
+        </div>
+          <div class="buttons">
+            <a
+              href="{{ url_for('auth.signin_page') }}"
+              class="btn btn-cancel"
+              style="text-decoration: none; line-height: 36px"
+              >Cancel</a
+            >
+            <button type="submit" class="btn btn-primary">Continue</button>
+          </div>
+        </div>
+      </form>
+    </div>
+
+    <script src="{{ url_for('auth.static', filename='scripts/common.js') }}"></script>
+    <script src="{{ url_for('auth.static', filename='scripts/resetpass.js') }}"></script>
+  </body>
+</html>
