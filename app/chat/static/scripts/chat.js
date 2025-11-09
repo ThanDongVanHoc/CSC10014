@@ -4,8 +4,9 @@ const STORAGE_KEY = 'con_cho_cao_bang_cai_ghe';
 let conversations = [];
 let selectedId = null;
 
-let convoListEl, searchInput, btnNew, btnDeleteSelected, convTitle;
+let convoListEl, searchInput, btnNew, convTitle;
 let chatMessages, chatInput, sendBtn, hideBtn, showBtn, app;
+
 
 function uid() {
     return 'c-' + Date.now().toString(36) + '-' + Math.random().toString(36).slice(2,8);
@@ -64,33 +65,91 @@ function selectConversation(id){
     loadSelectedConversation();
 }
 
-function renderConversations(filter = ''){
+function renderConversations(filter = '') {
     convoListEl.innerHTML = ''; 
     const f = filter.trim().toLowerCase(); 
 
     conversations.forEach(c => {
         const title = c.title || (c.messages[0] ? c.messages[0].text.slice(0,40) : 'New chat');
         
-        if (f && !title.toLowerCase().includes(f) && !c.id.includes(f)) 
-                return;
+        if (f && !title.toLowerCase().includes(f) && !c.id.includes(f)) return;
 
         const doc = document.createElement('div');
         doc.className = 'convo-item' + (c.id === selectedId ? ' active' : '');
         doc.dataset.id = c.id;
-        doc.innerHTML = `<div style="flex:1"><div class="convo-title">${title}</div><div class="convo-sub">${new Date(c.updated_at).toLocaleString()}</div></div>`;
-        
-        doc.addEventListener('click', () => {
-            selectConversation(c.id);
-        });
+        doc.innerHTML = `
+            <div class="chat-item">
+                <div>
+                    <div class="convo-title">${title}</div>
+                    <div class="convo-sub">${new Date(c.updated_at).toLocaleString()}</div>
+                </div>
+                <div class="chat-options">
+                    <span class="dots">⋯</span>
+                </div>
+            </div>
+        `;
 
         convoListEl.appendChild(doc);
+
+        const dots = doc.querySelector('.dots');
+
+        const dropdownMenu = document.createElement('div');
+        dropdownMenu.className = 'dropdown-menu';
+        dropdownMenu.innerHTML = `
+            <button class="rename">📝 Rename</button>
+            <button class="delete">🗑️ Delete</button>
+        `;
+
+        document.body.appendChild(dropdownMenu);
+
+        dots.addEventListener('click', e => {
+            e.stopPropagation();
+            
+            document.querySelectorAll(".dots").forEach(d => d.classList.remove("dots-active")); 
+            dots.classList.add("dots-active");
+
+            document.querySelectorAll(".dropdown-menu").forEach(m => m.style.display = 'none');
+
+            const rect = dots.getBoundingClientRect();
+            dropdownMenu.style.display = 'block';
+            dropdownMenu.style.position = 'fixed';
+            dropdownMenu.style.top = `${rect.bottom + 4}px`;
+            dropdownMenu.style.left = `${rect.right - dropdownMenu.offsetWidth}px`;
+
+            const btnRename = dropdownMenu.querySelector(".rename");
+            const btnDelete = dropdownMenu.querySelector(".delete");
+
+            btnRename.onclick = () => {
+                const newName = prompt("Enter new name:", c.title);
+                if (newName && newName.trim() !== "") {
+                    c.title = newName.trim();
+                    saveConversations(conversations);
+                    renderConversations(searchInput.value);
+                }
+                dropdownMenu.style.display = "none";
+            };
+
+            btnDelete.onclick = () => {
+                if (confirm("Do you want to delete this chat ?")) {
+                    deleteConversation(c.id);
+                    dropdownMenu.style.display = "none";
+                }
+            };
+        });
+
+        document.addEventListener('click', e => {
+            if (!e.target.closest('.dots') && !e.target.closest('.dropdown-menu')) {
+                dropdownMenu.style.display = 'none';
+                document.querySelectorAll(".dots").forEach(d => d.classList.remove("dots-active"));
+            }
+        });
+
+        doc.addEventListener('click', () => selectConversation(c.id));
     });
 
-    if (!selectedId && conversations.length) {
-        selectedId = conversations[0].id;
-    }
-
+    if (!selectedId && conversations.length) selectedId = conversations[0].id;
 }
+
 
 function addMessageToConversation(role, text){
     if(!selectedId){
@@ -162,7 +221,6 @@ export function initChat(){
     convoListEl = document.getElementById('convoList');
     searchInput = document.getElementById('searchInput');
     btnNew = document.getElementById('btnNew');
-    btnDeleteSelected = document.getElementById('btnDeleteSelected');
     convTitle = document.getElementById('convTitle');
     chatMessages = document.getElementById('chatMessages');
     chatInput = document.getElementById('chatInput');
@@ -176,12 +234,6 @@ export function initChat(){
 
     btnNew.addEventListener('click', () => createConversation('New chat'));
     
-    btnDeleteSelected.addEventListener('click', () => { 
-        if (!selectedId) return alert('Have not chosen any chat');
-        if (!confirm('Do you want to delete this chat ?')) return;
-        deleteConversation(selectedId);
-    });
-
     searchInput.addEventListener('input', (e) => renderConversations(e.target.value));
     
     hideBtn.addEventListener('click', () => { 
@@ -206,5 +258,7 @@ export function initChat(){
           sendBtn.click();
       }
     });
+
+    
 }
 
