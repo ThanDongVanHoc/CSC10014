@@ -2,9 +2,11 @@
 
 {% block css %}
     <link rel="stylesheet" href="{{ url_for('chat.static', filename='css/chat.css') }}">
+    <link rel="stylesheet" href="{{ url_for('chat.static', filename='css/poi.css') }}">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <link rel="stylesheet" href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
 {% endblock %}
 
 {% block content %}
@@ -59,7 +61,13 @@
 
         <!-- MAP -->
         <aside>
-          <div id="map"></div>
+          <div id="map">
+            <div class="transport-btns">
+                <button data-travel="driving" class="active">Driving</button>
+                <button data-travel="Motorcycling"> Motorcycling</button>
+                <button data-travel="walking"> Walking</button>
+            </div>
+          </div>
         </aside>
     </div>
 {% endblock %}
@@ -69,5 +77,5 @@
 {% block script %}
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
-    <script src="{{ url_for('chat.static', filename='scripts/chat.js') }}"></script>
+    <script type = "module" src="{{ url_for('chat.static', filename='scripts/logic.js') }}"> </script>
 {% endblock %}

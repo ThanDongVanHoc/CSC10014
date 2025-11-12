@@ -95,6 +95,7 @@
           <div class="phone-info" style="margin-bottom: 4px; margin-top: 10px">
             New Password
           </div>
+
           <div class="input-field" style="position: relative">
             <label for="password" class="visually-hidden">New Password</label>
             <input
@@ -108,25 +109,25 @@
               type="button"
               id="togglePw"
               title="Show / Hide password"
-              style="
-                position: absolute;
-                right: 10px;
-                top: 50%;
-                transform: translateY(-50%);
-                border: none;
-                background: transparent;
-                cursor: pointer;
-                color: var(--light-text);
-                font-size: 14px;
-                padding: 4px;
-              "
             >
               Show
             </button>
           </div>
-          <div class="note" id="pwNote">
+
+          <div class="pw-meter" aria-hidden="true" style="margin-top: 8px">
+            <span
+              id="pwBar"
+              style="
+                background: linear-gradient(90deg, var(--brand), var(--brand-600));
+                width: 0%;
+              "
+            ></span>
+          </div>
+
+          <div class="note" id="pwNote" style="margin-top: 8px">
             Use at least 8 characters including a number and a symbol.
           </div>
+
           <div class="error" id="err-pw" aria-live="polite">
             {{ errors.password or '' }}
           </div>

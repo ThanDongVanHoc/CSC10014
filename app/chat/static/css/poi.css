@@ -1,0 +1,123 @@
+.poi-filter-container {
+  background: transparent;
+  padding: 8px;
+  overflow-x: auto;
+  white-space: nowrap;
+
+  position: absolute;
+  top: -35px;
+  width: 90vw;
+  max-width: 400px;
+  left: 50%;
+  transform: translateX(-60%);
+  cursor: grab;
+
+  /* === PHẦN 1: ẨN THANH CUỘN === */
+  /* 1. Cho Firefox */
+  scrollbar-width: none;
+  /* 2. Cho IE và Edge (cũ) */
+  -ms-overflow-style: none;
+
+  font-size: 0;
+}
+
+/* 3. Cho Chrome, Safari, Opera */
+.poi-filter-container::-webkit-scrollbar {
+  display: none; /* Ẩn thanh cuộn */
+}
+
+.poi-filter-container:active {
+  /* Đổi thành 'grabbing' khi đang nhấn giữ chuột */
+  cursor: grabbing;
+}
+
+/* === PHẦN 2: STYLE CÁC NÚT FILTER === */
+
+.poi-filter-btn {
+  display: inline-block;
+  padding: 8px 8px;
+  margin-right: 8px;
+  border: none;
+  border-radius: 20px;
+  background-color: #ffffff;
+  color: #333;
+  cursor: pointer;
+  font-size: 11px; /* Giữ nguyên font-size của bạn */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+  vertical-align: middle;
+  font-size: 11px;
+}
+
+.poi-filter-btn:hover {
+  background-color: #f5f5f5;
+}
+
+.poi-filter-btn.active {
+  background-color: #dbeaff;
+  color: #0056b3;
+}
+
+.poi-filter-btn i {
+  margin-right: 5px;
+  font-size: 14px;
+  vertical-align: middle;
+}
+
+/* === PHẦN 3: STYLE 2 NÚT < > MỚI === */
+
+/* Nút TRÁI (<) */
+.poi-prev-btn {
+  display: inline-block;
+  position: sticky; /* Dính vào lề */
+  left: -9px; /* Hơi lùi ra để che bóng */
+  z-index: 10; /* Nằm trên các nút filter khác */
+
+  padding: 8px;
+  margin-right: 8px;
+  border-radius: 50%;
+  border: none;
+  background-color: #ffffff;
+  color: #333;
+  cursor: pointer;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  vertical-align: middle;
+
+  /* Ẩn nút này đi lúc đầu */
+  display: none;
+}
+
+/* Nút PHẢI (>) */
+.poi-next-btn {
+  display: inline-block;
+  position: sticky; /* Dính vào lề */
+  right: -9px; /* Hơi lùi ra để che bóng */
+  z-index: 10; /* Nằm trên các nút filter khác */
+
+  padding: 8px;
+  margin-left: 8px;
+  border-radius: 50%;
+  border: none;
+  background-color: #ffffff;
+  color: #333;
+  cursor: pointer;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  vertical-align: middle;
+}
+
+/* Hover chung cho 2 nút < > */
+.poi-prev-btn:hover,
+.poi-next-btn:hover {
+  background-color: #f5f5f5;
+}
+
+/* Icon cho 2 nút < > */
+.poi-prev-btn i,
+.poi-next-btn i {
+  vertical-align: middle;
+  font-size: 13px;
+}
+
+.leaflet-top.leaflet-left {
+  width: 100%;
+  left: 0;
+}

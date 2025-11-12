@@ -20,3 +20,20 @@ class User(db.Model):
         Index('ix_user_email', 'email'),
         Index('ix_user_google_sub', 'google_sub'),
     )
+
+class Place(db.Model):
+    id = db.mapped_column(db.Integer, primary_key=True)
+    name = db.mapped_column(db.String(100), nullable=False)
+    location = db.mapped_column(db.String(150), nullable=False)
+    lat = db.mapped_column(db.Float, nullable=True)
+    lng = db.mapped_column(db.Float, nullable=True)
+    original_keyword = db.mapped_column(db.String(100), nullable=False)
+    query_kw = db.mapped_column(db.String(100), nullable=False) 
+    
+    __table_args__=(
+        Index('ix_place_lat_lng', 'lat', 'lng'),
+        Index('ix_query_kw', 'query_kw')
+    )
+    def to_dict(self):
+        return {c.name: getattr(self, c.name) for c in self.__table__.columns}
+

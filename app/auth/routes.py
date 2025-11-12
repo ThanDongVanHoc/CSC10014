@@ -24,7 +24,7 @@ from .utils import (
     create_google_user,
     create_local_user,
     get_session_data,
-    clear_signup_signin_session
+    clear_auth_session
 )
 
 load_dotenv()
@@ -41,12 +41,12 @@ flow = Flow.from_client_secrets_file(
 )
 
 @auth_bp.route('/googlelogin')
+@clear_auth_session
 def google_login():
     if "user_id" in session:
         return redirect(url_for('home_page'))
     authorization_url, state = flow.authorization_url()
     session["state"] = state
-    clear_signup_signin_session()
     return redirect(authorization_url)
 
 @auth_bp.route('/callback')
@@ -140,11 +140,11 @@ def signupforgoogle():
         return render_template('signupforgoogle.html', errors={}, form_data={}, signup_data=signup_data)
 
 @auth_bp.route('/signin', methods=['GET', 'POST'])
+@clear_auth_session
 def signin_page():
     if "user_id" in session:
         return redirect(url_for('home_page'))
     
-    clear_signup_signin_session()
     errors = {}
     form_data = {}
 
@@ -169,11 +169,11 @@ def signin_page():
         return render_template('signin.html', errors=errors, form_data=form_data)
 
 @auth_bp.route('/signup', methods=['GET', 'POST'])
+@clear_auth_session
 def signup_page():
     if "user_id" in session:
         return redirect(url_for('home_page'))
     
-    clear_signup_signin_session()
     errors = {} 
 
     if request.method == 'POST':
@@ -247,6 +247,7 @@ def handle_verify_signup():
     return render_template('verify.html', action_url=url_for('.verify_signup'), resend_url=url_for('.resendcode_verify'), previous_url=url_for('.signup_page'), email=email, errors=errors)
 
 @auth_bp.route('/verify_signup', methods = ['POST'])
+@clear_auth_session
 @signup_info_required 
 def verify_signup():
     signup_info = session["signup_info"]
@@ -271,8 +272,6 @@ def verify_signup():
 
     # Nếu không lỗi -> Tạo user
     new_user = create_local_user(signup_info)
-    
-    clear_signup_signin_session()
 
     login_user_session(new_user)
     
@@ -301,11 +300,11 @@ def resendcode_verify():
     return redirect(url_for('.handle_verify_signup'))
 
 @auth_bp.route('/reset_pass', methods = ['GET', 'POST'])
+@clear_auth_session
 def reset_pass():
     if "user_id" in session:
         return redirect(url_for('home_page'))
-    
-    clear_signup_signin_session()
+
     errors = {}
     form_data = {}
 
@@ -363,6 +362,7 @@ def handle_reset_pass():
 
 @auth_bp.route('/verify_reset_pass', methods=['POST']) 
 @reset_pass_info_required 
+@clear_auth_session
 def verify_reset_pass():
     reset_pass_info = session["reset_pass_info"]
     email = reset_pass_info["email"]
@@ -387,8 +387,6 @@ def verify_reset_pass():
     if user:
         user.password_hash = reset_pass_info["new_password_hash"]
         db.session.commit()
-        
-    clear_signup_signin_session()
     
     flash("You have changed password successfully", "success")
     return redirect(url_for('.signin_page'))

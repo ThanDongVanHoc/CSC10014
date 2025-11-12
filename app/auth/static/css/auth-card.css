@@ -5,6 +5,16 @@
   --error-color: #e23a3a;
 }
 
+/* Ẩn biểu tượng 'con mắt' (reveal) mặc định của Edge */
+input[type="password"]::-ms-reveal {
+  display: none;
+}
+
+/* Ẩn luôn nút 'x' (clear) mặc định (nếu có) */
+input[type="password"]::-ms-clear {
+  display: none;
+}
+
 body {
   font-family: "Segoe UI", sans-serif;
   background-color: #f8f9fa;
@@ -146,4 +156,17 @@ body {
   background-color: #009966;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   transform: translateY(-1px);
+}
+
+.pw-meter {
+  height: 8px;
+  border-radius: 999px;
+  background: rgba(11, 18, 32, 0.06);
+  overflow: hidden;
+}
+.pw-meter > span {
+  display: block;
+  height: 100%;
+  width: 0%;
+  transition: width 220ms ease;
 }
