@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inference Service | Location Recommendation</title>
+    <style>
+        /* CSS Reset & Base */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            line-height: 1.6;
+            background-color: #f8f9fa; /* Nền xám rất nhạt */
+            color: #343a40; /* Màu chữ chính (xám đậm) */
+            display: flex;
+            justify-content: center;
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        /* Container Chính */
+        .container {
+            max-width: 700px;
+            width: 100%;
+            background: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            overflow: hidden;
+        }
+
+        /* Header */
+        header {
+            padding: 20px 30px;
+            background-color: #2c3e50; /* Màu xanh navy đậm */
+            color: #ffffff;
+            border-bottom: 4px solid #3498db; /* Viền xanh accent */
+        }
+        header h1 {
+            font-size: 1.8rem;
+            margin: 0;
+        }
+        header p {
+            font-size: 0.95rem;
+            color: #bdc3c7; /* Màu xám nhạt cho text phụ */
+            margin-top: 5px;
+        }
+
+        /* Form & Main Content */
+        main {
+            padding: 30px;
+        }
+        .form-group {
+            margin-bottom: 18px;
+        }
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #495057;
+        }
+        .form-group input[type="text"],
+        .form-group input[type="number"] {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ced4da; /* Viền xám nhạt */
+            border-radius: 4px;
+            font-size: 16px;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+        .form-group input[type="text"]:focus,
+        .form-group input[type="number"]:focus {
+            border-color: #3498db; /* Màu accent khi focus */
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.15);
+            outline: none;
+        }
+
+        /* Nút Bấm */
+        button {
+            background-color: #3498db; /* Màu accent xanh */
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            width: 100%;
+            font-weight: 600;
+            transition: background-color 0.2s;
+        }
+        button:hover {
+            background-color: #2980b9; /* Màu đậm hơn khi hover */
+        }
+        button:disabled {
+            background-color: #bdc3c7; /* Màu xám khi disabled */
+            cursor: not-allowed;
+        }
+
+        /* Loader */
+        .loader {
+            display: none;
+            margin: 20px auto 0;
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #3498db; /* Màu accent */
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+        /* Vùng Kết Quả */
+        .results-section {
+            margin-top: 30px;
+            border-top: 1px solid #e9ecef; /* Đường kẻ phân cách */
+            padding-top: 25px;
+        }
+        .results-section h2 {
+            font-size: 1.4rem;
+            color: #2c3e50;
+            margin-bottom: 15px;
+        }
+        pre {
+            background-color: #2c3e50; /* Nền tối cho code */
+            color: #f8f9fa; /* Chữ trắng */
+            padding: 20px;
+            border-radius: 5px;
+            overflow-x: auto;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace;
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+        .error {
+            color: #e74c3c; /* Màu đỏ cho lỗi */
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <header>
+            <h1>Inference Service</h1>
+            <p>Hệ thống gợi ý địa điểm (Location Recommendation)</p>
+        </header>
+
+        <main>
+            <form id="test-form">
+                <div class="form-group">
+                    <label for="query">Query (Yêu cầu)</label>
+                    <input type="text" id="query" value="đĂNG KÍ TẠM TRÚ CHO NGƯỜI INDONESIA Ở TPHCM" required>
+                </div>
+                <div class="form-group">
+                    <label for="lat">Latitude (Vĩ độ)</label>
+                    <input type="number" id="lat" value="10.7803" step="any" required>
+                </div>
+                <div class="form-group">
+                    <label for="lng">Longitude (Kinh độ)</label>
+                    <input type="number" id="lng" value="106.6925" step="any" required>
+                </div>
+                
+                <button type="submit" id="submit-btn">Run Inference</button>
+                <div class="loader" id="loader"></div>
+            </form>
+
+            <section class="results-section">
+                <h2>API Response (JSON)</h2>
+                <pre id="results"></pre>
+            </section>
+        </main>
+    </div>
+
+    <script>
+        // JavaScript không thay đổi, chỉ cần copy/paste lại
+        const form = document.getElementById('test-form');
+        const submitBtn = document.getElementById('submit-btn');
+        const loader = document.getElementById('loader');
+        const resultsEl = document.getElementById('results');
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const data = {
+                query: document.getElementById('query').value,
+                lat: parseFloat(document.getElementById('lat').value),
+                lng: parseFloat(document.getElementById('lng').value)
+            };
+
+            submitBtn.disabled = true;
+            loader.style.display = 'block';
+            resultsEl.textContent = 'Đang xử lý, vui lòng đợi (có thể mất 10-30 giây)...';
+            resultsEl.classList.remove('error');
+
+            try {
+                const response = await fetch('/recommend', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+
+                const resultJson = await response.json();
+
+                if (!response.ok) {
+                    throw new Error(resultJson.detail || 'Lỗi không xác định từ server.');
+                }
+                
+                resultsEl.textContent = JSON.stringify(resultJson, null, 2);
+
+            } catch (error) {
+                resultsEl.textContent = `LỖI: ${error.message}`;
+                resultsEl.classList.add('error');
+            } finally {
+                submitBtn.disabled = false;
+                loader.style.display = 'none';
+            }
+        });
+    </script>
+
+</body>
+</html>

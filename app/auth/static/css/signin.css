@@ -6,8 +6,6 @@ body {
   justify-content: center;
 }
 
-/*This Log-in css*/
-
 .log-in {
   width: 350px;
   margin-top: 25px;
@@ -21,8 +19,6 @@ body {
   width: 80px;
   margin-bottom: 5px;
 }
-
-/*This sgin-in css*/
 
 .signin-btn {
   width: 100%;
@@ -49,9 +45,9 @@ body {
   background-color: #00b37e;
 }
 
-/* Form format*/
 .form-group {
-  margin-bottom: 15px;
+  /* Giảm margin-bottom để bù trừ cho thẻ lỗi */
+  margin-bottom: 0;
   text-align: left;
 }
 
@@ -59,9 +55,7 @@ label {
   display: block;
   font-size: 15px;
   margin-bottom: 5px;
-
   font-weight: 500;
-
   color: #333;
 }
 
@@ -72,7 +66,7 @@ label {
   border-radius: 8px;
   font-size: 15px;
   border-radius: 6px;
-  margin-bottom: 15px;
+  /* margin-bottom đã được bỏ khỏi đây */
   transition: 0.2s;
 }
 
@@ -82,7 +76,20 @@ label {
   box-shadow: 0 0 4px rgba(0, 179, 126, 0.3);
 }
 
-/*this is forgot password css*/
+/* Tên class lỗi được đổi từ .error-message sang .error để đồng bộ */
+.error {
+  color: #e23a3a; /* Sử dụng màu đỏ từ signup.html */
+  font-size: 13px; /* Sử dụng font size từ signup.html */
+  margin-top: 4px;
+  margin-bottom: 15px; /* Thêm khoảng cách sau lỗi */
+  text-align: left;
+  font-weight: 500;
+}
+
+/* Input có lỗi */
+.signin-input.is-invalid {
+  border-color: #e23a3a; /* Sử dụng màu đỏ từ signup.html */
+}
 
 .forgot {
   float: right;
@@ -108,6 +115,13 @@ label {
   content: "";
   flex: 1;
   border-bottom: 1px solid black;
+}
+
+.divider:not(:empty)::before {
+  margin-right: 0.75em;
+}
+.divider:not(:empty)::after {
+  margin-left: 0.75em;
 }
 
 .divider:not(:empty)::before {
@@ -153,6 +167,63 @@ z .oauth-btn {
 }
 
 /* This is footer*/
+
+.footer {
+  margin-top: 20px;
+  font-size: 15px;
+  color: var(--muted);
+}
+
+.footer a {
+  color: black;
+  text-decoration: none;
+}
+
+.footer a:hover {
+  text-decoration: underline;
+}
+
+.divider:not(:empty)::before {
+  margin-right: 0.75em;
+}
+.divider:not(:empty)::after {
+  margin-left: 0.75em;
+}
+z .oauth-btn {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 12px;
+  margin-top: 10px;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+
+  background-color: white;
+  color: var(--text, #333);
+  border: 1px solid #ccc;
+  border-radius: 8px;
+
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 1;
+
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.oauth-btn:hover {
+  border-color: #aaa;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  background-color: #f9f9f9;
+  transform: translateY(-1px);
+}
+
+.oauth-btn:active {
+  transform: translateY(0);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  background-color: #f0f0f0;
+}
 
 .footer {
   margin-top: 20px;
