@@ -352,3 +352,131 @@
 .chat-item.active {
   background-color: #e6f7ff; /* màu highlight khi active */
 }
+
+/* === Location cards (modern, responsive) === */
+.locations-container {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 12px;
+}
+
+.location-status {
+    margin: 0 0 6px 0;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--muted);
+}
+
+.location-card {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 12px 14px;
+    border-radius: 12px;
+    background: linear-gradient(180deg, #ffffff, #fbfdff);
+    border: 1px solid rgba(15, 23, 42, 0.04);
+    box-shadow: 0 8px 20px rgba(2,6,23,0.06);
+    transition: transform 0.14s ease, box-shadow 0.14s ease, border-color 0.14s ease;
+    position: relative;
+}
+
+.location-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 18px 36px rgba(2,6,23,0.10);
+    border-color: rgba(0, 123, 255, 0.2);
+}
+
+.location-card::before {
+    content: '📍';
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    opacity: 0;
+    transition: opacity 0.14s ease;
+    font-size: 16px;
+}
+
+.location-card:hover::before {
+    opacity: 1;
+}
+
+.location-card h3 {
+    margin: 0;
+    font-size: 15px;
+    color: #0b2b3a;
+    font-weight: 700;
+    letter-spacing: -0.2px;
+}
+
+.location-card .address {
+    margin: 0;
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.35;
+}
+
+.location-card .phone {
+    margin: 0;
+    font-size: 13px;
+    color: #1b4b34;
+}
+
+.location-card .card-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-top: 6px;
+}
+
+.location-card .links {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.location-card .links a {
+    font-size: 13px;
+    color: var(--brand);
+    text-decoration: none;
+    background: transparent;
+    padding: 6px 8px;
+    border-radius: 8px;
+    transition: background 0.12s, color 0.12s, transform 0.12s;
+}
+
+.location-card .links a:hover {
+    background: rgba(0,123,255,0.06);
+    text-decoration: none;
+    transform: translateY(-2px);
+}
+
+.location-card .distance {
+    min-width: 62px;
+    text-align: center;
+    background: rgba(0,123,255,0.09);
+    color: var(--brand);
+    font-weight: 700;
+    padding: 6px 10px;
+    border-radius: 999px;
+    font-size: 13px;
+}
+
+/* Compact layout for small screens */
+@media (max-width: 720px) {
+    .location-card {
+        padding: 10px 12px;
+    }
+    .location-card .card-footer {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+    }
+    .location-card .distance { align-self: flex-end; }
+}
+
+/* Small visual tweak for the container inside chat messages */
+.chat-messages .locations-container { padding: 6px 2px; }
+
