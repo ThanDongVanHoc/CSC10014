@@ -219,3 +219,6 @@ __marimo__/
 app/auth/client_secrets.json
 
 migrations
+
+.pt
+.safetensors
