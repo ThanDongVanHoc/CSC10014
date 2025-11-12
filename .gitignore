@@ -220,5 +220,5 @@ app/auth/client_secrets.json
 
 migrations
 
-.pt
-.safetensors
+.model_inference/final3/model.safetensors
+.model_inference/final3/safetensors
