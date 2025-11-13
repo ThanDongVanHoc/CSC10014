@@ -197,7 +197,7 @@ export async function sendChat(message){
     chatInput.value = ''; 
 
     try{
-        const resp = await fetch('/chat', {
+        const resp = await fetch('/chat/', {
             method: 'POST', 
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({message})
@@ -209,7 +209,7 @@ export async function sendChat(message){
         addMessageToConversation('bot', reply); 
         appendMessageToUI('bot', reply); 
     }catch(err){
-        cosole.error(err); 
+        console.error(err); 
         const errMsg = 'Lỗi liên hệ assistant. Thử lại sau.';
         addMessageToConversation('bot', errMsg);
         appendMessageToUI('bot', errMsg);
@@ -258,7 +258,5 @@ export function initChat(){
           sendBtn.click();
       }
     });
-
-    
 }
 

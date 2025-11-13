@@ -52,11 +52,13 @@ def login_user_session(user: User):
     session["user_id"] = user.id
     session["fullname"] = user.fullname
     session["avatar"] = user.avatar_url
+    session["user_email"] = user.email
 
 def logout_user_session():
     session.pop("user_id", None)
     session.pop("fullname", None)
     session.pop("avatar", None)
+    session.pop("user_email", None)
 
 def get_user_by_email(email: str) -> User | None:
     stmt = select(User).where(User.email == email)
