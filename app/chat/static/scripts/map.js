@@ -18,11 +18,19 @@ const icons = {
         shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-shadow.png',
         iconSize: [25, 41], iconAnchor: [12, 41],
         popupAnchor: [1, -34], shadowSize: [41, 41]
+    }),
+
+    yellow: new L.Icon({
+        iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-yellow.png',
+        shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-shadow.png',
+        iconSize: [25, 41], iconAnchor: [12, 41],
+        popupAnchor: [1, -34], shadowSize: [41, 41]
     })
 };
 
 let map = null;
 let mainMarker = null;
+let locationMarker = null; 
 let startMarker = null;
 let endMarker = null;
 let routeLayer = null;
@@ -69,9 +77,6 @@ function setMarker(latlng, text){
                 <div style="margin: 5px 0 10px 0;">${userNote}</div>
 
                 <div class="pin-btns" style="display: flex; justify-content: space-around; gap: 5px; margin-top: 5px;">
-                    <button style="flex: 1; background:#4CAF50; color:white; border: none; padding: 6px 10px; border-radius: 4px; cursor: pointer; font-size: 0.9em;">
-                        Start
-                    </button>
                     <button style="flex: 1; background:#F44336; color:white; border: none; padding: 6px 10px; border-radius: 4px; cursor: pointer; font-size: 0.9em;">
                         End
                     </button>
@@ -112,9 +117,7 @@ function setMarker(latlng, text){
                     <button style="flex: 1; background:#4CAF50; color:white; border: none; padding: 6px 10px; border-radius: 4px; cursor: pointer; font-size: 0.9em;">
                         Start
                     </button>
-                    <button style="flex: 1; background:#F44336; color:white; border: none; padding: 6px 10px; border-radius: 4px; cursor: pointer; font-size: 0.9em;">
-                        End
-                    </button>
+
                     <button id = "unpinBtn" style="flex: 1; background:#dc3545; color:white; border: none; padding: 6px 10px; border-radius: 4px; cursor: pointer; font-size: 0.9em;">
                         Unpin
                     </button>
@@ -383,4 +386,119 @@ export function initMap(){
 
 export function invalidateMapSize() {
     if (map) map.invalidateSize();
+}
+
+export function pinLocationToMap(lat, lng, name, phone, website, distance) {
+    if (!map) return;
+
+    if(locationMarker){
+        map.removeLayer(locationMarker); 
+    }
+    
+    const latlng = L.latLng(lat, lng);
+    locationMarker = L.marker(latlng, { icon: icons.yellow }).addTo(map);
+    
+    const popupDiv = document.createElement('div');
+    const phoneLink = phone ? `<a href="tel:${phone}" style="color: #0078ff; text-decoration: none;">${phone}</a>` : 'Không có';
+    const webLink = website ? `<a href="${website.startsWith('http') ? '' : '//'}${website}" target="_blank" style="color: #0078ff; text-decoration: none;">Website</a>` : '';
+    const distanceText = distance ? `<br><small style="color: #666;">📍 ${distance.toFixed(1)} km</small>` : '';
+    
+    popupDiv.innerHTML = `
+        <div style="text-align: left; padding: 8px; min-width: 180px;">
+            <b style="display: block; margin-bottom: 6px; color: #0b2b3a;">${name}</b>
+            <small style="color: #666; display: block; margin-bottom: 6px;">
+                📞 ${phoneLink}
+            </small>
+            ${webLink ? `<small style="display: block; margin-bottom: 6px;">${webLink}</small>` : ''}
+            ${distanceText}
+            
+            <div class="pin-btns" style="display: flex; justify-content: space-around; gap: 5px; margin-top: 8px;">
+                <button style="flex: 1; background:#4CAF50; color:white; border: none; padding: 6px 10px; border-radius: 4px; cursor: pointer; font-size: 0.85em;">
+                    Start
+                </button>
+                <button style="flex: 1; background:#F44336; color:white; border: none; padding: 6px 10px; border-radius: 4px; cursor: pointer; font-size: 0.85em;">
+                    End
+                </button>
+            </div>
+        </div>
+    `;
+
+    const [startBtn, endBtn] = popupDiv.querySelectorAll('button');
+    locationMarker.bindPopup(popupDiv).openPopup();
+    map.setView(latlng, 17);
+
+    startBtn.onclick = () =>{
+        const popupContent = document.createElement('div');
+        const userNote = name || ("Location: " + latlng.toString());
+
+        popupContent.innerHTML = `
+            <div style="text-align: center; padding: 5px;"> 
+                <b>🏁 Start</b><br>
+                
+                <div style="margin: 5px 0 10px 0;">${userNote}</div>
+
+                <div class="pin-btns" style="display: flex; justify-content: space-around; gap: 5px; margin-top: 5px;">
+                    <button style="flex: 1; background:#F44336; color:white; border: none; padding: 6px 10px; border-radius: 4px; cursor: pointer; font-size: 0.9em;">
+                        End
+                    </button>
+                    <button id = "unpinBtn" style="flex: 1; background:#dc3545; color:white; border: none; padding: 6px 10px; border-radius: 4px; cursor: pointer; font-size: 0.9em;">
+                        Unpin
+                    </button>
+                </div>
+            </div>
+        `;
+
+        if (startMarker){
+            map.removeLayer(startMarker);
+        }
+
+        startMarker = L.marker(latlng, { icon: icons.green })
+            .addTo(map).bindPopup(popupContent).openPopup();
+        map.closePopup();
+        if (endMarker) drawRoute();
+
+        popupContent.querySelector('#unpinBtn').onclick = () => {
+            map.removeLayer(startMarker);
+            startMarker = null; 
+            if (routeLayer) map.removeLayer(routeLayer);
+        };
+    }
+
+
+    endBtn.onclick = () => {
+        const popupContent = document.createElement('div');
+        const userNote = name || ("Location: " + latlng.toString());
+
+        popupContent.innerHTML = `
+            <div style="text-align: center; padding: 5px;"> 
+                <b>🎯 Destination</b><br>                
+                <div style="margin: 5px 0 10px 0;">${userNote}</div>
+
+                <div class="pin-btns" style="display: flex; justify-content: space-around; gap: 5px; margin-top: 5px;">
+                    <button style="flex: 1; background:#4CAF50; color:white; border: none; padding: 6px 10px; border-radius: 4px; cursor: pointer; font-size: 0.9em;">
+                        Start
+                    </button>
+
+                    <button id = "unpinBtn" style="flex: 1; background:#dc3545; color:white; border: none; padding: 6px 10px; border-radius: 4px; cursor: pointer; font-size: 0.9em;">
+                        Unpin
+                    </button>
+                </div>
+            </div>
+        `;
+
+        if (endMarker){
+            map.removeLayer(endMarker);
+        }
+        
+        endMarker = L.marker(latlng, { icon: icons.red })
+            .addTo(map).bindPopup(popupContent).openPopup();
+        map.closePopup();
+        if (startMarker) drawRoute();
+
+        popupContent.querySelector('#unpinBtn').onclick = () => {
+            map.removeLayer(endMarker);
+            endMarker = null; 
+            if (routeLayer) map.removeLayer(routeLayer);
+        };
+    };
 }

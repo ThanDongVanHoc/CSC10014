@@ -43,12 +43,11 @@ async function checkUserLogin() {
         return data.logged_in === true;
     } catch (err) {
         console.error("Không thể kiểm tra đăng nhập:", err);
-        return false;
-    }
-}
 
-async function initialize() {
-
+function initialize(){
+    const {map} = initMap(); 
+    initChat(); 
+    setMapReference(pinLocationToMap);
     // Load map
     const { map } = initMap();
 

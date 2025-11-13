@@ -3,9 +3,12 @@ const STORAGE_KEY = 'con_cho_cao_bang_cai_ghe';
 
 let conversations = [];
 let selectedId = null;
+let pinLocationToMapFn = null;
 
 let convoListEl, searchInput, btnNew, convTitle;
 let chatMessages, chatInput, sendBtn, hideBtn, showBtn, app;
+let locationsContainer; 
+
 
 
 function uid() {
@@ -35,6 +38,12 @@ function createConversation(title = 'New chat'){
 
     renderConversations(searchInput.value);
     loadSelectedConversation();
+
+    fetch('/clear_session', { 
+        method: 'POST' 
+    }).then(() => {
+        console.log("Server session cleared.");
+    });
 }
 
 function saveConversations(list){
@@ -189,6 +198,63 @@ function appendMessageToUI(role, text){
     chatMessages.scrollTop = chatMessages.scrollHeight;
 }
 
+
+function appendLocationCardsToUI(locations) {
+    const container = document.createElement('div');
+    container.className = 'locations-container';
+    
+    const statusHeader = document.createElement('p');
+    statusHeader.className = 'location-status';
+    statusHeader.textContent = `Tìm thấy ${locations.length} địa điểm liên quan:`;
+    container.appendChild(statusHeader);
+
+    locations.forEach(loc => {
+        const card = document.createElement('div');
+        card.className = 'location-card';
+        card.style.cursor = 'pointer';
+
+        const distance = loc.raw_distance_km ? loc.raw_distance_km.toFixed(1) : '?';
+        const phoneLink = loc.SDT ? `<a href="tel:${loc.SDT}">${loc.SDT}</a>` : 'Không có';
+        const webLink = loc.Website ? `<a href="${loc.Website.startsWith('http') ? '' : '//'}${loc.Website}" target="_blank">Xem Website</a>` : '';
+        const mapLink = `https://www.google.com/maps?q=${loc.Lat},${loc.Lng}`;
+
+        card.innerHTML = `
+            <h3>${loc.Ten}</h3>
+            <p class="address">${loc.DiaChi}</p>
+            <p class="phone">SĐT: ${phoneLink}</p>
+            <div class="card-footer">
+                <div class="links">
+                    ${webLink}
+                    <a href="#" class="map-link" data-lat="${loc.Lat}" data-lng="${loc.Lng}">Xem trên Bản đồ</a>
+                </div>
+                <span class="distance">${distance} km</span>
+            </div>
+        `;
+        container.appendChild(card);
+
+        const mapLinkEl = card.querySelector('.map-link');
+        mapLinkEl.addEventListener('click', (e) => {
+            e.preventDefault();
+            if (pinLocationToMapFn) {
+                pinLocationToMapFn(loc.Lat, loc.Lng, loc.Ten, loc.SDT, loc.Website, loc.raw_distance_km);
+            }
+        });
+
+        // Pin location to map on card click (except links)
+        card.addEventListener('click', (e) => {
+            if (e.target.tagName === 'A') return; // Already handled by map-link above
+            if (pinLocationToMapFn) {
+                pinLocationToMapFn(loc.Lat, loc.Lng, loc.Ten, loc.SDT, loc.Website, loc.raw_distance_km);
+            }
+        });
+    });
+
+    chatMessages.appendChild(container);
+    
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+}
+
+
 export async function sendChat(message){
     if(!message.trim()) return; 
     addMessageToConversation('user', message); 
@@ -197,23 +263,43 @@ export async function sendChat(message){
     chatInput.value = ''; 
 
     try{
-        const resp = await fetch('/chat/', {
+        
+        let user_lat = 10.7769;
+        let user_lng = 106.7009;
+        
+        navigator.geolocation.getCurrentPosition(pos => {
+            user_lat = pos.coords.latitude; 
+            user_lng = pos.coords.longitude; 
+        }, err => alert('Can\'t\' detect location: ' + err.message));
+
+        const resp = await fetch('/chat', {
             method: 'POST', 
             headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({message})
+            body: JSON.stringify({message, user_lat, user_lng})
         }); 
 
         const data = await resp.json(); 
         const reply = data.reply || 'No respond back.';
+        const locations = data.locations || [];
 
         addMessageToConversation('bot', reply); 
         appendMessageToUI('bot', reply); 
+        
+        if (locations.length > 0) {
+            appendLocationCardsToUI(locations);
+        }
+
     }catch(err){
         console.error(err); 
         const errMsg = 'Lỗi liên hệ assistant. Thử lại sau.';
         addMessageToConversation('bot', errMsg);
         appendMessageToUI('bot', errMsg);
     }
+}
+
+
+export function setMapReference(pinFn) {
+    pinLocationToMapFn = pinFn;
 }
 
 
@@ -228,7 +314,6 @@ export function initChat(){
     hideBtn = document.getElementById('hideBtn');
     showBtn = document.getElementById('showSidebar');
     app = document.querySelector('.app');
-
     conversations = loadConversations();
     selectedId = conversations.length ? conversations[0].id : null;
 
@@ -253,7 +338,7 @@ export function initChat(){
     });
 
     chatInput.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter') {
+      if (e.key === 'Enter' && !e.shiftKey) {
           e.preventDefault();
           sendBtn.click();
       }

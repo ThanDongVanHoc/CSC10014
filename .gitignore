@@ -219,3 +219,6 @@ __marimo__/
 app/auth/client_secrets.json
 
 migrations
+
+.model_inference/final3/model.safetensors
+.model_inference/final3/optimizer.pt
