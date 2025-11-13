@@ -8,8 +8,34 @@ let selectedId = null;
 let convoListEl, searchInput, btnNew, convTitle;
 let chatMessages, chatInput, sendBtn, hideBtn, showBtn, app;
 
+let pinLocationToMapFn = null;
+
+export function setMapReference(fn) {
+    pinLocationToMapFn = fn;
+}
+
 
 // ====== Helper ======
+
+function getLocationOrDefault() {
+    return new Promise(resolve => {
+        let fallback = { lat: 10.7769, lng: 106.7009 }; // HCM default
+
+        if (!navigator.geolocation) {
+            return resolve(fallback);
+        }
+
+        navigator.geolocation.getCurrentPosition(
+            pos => resolve({ lat: pos.coords.latitude, lng: pos.coords.longitude }),
+            err => {
+                console.warn("Không lấy được vị trí:", err.message);
+                resolve(fallback);
+            }
+        );
+    });
+}
+
+
 function appendMessageToUI(role, text) {
     const doc = document.createElement('div');
     doc.className = 'msg ' + (role === 'user' ? 'user' : 'bot');
@@ -84,9 +110,7 @@ async function sendMessage(message) {
         const resp = await fetch('/chat/messages', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                title: "New chat"   // lúc này cứ để tạm
-            })
+            body: JSON.stringify({ title: "New chat" })
         });
         const data = await resp.json();
         selectedId = data.id;
@@ -98,11 +122,20 @@ async function sendMessage(message) {
     chatInput.value = '';
 
     try {
+        // 👇 LẤY VỊ TRÍ GIỐNG GUEST MODE
+        const { lat, lng } = await getLocationOrDefault();
+
         const resp = await fetch('/chat/', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ message, convo_id: selectedId })
+            body: JSON.stringify({
+                message,
+                convo_id: selectedId,
+                user_lat: lat,
+                user_lng: lng
+            })
         });
+
         const data = await resp.json();
         const reply = data.reply || 'No response from server.';
         appendMessageToUI('bot', reply);
@@ -112,7 +145,6 @@ async function sendMessage(message) {
         if (conv && (!conv.title || conv.title === 'New chat')) {
             const newTitle = message.slice(0, 40);
 
-            // gọi API rename trên backend
             await fetch(`/chat/messages/${selectedId}`, {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
@@ -128,6 +160,7 @@ async function sendMessage(message) {
         appendMessageToUI('bot', '⚠️ Lỗi kết nối tới server.');
     }
 }
+
 
 
 

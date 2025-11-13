@@ -153,9 +153,6 @@ def chat():
         session["history"].pop() # Xóa tin nhắn rỗng khỏi lịch sử
         return jsonify({"reply": "Bạn chưa nhập gì cả.", "locations": []})
     
-    # Sửa: Dùng `is None` an toàn hơn cho tọa độ 0
-    if user_lat is None or user_lng is None:
-        return jsonify({"reply": "Không nhận được vị trí (lat/lng) từ trình duyệt.", "locations": []})
 
     # kiểm tra user đăng nhập chưa
     user_email = session.get("user_email", None)
