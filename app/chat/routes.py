@@ -144,7 +144,6 @@ def chat():
     session["history"].append({"role": "user", "content": user_msg})
     history_parts = [{"role": h["role"], "parts": [{"text": h["content"]}]} for h in session["history"]]
 
-    # (Debug print, bạn có thể giữ lại)
     for h in session["history"]:
          print(h["content"]); 
 
@@ -159,7 +158,6 @@ def chat():
 
     if user_email:
         if not convo_id:
-            # nếu vì lý do nào đó không có convo_id -> tạo mới
             convo = create_conversation(user_email, title=user_msg[:40] or "New chat")
             convo_id = convo["id"]
 
@@ -194,8 +192,8 @@ def chat():
     }
 
     model_locations = []
-    gemini_reply_clean = "" # Biến để lưu phản hồi SẠCH
-    gemini_reply_to_user = "" # Biến để gửi cho người dùng (có thể có lỗi)
+    gemini_reply_clean = ""
+    gemini_reply_to_user = "" 
 
     # 5. Gọi API
     try:
