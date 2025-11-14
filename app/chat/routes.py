@@ -264,7 +264,15 @@ def chat():
         gemini_reply_to_user = gemini_reply_clean
     
     
-    session["history"].append({"role": "model", "content": gemini_reply_clean})
+    # 7. LƯU MESSAGE CỦA BOT
+    if user_email:
+        # user đã login: lưu vào DB theo conversation
+        save_message(user_email, "model", gemini_reply_clean, convo_id)
+    else:
+        # guest: lưu vào session như cũ
+        session["history"].append({"role": "model", "content": gemini_reply_clean})
+
+        
         
     # 8. Trả về
     return jsonify({
