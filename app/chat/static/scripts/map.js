@@ -209,14 +209,17 @@ function savePinToMap(latlng, name) {
 }
 
 function setMarker(latlng, text) {
+  // ÉP VỀ Leaflet LatLng DÙ ĐẦU VÀO LÀ ARRAY HAY OBJECT
+  const ll = L.latLng(latlng);
+
   if (mainMarker) map.removeLayer(mainMarker);
 
-  mainMarker = L.marker(latlng).addTo(map);
+  mainMarker = L.marker(ll).addTo(map);
 
   const popupDiv = document.createElement("div");
   popupDiv.innerHTML = `
         <div style="text-align: center; padding: 5px;"> 
-            <b>${text || "Location: " + latlng.toString()}</b><br>            
+            <b>${text || "Location: " + ll.toString()}</b><br>            
 
             <div class="pin-btns" style="display: flex; justify-content: space-around; gap: 5px; margin-top: 5px;">
                 <button style="flex: 1; background:#4CAF50; color:white; border: none; padding: 6px 10px; border-radius: 4px; cursor: pointer; font-size: 0.9em;">
@@ -231,15 +234,15 @@ function setMarker(latlng, text) {
     `;
 
   mainMarker.bindPopup(popupDiv).openPopup();
-  map.setView(latlng, 17);
+  map.setView(ll, 17);
 
   const [startBtn, endBtn] = popupDiv.querySelectorAll("button");
 
   startBtn.onclick = () =>
-    setStartPoint(latlng, text || "Location: " + latlng.toString());
+    setStartPoint(ll, text || "Location: " + ll.toString());
 
   endBtn.onclick = () =>
-    setEndPoint(latlng, text || "Location: " + latlng.toString());
+    setEndPoint(ll, text || "Location: " + ll.toString());
 }
 
 function createPin(latlng, name) {
@@ -247,6 +250,7 @@ function createPin(latlng, name) {
   let isSaved = false;
 
   const popupDiv = document.createElement("div");
+  L.DomEvent.disableClickPropagation(popupDiv);
   popupDiv.innerHTML = `
         <div style="text-align: center; padding: 5px;"> 
             <b>${name}</b><br>
