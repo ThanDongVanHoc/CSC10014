@@ -222,3 +222,6 @@ migrations
 
 .model_inference/final3/model.safetensors
 .model_inference/final3/optimizer.pt
+
+model_inference/final3/model.safetensors
+model_inference/final3/optimizer.pt
