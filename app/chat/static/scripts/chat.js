@@ -322,6 +322,20 @@ export async function sendChat(message) {
     appendMessageToUI('user', message);
     chatInput.value = '';
 
+    // Show loading indicator
+    const loadingMsg = document.createElement('div');
+    loadingMsg.className = 'msg bot loading';
+    loadingMsg.innerHTML = `
+        <span class="ai-icon">✨</span>
+        <div class="ai-loader">
+            <div class="ai-dot"></div>
+            <div class="ai-dot"></div>
+            <div class="ai-dot"></div>
+        </div>
+    `;
+    chatMessages.appendChild(loadingMsg);
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+
     try {
         const { lat, lng } = await getLocationOrDefault();
 
@@ -339,6 +353,9 @@ export async function sendChat(message) {
         const reply = data.reply || 'No respond back.';
         const locations = data.locations || [];
 
+        // Remove loading message
+        loadingMsg.remove();
+
         addMessageToConversation('bot', reply);
         appendMessageToUI('bot', reply);
 
@@ -348,6 +365,7 @@ export async function sendChat(message) {
 
     } catch (err) {
         console.error(err);
+        loadingMsg.remove();
         const errMsg = 'Lỗi liên hệ assistant. Thử lại sau.';
         addMessageToConversation('bot', errMsg);
         appendMessageToUI('bot', errMsg);
