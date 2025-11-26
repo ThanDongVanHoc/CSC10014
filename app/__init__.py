@@ -30,16 +30,6 @@ def create_app(test_config = None):
     init_db(app)
     init_mail(app)
 
-    '''
-    @app.route('/show-users')
-    def show_users():
-        users = User.query.all()
-        output = ""
-        for u in users:
-            output += f"{u.id} - {u.fullname} - {u.email}<br>"
-        return output
-    '''
-
     @app.route('/')
     def home_page():
         return render_template('index.html')
