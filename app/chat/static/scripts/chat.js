@@ -395,6 +395,9 @@ export function initChat() {
     hideBtn = document.getElementById('hideBtn');
     showBtn = document.getElementById('showSidebar');
     app = document.querySelector('.app');
+    const chatContainer = document.getElementById("chatContainer");
+    const mapOverlay = document.getElementById("mapChatOverlay");
+
 
     conversations = loadConversations();
     selectedId = conversations.length ? conversations[0].id : null;
@@ -408,11 +411,13 @@ export function initChat() {
     // Sidebar hide/show
     hideBtn.addEventListener('click', () => {
         app.classList.add('sidebar-hidden');
+        chatContainer.classList.add('sidebar-hidden');
         showBtn.style.display = 'block';
     });
 
     showBtn.addEventListener('click', () => {
         app.classList.remove('sidebar-hidden');
+        chatContainer.classList.remove('sidebar-hidden');
         showBtn.style.display = 'none';
     });
 

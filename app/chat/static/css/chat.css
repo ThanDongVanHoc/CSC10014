@@ -430,12 +430,24 @@
 
 .app {
   display: grid;
-  grid-template-columns: 260px 520px 1fr; 
+  grid-template-columns: auto 1fr; 
   gap: 20px;
   max-width: 1600px;
   margin: 20px auto;
   padding: 0 20px 40px;
   align-items: start;
+}
+
+.chatContainer{
+  display : grid; grid-template-columns: 260px 520px; gap : 20px;
+}
+
+.chatContainer.sidebar-hidden {
+  grid-template-columns: 520px; /* chỉ còn chat panel */
+}
+
+.chatContainer.sidebar-hidden .sidebar {
+  display: none; /* ẩn sidebar */
 }
 
 .app.sidebar-hidden {

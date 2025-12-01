@@ -45,6 +45,11 @@ let routeLayer = null;
 let flag_pin = true;
 let currentMode = "driving";
 let savedPins = []; // Dung de luu cac marker duoc pin
+let mapFullscreenBtn = null;
+let mapEl = null;
+let chatContainer = null;
+let mapLogo = null;
+let mapChatOverlay = null;
 
 // BIẾN TOÀN CỤC MỚI DÙNG CHO POI VÀ QUẢN LÝ TRẠNG THÁI
 let poiLayer = null; // Layer cho các POI
@@ -585,41 +590,34 @@ function initPoiFeature(map) {
   togglePoiFetching(isPoiFetchingActive);
 }
 
-
 function initMapControls() {
-    mapEl = document.getElementById('map');
-    mapFullscreenBtn = document.getElementById('mapFullscreenBtn');
-    mapLogo = document.getElementById('mapLogo');
-    mapChatOverlay = document.getElementById('mapChatOverlay');
-    mapCloseChatBtn = mapChatOverlay.querySelector('#mapCloseChat');
+  mapFullscreenBtn = document.getElementById('mapFullscreenBtn');
+  mapEl = document.getElementById('map');
+  chatContainer = document.getElementById("chatContainer");
+  mapLogo = document.getElementById('mapLogo');
+  mapChatOverlay = document.getElementById('mapChatOverlay');
+}
 
-    if (!mapEl || !mapFullscreenBtn || !mapLogo || !mapChatOverlay) return;
-
-    // Logic TOÀN MÀN HÌNH
-    mapFullscreenBtn.addEventListener('click', () => {
-        mapEl.classList.toggle('map-fullscreen');
-        if (!mapEl.classList.contains('map-fullscreen')) {
-             mapChatOverlay.classList.add('hidden');
-        }
-    });
-
-    // Logic BẬT CHAT OVERLAY BẰNG LOGO
-    mapLogo.addEventListener('click', () => {
-        if (mapEl.classList.contains('map-fullscreen')) {
-            mapChatOverlay.classList.remove('hidden');
-            // Tải lại nội dung cho Overlay khi nó hiện ra
-            loadSelectedConversation(mapChatOverlay); 
-        } else {
-            console.log("Chat Overlay chỉ mở khi Map ở chế độ toàn màn hình.");
-        }
-    });
-    
-    // Logic ĐÓNG CHAT OVERLAY
-    if (mapCloseChatBtn) {
-        mapCloseChatBtn.addEventListener('click', () => {
-            mapChatOverlay.classList.add('hidden');
-        });
-    }
+async function handleScreenEvent(){
+    try {
+      if (!document.fullscreenElement) {
+        if (mapEl.requestFullscreen) await mapEl.requestFullscreen();
+        mapEl.classList.add('fullscreen');
+        mapChatOverlay.appendChild(chatContainer);
+      } else {
+        if (document.exitFullscreen) await document.exitFullscreen();
+        mapEl.classList.remove('fullscreen');
+        
+        document.querySelector(".app").prepend(chatContainer);
+        mapChatOverlay.classList.add("hidden");
+      }
+    } catch (err) {
+      console.warn("Fullscreen toggle error:", err);
+    } finally {
+      setTimeout(() => {
+        try { invalidateMapSize(); if (map && typeof map.invalidateSize === 'function') map.invalidateSize(); } catch(e){ console(e);/*ignore*/ }
+      }, 260);
+  }
 }
 
 export function initMap() {
@@ -680,24 +678,12 @@ export function initMap() {
   });
 
   initPoiFeature(map);
+  initMapControls();
 
   map.on("click", (e) => {
     if (flag_pin) createPin(e.latlng, "Marked Point");
     else flag_pin = true;
   });
-
-  const mapLogo = document.getElementById('mapLogo');
-  const mapChatOverlay = document.getElementById('mapChatOverlay');
-
-  function showOverlay() {
-    mapChatOverlay.classList.remove('hidden');
-    invalidateMapSize();
-
-  }
-  function hideOverlay() {
-    mapChatOverlay.classList.add('hidden');
-    invalidateMapSize();
-  }
 
   let pinned = false;
 
@@ -725,35 +711,20 @@ export function initMap() {
 
 
   /// fullscreen map
-  const mapFullscreenBtn = document.getElementById('mapFullscreenBtn');
-  const mapEl = document.getElementById('map');
-
-
-  mapFullscreenBtn.addEventListener('click', async () => {
-    try {
-      if (!document.fullscreenElement) {
-        if (mapEl.requestFullscreen) await mapEl.requestFullscreen();
-        mapEl.classList.add('fullscreen');
-      } else {
-        if (document.exitFullscreen) await document.exitFullscreen();
-        mapEl.classList.remove('fullscreen');
-      }
-    } catch (err) {
-      console.warn("Fullscreen toggle error:", err);
-    } finally {
-      setTimeout(() => {
-        try { invalidateMapSize(); if (map && typeof map.invalidateSize === 'function') map.invalidateSize(); } catch(e){/*ignore*/ }
-      }, 260);
-  }});
+  mapFullscreenBtn.addEventListener('click', handleScreenEvent);
 
   document.addEventListener('fullscreenchange', () => {
-    if (!document.fullscreenElement) mapEl.classList.remove('fullscreen');
+    if (!document.fullscreenElement){
+      document.querySelector(".app").prepend(chatContainer);
+      mapChatOverlay.classList.add("hidden");
+      mapEl.classList.remove('fullscreen');
+    }
     else mapEl.classList.add('fullscreen');
-
     setTimeout(() => {
       try { invalidateMapSize(); if (map && typeof map.invalidateSize === 'function') map.invalidateSize(); } catch(e){/*ignore*/ }
     }, 220);
   });
+
 
   return { map };
 }
@@ -806,4 +777,14 @@ export function pinLocationToMap(lat, lng, name, phone, website, distance) {
 
     endBtn.onclick = () =>
         setEndPoint(latlng, text || "Location: " + latlng.toString());
+}
+
+function showOverlay() {
+  mapChatOverlay.classList.remove('hidden');
+  invalidateMapSize();
+
+}
+function hideOverlay() {
+  mapChatOverlay.classList.add('hidden');
+  invalidateMapSize();
 }
