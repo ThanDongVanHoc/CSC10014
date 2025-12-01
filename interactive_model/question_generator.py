@@ -14,14 +14,15 @@ class QuestionGenerator:
         self.model = model
     
     def generate(self, info_status: Dict[str, int], collected_info: Dict[str, Any] = None, user_query: str = "") -> List[str]:
-        """Generate questions for fields with status = 0"""
+        """Generate up to 5 most important questions for fields with status = 0"""
         missing_fields = [field for field, status in info_status.items() if status == 0]
         
         if not missing_fields:
             return []
         
-        # Limit to 3 questions
-        missing_fields = missing_fields[:3]
+        # If there are many missing fields, ask AI to prioritize
+        if len(missing_fields) > 5:
+            missing_fields = self._prioritize_fields(missing_fields, collected_info, user_query)
         
         # Build context from config
         fields_context = []
@@ -42,11 +43,12 @@ Missing fields:
 
 Requirements:
 - Use the same language as the user (Vietnamese, English, Indonesian, etc.)
+- Generate MAXIMUM 5 questions (prioritize the most important ones)
 - Natural, concise questions
 - Context-appropriate
 - Return JSON array of strings only
 
-Example: ["What is your address?", "What is your full name?"]"""
+Example: ["What is your address?", "What is your nationality?", "What happened?"]"""
         
         try:
             response = self.model.generate_content(prompt)
@@ -57,6 +59,56 @@ Example: ["What is your address?", "What is your full name?"]"""
             print(f"[ERROR] Question generation failed: {e}")
             # Fallback: generate simple questions
             return [self._fallback_question(field) for field in missing_fields]
+    
+    def _prioritize_fields(self, missing_fields: List[str], collected_info: Dict[str, Any], user_query: str) -> List[str]:
+        """Prioritize the most important fields to ask about
+        
+        Args:
+            missing_fields: List of all missing field names
+            collected_info: Already collected information
+            user_query: User's original query
+            
+        Returns:
+            Top 5 most important fields
+        """
+        fields_desc = "\n".join([
+            f"- {field}: {REQUIRED_FIELDS[field]['description']}"
+            for field in missing_fields
+        ])
+        
+        prompt = f"""Prioritize which fields are MOST IMPORTANT to collect first.
+
+User query: "{user_query}"
+Already collected: {json.dumps(collected_info, ensure_ascii=False)}
+
+Missing fields:
+{fields_desc}
+
+RULES:
+1. Select TOP 5 most critical fields for this specific situation
+2. Core identity fields (nationality, current_location) are usually high priority
+3. Problem-specific fields should be prioritized (e.g., visa fields for visa issues)
+4. Urgent/safety fields should come first
+5. Nice-to-have fields (budget_preference, group_size) can be deprioritized
+
+Return ONLY a JSON array of exactly 5 field names in priority order: ["field1", "field2", "field3", "field4", "field5"]
+
+Example: ["nationality", "current_location", "visa_type", "visa_expiry_status", "time_constraint"]"""
+        
+        try:
+            response = self.model.generate_content(prompt)
+            response_text = self._clean_response(response.text)
+            prioritized = json.loads(response_text)
+            
+            if isinstance(prioritized, list) and len(prioritized) > 0:
+                # Validate fields
+                valid_prioritized = [f for f in prioritized if f in missing_fields]
+                return valid_prioritized[:5]
+        except Exception as e:
+            print(f"[ERROR] Prioritization failed: {e}")
+        
+        # Fallback: return first 5 fields
+        return missing_fields[:5]
     
     def _fallback_question(self, field: str) -> str:
         """Generate a simple fallback question"""

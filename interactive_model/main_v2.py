@@ -71,8 +71,11 @@ async def query_type_1(request: Query1Request):
     # Extract information
     collected_info = collector.extract_from_query(request.query, collected_info)
     
-    # Analyze status
-    info_status = collector.analyze_status(request.query, collected_info)
+    # Filter relevant fields based on query (NEW FEATURE)
+    relevant_fields = collector.filter_relevant_fields(request.query, collected_info)
+    
+    # Analyze status (only for relevant fields)
+    info_status = collector.analyze_status(request.query, collected_info, relevant_fields)
     
     # Filter out partial info (0.5)
     clean_status = {k: v for k, v in info_status.items() if v != 0.5}
@@ -81,10 +84,10 @@ async def query_type_1(request: Query1Request):
         if info_status.get(k, 0) != 0.5
     }
     
-    # Check completion
+    # Check completion (only check relevant fields)
     is_complete = all(status == 1 for status in clean_status.values())
     
-    # Generate questions (pass user query for language context)
+    # Generate questions (max 5 important questions)
     questions = [] if is_complete else question_gen.generate(clean_status, clean_collected_info, request.query)
     
     return Query1Response(
