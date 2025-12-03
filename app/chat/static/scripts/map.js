@@ -45,6 +45,11 @@ let routeLayer = null;
 let flag_pin = true;
 let currentMode = "driving";
 let savedPins = []; // Dung de luu cac marker duoc pin
+let mapFullscreenBtn = null;
+let mapEl = null;
+let chatContainer = null;
+let mapLogo = null;
+let mapChatOverlay = null;
 
 // BIẾN TOÀN CỤC MỚI DÙNG CHO POI VÀ QUẢN LÝ TRẠNG THÁI
 let poiLayer = null; // Layer cho các POI
@@ -446,14 +451,14 @@ function initPoiFeature(map) {
 
                 <button class="poi-filter-btn" data-query="hospital"><i class="fa-solid fa-hospital"></i> Hospital</button>
                 <button class="poi-filter-btn" data-query="notary-office"><i class="fa-solid fa-gavel"></i> Notary Office</button>
-                <button class="poi-filter-btn" data-query="peoples-committee"><i class="fa-solid fa-building-columns"></i> People's Committee</button>
+                <button class="poi-filter-btn" data-query="peoples-committee"><i class="fa-solid fa-building-columns"></i> People's Committee</button>
                 <button class="poi-filter-btn" data-query="police"><i class="fa-solid fa-shield-halved"></i> Police</button>
                 <button class="poi-filter-btn" data-query="medical-center"><i class="fa-solid fa-briefcase-medical"></i> Medical Center</button>
                 <button class="poi-filter-btn" data-query="immigration-office"><i class="fa-solid fa-passport"></i> Immigration Office</button>
                 <button class="poi-filter-btn" data-query="consulate"><i class="fa-solid fa-flag"></i> Consulate</button>
-                
+        
                 <button class="poi-next-btn"><i class="fa-solid fa-chevron-right"></i></button>
-            `;
+              `;
       return container;
     },
     onRemove: function (map) {},
@@ -585,6 +590,36 @@ function initPoiFeature(map) {
   togglePoiFetching(isPoiFetchingActive);
 }
 
+function initMapControls() {
+  mapFullscreenBtn = document.getElementById('mapFullscreenBtn');
+  mapEl = document.getElementById('map');
+  chatContainer = document.getElementById("chatContainer");
+  mapLogo = document.getElementById('mapLogo');
+  mapChatOverlay = document.getElementById('mapChatOverlay');
+}
+
+async function handleScreenEvent(){
+    try {
+      if (!document.fullscreenElement) {
+        if (mapEl.requestFullscreen) await mapEl.requestFullscreen();
+        mapEl.classList.add('fullscreen');
+        mapChatOverlay.appendChild(chatContainer);
+      } else {
+        if (document.exitFullscreen) await document.exitFullscreen();
+        mapEl.classList.remove('fullscreen');
+        
+        document.querySelector(".app").prepend(chatContainer);
+        mapChatOverlay.classList.add("hidden");
+      }
+    } catch (err) {
+      console.warn("Fullscreen toggle error:", err);
+    } finally {
+      setTimeout(() => {
+        try { invalidateMapSize(); if (map && typeof map.invalidateSize === 'function') map.invalidateSize(); } catch(e){ console(e);/*ignore*/ }
+      }, 260);
+  }
+}
+
 export function initMap() {
   map = L.map("map").setView([10.762622, 106.660172], 12);
   L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
@@ -643,11 +678,53 @@ export function initMap() {
   });
 
   initPoiFeature(map);
+  initMapControls();
 
   map.on("click", (e) => {
     if (flag_pin) createPin(e.latlng, "Marked Point");
     else flag_pin = true;
   });
+
+  let pinned = false;
+
+  mapLogo.addEventListener('click', (e) => {
+    if(!document.fullscreenElement) return;
+    pinned = !pinned;
+
+    if (pinned) {
+      mapLogo.style.left = '50%';
+      mapLogo.style.top = '12px';
+      mapLogo.style.transform = 'translateX(-50%)';
+      mapLogo.style.bottom = 'auto';
+      mapLogo.style.right = 'auto';
+      showOverlay();
+      mapChatOverlay.classList.add('pinned');
+    } else {
+      mapLogo.style.left = '16px';
+      mapLogo.style.bottom = '16px';
+      mapLogo.style.top = 'auto';
+      mapLogo.style.transform = '';
+      mapChatOverlay.classList.remove('pinned');
+      hideOverlay();
+    }
+  });
+
+
+  /// fullscreen map
+  mapFullscreenBtn.addEventListener('click', handleScreenEvent);
+
+  document.addEventListener('fullscreenchange', () => {
+    if (!document.fullscreenElement){
+      document.querySelector(".app").prepend(chatContainer);
+      mapChatOverlay.classList.add("hidden");
+      mapEl.classList.remove('fullscreen');
+    }
+    else mapEl.classList.add('fullscreen');
+    setTimeout(() => {
+      try { invalidateMapSize(); if (map && typeof map.invalidateSize === 'function') map.invalidateSize(); } catch(e){/*ignore*/ }
+    }, 220);
+  });
+
 
   return { map };
 }
@@ -700,4 +777,14 @@ export function pinLocationToMap(lat, lng, name, phone, website, distance) {
 
     endBtn.onclick = () =>
         setEndPoint(latlng, text || "Location: " + latlng.toString());
+}
+
+function showOverlay() {
+  mapChatOverlay.classList.remove('hidden');
+  invalidateMapSize();
+
+}
+function hideOverlay() {
+  mapChatOverlay.classList.add('hidden');
+  invalidateMapSize();
 }

@@ -10,73 +10,44 @@
 {% endblock %}
 
 {% block content %}
-    <button id="showSidebar" style="display:none; position:fixed; left:0; top:50%; background:var(--brand); color:white; border:none; padding:10px; border-radius:0 8px 8px 0; cursor:pointer; transform:translateY(-50%);">Show</button>
 
 
     <div class="app">
-        <!-- HISTORY SIDEBAR -->
-        <aside class="sidebar" aria-label="Conversations">
-        <div class="top">
-            <div class="sidebar-header">    
-                <h3><i class="fas fa-history"></i> History</h3>
-                <div class="controls">
-                    <button id="btnNew" title="New chat" class="control-btn new-btn"><i class="fas fa-plus"></i></button>
-                    <button id="btnDeleteSelected" title="Delete Selected Conversation" class="control-btn delete-btn"><i class="fas fa-trash"></i></button>
-                    <button id="hideBtn" title="Hide sidebar" class="control-btn hide-btn"><i class="fas fa-chevron-left"></i></button>
-                </div>
-            </div>
+        <div class = 'chatContainer' id = 'chatContainer'>
+            {% include "chat_block.html" %}
         </div>
-
-        <div class="search">
-            <i class="fas fa-search search-icon"></i>
-            <input id="searchInput" placeholder="Search conversations..." />
-        </div>
-
-        <div id="convoList" class="convo-list" role="list">
-            <!-- conversations injected here -->
-        </div>
-        </aside>
-
-        <!-- CHAT PANEL -->
-        <section class="chat">
-        <div class="card">
-            <div class="chat-header">
-            <div class="header-content">
-                <strong id="convTitle" class="chat-title">Chưa chọn đoạn chat</strong>
-                <div class="chat-subtitle"><i class="fas fa-circle-info"></i> Type issues like "lost visa"</div>
-            </div>
-            <div class="header-actions">
-                <button id="btnAttach" class="btn btn-attach" title="Attach file"><i class="fas fa-paperclip"></i></button>
-            </div>
-            </div>
-
-            <div id="chatMessages" class="chat-messages" aria-live="polite">
-            <!-- messages appended here -->
-
-            </div>
-
-            <div class="chat-input-wrapper">
-                <div class="chat-input">
-                    <input id="chatInput" placeholder="Describe your problem, e.g. 'I lost my visa'..." aria-label="message input" />
-                    <button id="sendBtn" class="send-btn" title="Send message"><i class="fas fa-paper-plane"></i></button>
-                </div>
-            </div>
-        </div>
-        </section>
 
         <!-- MAP -->
-        <aside>
           <div id="map">
             <div class="transport-btns">
                 <button data-travel="driving" class="active">Driving</button>
                 <button data-travel="Motorcycling"> Motorcycling</button>
                 <button data-travel="walking"> Walking</button>
             </div>
+
+            <!-- Fullscreen & controls -->
+            <div class="map-controls">
+                <button id="mapFullscreenBtn" title="Toggle fullscreen" class="map-btn"><i class="fas fa-expand"></i></button>
+            </div>
+
+            <div id="mapLogo" class="map-logo" title="Open chat">
+                <img src="{{ url_for('static', filename='images/logo.png') }}" alt="logo" />
+            </div>
+
+            <!-- Chat overlay inside the map (hidden by default) -->
+            <div id="mapChatOverlay" class="map-chat-overlay hidden" style = "display: grid; grid-template-columns: 260px 520px;   display: grid;
+                    grid-template-columns: 260px 520px 1fr; 
+                    gap: 20px;
+                    max-width: 1600px;
+                    margin: 20px auto;
+                    padding: 0 20px 40px;
+                    align-items: start;">
+                    
+            </div>
+
           </div>
-        </aside>
     </div>
 {% endblock %}
-
 
 
 {% block script %}
