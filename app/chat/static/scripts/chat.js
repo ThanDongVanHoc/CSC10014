@@ -1,7 +1,10 @@
 // =======================
 // GUEST CHAT (LOCALSTORAGE)
 // =======================
+import { startGuideFlow } from './guide_manager.js'; // Nhớ import ở đầu file
 
+// Mock mode flag: default false. Can be toggled from console or UI checkbox.
+window.USE_MOCK_CHAT_RESPONSE = window.USE_MOCK_CHAT_RESPONSE || false;
 const STORAGE_KEY = 'con_cho_cao_bang_cai_ghe';
 
 let conversations = [];
@@ -261,7 +264,9 @@ function appendLocationCardsToUI(locations) {
                         Xem trên Bản đồ
                     </a>
                 </div>
-                <span class="distance">${distance} km</span>
+                 <button class="btn-guide-trigger" style="border:1px solid #0078ff; color:#0078ff; background:white; padding:6px 10px; border-radius:6px; cursor:pointer;">
+                    <i class="fas fa-list-check"></i> Hướng dẫn
+                </button>
             </div>
         `;
 
@@ -283,6 +288,13 @@ function appendLocationCardsToUI(locations) {
                 pinLocationToMapFn(loc.Lat, loc.Lng, loc.Ten, loc.SDT, loc.Website, loc.raw_distance_km);
             }
         });
+
+        const guideBtn = card.querySelector('.btn-guide-trigger');
+        guideBtn.addEventListener('click', (e) => {
+            e.stopPropagation(); 
+            startGuideFlow(loc.Ten);
+        });
+        
     });
 
     chatMessages.appendChild(container);
@@ -339,19 +351,36 @@ export async function sendChat(message) {
     try {
         const { lat, lng } = await getLocationOrDefault();
 
-        const resp = await fetch('/chat/', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                message,
-                user_lat: lat,
-                user_lng: lng
-            })
-        });
+        let data;
+        if (window.USE_MOCK_CHAT_RESPONSE) {
+            try {
+                const resp = await fetch('static/mock_responses/sample_chat_response.json');
+                data = await resp.json();
+            } catch (e) {
+                console.error('Failed to load mock response:', e);
+                data = { reply: 'Lỗi khi tải mock response.' };
+            }
+        } else {
+            const resp = await fetch('/chat/', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    message,
+                    user_lat: lat,
+                    user_lng: lng
+                })
+            });
 
-        const data = await resp.json();
+            data = await resp.json();
+        }
+        
         const reply = data.reply || 'No respond back.';
         const locations = data.locations || [];
+        // If the backend provided a guide object, and front-end has guide_manager,
+        // open the guide flow using sample data (this makes step-by-step interactive)
+        if (data.guide && window.startGuideFlowFromData) {
+            window.startGuideFlowFromData(data.guide);
+        }
 
         // Remove loading message
         loadingMsg.remove();
@@ -438,4 +467,22 @@ export function initChat() {
 
     renderConversations();
     loadSelectedConversation();
+    
+    // Small UI toggle for mock responses (quick testing)
+    try {
+        const mockToggleLabel = document.createElement('label');
+        mockToggleLabel.style.marginLeft = '8px';
+        mockToggleLabel.style.fontSize = '13px';
+        mockToggleLabel.innerHTML = `<input type="checkbox" id="mockToggle" ${window.USE_MOCK_CHAT_RESPONSE ? 'checked' : ''}> Use mock`;
+        if (btnNew && btnNew.parentNode) btnNew.parentNode.appendChild(mockToggleLabel);
+        const mockToggle = document.getElementById('mockToggle');
+        if (mockToggle) {
+            mockToggle.addEventListener('change', (e) => {
+                window.USE_MOCK_CHAT_RESPONSE = e.target.checked;
+                console.log('USE_MOCK_CHAT_RESPONSE =', window.USE_MOCK_CHAT_RESPONSE);
+            });
+        }
+    } catch (e) {
+        console.warn('Could not add mock toggle UI', e);
+    }
 }

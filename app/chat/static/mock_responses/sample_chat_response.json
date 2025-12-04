@@ -1,0 +1,63 @@
+{
+  "reply": "Tôi sẽ hướng dẫn bạn từng bước để hoàn thành thủ tục này. Bắt đầu bằng việc chuẩn bị hồ sơ. Nhấn 'Đã xong' khi bạn hoàn tất hoặc 'Gặp khó khăn' nếu cần trợ giúp.",
+  "locations": [
+    {
+      "Ten": "UBND Quận 1",
+      "DiaChi": "123 Đường Lý Tự Trọng, Quận 1",
+      "SDT": "0123456789",
+      "Website": "www.ubnd-quan1.vn",
+      "Lat": 10.776530,
+      "Lng": 106.700981,
+      "raw_distance_km": 0.5
+    },
+    {
+      "Ten": "Phòng Tư pháp Quận 1",
+      "DiaChi": "45 Nguyễn Huệ, Quận 1",
+      "SDT": "0987654321",
+      "Website": "",
+      "Lat": 10.777200,
+      "Lng": 106.702300,
+      "raw_distance_km": 0.6
+    }
+  ],
+  "guide": {
+    "title": "Thủ tục Sao y công chứng tại UBND",
+    "steps": [
+      {
+        "id": 1,
+        "title": "Chuẩn bị hồ sơ",
+        "desc": "Mang bản gốc và bản photo cần sao y. Mang CMND/CCCD gốc để đối chiếu.",
+        "tip": "Nên photo dư 1-2 bản. Giữ bản gốc riêng với bản sao.",
+        "action": "next"
+      },
+      {
+        "id": 2,
+        "title": "Gửi xe & Vào cổng",
+        "desc": "Hỏi bảo vệ chỗ gửi xe, cầm vé xe.",
+        "tip": "Nói 'Vào phòng Tư pháp sao y giấy tờ' nếu được hỏi.",
+        "action": "next"
+      },
+      {
+        "id": 3,
+        "title": "Lấy số thứ tự",
+        "desc": "Lấy số tự động tại Bộ phận Một cửa, chọn 'Sao y - Chứng thực'.",
+        "tip": "Nếu máy hỏng, hỏi bàn hướng dẫn.",
+        "action": "next"
+      },
+      {
+        "id": 4,
+        "title": "Nộp hồ sơ & Chờ đợi",
+        "desc": "Nộp hồ sơ khi đến lượt, cán bộ sẽ kiểm tra và đóng dấu.",
+        "tip": "Kiểm tra bản photo không bị mờ.",
+        "action": "next"
+      },
+      {
+        "id": 5,
+        "title": "Đóng lệ phí & Nhận kết quả",
+        "desc": "Đóng phí (khoảng 2k-5k/trang), nhận lại giấy tờ và kiểm tra dấu mộc.",
+        "tip": "Kiểm tra đủ số lượng bản sao và ngày tháng dấu mộc.",
+        "action": "done"
+      }
+    ]
+  }
+}

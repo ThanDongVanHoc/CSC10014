@@ -1029,3 +1029,335 @@
   .map-sidebar { width: 280px; max-width: 45%; }
   .map-chat-panel { flex: 1 1 auto; max-width: none; }
 }
+
+/* =========================================
+   STEP-BY-STEP GUIDE UI
+   ========================================= */
+
+/* Khung bao quanh 1 bước */
+.guide-card {
+    background: #ffffff;
+    border: 1px solid rgba(0, 123, 255, 0.15);
+    border-radius: 16px;
+    padding: 0; /* Header riêng, body riêng */
+    margin-top: 8px;
+    box-shadow: 0 8px 20px rgba(0, 123, 255, 0.1);
+    overflow: hidden;
+    animation: slideIn 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    max-width: 85%; /* Rộng hơn tin nhắn thường chút */
+}
+
+/* Phần Header: Chứa số bước và thanh tiến trình */
+.guide-header {
+    background: linear-gradient(135deg, #0078ff 0%, #0056b3 100%);
+    padding: 12px 16px;
+    color: white;
+}
+
+.guide-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* Thanh tiến trình */
+.progress-track {
+    background: rgba(255, 255, 255, 0.3);
+    height: 6px;
+    border-radius: 3px;
+    width: 100%;
+    overflow: hidden;
+}
+
+.progress-fill {
+    background: #4ade80; /* Màu xanh lá tươi sáng */
+    height: 100%;
+    border-radius: 3px;
+    transition: width 0.5s ease;
+}
+
+/* Phần nội dung chính */
+.guide-body {
+    padding: 16px;
+}
+
+.guide-title {
+    font-size: 16px;
+    font-weight: 700;
+    color: #0b1220;
+    margin-bottom: 6px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.guide-desc {
+    font-size: 14px;
+    color: #475569;
+    line-height: 1.5;
+}
+
+.guide-tip {
+    margin-top: 12px;
+    background: #fffbeb; /* Vàng nhạt */
+    border-left: 3px solid #f59e0b;
+    padding: 8px 12px;
+    font-size: 13px;
+    color: #92400e;
+    border-radius: 4px;
+    display: none; /* Mặc định ẩn, hiện khi cần */
+}
+
+/* Phần nút bấm hành động */
+.guide-actions {
+    display: flex;
+    border-top: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.guide-btn {
+    flex: 1;
+    padding: 14px;
+    border: none;
+    background: white;
+    font-weight: 600;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.guide-btn.success {
+    color: #059669;
+    border-right: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.guide-btn.success:hover {
+    background: #ecfdf5;
+}
+
+.guide-btn.issue {
+    color: #dc2626;
+}
+
+.guide-btn.issue:hover {
+    background: #fef2f2;
+}
+
+/* Tin nhắn AI suy nghĩ (Loading state) */
+.ai-thinking {
+    font-style: italic;
+    color: #64748b;
+    font-size: 13px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 8px 0;
+}
+
+/* ... (Code guide-card cũ giữ nguyên) ... */
+
+/* Form nhập vấn đề (Troubleshooting Form) */
+.guide-problem-form {
+    padding: 12px 16px;
+    background: #fff5f5; /* Nền đỏ nhạt cảnh báo */
+    border-top: 1px dashed #feb2b2;
+    display: none; /* Mặc định ẩn */
+    animation: slideIn 0.3s ease;
+}
+
+.guide-problem-input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #fc8181;
+    border-radius: 8px;
+    font-size: 13px;
+    margin-bottom: 8px;
+    resize: none;
+    font-family: inherit;
+}
+
+.guide-problem-input:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(245, 101, 101, 0.2);
+}
+
+.guide-problem-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+}
+
+.btn-submit-issue {
+    background: #e53e3e;
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.btn-cancel-issue {
+    background: white;
+    color: #718096;
+    border: 1px solid #cbd5e0;
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 12px;
+    cursor: pointer;
+}
+
+/* AI Solution Box (Giải pháp AI đưa ra) */
+.ai-solution-box {
+    margin: 12px 16px;
+    padding: 12px;
+    background: #f0fff4; /* Xanh lá nhạt */
+    border: 1px solid #68d391;
+    border-radius: 8px;
+    display: none;
+    animation: slideIn 0.3s ease;
+}
+
+.solution-title {
+    font-weight: 700;
+    color: #2f855a;
+    font-size: 13px;
+    margin-bottom: 4px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.solution-content {
+    font-size: 13px;
+    color: #276749;
+    line-height: 1.4;
+}
+
+
+
+/* =========================================
+   MAP GUIDE OVERLAY (Floating Card)
+   ========================================= */
+.map-guide-container {
+    position: absolute;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 90%;
+    max-width: 450px;
+    z-index: 2000; /* Cao hơn mọi thứ */
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    transition: all 0.3s ease;
+}
+
+.map-guide-card {
+    background: rgba(255, 255, 255, 0.98);
+    backdrop-filter: blur(10px);
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    padding: 0;
+    overflow: hidden;
+    animation: slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    border: 1px solid rgba(255,255,255,0.5);
+}
+
+@keyframes slideUp {
+    from { transform: translateY(100px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+/* Header tiến trình */
+.guide-overlay-header {
+    padding: 12px 16px;
+    background: #0f172a;
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.guide-progress-text { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; }
+.guide-step-badge { background: #3b82f6; padding: 2px 8px; border-radius: 12px; font-size: 11px; }
+
+/* Nội dung */
+.guide-overlay-body { padding: 16px; position: relative; }
+.guide-step-title { font-size: 18px; font-weight: 800; color: #1e293b; margin-bottom: 6px; display:flex; align-items:center; gap:8px;}
+.guide-step-desc { font-size: 14px; color: #475569; line-height: 1.5; margin-bottom: 12px; }
+
+/* Smart Suggestion Button (Nút gợi ý thông minh) */
+.smart-suggestion-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: #eff6ff;
+    color: #2563eb;
+    border: 1px dashed #bfdbfe;
+    padding: 10px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    width: 100%;
+    margin-bottom: 12px;
+    transition: all 0.2s;
+}
+.smart-suggestion-btn:hover { background: #dbeafe; }
+
+/* Controls Buttons */
+.guide-overlay-actions {
+    display: flex;
+    gap: 8px;
+    padding-top: 8px;
+    border-top: 1px solid #f1f5f9;
+}
+
+.action-btn {
+    flex: 1;
+    padding: 12px;
+    border-radius: 10px;
+    border: none;
+    font-weight: 600;
+    cursor: pointer;
+    font-size: 14px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 6px;
+    transition: transform 0.1s;
+}
+.action-btn:active { transform: scale(0.96); }
+
+.btn-undo { background: #f1f5f9; color: #64748b; flex: 0 0 50px; }
+.btn-issue { background: #fef2f2; color: #ef4444; }
+.btn-next { background: #10b981; color: white; box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3); }
+
+/* Vùng hiển thị lỗi (Troubleshoot) */
+.trouble-panel {
+    display: none;
+    background: #fff1f2;
+    padding: 12px;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    border: 1px solid #fecdd3;
+}
+.trouble-options button {
+    display: block;
+    width: 100%;
+    text-align: left;
+    background: white;
+    border: 1px solid #fda4af;
+    padding: 8px;
+    margin-top: 6px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 13px;
+    color: #9f1239;
+}
+.trouble-options button:hover { background: #fff0f1; }
