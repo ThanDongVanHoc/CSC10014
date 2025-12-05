@@ -10,7 +10,7 @@ from .utilis import (
     delete_conversation,
 )
 
-API_KEY = "AIzaSyA64uitr82I10KGTUyBgrki8FOJmZ1SWPs"
+API_KEY = "AIzaSyC3MsAkjVl2Mk0j5o_g6a-ikzeczmWnNGA"
 BASE_MODEL_NAME = "gemini-2.5-flash" 
 
 system_prompt = r"""
