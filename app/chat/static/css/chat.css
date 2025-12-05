@@ -1632,3 +1632,70 @@
 .trouble-options button:hover {
   background: #fff0f1;
 }
+.trouble-options button:hover {
+  background: #fff0f1;
+}
+
+/* -------------------------------------- */
+/* 1. Container cho Leaflet.js */
+/* -------------------------------------- */
+
+/* -------------------------------------- */
+/* KHUNG CHỨA CHUNG (Mới)                 */
+/* -------------------------------------- */
+/* Class này giúp gom nhóm ảnh và sóng vào 1 khối thống nhất */
+.avatar-marker-container {
+  position: relative; /* Làm mốc toạ độ cho con absolute */
+  width: 50px;
+  height: 50px;
+  display: flex; /* Dùng flex để căn giữa tuyệt đối */
+  justify-content: center; /* Căn giữa ngang */
+  align-items: center; /* Căn giữa dọc */
+}
+
+/* -------------------------------------- */
+/* 2. Avatar chính                        */
+/* -------------------------------------- */
+.avatar-pin-img {
+  width: 100%; /* Theo kích thước container (50px) */
+  height: 100%; /* Theo kích thước container (50px) */
+  border-radius: 50%;
+
+  /* QUAN TRỌNG: Tính viền vào trong kích thước 50px */
+  box-sizing: border-box;
+
+  border: 3px solid #fff;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+
+  position: absolute; /* Đè lên sóng */
+  z-index: 2;
+  /* Bỏ top/left vì đã dùng Flexbox ở container để căn giữa */
+}
+
+/* -------------------------------------- */
+/* 3. Lớp Sóng Lan Tỏa                    */
+/* -------------------------------------- */
+.avatar-ripple {
+  width: 100%; /* Theo kích thước container */
+  height: 100%; /* Theo kích thước container */
+  border-radius: 50%;
+  background-color: #0099ff;
+
+  position: absolute; /* Nằm dưới ảnh */
+  z-index: 1;
+
+  /* Animation giữ nguyên */
+  animation: ripple 2s infinite cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+/* Keyframe giữ nguyên */
+@keyframes ripple {
+  0% {
+    transform: scale(1);
+    opacity: 0.8;
+  }
+  100% {
+    transform: scale(1.5);
+    opacity: 0;
+  } /* Tăng scale lên chút cho đẹp */
+}

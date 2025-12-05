@@ -153,6 +153,12 @@ class SmartGuideController {
 
     _renderCurrentStep() {
         const step = this.steps[this.currentIndex];
+        if(this.currentIndex == this.steps.length){
+            this._finish();
+            window.MapGuideUI.close();
+            return;
+        }
+
         if (window.MapGuideUI) {
             window.MapGuideUI.renderStep(step, this.steps.length, this.currentIndex, {
                 onNext: () => { this.currentIndex++; this._renderCurrentStep(); },
@@ -188,7 +194,7 @@ class SmartGuideController {
 
     _finish() {
         this._uiAppendMessage('bot', `
-            <div style="text-align:center; padding: 10px;">
+            <div style="text-align:center; padding: 10px; z-index = 1000000">
                 <h2 style="color: #d97706; margin: 0;">🎉 XUẤT SẮC! 🎉</h2>
                 <p>Bạn đã hoàn thành mọi thủ tục.</p>
             </div>
@@ -199,7 +205,6 @@ class SmartGuideController {
 
         // 3. Đợi 4 giây rồi mới đóng Fullscreen (để user ngắm pháo hoa)
         setTimeout(() => {
-            alert("Chúc mừng! Bạn đã hoàn thành nhiệm vụ."); // Fallback cuối cùng
             if (window.MapGuideUI) window.MapGuideUI.close();
             this._toggleFullscreen(false);
             this._removeConfetti(); // Dọn dẹp DOM
@@ -221,8 +226,11 @@ class SmartGuideController {
 
     _triggerConfettiEffect() {
         const colors = ['#ff0000', '#00ff00', '#0000ff', '#ffff00', '#ff00ff', '#00ffff'];
-        const container = document.body;
-        
+        const mapEl = document.getElementById(this.selectors.map); 
+        if (!mapEl) return;
+
+        const container = mapEl;
+
         // Tạo 100 mảnh giấy màu
         for (let i = 0; i < 100; i++) {
             const el = document.createElement('div');
@@ -238,7 +246,6 @@ class SmartGuideController {
             
             container.appendChild(el);
             
-            // Tự xóa sau khi rơi xong
             setTimeout(() => el.remove(), 5000);
         }
     }
