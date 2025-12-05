@@ -21,24 +21,32 @@ const icons = {
     shadowSize: [41, 41],
   }),
 
-    green: new L.Icon({
-        iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-green.png',
-        shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-shadow.png',
-        iconSize: [25, 41], iconAnchor: [12, 41],
-        popupAnchor: [1, -34], shadowSize: [41, 41]
-    }),
+  green: new L.Icon({
+    iconUrl:
+      "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-green.png",
+    shadowUrl:
+      "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-shadow.png",
+    iconSize: [25, 41],
+    iconAnchor: [12, 41],
+    popupAnchor: [1, -34],
+    shadowSize: [41, 41],
+  }),
 
-    yellow: new L.Icon({
-        iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-yellow.png',
-        shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-shadow.png',
-        iconSize: [25, 41], iconAnchor: [12, 41],
-        popupAnchor: [1, -34], shadowSize: [41, 41]
-    })
+  yellow: new L.Icon({
+    iconUrl:
+      "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-yellow.png",
+    shadowUrl:
+      "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-shadow.png",
+    iconSize: [25, 41],
+    iconAnchor: [12, 41],
+    popupAnchor: [1, -34],
+    shadowSize: [41, 41],
+  }),
 };
 
 let map = null;
 let mainMarker = null;
-let locationMarker = null; 
+let locationMarker = null;
 let startMarker = null;
 let endMarker = null;
 let routeLayer = null;
@@ -250,8 +258,7 @@ function setMarker(latlng, text) {
   startBtn.onclick = () =>
     setStartPoint(ll, text || "Location: " + ll.toString());
 
-  endBtn.onclick = () =>
-    setEndPoint(ll, text || "Location: " + ll.toString());
+  endBtn.onclick = () => setEndPoint(ll, text || "Location: " + ll.toString());
 }
 
 function createPin(latlng, name) {
@@ -544,13 +551,21 @@ function initPoiFeature(map) {
     const scrollWidth = poiContainer.scrollWidth;
     const clientWidth = poiContainer.clientWidth;
 
+    // Kiểm tra nếu nội dung vừa khít hoặc nhỏ hơn container (cho phép sai số 10px)
+    // -> Không cần cuộn -> Ẩn cả 2 nút
+    if (scrollWidth <= clientWidth + 10) {
+      prevBtn.style.display = "none";
+      nextBtn.style.display = "none";
+      return;
+    }
+
     // Hiển thị nút TRÁI nếu không ở đầu
-    prevBtn.style.display = scrollLeft > 0 ? "inline-block" : "none";
+    prevBtn.style.display = scrollLeft > 10 ? "inline-block" : "none";
 
     // Hiển thị nút PHẢI nếu chưa cuộn đến cuối
-    // (Cần 1 khoảng đệm nhỏ 1px cho chính xác)
+    // (Cần 1 khoảng đệm nhỏ 10px cho chính xác)
     nextBtn.style.display =
-      scrollLeft + clientWidth < scrollWidth - 1 ? "inline-block" : "none";
+      scrollLeft + clientWidth < scrollWidth - 10 ? "inline-block" : "none";
   }
 
   // Gắn sự kiện "scroll" để tự cập nhật nút
@@ -558,6 +573,12 @@ function initPoiFeature(map) {
 
   // Chạy 1 lần lúc đầu để kiểm tra (dùng setTimeout để chờ DOM)
   setTimeout(updateScrollButtons, 100);
+
+  // Lắng nghe sự kiện resize để cập nhật khi fullscreen
+  const resizeObserver = new ResizeObserver(() => {
+    updateScrollButtons();
+  });
+  resizeObserver.observe(poiContainer);
 
   // === HẾT PHẦN LOGIC MỚI ===
 
@@ -591,32 +612,48 @@ function initPoiFeature(map) {
 }
 
 function initMapControls() {
-  mapFullscreenBtn = document.getElementById('mapFullscreenBtn');
-  mapEl = document.getElementById('map');
+  mapFullscreenBtn = document.getElementById("mapFullscreenBtn");
+  mapEl = document.getElementById("map");
   chatContainer = document.getElementById("chatContainer");
-  mapLogo = document.getElementById('mapLogo');
-  mapChatOverlay = document.getElementById('mapChatOverlay');
+  mapLogo = document.getElementById("mapLogo");
+  mapChatOverlay = document.getElementById("mapChatOverlay");
 }
 
-async function handleScreenEvent(){
-    try {
-      if (!document.fullscreenElement) {
-        if (mapEl.requestFullscreen) await mapEl.requestFullscreen();
-        mapEl.classList.add('fullscreen');
-        mapChatOverlay.appendChild(chatContainer);
-      } else {
-        if (document.exitFullscreen) await document.exitFullscreen();
-        mapEl.classList.remove('fullscreen');
-        
-        document.querySelector(".app").prepend(chatContainer);
-        mapChatOverlay.classList.add("hidden");
+async function handleScreenEvent() {
+  try {
+    // Import hàm hideSearchWrapper từ chat.js
+    const { hideSearchWrapper } = await import("./chat.js");
+
+    // Toggle trạng thái fullscreen trong app (không dùng browser fullscreen API)
+    const isCurrentlyFullscreen = mapEl.classList.contains("fullscreen");
+
+    if (!isCurrentlyFullscreen) {
+      // Mở "fullscreen" - map chiếm toàn bộ app
+      mapEl.classList.add("fullscreen");
+      mapChatOverlay.appendChild(chatContainer);
+      if (mapLogo) mapLogo.style.display = "block";
+
+      // Ẩn ô search khi vào fullscreen
+      if (hideSearchWrapper) hideSearchWrapper();
+    } else {
+      // Đóng "fullscreen" - trả về bình thường
+      mapEl.classList.remove("fullscreen");
+      document.querySelector(".app").prepend(chatContainer);
+      mapChatOverlay.classList.add("hidden");
+      if (mapLogo) mapLogo.style.display = "none";
+    }
+  } catch (err) {
+    console.warn("Fullscreen toggle error:", err);
+  } finally {
+    setTimeout(() => {
+      try {
+        invalidateMapSize();
+        if (map && typeof map.invalidateSize === "function")
+          map.invalidateSize();
+      } catch (e) {
+        console.log(e); /*ignore*/
       }
-    } catch (err) {
-      console.warn("Fullscreen toggle error:", err);
-    } finally {
-      setTimeout(() => {
-        try { invalidateMapSize(); if (map && typeof map.invalidateSize === 'function') map.invalidateSize(); } catch(e){ console(e);/*ignore*/ }
-      }, 260);
+    }, 260);
   }
 }
 
@@ -679,6 +716,7 @@ export function initMap() {
 
   initPoiFeature(map);
   initMapControls();
+  if (mapLogo) mapLogo.style.display = "none";
 
   map.on("click", (e) => {
     if (flag_pin) createPin(e.latlng, "Marked Point");
@@ -687,74 +725,154 @@ export function initMap() {
 
   let pinned = false;
 
-  mapLogo.addEventListener('click', (e) => {
-    if(!document.fullscreenElement) return;
-    pinned = !pinned;
+  // === DRAG FUNCTIONALITY FOR mapLogo ===
+  let isDragging = false;
+  let offsetX = 0; // Khoảng cách từ chuột đến góc trái logo
+  let offsetY = 0; // Khoảng cách từ chuột đến góc trên logo
+  let dragStartX = 0; // Lưu vị trí chuột ban đầu để phát hiện click vs drag
+  let dragStartY = 0;
 
-    if (pinned) {
-      mapLogo.style.left = '50%';
-      mapLogo.style.top = '12px';
-      mapLogo.style.transform = 'translateX(-50%)';
-      mapLogo.style.bottom = 'auto';
-      mapLogo.style.right = 'auto';
-      showOverlay();
-      mapChatOverlay.classList.add('pinned');
-    } else {
-      mapLogo.style.left = '16px';
-      mapLogo.style.bottom = '16px';
-      mapLogo.style.top = 'auto';
-      mapLogo.style.transform = '';
-      mapChatOverlay.classList.remove('pinned');
-      hideOverlay();
-    }
+  mapLogo.addEventListener("mousedown", (e) => {
+    // Only start dragging if in fullscreen
+    const isMapFullscreen = mapEl.classList.contains("fullscreen");
+    if (!isMapFullscreen) return;
+
+    e.preventDefault();
+    e.stopPropagation();
+
+    isDragging = true;
+    mapLogo.classList.add("dragging");
+
+    // Lưu vị trí chuột ban đầu để phát hiện click
+    dragStartX = e.clientX;
+    dragStartY = e.clientY;
+
+    // Tính khoảng cách từ điểm click đến góc logo
+    const rect = mapLogo.getBoundingClientRect();
+    offsetX = e.clientX - rect.left;
+    offsetY = e.clientY - rect.top;
+
+    // Remove transitions temporarily
+    mapLogo.style.transition = "none";
   });
 
+  document.addEventListener("mousemove", (e) => {
+    if (!isDragging) return;
+
+    e.preventDefault();
+
+    // Get map container bounds
+    const mapRect = mapEl.getBoundingClientRect();
+    const logoSize = 64; // mapLogo size
+
+    // Tính vị trí mới dựa trên vị trí chuột trừ offset
+    let newX = e.clientX - mapRect.left - offsetX;
+    let newY = e.clientY - mapRect.top - offsetY;
+
+    // Constrain within map bounds
+    newX = Math.max(0, Math.min(newX, mapRect.width - logoSize));
+    newY = Math.max(0, Math.min(newY, mapRect.height - logoSize));
+
+    // Update position
+    mapLogo.style.left = newX + "px";
+    mapLogo.style.top = newY + "px";
+    mapLogo.style.bottom = "auto";
+    mapLogo.style.right = "auto";
+    mapLogo.style.transform = "";
+  });
+
+  document.addEventListener("mouseup", (e) => {
+    if (!isDragging) return;
+
+    isDragging = false;
+    mapLogo.classList.remove("dragging");
+
+    // Restore transitions
+    mapLogo.style.transition =
+      "transform 0.35s ease, left 0.2s ease, top 0.2s ease, right 0.2s ease, bottom 0.2s ease";
+
+    // If it was a simple click (no significant drag), toggle pinned
+    const deltaX = e.clientX - dragStartX;
+    const deltaY = e.clientY - dragStartY;
+    const dragDistance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+
+    if (dragDistance < 5) {
+      // This was a click, not a drag - handle the pin/unpin logic
+      const isMapFullscreen = mapEl.classList.contains("fullscreen");
+      if (!isMapFullscreen) return;
+      pinned = !pinned;
+
+      if (pinned) {
+        mapLogo.style.left = "50%";
+        mapLogo.style.top = "12px";
+        mapLogo.style.transform = "translateX(-50%)";
+        mapLogo.style.bottom = "auto";
+        mapLogo.style.right = "auto";
+        showOverlay();
+        mapChatOverlay.classList.add("pinned");
+      } else {
+        mapLogo.style.left = "16px";
+        mapLogo.style.bottom = "16px";
+        mapLogo.style.top = "auto";
+        mapLogo.style.transform = "";
+        mapChatOverlay.classList.remove("pinned");
+        hideOverlay();
+      }
+    }
+  });
+  // === END DRAG FUNCTIONALITY ===
+
+  mapLogo.addEventListener("click", (e) => {
+    e.stopPropagation();
+  });
 
   /// fullscreen map
-  mapFullscreenBtn.addEventListener('click', handleScreenEvent);
-
-  document.addEventListener('fullscreenchange', () => {
-    if (!document.fullscreenElement){
-      document.querySelector(".app").prepend(chatContainer);
-      mapChatOverlay.classList.add("hidden");
-      mapEl.classList.remove('fullscreen');
-    }
-    else mapEl.classList.add('fullscreen');
-    setTimeout(() => {
-      try { invalidateMapSize(); if (map && typeof map.invalidateSize === 'function') map.invalidateSize(); } catch(e){/*ignore*/ }
-    }, 220);
+  mapFullscreenBtn.addEventListener("click", (e) => {
+    e.stopPropagation();
+    handleScreenEvent();
   });
-
 
   return { map };
 }
 
 export function invalidateMapSize() {
-    if (map) map.invalidateSize();
+  if (map) map.invalidateSize();
 }
 
 export function pinLocationToMap(lat, lng, name, phone, website, distance) {
-    if (!map) return;
+  if (!map) return;
 
-    if(locationMarker){
-        map.removeLayer(locationMarker); 
-    }
-    
-    const latlng = L.latLng(lat, lng);
-    locationMarker = L.marker(latlng, { icon: icons.yellow }).addTo(map);
-    
-    const popupDiv = document.createElement('div');
-    const phoneLink = phone ? `<a href="tel:${phone}" style="color: #0078ff; text-decoration: none;">${phone}</a>` : 'Không có';
-    const webLink = website ? `<a href="${website.startsWith('http') ? '' : '//'}${website}" target="_blank" style="color: #0078ff; text-decoration: none;">Website</a>` : '';
-    const distanceText = distance ? `<br><small style="color: #666;">📍 ${distance.toFixed(1)} km</small>` : '';
-    
-    popupDiv.innerHTML = `
+  if (locationMarker) {
+    map.removeLayer(locationMarker);
+  }
+
+  const latlng = L.latLng(lat, lng);
+  locationMarker = L.marker(latlng, { icon: icons.yellow }).addTo(map);
+
+  const popupDiv = document.createElement("div");
+  const phoneLink = phone
+    ? `<a href="tel:${phone}" style="color: #0078ff; text-decoration: none;">${phone}</a>`
+    : "Không có";
+  const webLink = website
+    ? `<a href="${
+        website.startsWith("http") ? "" : "//"
+      }${website}" target="_blank" style="color: #0078ff; text-decoration: none;">Website</a>`
+    : "";
+  const distanceText = distance
+    ? `<br><small style="color: #666;">📍 ${distance.toFixed(1)} km</small>`
+    : "";
+
+  popupDiv.innerHTML = `
         <div style="text-align: left; padding: 8px; min-width: 180px;">
             <b style="display: block; margin-bottom: 6px; color: #0b2b3a;">${name}</b>
             <small style="color: #666; display: block; margin-bottom: 6px;">
                 📞 ${phoneLink}
             </small>
-            ${webLink ? `<small style="display: block; margin-bottom: 6px;">${webLink}</small>` : ''}
+            ${
+              webLink
+                ? `<small style="display: block; margin-bottom: 6px;">${webLink}</small>`
+                : ""
+            }
             ${distanceText}
             
             <div class="pin-btns" style="display: flex; justify-content: space-around; gap: 5px; margin-top: 8px;">
@@ -768,23 +886,22 @@ export function pinLocationToMap(lat, lng, name, phone, website, distance) {
         </div>
     `;
 
-    const [startBtn, endBtn] = popupDiv.querySelectorAll('button');
-    locationMarker.bindPopup(popupDiv).openPopup();
-    map.setView(latlng, 17);
+  const [startBtn, endBtn] = popupDiv.querySelectorAll("button");
+  locationMarker.bindPopup(popupDiv).openPopup();
+  map.setView(latlng, 17);
 
-    startBtn.onclick = () =>
-        setStartPoint(latlng, text || "Location: " + latlng.toString());
+  startBtn.onclick = () =>
+    setStartPoint(latlng, text || "Location: " + latlng.toString());
 
-    endBtn.onclick = () =>
-        setEndPoint(latlng, text || "Location: " + latlng.toString());
+  endBtn.onclick = () =>
+    setEndPoint(latlng, text || "Location: " + latlng.toString());
 }
 
 function showOverlay() {
-  mapChatOverlay.classList.remove('hidden');
+  mapChatOverlay.classList.remove("hidden");
   invalidateMapSize();
-
 }
 function hideOverlay() {
-  mapChatOverlay.classList.add('hidden');
+  mapChatOverlay.classList.add("hidden");
   invalidateMapSize();
 }

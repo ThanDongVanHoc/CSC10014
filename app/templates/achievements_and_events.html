@@ -1,0 +1,143 @@
+{% extends "layout.html" %} {% block title %}Achievements - VietConnect{%
+endblock %} {% block css %}
+<link
+  rel="stylesheet"
+  href="{{ url_for('static', filename='css/achievements_and_events.css') }}"
+/>
+<link
+  rel="icon"
+  href="{{ url_for('static', filename='images/logo.png') }}"
+  type="image/x-icon"
+/>
+{% endblock %} {% block content %}
+<main class="container">
+  <section class="ae-header">
+    <div class="status-badge">FY 2025 • Hall of Fame</div>
+    <h1 class="hero-title">Achievements</h1>
+    <p class="hero-subtitle">Our Trophy Case & Stats That Speak Volumes</p>
+  </section>
+
+  <section class="section-container">
+    <h2 class="section-title">Awards & Honors</h2>
+    <div class="awards-grid">
+      <div class="award-card gold-award">
+        <div class="medal-wrapper">
+          <div class="laurel-wreath"></div>
+          <div class="medal-circle">
+            <span>🏆</span>
+          </div>
+        </div>
+        <h3>WOAT</h3>
+        <p class="award-desc">Web of All Times</p>
+        <div class="award-year">2025</div>
+      </div>
+
+      <div class="award-card">
+        <div class="medal-wrapper">
+          <div class="laurel-wreath"></div>
+          <div class="medal-circle">
+            <span>🤝</span>
+          </div>
+        </div>
+        <h3>Most Trusted</h3>
+        <p class="award-desc">
+          Certified trustworthy information (Trust me bro).
+        </p>
+        <div class="award-year">2025</div>
+      </div>
+
+      <div class="award-card">
+        <div class="medal-wrapper">
+          <div class="laurel-wreath"></div>
+          <div class="medal-circle">
+            <span>🚀</span>
+          </div>
+        </div>
+        <h3>Most Visited</h3>
+        <p class="award-desc">Most visited (thanks to us spamming F5)</p>
+        <div class="award-year">2025</div>
+      </div>
+
+      <div class="award-card">
+        <div class="medal-wrapper">
+          <div class="laurel-wreath"></div>
+          <div class="medal-circle">
+            <span>💡</span>
+          </div>
+        </div>
+        <h3>Breakthrough</h3>
+        <p class="award-desc">Most Innovative (at crashing the server)</p>
+        <div class="award-year">2025</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section-container">
+    <h2 class="section-title">Scale of Impact</h2>
+    <div class="stats-grid">
+      <div class="stat-item">
+        <div class="stat-number" data-target="100000000">0</div>
+        <div class="stat-label">Monthly Active Users</div>
+      </div>
+
+      <div class="stat-divider"></div>
+
+      <div class="stat-item">
+        <div class="stat-number" data-target="1000000">0</div>
+        <div class="stat-label">Concurrent Users</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section-container">
+    <h2 class="section-title">In The News</h2>
+
+    <div class="news-card highlight-news">
+      <div class="news-badge">BREAKING NEWS</div>
+      <div class="news-content">
+        <h3>🎯 Mission: Computational Thinking Final Project</h3>
+        <p class="news-desc">
+          Counting down December to bag a <strong>perfect 10</strong> for the
+          <strong>god-tier</strong> project VietConnect.
+        </p>
+        <div class="progress-bar-container">
+          <div class="progress-bar-fill"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+{% endblock %} {% block script %}
+<script>
+  // Script đếm số (Counter Animation)
+  const counters = document.querySelectorAll(".stat-number");
+  const speed = 200; // Tốc độ đếm
+
+  counters.forEach((counter) => {
+    const updateCount = () => {
+      const target = +counter.getAttribute("data-target");
+      const count = +counter.innerText.replace(/,/g, ""); // Bỏ dấu phẩy để tính toán
+
+      // Bước nhảy
+      const inc = target / speed;
+
+      if (count < target) {
+        // Format số có dấu phẩy (e.g., 100,000,000)
+        counter.innerText = Math.ceil(count + inc).toLocaleString("en-US");
+        setTimeout(updateCount, 20);
+      } else {
+        counter.innerText = target.toLocaleString("en-US");
+      }
+    };
+
+    // Kích hoạt khi scroll tới (Intersection Observer đơn giản)
+    let observer = new IntersectionObserver((entries) => {
+      if (entries[0].isIntersecting) {
+        updateCount();
+        observer.disconnect();
+      }
+    });
+    observer.observe(counter);
+  });
+</script>
+{% endblock %}

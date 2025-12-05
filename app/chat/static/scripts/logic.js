@@ -1,78 +1,57 @@
-import { initMap, invalidateMapSize } from './map.js';
-import { initChat as initGuestChat, setMapReference as setGuestMapRef } from './chat.js';
-import { initChat as initUserChat, setMapReference as setUserMapRef } from './chat_user.js';
-
-/**
- * Kiểm tra trạng thái đăng nhập của người dùng.
- * Backend trả:
- *    { logged_in: true } hoặc { logged_in: false }
- */
-async function checkUserLogin() {
-    try {
-        const resp = await fetch('/chat/auth_status');
-        if (!resp.ok) return false;
-        const data = await resp.json();
-        return data.logged_in === true;
-    } catch (err) {
-        console.error("Không thể kiểm tra trạng thái đăng nhập:", err);
-        return false;
-    }
-}
+import { initMap, invalidateMapSize } from "./map.js";
+// QUAN TRỌNG: Import từ file mới (nhớ đổi tên file nếu bạn lưu tên khác)
+import { initChat, setMapReference } from "./chat.js";
 
 async function initialize() {
-    console.log("🚀 logic.js loaded: Initializing app...");
+  console.log("🚀 logic.js loaded: Initializing app...");
 
-    // ============================
-    // 1. KHỞI TẠO MAP
-    // ============================
-    const { map, pinLocationToMap } = initMap();
+  // ============================
+  // 1. KHỞI TẠO MAP
+  // ============================
+  const { map, pinLocationToMap } = initMap();
 
+  // ============================
+  // 2. KẾT NỐI MAP VỚI CHAT
+  // ============================
+  // Truyền hàm vẽ map vào cho module Chat sử dụng
+  // Khi user bấm "Xem bản đồ" trong chat -> Chat gọi hàm này
+  setMapReference(pinLocationToMap);
 
-    // ============================
-    // 2. CHECK LOGIN → LOAD CHAT
-    // ============================
-    const isLoggedIn = await checkUserLogin();
-    console.log("🔍 Login status:", isLoggedIn);
+  // ============================
+  // 3. KHỞI TẠO CHAT SYSTEM
+  // ============================
+  // Hàm này sẽ tự động check Auth và quyết định dùng chế độ Guest hay User
+  await initChat();
 
-    if (isLoggedIn) {
-        console.log("🟢 Đang dùng chế độ USER (chat_user.js)");
-        initUserChat();
+  // ============================
+  // 4. XỬ LÝ UI MAP (Resize khi ẩn hiện sidebar)
+  // ============================
+  const hideBtn = document.getElementById("hideBtn");
+  const showBtn = document.getElementById("showSidebar");
 
-        // Kết nối map với chat_user.js
-        if (typeof setUserMapRef === "function") {
-            setUserMapRef(pinLocationToMap);
-        }
-
-    } else {
-        console.log("🟠 Đang dùng chế độ GUEST (chat.js)");
-        initGuestChat();
-
-        // Kết nối map với chat.js
-        if (typeof setGuestMapRef === "function") {
-            setGuestMapRef(pinLocationToMap);
-        }
-    }
-
-
-    // ============================
-    // 3. THU GỌN BẢN ĐỒ
-    // ============================
-    const hideBtn = document.getElementById('hideBtn');
-    if (hideBtn) {
-        hideBtn.addEventListener('click', () => {
-            invalidateMapSize();
-        });
-    }
-
-
-    // ============================
-    // 4. CLEAR SESSION KHI ĐÓNG TAB (GUEST MODE)
-    // ============================
-    window.addEventListener("beforeunload", () => {
-        console.log("⏹ beforeunload → clear session");
-        sessionStorage.clear();
-        navigator.sendBeacon("/chat/clear_session");
+  // Khi ẩn sidebar -> Map rộng ra -> Cần cập nhật lại kích thước map
+  if (hideBtn) {
+    hideBtn.addEventListener("click", () => {
+      // Delay 300ms chờ hiệu ứng trượt sidebar xong mới vẽ lại map
+      setTimeout(invalidateMapSize, 300);
     });
+  }
+
+  // Khi hiện sidebar -> Map hẹp lại -> Cập nhật kích thước
+  if (showBtn) {
+    showBtn.addEventListener("click", () => {
+      setTimeout(invalidateMapSize, 300);
+    });
+  }
+
+  // ============================
+  // 5. DỌN DẸP SESSION (GUEST)
+  // ============================
+  window.addEventListener("beforeunload", () => {
+    // Gửi tín hiệu báo server xóa session tạm (nếu là guest)
+    navigator.sendBeacon("/chat/clear_session");
+    // Lưu ý: sessionStorage trình duyệt sẽ tự xóa khi đóng tab, không cần code JS xóa.
+  });
 }
 
-document.addEventListener('DOMContentLoaded', initialize);
+document.addEventListener("DOMContentLoaded", initialize);

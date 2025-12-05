@@ -1,57 +1,70 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
+  <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{% block title %}My Web App{% endblock %}</title>
 
     <!-- Leaflet Map (optional if you use maps) -->
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/layout.css') }}">
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/layout.css') }}"
+    />
     {% block css %}{% endblock %}
-</head>
-<body>
+  </head>
+  <body>
     <!-- ===== HEADER / NAVBAR ===== -->
-    <header class = "navigation-bar">
-        <div class = "logo">
-            <img src="{{ url_for('static', filename='images/logo.png') }}" class = "logo-img" alt = "Free5 team">
+    <header class="navigation-bar">
+      <div class="logo">
+        <img
+          src="{{ url_for('static', filename='images/logo.png') }}"
+          class="logo-img"
+          alt="Free5 team"
+        />
 
-            <div class = "logo-text">VietConnect</div>
+        <div class="logo-text">VietConnect</div>
+      </div>
+
+      <nav class="menu">
+        <a href="{{url_for('home_page')}}">Home</a>
+        <a href="{{url_for('achievements_and_events')}}">Achievements & Events</a>
+        <a href="{{url_for('about_us')}}">About Us</a>
+        <a href="https://www.facebook.com/pham.huu.nam.AmnOO" target="_blank"
+          >Support</a
+        >
+      </nav>
+
+      {% if not session.user_id %}
+      <div class="auth-buttons">
+        <button href="{{ url_for('auth.signup_page') }}" class="signup-btn">
+          Sign Up
+        </button>
+        <button href="{{ url_for('auth.signin_page') }}" class="signin-btn">
+          Sign In
+        </button>
+      </div>
+      {% else %}
+      <div class="user-info">
+        <img src="{{ session.avatar }}" alt="User Avatar" class="avatar" />
+        <div class="user-text">
+          <span class="greeting"
+            >Chào, <strong>{{ session.fullname }}</strong>!</span
+          >
+          <a href="{{ url_for('auth.logout') }}" class="logout-link">Log out</a>
         </div>
-
-        <nav class = "menu">
-            <a href="{{url_for('home_page')}}">Home</a>
-            <a href="404.html">Services & Events</a>
-            <a href="404.html">About Us</a>
-            <a href="404.html">Support</a>
-        </nav>
-
-        
-        {% if not session.user_id %}
-            <div class = "auth-buttons">
-                <button href ="{{ url_for('auth.signup_page') }}" class="signup-btn">Sign Up</button>
-                <button href = "{{ url_for('auth.signin_page') }}" class = "signin-btn">Sign In</button>
-            </div>
-        {% else %}
-            <div class="user-info">
-                <img src="{{ session.avatar }}" alt="User Avatar" class="avatar">
-                <div class="user-text">
-                    <span class="greeting">Chào, <strong>{{ session.fullname }}</strong>!</span>
-                    <a href="{{ url_for('auth.logout') }}" class="logout-link">Log out</a>
-                </div>
-            </div>
-        {% endif %}
-
+      </div>
+      {% endif %}
     </header>
 
     <!-- ===== MAIN CONTENT ===== -->
     <main>
-        {% block content %}
-        <!-- Page-specific content goes here -->
-        {% endblock %}
+      {% block content %}
+      <!-- Page-specific content goes here -->
+      {% endblock %}
     </main>
 
     <!-- ===== MAIN JS ===== -->
     <script src="{{ url_for('static', filename='script/layout.js') }}"></script>
     {% block script %}{% endblock %}
-</body>
+  </body>
 </html>

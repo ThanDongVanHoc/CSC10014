@@ -6,10 +6,12 @@
 
   position: absolute;
   top: -35px;
-  width: 90vw;
-  max-width: 400px;
+
   left: 50%;
   transform: translateX(-60%);
+
+  width: auto;
+  max-width: 55%;
   cursor: grab;
 
   /* === PHẦN 1: ẨN THANH CUỘN === */
@@ -19,6 +21,16 @@
   -ms-overflow-style: none;
 
   font-size: 0;
+
+  transition: max-width 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+    transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Khi map fullscreen, mở rộng POI container */
+#map.fullscreen .poi-filter-container {
+  max-width: 95%;
+  left: 50%;
+  transform: translateX(-50%);
 }
 
 /* 3. Cho Chrome, Safari, Opera */

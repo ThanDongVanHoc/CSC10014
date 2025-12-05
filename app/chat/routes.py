@@ -10,11 +10,8 @@ from .utilis import (
     delete_conversation,
 )
 
-
-
 API_KEY = "AIzaSyA64uitr82I10KGTUyBgrki8FOJmZ1SWPs"
 BASE_MODEL_NAME = "gemini-2.5-flash" 
-
 
 system_prompt = r"""
 This project is code by Phạm Hữu Nam, Thắng, Lĩnh, Tính, Khương. 
@@ -41,90 +38,6 @@ MODEL_API_ENDPOINT = "http://127.0.0.1:8000/recommend"
 @chat_bp.route('/')
 def chat_page():
     return render_template('chat.html')
-
-
-# @chat_bp.route('/', methods = ['POST'])
-# def chat():
-#     # 1. Lấy dữ liệu người dùng
-#     data = request.get_json()
-#     user_msg = data.get("message", "")
-    
-#     session.permanent = False; 
-
-#     if "history" not in session:
-#         session["history"] = []
-
-#     session["history"].append({"role": "user", "content": user_msg})
-
-#     history_parts = [{"role": h["role"], "parts": [{"text": h["content"]}]} for h in session["history"]]
-
-
-#     if not user_msg:
-#         return jsonify({"reply": "Bạn chưa nhập gì cả."})
-
-#     if not API_KEY:
-#         return jsonify({"reply": "Lỗi cấu hình: Không tìm thấy GEMINI_API_KEY."})
-    
-#     base_url = f"https://generativelanguage.googleapis.com/v1beta/models/{BASE_MODEL_NAME}:generateContent"
-
-
-#     headers = {
-#         "Content-Type": "application/json"
-#     }
-
-#     payload = {
-#         "contents": history_parts,
-#         "systemInstruction": {
-#             "parts": [
-#                 {"text": system_prompt}
-#             ]
-#         },
-
-#         "generationConfig": {
-#             "temperature": 0.5,
-#             "responseMimeType": "application/json"
-#         }
-#     }
-
-    
-
-#     try:
-#         response = requests.post(base_url, json=payload, params={"key": API_KEY})
-#         data = response.json()
-        
-#         if response.status_code != 200:
-#             error_msg = data.get("error", {}).get("message", "Lỗi API không rõ.")
-#             return jsonify({"reply": f"Lỗi API Gemini: Mã {response.status_code} - {error_msg}"})
-        
-#         candidates = data.get("candidates")
-#         if not candidates:
-#             reason = data.get("promptFeedback", {}).get("blockReason", "UNKNOWN")
-#             return jsonify({"reply": f"Lỗi: Phản hồi bị chặn do chính sách an toàn ({reason})."})
-        
-
-#         gemini_json_string = candidates[0].get("content", {}).get("parts", [{}])[0].get("text")
-#         if not gemini_json_string:
-#             return jsonify({"reply": "Lỗi: Gemini trả về phản hồi rỗng."})
-        
-#         try:
-#             parsed_data = json.loads(gemini_json_string)
-#             reply = parsed_data.get("reply", "Lỗi: Không tìm thấy 'reply' trong JSON.")
-#         except json.JSONDecodeError:
-#             reply = "Lỗi: Không thể phân tích cú pháp JSON từ Gemini. Gemini có thể đã trả về văn bản thường."
-#             print(f"Lỗi JSONDecodeError. Phản hồi thô từ Gemini: {gemini_json_string}")
-#         except Exception as e:
-#             reply = f"Lỗi xử lý JSON: {e}"
-
-
-#     except requests.exceptions.RequestException as e:
-#         reply = f"Lỗi kết nối: Không thể liên hệ với máy chủ Gemini. ({e})"
-#     except Exception as e:
-#         reply = f"Lỗi xử lý phản hồi: {e}"
-    
-    
-#     session["history"].append({"role": "model", "content": reply})
-        
-#     return jsonify({"reply": reply})
 
 @chat_bp.route('/', methods=['POST'])
 def chat():
@@ -167,10 +80,6 @@ def chat():
         save_message(user_email, "user", user_msg, convo_id)
         history.append({"role": "user", "content": user_msg})
     else:
-        # nếu chưa đăng nhập: dùng session như cũ
-        if "history" not in session:
-            session["history"] = []
-        session["history"].append({"role": "user", "content": user_msg})
         history = session["history"]
 
     # chuẩn bị dữ liệu gửi lên Gemini
@@ -211,7 +120,6 @@ def chat():
         gemini_json_string = candidates[0].get("content", {}).get("parts", [{}])[0].get("text")
         if not gemini_json_string:
             return jsonify({"reply": "Lỗi: Gemini trả về phản hồi rỗng."})
-        
 
         # 6. Xử lý JSON từ Gemini
         try:
@@ -272,8 +180,6 @@ def chat():
         # guest: lưu vào session như cũ
         session["history"].append({"role": "model", "content": gemini_reply_clean})
 
-        
-        
     # 8. Trả về
     return jsonify({
         "reply": gemini_reply_to_user, # Gửi phản hồi (có thể có lỗi) cho user
@@ -286,8 +192,6 @@ def clear_session():
     if "history" in session:
         session["history"].clear()
     return '', 204
-
-
 
 # ============= Conversation API cho user đã login =============
 

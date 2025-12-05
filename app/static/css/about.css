@@ -1,0 +1,193 @@
+/* --- DÒNG QUAN TRỌNG NHẤT: TẢI FONT TỪ GOOGLE --- */
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@900&family=Poppins:wght@400;500;600;700&display=swap");
+
+/* --- CẤU HÌNH CHUNG --- */
+body {
+  font-family: "Poppins", sans-serif; /* Ép buộc dùng font Poppins cho toàn trang */
+}
+
+/* --- BADGE (Cái khung xám bị lỗi font trong hình) --- */
+.status-badge {
+  display: inline-block;
+  padding: 6px 16px;
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.04);
+
+  /* Font settings */
+  font-family: "Poppins", sans-serif; /* Khai báo lại cho chắc chắn */
+  font-weight: 600;
+  font-size: 14px;
+  color: #555; /* Hoặc var(--text-light) nếu có */
+
+  margin-bottom: 16px;
+  letter-spacing: 0.5px; /* Giãn chữ ra xíu cho thoáng */
+}
+
+/* --- HERO SECTION (Canh giữa, Style giống Index Introduction) --- */
+.about-header {
+  text-align: center;
+  margin-top: 22px;
+  margin-bottom: 48px;
+}
+
+/* Title Free5 - Giữ màu xanh đẹp theo yêu cầu */
+.hero-title {
+  font-family: "Poppins", sans-serif;
+  font-size: 4rem; /* To hơn title thường */
+  font-weight: 900;
+  line-height: 1.1;
+  margin: 0;
+
+  /* Gradient Xanh đẹp */
+  background: linear-gradient(to right, #00b09b, #96c93d);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+
+  /* Hiệu ứng bóng sáng */
+  filter: drop-shadow(0 0 15px rgba(150, 201, 61, 0.4));
+}
+
+.hero-subtitle {
+  color: var(--muted);
+  font-size: 18px;
+  margin-top: 14px;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* --- GRID LAYOUT --- */
+.about-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+
+  /* THÊM DÒNG NÀY: */
+  align-items: start; /* Lệnh này bảo các cột: "Đừng có giãn ra, nội dung tới đâu thì cao tới đó thôi" */
+}
+
+/* Cột phải chứa các card nhỏ */
+.side-column {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+/* Card Style - Copy logic từ .card của index nhưng chỉnh cho text */
+.card-content {
+  /* Thêm dòng này vào là hết sạch lỗi font */
+  font-family: "Poppins", sans-serif !important;
+
+  /* Các thuộc tính cũ giữ nguyên */
+  background: var(--card);
+  border-radius: var(--radius);
+  padding: 20px;
+  box-shadow: var(--shadow);
+  height: fit-content;
+}
+
+.card-content h3 {
+  margin: 0 0 16px 0;
+  font-size: 20px;
+  color: #0b1220;
+}
+
+.card-content p {
+  color: var(--muted);
+  font-size: 16px;
+  line-height: 1.6;
+  margin: 0;
+}
+
+/* Container chứa các tên */
+.team-badges {
+  display: flex;
+  width: 100%; /* Đảm bảo khung này rộng 100% */
+  gap: 10px; /* Khoảng cách giữa các ô */
+  margin: 20px 0;
+}
+
+/* Từng ô tên thành viên */
+.member-pill {
+  flex: 1; /* THẦN CHÚ: Tự động chia đều không gian cho 5 đứa */
+  text-align: center; /* Canh giữa chữ trong từng ô */
+
+  /* Giữ nguyên style màu sắc cũ của bạn */
+  background: #eaf9f4;
+  color: var(--brand-600); /* Hoặc mã màu #009966 */
+  padding: 8px 0; /* Chỉnh padding trên dưới thôi, bỏ trái phải để nó tự căn */
+  border-radius: 999px;
+  font-weight: 600;
+  font-size: 14px;
+  white-space: nowrap; /* Không cho chữ xuống dòng */
+}
+
+/* --- HIGHLIGHT TEXT --- */
+.highlight {
+  color: var(--brand);
+  font-weight: 700;
+}
+
+.story-block {
+  margin-top: 24px;
+  padding-top: 24px;
+  border-top: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+/* --- WARNING CARD (Style riêng) --- */
+.warning-card {
+  /* --- THÊM DÒNG NÀY ĐỂ SỬA LỖI FONT --- */
+  font-family: "Poppins", sans-serif !important;
+
+  background: #fff5f5;
+  border: 1px solid #ffebeb;
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+  padding: 15px;
+}
+
+.icon-warning {
+  font-size: 24px;
+  background: rgba(255, 71, 87, 0.1);
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+}
+
+.warning-card h3 {
+  color: #e53935; /* Màu đỏ */
+}
+
+/* --- RATING BOX --- */
+.rating-box {
+  font-family: "Poppins", sans-serif !important;
+  text-align: center;
+  background: linear-gradient(135deg, #0b1220 0%, #1e293b 100%);
+  padding: 15px;
+}
+
+.rating-box .quote {
+  color: white;
+  font-style: italic;
+  font-weight: 500;
+}
+
+.rating-box .stars {
+  margin-top: 12px;
+  font-size: 24px;
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  .about-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .hero-title {
+    font-size: 3rem;
+  }
+}
