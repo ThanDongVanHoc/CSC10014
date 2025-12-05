@@ -1,0 +1,86 @@
+{% extends "layout.html" %} {% block css %}
+<link
+  rel="icon"
+  href="{{ url_for('static', filename='images/logo.png') }}"
+  type="image/x-icon"
+/>
+<link
+  rel="stylesheet"
+  href="{{ url_for('chat.static', filename='css/chat.css') }}"
+/>
+<link
+  rel="stylesheet"
+  href="{{ url_for('chat.static', filename='css/poi.css') }}"
+/>
+<link
+  href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+  rel="stylesheet"
+/>
+<link
+  rel="stylesheet"
+  href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+/>
+<link
+  rel="stylesheet"
+  href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css"
+/>
+<link
+  rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+/>
+{% endblock %} {% block content %}
+
+<div class="app">
+  <div class="chatContainer" id="chatContainer">
+    {% include "chat_block.html" %}
+  </div>
+
+  <!-- MAP -->
+  <div id="map">
+    <div class="transport-btns">
+      <button data-travel="driving" class="active">Driving</button>
+      <button data-travel="Motorcycling">Motorcycling</button>
+      <button data-travel="walking">Walking</button>
+    </div>
+
+    <!-- Fullscreen & controls -->
+    <div class="map-controls">
+      <button id="mapFullscreenBtn" title="Toggle fullscreen" class="map-btn">
+        <i class="fas fa-expand"></i>
+      </button>
+    </div>
+
+    <div id="mapLogo" class="map-logo" title="Open chat">
+      <img
+        src="{{ url_for('static', filename='images/logo.png') }}"
+        alt="logo"
+      />
+    </div>
+
+    <!-- Chat overlay inside the map (hidden by default) -->
+    <div
+      id="mapChatOverlay"
+      class="map-chat-overlay hidden"
+      style="
+        display: flex;
+        justify-content: flex-start;
+        align-items: flex-start;
+        max-width: 1600px;
+        margin: 20px;
+        padding: 0 20px 40px;
+      "
+    ></div>
+  </div>
+</div>
+{% endblock %} {% block script %}
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
+<script
+  type="module"
+  src="{{ url_for('chat.static', filename='scripts/logic.js') }}"
+></script>
+<script
+  type="module"
+  src="{{ url_for('chat.static', filename='scripts/guide_manager.js') }}"
+></script>
+{% endblock %}

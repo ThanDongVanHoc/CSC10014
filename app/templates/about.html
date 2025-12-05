@@ -1,0 +1,81 @@
+{% extends "layout.html" %} {% block title %}About Us - VietConnect{% endblock
+%} {% block css %}
+<link
+  rel="stylesheet"
+  href="{{ url_for('static', filename='css/about.css') }}"
+/>
+{% endblock %} {% block content %}
+<main class="container">
+  <section class="about-header">
+    <div class="status-badge">Since 2025 • APCS Class • Vibecoding</div>
+    <h1 class="hero-title">Free5</h1>
+    <p class="hero-subtitle">
+      Chân dung những "nữ sinh cao trung" đằng sau VietConnect.
+    </p>
+  </section>
+
+  <section class="about-grid">
+    <div class="card-content">
+      <h3>Who are we?</h3>
+      <p>
+        We are 5 sophomores from the APCS class, fighting for survival to save
+        our course project grade.
+      </p>
+
+      <div class="team-badges">
+        <span class="member-pill">🌸 Nam</span>
+        <span class="member-pill">🌸 Lĩnh</span>
+        <span class="member-pill">🌸 Khương</span>
+        <span class="member-pill">🌸 Thắng</span>
+        <span class="member-pill">🌸 Tính</span>
+      </div>
+
+      <div class="story-block">
+        <p>
+          Armed with
+          <span class="highlight"
+            >20 years of coding experience from the womb</span
+          >, honed by
+          <span class="highlight">500 'coding for kids' challenges</span>, and
+          mastering the ultimate art of
+          <span class="highlight">vibecoding</span>.
+        </p>
+        <p style="margin-top: 10px">
+          <strong>VietConnect</strong> was created to assist foreigners residing
+          and traveling in Ho Chi Minh City with administrative procedures,
+          featuring an integrated AI-powered chat system.
+        </p>
+      </div>
+    </div>
+
+    <div class="side-column">
+      <div class="card-content warning-card">
+        <div class="icon-warning">⚠️</div>
+        <div>
+          <h3>Important Warning</h3>
+          <p style="font-style: italic">
+            "Please enjoy the site, and if you find a bug,
+            <strong>do not contact us</strong>, simply because we don't know how
+            to fix it either."
+          </p>
+        </div>
+      </div>
+
+      <div class="card-content" style="font-family: 'Poppins', sans-serif">
+        <h3>Disclaimer</h3>
+        <p>
+          If it works, it’s our <strong>talent</strong>.<br />
+          <span>
+            If it breaks, it’s clearly a <strong>skill issue</strong> on your
+            end.
+          </span>
+        </p>
+      </div>
+
+      <div class="card-content rating-box">
+        <p class="quote">"Muốn kiểm tra tao, đánh giá hạnh kiểm mày 3 sao."</p>
+      </div>
+    </div>
+  </section>
+</main>
+{% endblock %}

@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Sign Up — VietConnect</title>
+    <link
+      rel="icon"
+      type="image/png"
+      href="{{ url_for('static', filename='images/logo.png') }}"
+    />
+
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('auth.static', filename='css/signup.css') }}">
+
+</head>
+<body>
+  <div class="site-wrap">
+    <header class="nav">
+      <div class="logo">
+        <img src="{{ url_for('static', filename='images/logo.png') }}" alt="VietConnect logo" />
+        <div>
+          <div class="brand">VietConnect</div>
+          <div class="muted" style="font-size:12px">Ho Chi Minh City • Multilingual</div>
+        </div>
+      </div>
+        <nav style="display: flex; gap: 12px; align-items: center">
+          <a href="{{url_for('home_page')}}" class="muted">Home</a>
+          <a href="{{url_for('auth.signin_page')}}" class="muted">Sign In</a>
+        </nav>
+      </header> 
+
+      <main style="margin-top: 20px" class="card grid">
+        <section class="left">
+          <div class="kicker">Create an account</div>
+          <h1>Welcome to VietConnect — Support for foreigners in Ho Chi Minh City</h1>
+          <p class="lead">Secure account to access multilingual assistance, medical and safety services, and step-by-step administrative help.</p>
+
+          <div class="features">
+            <div class="pill">Emergency-ready</div>
+            <div class="pill">Multilingual</div>
+            <div class="pill">Privacy-first</div>
+          </div>
+
+          <div style="margin-top:22px">
+            <h3 style="margin:0 0 8px">Why sign up?</h3>
+            <ul style="margin:0;padding-left:18px;color:var(--muted)">
+              <li>Fast AI triage and direct agent handoff</li>
+              <li>Saved documents and templates for administrative tasks</li>
+              <li>Encrypted personal data and consent controls</li>
+            </ul>
+          </div>
+
+          <div style="margin-top:20px;color:var(--muted);font-size:13px">Already have an account? <a href="{{url_for('auth.signin_page')}}">Sign in</a></div>
+        </section>
+
+      <aside class="right">
+
+          <form id="signupForm" novalidate  action = "/auth/signup" method = "POST">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
+              <h2 style="margin:0">Sign up</h2>
+              <small class="muted">It takes less than a minute</small>
+            </div>
+
+            <div class="field">
+              <label for="fullname">Full name</label>
+              <input id="fullname" name="fullname" type="text" placeholder="It's me Nam" required />
+              <div class="error" id="err-name" aria-live="polite"></div>
+            </div>
+
+            <div class="field">
+              <label for="email">Email</label>
+              <input id="email" name="email" type="email" placeholder="you@example.com" required />
+              <div class="error" id="err-email" aria-live="polite"></div>
+            </div>
+
+            <div class="row">
+              <div class="field">
+                <label for="phone">Phone (optional)</label>
+                <input id="phone" name="phone" type="text" placeholder="+84 9xx xxx xxx" />
+              </div>
+              <div class="field">
+                <label for="lang">Preferred language</label>
+                <select id="lang" name="lang">
+                  <option value="en" {% if form_data.lang == 'en' %}selected{% endif %}>
+                    English
+                  </option>
+                  <option value="vi" {% if form_data.lang == 'vi' %}selected{% endif %}>
+                    Tiếng Việt
+                  </option>
+                  <option value="zh" {% if form_data.lang == 'zh' %}selected{% endif %}>
+                    中文
+                  </option>
+                  <option value="ja" {% if form_data.lang == 'ja' %}selected{% endif %}>
+                    日本語
+                  </option>
+                </select>
+              </div>
+            </div>
+
+            <div class="field">
+              <label for="password">Password</label>
+              <div style="position:relative">
+                <input id="password" name="password" type="password" placeholder="Create a strong password" required />
+                <button type="button" id="togglePw" title="Show / Hide password" style="position:absolute;right:8px;top:8px;border:none;background:transparent;cursor:pointer">Show</button>
+              </div>
+              <div class="pw-meter" aria-hidden="true"><span id="pwBar" style="background:linear-gradient(90deg,var(--brand),var(--brand-600));width:0%"></span></div>
+              <div class="note" id="pwNote">Use at least 8 characters including a number and a symbol.</div>
+              <div class="error" id="err-pw" aria-live="polite"></div>
+            </div>
+
+            <div class="field">
+              <label for="confirm">Confirm password</label>
+              <input id="confirm" name="confirm" type="password" placeholder="Repeat password" required />
+              <div class="error" id="err-confirm" aria-live="polite"></div>
+            </div>
+
+            <div class="terms">
+              <input id="agree" type="checkbox" />
+              <label for="agree" class="muted">I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>.</label>
+            </div>
+            <div class="error" id="err-terms">
+                {{ errors.terms or '' }}
+            </div>
+
+            <button class="btn primary" type="submit">Create account</button>
+
+            <div class="divider" style="margin-top:8px">or</div>
+
+            <div class="socials">
+              <a href="{{ url_for('auth.google_login') }}"  class = "oauth-btn" type="button" aria-label="Continue with Google"> <img src="https://www.svgrepo.com/show/475656/google-color.svg" width="18"> Continue with Google</a>
+            </div>
+
+            <div class="note">By creating an account, you consent to receive important service messages. Your personal data is protected and shared only with your consent.</div>
+          </form>
+
+        </aside>
+      </main>
+
+      <footer class="page-foot">
+        <div class="muted">© 2025 VietConnect</div>
+        <div class="text-right muted">Need help? <a href="support.html">Contact support</a></div>
+      </footer>
+    </div>
+    
+  <script src="{{ url_for('auth.static', filename='scripts/common.js') }}"></script>
+  <script src="{{ url_for('auth.static', filename='scripts/signup.js') }}"></script>
+
+</body>
+</html>

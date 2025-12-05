@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sign in to VietConnect</title>
+    <link
+      rel="icon"
+      type="image/png"
+      href="{{ url_for('static', filename='images/logo.png') }}"
+    />
+
+    <link rel="stylesheet" href="{{url_for('auth.static', filename='css/signin.css')}}"
+
+  </head>
+
+  <body>
+    <div class="log-in">
+      <img
+        src="{{ url_for('static', filename='images/logo.png') }}"
+        alt="VietConnect Logo"
+        class="logo"
+      />
+
+      <h2 style="margin-bottom: 35px; text-align: center">
+        Sign in to VietConnect
+      </h2>
+
+      <form action="{{ url_for('auth.signin_page') }}" method="POST" id="form">
+        <div class="form-group">
+          <label> Email address </label>
+          <input
+            id="email"
+            name="email"
+            class="signin-input {% if errors.email %}is-invalid{% endif %}"
+            type="email"
+            placeholder="allmyexhatesme@4fun.com"
+            required
+            value="{{ form_data.email or '' }}"
+          />
+          {% if errors.email %}
+          <div class="error">{{ errors.email }}</div>
+          {% endif %}
+        </div>
+
+        <div class="form-group">
+          <label>
+            Password
+            <a href="{{ url_for('auth.reset_pass') }}" class="forgot">Forgot password ?</a>
+          </label>
+          <input
+            id="password"
+            name="password"
+            class="signin-input {% if errors.password %}is-invalid{% endif %}"
+            type="password"
+            placeholder="Your password"
+            required
+          />
+          {% if errors.password %}
+              <div class="error">{{ errors.password }}</div>
+          {% endif %}
+        </div>
+
+        <button type="submit" class="signin-btn">Sign in</button>
+      </form>
+
+      <div class="divider">or</div>
+
+      <a href="{{ url_for('auth.google_login') }}" class="oauth-btn">
+        <img
+          src="https://www.svgrepo.com/show/475656/google-color.svg"
+          width="18"
+        />
+        Continue with Google
+      </a>
+
+      <div class="footer">
+        New to VietConnect?
+        <a href="{{url_for('auth.signup_page')}}" style="color: blue"
+          >Create an account</a
+        >
+      </div>
+    </div>
+
+    <script src="{{ url_for('auth.static', filename='scripts/signin.js') }}"></script>
+  </body>
+</html>
