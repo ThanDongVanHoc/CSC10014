@@ -62,15 +62,12 @@
       id="mapChatOverlay"
       class="map-chat-overlay hidden"
       style="
-        display: grid;
-        grid-template-columns: 260px 520px;
-        display: grid;
-        grid-template-columns: 260px 520px 1fr;
-        gap: 20px;
+        display: flex;
+        justify-content: flex-start;
+        align-items: flex-start;
         max-width: 1600px;
-        margin: 20px auto;
+        margin: 20px;
         padding: 0 20px 40px;
-        align-items: start;
       "
     ></div>
   </div>
@@ -81,5 +78,9 @@
 <script
   type="module"
   src="{{ url_for('chat.static', filename='scripts/logic.js') }}"
+></script>
+<script
+  type="module"
+  src="{{ url_for('chat.static', filename='scripts/guide_manager.js') }}"
 ></script>
 {% endblock %}

@@ -1,5 +1,11 @@
 const GUEST_STORAGE_KEY = "con_cho_cao_bang_pc"; // Key cho sessionStorage
 let isLoggedIn = false;
+
+import { startGuideFlow } from "./guide_manager.js"; // Nhớ import ở đầu file
+
+// Mock mode flag: default false. Can be toggled from console or UI checkbox.
+window.USE_MOCK_CHAT_RESPONSE = window.USE_MOCK_CHAT_RESPONSE || false;
+
 let conversations = [];
 let selectedId = null;
 let pinLocationToMapFn = null;
@@ -201,23 +207,44 @@ async function sendMessage(text) {
   try {
     const { lat, lng } = await getLocationOrDefault();
 
-    // 5. Gửi lên Server (Server sẽ TỰ LƯU tin nhắn vào DB cho User)
-    const res = await fetch("/chat/", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        message: text,
-        convo_id: selectedId,
-        user_lat: lat,
-        user_lng: lng,
-      }),
-    });
+    // 5. Gửi lên Server hoặc dùng Mock response
+    let data;
+    if (window.USE_MOCK_CHAT_RESPONSE) {
+      // Mock mode: Load từ file JSON
+      try {
+        const resp = await fetch(
+          "/chat/static/mock_responses/sample_chat_response.json"
+        );
+        data = await resp.json();
+      } catch (e) {
+        console.error("Failed to load mock response:", e);
+        data = { reply: "Lỗi khi tải mock response.", locations: [] };
+      }
+    } else {
+      // Real mode: Gửi lên Server (Server sẽ TỰ LƯU tin nhắn vào DB cho User)
+      const res = await fetch("/chat/", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          message: text,
+          convo_id: selectedId,
+          user_lat: lat,
+          user_lng: lng,
+        }),
+      });
+      data = await res.json();
+    }
 
-    const data = await res.json();
     loadingDiv.remove();
 
     const reply = data.reply || "Không có phản hồi.";
     const locations = data.locations || [];
+
+    // If the backend provided a guide object, and front-end has guide_manager,
+    // open the guide flow using sample data (this makes step-by-step interactive)
+    if (data.guide && window.startGuideFlowFromData) {
+      window.startGuideFlowFromData(data.guide);
+    }
 
     // 6. Đồng bộ ID (nếu vừa tạo chat mới)
     if (data.convo_id && data.convo_id != selectedId) {
@@ -322,13 +349,13 @@ function appendLocationCardsToUI(locations) {
                         Xem trên Bản đồ
                     </a>
                 </div>
-                <span class="distance">${distance} km</span>
+                 <button class="btn-guide-trigger" style="border:1px solid #0078ff; color:#0078ff; background:white; padding:6px 10px; border-radius:6px; cursor:pointer;">
+                    <i class="fas fa-list-check"></i> Hướng dẫn
+                </button>
             </div>
         `;
 
-    container.appendChild(card);
-
-    // Click vào link bản đồ
+    // Map link click
     const mapLinkEl = card.querySelector(".map-link");
     mapLinkEl.addEventListener("click", (e) => {
       e.preventDefault();
@@ -344,9 +371,17 @@ function appendLocationCardsToUI(locations) {
       }
     });
 
-    // Click vào thẻ (trừ link)
+    // Guide button click
+    const guideBtn = card.querySelector(".btn-guide-trigger");
+    guideBtn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      startGuideFlow(loc.Ten);
+    });
+
+    // Click vào thẻ (trừ link và button)
     card.addEventListener("click", (e) => {
-      if (e.target.tagName === "A") return;
+      if (e.target.tagName === "A" || e.target.closest(".btn-guide-trigger"))
+        return;
       if (pinLocationToMapFn) {
         pinLocationToMapFn(
           loc.Lat,
@@ -358,6 +393,8 @@ function appendLocationCardsToUI(locations) {
         );
       }
     });
+
+    container.appendChild(card);
   });
 
   chatMessages.appendChild(container);
@@ -373,9 +410,14 @@ async function loadSelectedChatToUI() {
   }
 
   const current = conversations.find((c) => c.id == selectedId);
-  convTitle.textContent = current
-    ? current.title || "Conversation"
-    : "Loading...";
+  const rawTitle = current ? current.title || "Conversation" : "Loading...";
+
+  // Cắt title nếu quá dài và thêm dấu "..."
+  const maxLength = 25;
+  convTitle.textContent =
+    rawTitle.length > maxLength
+      ? rawTitle.slice(0, maxLength) + "..."
+      : rawTitle;
 
   const msgs = await DataManager.getMessages(selectedId);
   msgs.forEach((m) => appendMessageToUI(m.role, m.content));
@@ -448,7 +490,9 @@ function renderSidebar(filter = "") {
       hideSearchWrapper();
 
       selectedId = c.id;
-      renderSidebar(filter);
+      // Xóa filter để hiện lại tất cả conversations
+      if (searchInput) searchInput.value = "";
+      renderSidebar();
       loadSelectedChatToUI();
     });
 
@@ -507,15 +551,56 @@ function createDropdownMenu(event, convo) {
 
   // --- Sự kiện Rename ---
   menu.querySelector(".rename").onclick = async () => {
-    const newName = prompt("Tên mới:", convo.title);
-    if (newName) {
-      await DataManager.rename(convo.id, newName);
-      renderSidebar();
-      if (convo.id == selectedId && typeof convTitle !== "undefined") {
-        convTitle.textContent = newName;
-      }
-    }
     cleanup();
+
+    // Tìm element title của conversation này để edit inline
+    const convoItem = dotsBtn.closest(".convo-item");
+    const titleEl = convoItem.querySelector(".convo-title");
+
+    if (!titleEl) return;
+
+    const originalText = convo.title || "New chat";
+    const maxDisplayLength = 25; // Chỉ dùng để hiển thị, không giới hạn input
+
+    // Tạo input để edit trực tiếp
+    const input = document.createElement("input");
+    input.type = "text";
+    input.value = originalText;
+    // Không set maxLength để cho phép nhập dài bao nhiêu cũng được
+    input.style.cssText =
+      "width: 100%; padding: 4px; border: 1px solid #0078ff; border-radius: 4px; font-size: inherit;";
+
+    titleEl.textContent = "";
+    titleEl.appendChild(input);
+    input.focus();
+    input.select();
+
+    const saveRename = async () => {
+      const newName = input.value.trim();
+      if (newName && newName !== originalText) {
+        // Lưu tên đầy đủ vào database
+        await DataManager.rename(convo.id, newName);
+        // Nhưng chỉ hiển thị tối đa 25 ký tự với dấu ...
+        if (convo.id == selectedId && typeof convTitle !== "undefined") {
+          const displayTitle =
+            newName.length > maxDisplayLength
+              ? newName.slice(0, maxDisplayLength) + "..."
+              : newName;
+          convTitle.textContent = displayTitle;
+        }
+      }
+      renderSidebar();
+    };
+
+    input.addEventListener("blur", saveRename);
+    input.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        input.blur();
+      } else if (e.key === "Escape") {
+        renderSidebar();
+      }
+    });
   };
 
   // --- Sự kiện Delete ---
@@ -685,5 +770,26 @@ export async function initChat() {
         sendMessage(chatInput.value);
       }
     });
+  }
+
+  // Thêm Mock Toggle UI (để test không cần backend)
+  try {
+    const mockToggleLabel = document.createElement("label");
+    mockToggleLabel.style.marginLeft = "8px";
+    mockToggleLabel.style.fontSize = "13px";
+    mockToggleLabel.innerHTML = `<input type="checkbox" id="mockToggle" ${
+      window.USE_MOCK_CHAT_RESPONSE ? "checked" : ""
+    }> Use mock`;
+    if (btnNew && btnNew.parentNode)
+      btnNew.parentNode.appendChild(mockToggleLabel);
+    const mockToggle = document.getElementById("mockToggle");
+    if (mockToggle) {
+      mockToggle.addEventListener("change", (e) => {
+        window.USE_MOCK_CHAT_RESPONSE = e.target.checked;
+        console.log("USE_MOCK_CHAT_RESPONSE =", window.USE_MOCK_CHAT_RESPONSE);
+      });
+    }
+  } catch (e) {
+    console.warn("Could not add mock toggle UI", e);
   }
 }

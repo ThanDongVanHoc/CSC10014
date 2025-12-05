@@ -59,6 +59,10 @@ let chatContainer = null;
 let mapLogo = null;
 let mapChatOverlay = null;
 
+// Biến để phân biệt click vs drag trên map
+let mapDragStart = null;
+let isMapDragging = false;
+
 // BIẾN TOÀN CỤC MỚI DÙNG CHO POI VÀ QUẢN LÝ TRẠNG THÁI
 let poiLayer = null; // Layer cho các POI
 let poiControl = null; // Control chứa các nút filter POI
@@ -316,7 +320,7 @@ function createPin(latlng, name) {
 
   pinBtn.onclick = () => {
     const userNote = noteInput.value || "(No note !)";
-    isSaved = true; // Đánh dấu đã lưu để không bị xóa khi đóng popup
+    isSaved = true;
     map.removeLayer(marker);
     marker.closePopup();
     savePinToMap(latlng, userNote);
@@ -531,19 +535,14 @@ function initPoiFeature(map) {
     poiContainer.scrollLeft = newScrollLeft;
   });
 
-  // 2. LOGIC CLICK CHO NÚT MŨI TÊN
-
-  // Nút TRÁI (<)
   prevBtn.addEventListener("click", () => {
     poiContainer.scrollBy({ left: -260, behavior: "smooth" });
   });
 
-  // Nút PHẢI (>)
   nextBtn.addEventListener("click", () => {
     poiContainer.scrollBy({ left: 260, behavior: "smooth" });
   });
 
-  // 3. LOGIC TỰ ĐỘNG ẨN/HIỆN NÚT (Giống Google Maps)
   function updateScrollButtons() {
     if (!poiContainer) return;
 
@@ -568,10 +567,8 @@ function initPoiFeature(map) {
       scrollLeft + clientWidth < scrollWidth - 10 ? "inline-block" : "none";
   }
 
-  // Gắn sự kiện "scroll" để tự cập nhật nút
   poiContainer.addEventListener("scroll", updateScrollButtons);
 
-  // Chạy 1 lần lúc đầu để kiểm tra (dùng setTimeout để chờ DOM)
   setTimeout(updateScrollButtons, 100);
 
   // Lắng nghe sự kiện resize để cập nhật khi fullscreen
@@ -585,7 +582,7 @@ function initPoiFeature(map) {
   // GẮN SỰ KIỆN CLICK CHO CÁC NÚT FILTER (Giữ nguyên code cũ của bạn)
   poiControl
     .getContainer()
-    .querySelectorAll(".poi-filter-btn") // Chỉ chọn nút filter
+    .querySelectorAll(".poi-filter-btn")
     .forEach((button) => {
       button.addEventListener("click", () => {
         clearAllLayers();
@@ -617,6 +614,23 @@ function initMapControls() {
   chatContainer = document.getElementById("chatContainer");
   mapLogo = document.getElementById("mapLogo");
   mapChatOverlay = document.getElementById("mapChatOverlay");
+
+  // Chặn click propagation từ overlay xuống map
+  // if (mapChatOverlay) {
+  //   mapChatOverlay.addEventListener("click", (e) => {
+  //     // Chỉ chặn nếu click vào nền overlay (không phải vào chatContainer)
+  //     if (e.target === mapChatOverlay) {
+  //       e.stopPropagation();
+  //     }
+  //   });
+
+  //   // Chặn luôn mousedown để tránh tạo pin trên map
+  //   mapChatOverlay.addEventListener("mousedown", (e) => {
+  //     if (e.target === mapChatOverlay) {
+  //       e.stopPropagation();
+  //     }
+  //   });
+  // }
 }
 
 async function handleScreenEvent() {
@@ -631,7 +645,15 @@ async function handleScreenEvent() {
       // Mở "fullscreen" - map chiếm toàn bộ app
       mapEl.classList.add("fullscreen");
       mapChatOverlay.appendChild(chatContainer);
+      mapChatOverlay.classList.add("hidden"); // Ẩn overlay ban đầu, đợi user click mapLogo
       if (mapLogo) mapLogo.style.display = "block";
+
+      // Chặn tất cả click events từ chatContainer xuống map
+      if (chatContainer) {
+        chatContainer.addEventListener("click", stopPropagation);
+        chatContainer.addEventListener("mousedown", stopPropagation);
+        // chatContainer.addEventListener("mouseup", stopPropagation); // Bỏ chặn mouseup để tránh lỗi dính drag map
+      }
 
       // Ẩn ô search khi vào fullscreen
       if (hideSearchWrapper) hideSearchWrapper();
@@ -641,6 +663,13 @@ async function handleScreenEvent() {
       document.querySelector(".app").prepend(chatContainer);
       mapChatOverlay.classList.add("hidden");
       if (mapLogo) mapLogo.style.display = "none";
+
+      // Xóa event listeners khi thoát fullscreen
+      if (chatContainer) {
+        chatContainer.removeEventListener("click", stopPropagation);
+        chatContainer.removeEventListener("mousedown", stopPropagation);
+        // chatContainer.removeEventListener("mouseup", stopPropagation);
+      }
     }
   } catch (err) {
     console.warn("Fullscreen toggle error:", err);
@@ -655,6 +684,11 @@ async function handleScreenEvent() {
       }
     }, 260);
   }
+}
+
+// Helper function to stop event propagation
+function stopPropagation(e) {
+  e.stopPropagation();
 }
 
 export function initMap() {
@@ -718,9 +752,42 @@ export function initMap() {
   initMapControls();
   if (mapLogo) mapLogo.style.display = "none";
 
+  // Theo dõi mousedown để phát hiện drag
+  map.on("mousedown", (e) => {
+    mapDragStart = { x: e.originalEvent.clientX, y: e.originalEvent.clientY };
+    isMapDragging = false;
+  });
+
+  // Theo dõi mousemove để xác định đang drag
+  map.on("mousemove", (e) => {
+    if (mapDragStart) {
+      const deltaX = e.originalEvent.clientX - mapDragStart.x;
+      const deltaY = e.originalEvent.clientY - mapDragStart.y;
+      const distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+
+      // Nếu di chuyển > 5px thì coi là drag
+      if (distance > 5) {
+        isMapDragging = true;
+      }
+    }
+  });
+
+  // Click event - chỉ tạo marker nếu không phải drag
   map.on("click", (e) => {
-    if (flag_pin) createPin(e.latlng, "Marked Point");
-    else flag_pin = true;
+    if (!isMapDragging) {
+      if (flag_pin) createPin(e.latlng, "Marked Point");
+      else flag_pin = true;
+    }
+
+    // Reset trạng thái
+    mapDragStart = null;
+    isMapDragging = false;
+  });
+
+  // Reset khi mouseup
+  map.on("mouseup", () => {
+    mapDragStart = null;
+    isMapDragging = false;
   });
 
   let pinned = false;
@@ -800,23 +867,39 @@ export function initMap() {
       // This was a click, not a drag - handle the pin/unpin logic
       const isMapFullscreen = mapEl.classList.contains("fullscreen");
       if (!isMapFullscreen) return;
+
       pinned = !pinned;
 
       if (pinned) {
+        // Di chuyển logo lên trên
         mapLogo.style.left = "50%";
         mapLogo.style.top = "12px";
         mapLogo.style.transform = "translateX(-50%)";
         mapLogo.style.bottom = "auto";
         mapLogo.style.right = "auto";
-        showOverlay();
+
+        // Đảm bảo chatContainer ở trong overlay trước khi hiển thị
+        if (chatContainer && chatContainer.parentElement !== mapChatOverlay) {
+          mapChatOverlay.appendChild(chatContainer);
+        }
+
+        // Hiện overlay
+        mapChatOverlay.classList.remove("hidden");
         mapChatOverlay.classList.add("pinned");
+
+        invalidateMapSize();
       } else {
+        // Di chuyển logo xuống dưới
         mapLogo.style.left = "16px";
         mapLogo.style.bottom = "16px";
         mapLogo.style.top = "auto";
         mapLogo.style.transform = "";
+
+        // Ẩn overlay
+        mapChatOverlay.classList.add("hidden");
         mapChatOverlay.classList.remove("pinned");
-        hideOverlay();
+
+        invalidateMapSize();
       }
     }
   });
@@ -898,6 +981,10 @@ export function pinLocationToMap(lat, lng, name, phone, website, distance) {
 }
 
 function showOverlay() {
+  // Đảm bảo chatContainer đã được move vào overlay
+  if (chatContainer && chatContainer.parentElement !== mapChatOverlay) {
+    mapChatOverlay.appendChild(chatContainer);
+  }
   mapChatOverlay.classList.remove("hidden");
   invalidateMapSize();
 }
@@ -905,3 +992,258 @@ function hideOverlay() {
   mapChatOverlay.classList.add("hidden");
   invalidateMapSize();
 }
+
+let currentStepMarker = null;
+
+window.updateMapForGuideStep = function (lat, lng, title, zoomLevel = 18) {
+  if (!map) return;
+
+  // 1. Xóa marker bước cũ
+  if (currentStepMarker) {
+    map.removeLayer(currentStepMarker);
+  }
+
+  if (!lat || !lng) return; // Bước nào không có toạ độ thì thôi
+
+  // 2. Tạo Icon riêng cho Step (Ví dụ màu tím hoặc icon đặc biệt)
+  const stepIcon = new L.Icon({
+    iconUrl:
+      "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-violet.png",
+    shadowUrl:
+      "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-shadow.png",
+    iconSize: [25, 41],
+    iconAnchor: [12, 41],
+    popupAnchor: [1, -34],
+    shadowSize: [41, 41],
+  });
+
+  // 3. Bay đến địa điểm
+  map.flyTo([lat, lng], zoomLevel, {
+    animate: true,
+    duration: 1.5, // Bay từ từ cho mượt
+  });
+
+  // 4. Cắm marker và hiện popup
+  currentStepMarker = L.marker([lat, lng], { icon: stepIcon }).addTo(map);
+
+  // Popup nhỏ gọn
+  const popupContent = `
+        <div style="text-align:center;">
+            <b style="color:#6f42c1">STEP: ${title}</b>
+            <br>📍 Vị trí này
+        </div>
+    `;
+  currentStepMarker.bindPopup(popupContent).openPopup();
+};
+
+// ==========================================
+// MAP GUIDE UI (Quản lý giao diện Hướng dẫn)
+// ==========================================
+let guideContainer = null;
+let currentGuideMarker = null;
+let suggestionMarkers = []; // Lưu các marker tiệm photo/bãi xe
+
+window.MapGuideUI = {
+  // 1. Khởi tạo vùng chứa
+  init: function () {
+    if (document.querySelector(".map-guide-container")) return;
+    guideContainer = document.createElement("div");
+    guideContainer.className = "map-guide-container";
+    document.getElementById("map").appendChild(guideContainer);
+  },
+
+  // 2. Render Card Hướng dẫn
+  renderStep: function (stepData, totalSteps, currentIndex, callbacks) {
+    this.init();
+
+    // Icon theo loại bước
+    const icon =
+      stepData.type === "move" ? "🛵" : stepData.type === "doc" ? "📄" : "📍";
+
+    // Nút gợi ý thông minh (chỉ hiện nếu data có suggestion_query)
+    let suggestionHtml = "";
+    if (stepData.suggestion_query) {
+      suggestionHtml = `
+                <div class="smart-suggestion-btn" onclick="window.MapGuideUI.triggerSuggestion('${
+                  stepData.suggestion_query
+                }')">
+                    <i class="fas fa-search-location"></i> 
+                    ${stepData.suggestion_text || "Tìm địa điểm hỗ trợ gần đây"}
+                </div>
+            `;
+    }
+
+    guideContainer.innerHTML = `
+          <div class="map-guide-card">
+            <div class="guide-overlay-header">
+              <span class="guide-progress-text">Hướng dẫn chi tiết</span>
+              <span class="guide-step-badge">${
+                currentIndex + 1
+              } / ${totalSteps}</span>
+            </div>
+                
+            <div class="guide-overlay-body">
+              <div class="guide-step-title">${icon} ${stepData.title}</div>
+              <div class="guide-step-desc">${stepData.desc}</div>
+                    
+              ${suggestionHtml}
+
+              <div id="step-extra-${stepData.id}" style="margin-top:10px"></div>
+
+              <!-- Problem input form (hidden by default) -->
+              <div id="problem-form-${
+                stepData.id
+              }" style="display:none; margin-top:10px;">
+                <input id="problem-input-${
+                  stepData.id
+                }" class="guide-problem-input" placeholder="Mô tả sự cố (ví dụ: bãi xe hết chỗ)" />
+                <div style="display:flex; gap:8px; margin-top:8px;">
+                  <button class="btn-submit-issue" onclick="window.submitIssue(${
+                    stepData.id
+                  })">Gửi vấn đề</button>
+                  <button class="btn-cancel-issue" onclick="window.toggleIssueForm(${
+                    stepData.id
+                  }, false)">Hủy</button>
+                </div>
+              </div>
+
+              <!-- AI solution box -->
+              <div id="solution-box-${
+                stepData.id
+              }" class="ai-solution-box" style="display:none; margin-top:10px;">
+                <div class="solution-title">Gợi ý từ AI</div>
+                <div id="solution-content-${
+                  stepData.id
+                }" class="solution-content"></div>
+              </div>
+
+              <div id="action-buttons-${
+                stepData.id
+              }" class="guide-overlay-actions">
+                ${
+                  currentIndex > 0
+                    ? `<button class="action-btn btn-undo" id="btn-guide-undo"><i class="fas fa-undo"></i></button>`
+                    : ""
+                }
+                <button class="action-btn btn-issue" id="btn-guide-issue-${
+                  stepData.id
+                }">
+                  <i class="fas fa-exclamation-triangle"></i> Sự cố
+                </button>
+                <button class="action-btn btn-next" id="btn-guide-next-${
+                  stepData.id
+                }">
+                  ${
+                    currentIndex === totalSteps - 1 ? "Hoàn tất" : "Tiếp theo"
+                  } <i class="fas fa-arrow-right"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+        `;
+
+    // Gắn sự kiện
+    const btnNext = document.getElementById(`btn-guide-next-${stepData.id}`);
+    if (btnNext)
+      btnNext.onclick = () => {
+        if (typeof callbacks.onNext === "function") callbacks.onNext();
+      };
+
+    const btnUndo = document.getElementById("btn-guide-undo");
+    if (btnUndo)
+      btnUndo.onclick = () => {
+        if (typeof callbacks.onUndo === "function") callbacks.onUndo();
+      };
+
+    const issueBtn = document.getElementById(`btn-guide-issue-${stepData.id}`);
+    if (issueBtn)
+      issueBtn.onclick = () => {
+        window.toggleIssueForm(stepData.id, true);
+      };
+
+    this.updateMapCamera(stepData);
+  },
+
+  // 3. Update Map Camera (Bay đến địa điểm)
+  updateMapCamera: function (step) {
+    if (!map) return;
+
+    // Xóa marker cũ
+    if (currentGuideMarker) map.removeLayer(currentGuideMarker);
+
+    // Nếu bước này có toạ độ cụ thể
+    if (step.lat && step.lng) {
+      map.flyTo([step.lat, step.lng], 17, { duration: 1.5 });
+      currentGuideMarker = L.marker([step.lat, step.lng], {
+        icon: new L.Icon({
+          iconUrl:
+            "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-violet.png",
+          shadowUrl:
+            "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-shadow.png",
+          iconSize: [25, 41],
+          iconAnchor: [12, 41],
+          popupAnchor: [1, -34],
+          shadowSize: [41, 41],
+        }),
+      }).addTo(map);
+    }
+  },
+
+  triggerSuggestion: function (query) {
+    suggestionMarkers.forEach((m) => map.removeLayer(m));
+    suggestionMarkers = [];
+
+    alert(`🤖 Đang tìm "${query}" gần vị trí của bạn...`);
+
+    const center = map.getCenter();
+    const nearby1 = [center.lat + 0.001, center.lng + 0.001];
+    const nearby2 = [center.lat - 0.001, center.lng - 0.0005];
+
+    [nearby1, nearby2].forEach((loc, i) => {
+      const marker = L.marker(loc, {
+        icon: new L.Icon({
+          iconUrl:
+            "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-gold.png",
+          shadowUrl:
+            "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-shadow.png",
+          iconSize: [25, 41],
+          iconAnchor: [12, 41],
+          popupAnchor: [1, -34],
+          shadowSize: [41, 41],
+        }),
+      })
+        .addTo(map)
+        .bindPopup(`<b>${query} ${i + 1}</b><br>Cách bạn 150m`)
+        .openPopup();
+      suggestionMarkers.push(marker);
+    });
+
+    map.flyTo(center, 16);
+  },
+
+  handleTrouble: function (solutionText) {
+    try {
+      const boxes = document.querySelectorAll('[id^="solution-box-"]');
+      if (boxes && boxes.length) {
+        boxes.forEach((b) => (b.style.display = "block"));
+      }
+
+      const contents = document.querySelectorAll('[id^="solution-content-"]');
+      if (contents && contents.length) {
+        contents.forEach((c) => (c.innerHTML = solutionText));
+      }
+    } catch (e) {
+      console.warn("handleTrouble display error", e);
+    }
+
+    try {
+      alert("💡 AI Solution:\n" + solutionText);
+    } catch (e) {}
+  },
+
+  close: function () {
+    if (guideContainer) guideContainer.innerHTML = "";
+    if (currentGuideMarker) map.removeLayer(currentGuideMarker);
+    suggestionMarkers.forEach((m) => map.removeLayer(m));
+  },
+};

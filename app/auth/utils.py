@@ -60,6 +60,7 @@ def clear_auth_session(function):
     return wrapper
 
 def login_user_session(user: User):
+    session.permanent = True
     session["user_id"] = user.id
     session["fullname"] = user.fullname
     session["avatar"] = user.avatar_url
