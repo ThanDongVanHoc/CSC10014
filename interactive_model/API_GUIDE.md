@@ -366,7 +366,6 @@ _(Tên các phần sẽ tự động dịch sang ngôn ngữ của người dùn
 
 ---
 
-
 ---
 
 ## 🚀 Cách Chạy API
@@ -388,7 +387,7 @@ GEMINI_API_KEY=your_api_key_here
 ### 3️⃣ Khởi Động Server
 
 ```bash
-python main_v2.py
+python main.py
 ```
 
 Server sẽ chạy tại: `http://localhost:8000`
@@ -400,4 +399,3 @@ python test_api.py
 ```
 
 ---
-
