@@ -33,6 +33,26 @@ const icons = {
         shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-shadow.png',
         iconSize: [25, 41], iconAnchor: [12, 41],
         popupAnchor: [1, -34], shadowSize: [41, 41]
+    }),
+
+    avatar_pin: L.divIcon({
+        className: 'custom-avatar-icon', // Class của wrapper do Leaflet tạo
+        html: `
+            <div class="avatar-marker-container">
+                <div class="avatar-ripple"></div>
+                <img class="avatar-pin-img" src="/static/images/hcmus_avatar.jpg" alt="Avatar" />
+            </div>
+        `,
+        
+        // Cập nhật kích thước thật trùng với CSS (50px)
+        iconSize: [50, 50], 
+        
+        // Đưa điểm neo về CHÍNH GIỮA hình tròn (50/2 = 25)
+        // Nếu bạn muốn tâm hình tròn nằm đúng toạ độ bản đồ:
+        iconAnchor: [25, 25], 
+        
+        // Chỉnh lại vị trí popup cho phù hợp (nằm phía trên đầu ảnh)
+        popupAnchor: [0, -30], 
     })
 };
 
@@ -122,7 +142,7 @@ function setStartPoint(latlng, name) {
           
           <div style="margin: 5px 0 10px 0;">${name}</div>
 
-          <button id="unpinBtn" style="background:#dc3545; color:white; border: none; padding: 6px 10px; border-radius: 4px; cursor: pointer; font-size: 0.9em;">
+          <button id="unpinBtn" style="background:#dc3550; color:white; border: none; padding: 6px 10px; border-radius: 4px; cursor: pointer; font-size: 0.9em;">
               Unpin
           </button>
       </div>
@@ -223,7 +243,7 @@ function setMarker(latlng, text) {
 
   if (mainMarker) map.removeLayer(mainMarker);
 
-  mainMarker = L.marker(ll).addTo(map);
+  mainMarker = L.marker(ll, {icon : icons.avatar_pin}).addTo(map);
 
   const popupDiv = document.createElement("div");
   popupDiv.innerHTML = `
@@ -829,7 +849,6 @@ let currentGuideMarker = null;
 let suggestionMarkers = []; // Lưu các marker tiệm photo/bãi xe
 
 window.MapGuideUI = {
-    // 1. Khởi tạo vùng chứa
     init: function() {
         if (document.querySelector('.map-guide-container')) return;
         guideContainer = document.createElement('div');
