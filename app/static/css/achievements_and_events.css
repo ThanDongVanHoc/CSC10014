@@ -1,0 +1,317 @@
+/* --- IMPORT FONTS --- */
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;900&display=swap");
+
+body {
+  font-family: "Poppins", sans-serif;
+  background-color: var(--bg);
+}
+
+.container {
+  padding-bottom: 80px;
+}
+
+/* --- HEADER / HERO --- */
+.ae-header {
+  text-align: center;
+  margin-top: 32px;
+  margin-bottom: 60px;
+}
+
+.status-badge {
+  display: inline-block;
+  padding: 6px 16px;
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.04);
+  font-family: "Poppins", sans-serif;
+  font-weight: 600;
+  font-size: 14px;
+  color: #555;
+  margin-bottom: 16px;
+  letter-spacing: 0.5px;
+}
+
+.hero-title {
+  font-family: "Poppins", sans-serif;
+  font-size: 3.5rem;
+  font-weight: 900;
+  line-height: 1.1;
+  margin: 0;
+  background: linear-gradient(to right, #00b09b, #96c93d);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 0 15px rgba(150, 201, 61, 0.4));
+}
+
+.hero-subtitle {
+  color: var(--muted);
+  font-size: 18px;
+  margin-top: 14px;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* --- COMMON SECTIONS --- */
+.section-container {
+  max-width: 1200px;
+  margin: 0 auto 60px auto;
+  padding: 0 20px;
+}
+
+.section-title {
+  font-family: "Poppins", sans-serif;
+  font-size: 24px;
+  font-weight: 700;
+  color: #0b1220;
+  margin-bottom: 30px;
+  position: relative;
+  padding-left: 15px;
+  border-left: 5px solid var(--brand);
+}
+
+/* --- AWARDS GRID --- */
+.awards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 30px;
+}
+
+.award-card {
+  background: var(--card);
+  border-radius: var(--radius);
+  padding: 30px 20px;
+  text-align: center;
+  box-shadow: var(--shadow);
+  transition: transform 0.3s ease;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  position: relative;
+  overflow: hidden;
+}
+
+.award-card:hover {
+  transform: translateY(-5px);
+}
+
+.medal-wrapper {
+  position: relative;
+  width: 100px;
+  height: 100px;
+  margin: 0 auto 20px auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.laurel-wreath {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  border: 3px dashed #e0e0e0;
+  animation: spin 10s linear infinite;
+}
+
+.medal-circle {
+  width: 70px;
+  height: 70px;
+  background: #f0f0f0;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 30px;
+  position: relative;
+  z-index: 2;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Style riêng cho WOAT (Gold) */
+.gold-award .laurel-wreath {
+  border-color: #f1c40f;
+  box-shadow: 0 0 15px rgba(241, 196, 15, 0.3);
+}
+
+.gold-award .medal-circle {
+  background: linear-gradient(135deg, #f1c40f, #f39c12);
+  color: white;
+}
+
+.award-card h3 {
+  font-size: 20px;
+  margin: 0 0 10px 0;
+  color: #0b1220;
+  font-weight: 700;
+}
+
+.award-desc {
+  font-size: 14px;
+  color: var(--muted);
+  margin: 0 0 15px 0;
+  font-style: normal; /* Đã sửa: từ italic thành normal */
+}
+
+.award-year {
+  display: inline-block;
+  background: #eaf9f4;
+  color: var(--brand-600);
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-weight: 600;
+  font-size: 12px;
+}
+
+@keyframes spin {
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* --- STATS SECTION --- */
+/* Xóa class .bg-stats vì không dùng hộp nền nữa */
+
+.stats-grid {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 40px;
+  margin-top: 20px;
+  padding: 40px 0; /* Thêm khoảng cách trên dưới cho thoáng */
+}
+
+.stat-item {
+  flex: 1;
+  min-width: 250px;
+  text-align: center; /* Canh giữa nội dung */
+}
+
+.stat-number {
+  font-family: "Poppins", sans-serif;
+  font-size: 3.5rem;
+  font-weight: 900;
+  /* Giữ nguyên gradient màu xanh */
+  background: linear-gradient(to right, #00b09b, #96c93d);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 10px;
+}
+
+.stat-label {
+  font-size: 18px;
+  color: #555; /* Đổi từ màu sáng sang màu xám đậm để hiện rõ trên nền trắng */
+  font-weight: 600; /* Tăng độ đậm lên một chút cho rõ */
+}
+
+.stat-divider {
+  width: 2px;
+  height: 80px;
+  background: #e0e0e0; /* Đổi màu vạch ngăn sang xám nhạt */
+  display: none;
+}
+
+/* Responsive hiển thị vạch ngăn */
+@media (min-width: 768px) {
+  .stat-divider {
+    display: block;
+  }
+}
+
+@media (max-width: 768px) {
+  .stat-number {
+    font-size: 2.5rem;
+  }
+}
+
+/* --- NEWS SECTION --- */
+.highlight-news {
+  background: #fff;
+  border-left: 5px solid #0d2c54;
+  box-shadow: var(--shadow);
+  border-radius: var(--radius);
+  padding: 30px;
+  position: relative;
+  overflow: hidden;
+}
+
+.news-badge {
+  background: #e53935;
+  color: white;
+  font-weight: 700;
+  padding: 5px 15px;
+  border-radius: 4px;
+  display: inline-block;
+  font-size: 12px;
+  margin-bottom: 15px;
+  animation: blink 2s infinite;
+}
+
+.news-content h3 {
+  font-size: 24px;
+  margin: 0 0 15px 0;
+  color: #0b1220;
+}
+
+.news-desc {
+  font-size: 16px;
+  color: #555;
+  line-height: 1.6;
+  margin-bottom: 20px;
+}
+
+.news-footer {
+  font-size: 13px;
+  color: #999;
+  text-align: right;
+  margin: 0;
+}
+
+.progress-bar-container {
+  width: 100%;
+  height: 10px;
+  background: #eee;
+  border-radius: 10px;
+  margin-bottom: 15px;
+  overflow: hidden;
+}
+
+.progress-bar-fill {
+  height: 100%;
+  width: 90%;
+  background: linear-gradient(to right, #00b09b, #96c93d);
+  border-radius: 10px;
+  animation: load 3s ease-out forwards;
+}
+
+@keyframes blink {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.6;
+  }
+}
+
+@keyframes load {
+  from {
+    width: 0%;
+  }
+  to {
+    width: 90%;
+  }
+}
+
+@media (min-width: 768px) {
+  .stat-divider {
+    display: block;
+  }
+}
+
+@media (max-width: 768px) {
+  .hero-title {
+    font-size: 2.5rem;
+  }
+  .stat-number {
+    font-size: 2.5rem;
+  }
+}

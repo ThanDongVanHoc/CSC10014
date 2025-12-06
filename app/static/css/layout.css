@@ -1,0 +1,160 @@
+:root {
+    --navbar-color: white;
+    --primary-color: #00b37e;
+    --dark-blue: #0d2c54;
+    --text-light: #555;
+    --bg-light: #f4f8f7;
+    --brand: #00b37e;
+    --muted: #6b7280;
+    --brand-600: #009966;
+    --bg: #fbfdff;
+    --card: #ffffff;
+    --radius: 12px;
+    --glass: rgba(255, 255, 255, 0.6);
+    --shadow: 0 6px 20px rgba(13, 17, 23, 0.08);
+}
+
+[data-theme="dark"] {
+    --navbar-color: #0b0e12;
+    --brand: #00d58a;
+    --muted: #9aa1a8;
+    --bg: #0b0e12;
+    --card: blue;
+    --glass: rgba(255, 255, 255, 0.03);
+    --shadow: 0 8px 30px rgba(2, 6, 23, 0.6);
+}
+
+body {
+    background-color: var(--bg);
+    height: 100%;
+    margin: 0;
+    color: #0b1220;
+    font-family: "Poppins", sans-serif;
+}
+
+/* ===== NAVIGATION BAR ===== */
+.navigation-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 15px 60px;
+    background-color: var(--navbar-color);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* ===== LOGO SECTION ===== */
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.logo-text {
+    font-size: 25px;
+    font-weight: 600;
+    color: #333;
+    padding-top: 7px;
+}
+
+.logo-img {
+    width: 45px;
+    height: 45px;
+}
+
+/* ===== MENU SECTION ===== */
+.menu {
+    display: flex;
+    gap: 40px;
+    transition: all 0.3s ease;
+}
+
+.menu a {
+    position: relative;
+    text-decoration: none;
+    color: black;
+    font-size: 20px;
+    font-weight: 550;
+    transition: color 0.3s;
+}
+
+.menu a.active::after {
+    content: "";
+    position: absolute;
+    bottom: -6px;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background-color: var(--brand);
+    border-radius: 2px;
+}
+
+.menu a::after {
+    content: "";
+    position: absolute;
+    bottom: -6px;
+    left: 0;
+    width: 0%;
+    height: 2px;
+    background-color: var(--brand);
+    border-radius: 2px;
+    transition: width 0.3s ease;
+}
+
+.menu a:hover::after {
+    width: 100%;
+}
+
+.menu a:hover {
+    color: var(--brand);
+}
+
+/* ===== AUTH BUTTONS ===== */
+.auth-buttons {
+    display: flex;
+    gap: 10px;
+}
+
+.signup-btn {
+    background-color: var(--brand);
+    color: white;
+    border: none;
+    padding: 8px 18px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: all 0.2s ease;
+}
+
+.signin-btn {
+    background-color: white;
+    color: darkblue;
+    border: 1px solid black;
+    padding: 8px 18px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: all 0.2s ease;
+}
+
+.signup-btn:hover {
+    background-color: var(--brand);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transform: translateY(-1px);
+}
+
+.signup-btn:active {
+    transform: translateY(0);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.signin-btn:hover {
+    background-color: #eaf9f4;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transform: translateY(-1px);
+}
+
+.signin-btn:active {
+    transform: translateY(0);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+    background-color: #eaf9f4;
+}

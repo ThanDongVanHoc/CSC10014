@@ -1,0 +1,93 @@
+<aside class="sidebar" aria-label="Conversations">
+  <div class="sidebar-header-gpt">
+    <div class="top-row">
+      <div class="brand-toggle" id="brandToggle" title="Expand Sidebar">
+        <img
+          src="{{ url_for('static', filename='images/logo.png') }}"
+          alt="App Logo"
+          class="sidebar-logo"
+        />
+
+        <i class="fas fa-columns sidebar-open-icon"></i>
+      </div>
+
+      <button id="hideBtn" class="gpt-btn-icon" title="Close Sidebar">
+        <i class="fas fa-columns"></i>
+      </button>
+    </div>
+
+    <nav class="sidebar-nav">
+      <button id="btnNew" class="nav-item-btn" title="New Chat">
+        <i class="fas fa-pen-to-square"></i>
+        <span>New Chat</span>
+      </button>
+
+      <button id="btnSearchTrigger" class="nav-item-btn" title="Search">
+        <i class="fas fa-magnifying-glass"></i>
+        <span>Search</span>
+      </button>
+    </nav>
+  </div>
+
+  <div
+    class="search-wrapper-hidden"
+    id="searchWrapper"
+    style="padding: 0 12px 12px 12px; display: none"
+  >
+    <input
+      id="searchInput"
+      class="gpt-search-input"
+      placeholder="Search Conversations..."
+    />
+  </div>
+
+  <!-- Tiêu đề Your Conversations -->
+  <div
+    id="convoHeader"
+    style="
+      padding: 8px 16px;
+      font-size: 12px;
+      font-weight: 600;
+      color: #64748b;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    "
+  >
+    Your conversations
+  </div>
+
+  <div id="convoList" class="convo-list" role="list"></div>
+</aside>
+
+<section class="chat">
+  <button id="showSidebar" title="Show Sidebar" style="display: none">
+    <i class="fas fa-chevron-right"></i>
+  </button>
+
+  <div class="card">
+    <div class="chat-header">
+      <div class="header-content">
+        <strong id="convTitle" class="chat-title">New chat</strong>
+        <div class="chat-subtitle">
+          <i class="fas fa-circle-info"></i> Ask me about locations or services
+        </div>
+      </div>
+      <div class="header-actions"></div>
+    </div>
+
+    <div id="chatMessages" class="chat-messages" aria-live="polite"></div>
+
+    <div class="chat-input-wrapper">
+      <div class="chat-input">
+        <input
+          id="chatInput"
+          placeholder="Type your message..."
+          aria-label="message input"
+        />
+        <button id="sendBtn" class="send-btn" title="Send message">
+          <i class="fas fa-paper-plane"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+</section>

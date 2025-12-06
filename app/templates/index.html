@@ -1,0 +1,176 @@
+{% extends "layout.html" %} {% block css %}
+<link
+  rel="stylesheet"
+  href="{{ url_for('static', filename='css/index.css') }}"
+/>
+{% endblock %} {% block content %}
+<main class="container">
+  <section class="container-section">
+    <div class="introduction">
+      <div
+        style="
+          display: inline-block;
+          padding: 6px 10px;
+          border-radius: 999px;
+          background: rgba(0, 0, 0, 0.04);
+          font-weight: 600;
+        "
+      >
+        Ho Chi Minh City • Multilingual • 24/7
+      </div>
+
+      <h1>
+        Security, healthcare and administrative assistance for foreign residents
+        in Ho Chi Minh City — powered by AI & people.
+      </h1>
+      <p>
+        VietConnect combines an AI chatbot, multilingual agents and local
+        resources to help foreign residents access medical care, safety services
+        and administrative processes quickly and clearly.
+      </p>
+
+      <div style="display: flex; gap: 12px; margin-top: 22px">
+        <button
+          class="main-button get-started"
+          href="{{url_for('chat.chat_page')}}"
+        >
+          Get Started - It's free
+        </button>
+        <button class="main-button learn-more" href="404.html" id="learnMore">
+          Learn More
+        </button>
+      </div>
+
+      <div style="color: --var(muted); margin-top: 12px">
+        Safe. Fast. Vietnamese + English + 中文 + 日本語
+      </div>
+    </div>
+
+    <div>
+      <img
+        style="width: 500px"
+        src="{{ url_for('static', filename='images/logo.png') }}"
+      />
+    </div>
+  </section>
+
+  <section class="features">
+    <div class="card">
+      <div class="icon"></div>
+      <div>
+        <h3>Security & Emergency</h3>
+        <p>
+          Alert system, emergency call, and help communicating with local
+          authorities in your language.
+        </p>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="icon"></div>
+      <div>
+        <h3>Healthcare Assistance</h3>
+        <p>
+          Appointment booking, medical translation, first-aid guidance and
+          connections to trusted clinics.
+        </p>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="icon"></div>
+      <div>
+        <h3>Administrative Help</h3>
+        <p>
+          Support for residency registration, documentation, job applications
+          and administrative checklists & templates.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section
+    style="
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+      margin-top: 36px;
+    "
+  >
+    <div class="how-it-work">
+      <h3 style="font-size: 18px">How it works</h3>
+      <ol style="margin-top: 12px; padding-left: 18px; color: var(--muted)">
+        <li style="margin-top: 20px">
+          <strong>Chat & AI triage:</strong> Quick replies and emergency level
+          classification.
+        </li>
+        <li style="margin-top: 16px">
+          <strong>Agent handoff:</strong> Escalation to multilingual human
+          agents when needed.
+        </li>
+        <li style="margin-top: 16px">
+          <strong>Local network:</strong> Connections to hospitals, police and
+          local services.
+        </li>
+      </ol>
+    </div>
+
+    <div
+      style="display: flex; flex-direction: column; gap: 12px; padding: 0 4px"
+    >
+      <div style="flex: 1; align-items: center" class="card">
+        <div>
+          <h3>Multilingual support</h3>
+          <p>Live translation and multilingual support when you need it.</p>
+        </div>
+      </div>
+
+      <div style="flex: 1; align-items: center" class="card">
+        <div>
+          <h3>Privacy first</h3>
+          <p>User data is encrypted and shared only with user consent.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer
+    style="
+      margin-top: 48px;
+      padding: 32px;
+      border-radius: 14px;
+      color: var(--muted);
+      font-size: 14px;
+    "
+  >
+    <div
+      style="
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 12px;
+        flex-wrap: wrap;
+      "
+    >
+      <div>
+        <strong>VietConnect</strong>
+        <div style="color: --var(muted)">
+          © 2025 VietConnect • Designed for foreign residents in Ho Chi Minh
+          City
+        </div>
+      </div>
+      <div style="color: var(--muted); font-size: 16px">
+        Need help?
+        <a
+          href="https://www.facebook.com/pham.huu.nam.AmnOO"
+          target="_blank"
+          style="text-decoration: underline"
+          >Contact support</a
+        >
+      </div>
+    </div>
+  </footer>
+</main>
+{% endblock %} {% block script %}
+<script src="{{ url_for('static', filename='script/index.js') }}"></script>
+{% endblock %}

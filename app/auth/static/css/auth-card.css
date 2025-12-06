@@ -1,0 +1,172 @@
+:root {
+  --brand-color: #00b37e;
+  --dark-text: #1c1e21;
+  --light-text: #606770;
+  --error-color: #e23a3a;
+}
+
+/* Ẩn biểu tượng 'con mắt' (reveal) mặc định của Edge */
+input[type="password"]::-ms-reveal {
+  display: none;
+}
+
+/* Ẩn luôn nút 'x' (clear) mặc định (nếu có) */
+input[type="password"]::-ms-clear {
+  display: none;
+}
+
+body {
+  font-family: "Segoe UI", sans-serif;
+  background-color: #f8f9fa;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+}
+
+.verification-card {
+  width: 380px;
+  padding: 30px 40px;
+  border-radius: 15px;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+  background-color: #fff;
+  text-align: center;
+}
+
+.logo {
+  width: 60px;
+  margin-bottom: 20px;
+}
+
+.verification-card h2 {
+  font-size: 22px;
+  font-weight: 600;
+  color: var(--dark-text);
+  margin-top: 0;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.instruction {
+  color: var(--light-text);
+  font-size: 14px;
+  line-height: 1.5;
+  margin-bottom: 25px;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+}
+
+.form-content {
+  margin-bottom: 25px;
+}
+
+.phone-info {
+  font-size: 13px;
+  color: var(--light-text);
+  line-height: 1.3;
+  text-align: left;
+  margin-bottom: 8px;
+  padding-top: 0;
+}
+
+.phone-info strong {
+  font-weight: 600;
+  color: var(--dark-text);
+  font-size: 14px;
+}
+
+.input-field input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 15px;
+  box-sizing: border-box;
+  transition: 0.2s;
+  margin-bottom: 0;
+}
+
+.input-field input:focus {
+  outline: none;
+  border-color: var(--brand-color);
+  box-shadow: 0 0 4px rgba(0, 179, 126, 0.3);
+}
+
+.error {
+  color: var(--error-color);
+  font-size: 13px;
+  text-align: left;
+  margin-top: 4px;
+  margin-bottom: 15px;
+}
+
+.link-text {
+  color: #1877f2;
+  text-decoration: none;
+  font-size: 14px;
+}
+
+.link-text:hover {
+  text-decoration: underline;
+}
+
+.buttons {
+  display: flex;
+  gap: 8px;
+}
+
+.btn {
+  padding: 0 16px;
+  height: 36px;
+  line-height: 36px;
+  border: none;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  font-size: 15px;
+  transition: background-color 0.2s, transform 0.2s;
+}
+
+.btn-cancel {
+  background-color: #e4e6eb;
+  color: #4b4f56;
+}
+
+.btn-cancel:hover {
+  background-color: #d8dadf;
+}
+
+.btn-primary {
+  background-color: var(--brand-color);
+  color: #fff;
+}
+
+.btn-primary:hover {
+  background-color: #009966;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transform: translateY(-1px);
+}
+
+.pw-meter {
+  height: 8px;
+  border-radius: 999px;
+  background: rgba(11, 18, 32, 0.06);
+  overflow: hidden;
+}
+.pw-meter > span {
+  display: block;
+  height: 100%;
+  width: 0%;
+  transition: width 220ms ease;
+}
