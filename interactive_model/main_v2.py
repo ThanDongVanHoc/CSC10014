@@ -22,6 +22,8 @@ app = FastAPI(title="Interactive Model API V2")
 
 # Initialize Gemini model
 genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
+genai.configure(api_key='AIzaSyAnDT6psjcefe2xQOhq7EE6mT2txQUCgnM')
+
 model = genai.GenerativeModel(GEMINI_MODEL_NAME)
 
 # Initialize components

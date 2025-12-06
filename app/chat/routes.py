@@ -10,7 +10,16 @@ from .utilis import (
     delete_conversation,
 )
 
-API_KEY = "AIzaSyA64uitr82I10KGTUyBgrki8FOJmZ1SWPs"
+from .ChatPro import ChatPro
+
+os.makedirs("outputs", exist_ok=True)
+
+assistant = ChatPro(
+    search_model_url="http://localhost:8001/recommend",
+    interact_model_url="http://localhost:8000"
+)
+
+API_KEY = "AIzaSyAkteio2f4Is6odTtvwLGwem_ZJboG8hxg"
 BASE_MODEL_NAME = "gemini-2.5-flash" 
 
 system_prompt = r"""
@@ -41,6 +50,57 @@ def chat_page():
 
 @chat_bp.route('/', methods=['POST'])
 def chat():
+    data = request.get_json()
+    user_msg = data.get("message", "")
+    user_lat = data.get("user_lat")
+    user_lng = data.get("user_lng")
+    
+    # Lấy context từ session
+    current_info = session.get("collected_info", {})
+
+    # BƯỚC 1: Phân tích yêu cầu (Dùng method của Class)
+    analysis_result = assistant.analyze_query(user_msg, current_info)
+    
+    # Cập nhật session
+    session["collected_info"] = analysis_result.get("collected_info", {})
+    is_complete = analysis_result.get("is_complete", False)
+
+    # TRƯỜNG HỢP A: Chưa đủ thông tin -> Hỏi tiếp
+    if not is_complete:
+        questions = analysis_result.get("questions", [])
+        bot_reply = questions[0] if questions else "Tôi cần thêm thông tin."
+    
+        print(current_info)
+        return jsonify({
+            "reply": bot_reply,
+            "action": "clarify",
+            "locations": []
+        })
+
+    # TRƯỜNG HỢP B: Đủ thông tin -> Tìm kiếm & Hướng dẫn
+    else:
+        # Tự động tạo query tìm kiếm
+        collected_info = session["collected_info"]
+        search_query = f"{collected_info.get('problem_category', '')} in {collected_info.get('current_location', '')}"
+        
+        print(session["collected_info"])
+
+        # Gọi các method xử lý logic
+        locations = assistant.search_locations(search_query, user_lat, user_lng)
+        guide_data = assistant.generate_guide(user_msg, locations, collected_info)
+
+        print(guide_data)
+
+        guide_data['locations'] =  locations
+
+        
+        filename = f"outputs/guide.json"
+        with open(filename, "w", encoding="utf-8") as f:
+            json.dump(guide_data, f, ensure_ascii=False, indent=2)
+        
+        return guide_data
+    
+def chat_prepare():
     data = request.get_json()
     user_msg = data.get("message", "")
     convo_id = data.get("convo_id")   # nhận conversation id từ frontend

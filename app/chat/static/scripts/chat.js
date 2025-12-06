@@ -213,7 +213,7 @@ async function sendMessage(text) {
       // Mock mode: Load từ file JSON
       try {
         const resp = await fetch(
-          "/chat/static/mock_responses/sample_chat_response.json"
+          "/chat/static/mock_responses/guide.json"
         );
         data = await resp.json();
       } catch (e) {

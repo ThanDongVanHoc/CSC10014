@@ -25,7 +25,7 @@ class GuideGeneratorV2:
             print(f"[INFO] Generating guide for location {idx + 1}/{len(top_k_results)}: {location.get('Ten', 'N/A')}")
             guide = self.generate_single_guide(location, original_query, user_info)
             guides.append({
-                "location_info": location,
+                "location": location,
                 "guide": guide,
                 "rank": idx + 1
             })
@@ -40,33 +40,46 @@ class GuideGeneratorV2:
     ) -> Dict[str, Any]:
         """Generate structured guide for a single location"""
         
-        prompt = f"""Create a detailed, structured guide for the user.
-IMPORTANT: Use the SAME LANGUAGE as the user's query.
+        prompt = f"""
+Return JSON only in the EXACT structure below (no text outside):
 
-Location information:
-- Name: {location.get('Ten', 'N/A')}
-- Address: {location.get('DiaChi', 'N/A')}
-- Phone: {location.get('SDT', 'N/A')}
-- Website: {location.get('Website', 'N/A')}
-- Category: {location.get('Category', 'N/A')}
+{{
+  "reply": "",
+  "title": "",
+  "steps": [
+    {{
+      "id": 1,
+      "type": "",
+      "title": "",
+      "desc": "",
+      "lat": null,
+      "lng": null,
+      "suggestion_query": null,
+      "suggestion_text": null,
+      "fallback_desc": null,
+      "fallback_lat": null,
+      "fallback_lng": null,
+      "troubles": []
+    }}
+  ]
+}}
 
-User's query: "{original_query}"
-Nationality: {user_info.get('nationality', 'N/A')}
-Problem: {user_info.get('problem', 'N/A')}
+Rules:
+- Write entirely in the user's language.
+- Choose one for "type": doc, move, action, finish.
+- Generate 3 to 7 steps.
+- Base content on:
+    • Location: {location.get('Ten', 'N/A')}, {location.get('DiaChi', 'N/A')}, {location.get('SDT', 'N/A')}, {location.get('Website', 'N/A')}
+    • Query: "{original_query}"
+    • Nationality: {user_info.get('nationality')}
+    • Problem: {user_info.get('problem')}
+- Use lat/lng if available, else null.
+- suggestion_query examples: "photo shop"
+- suggestion_text example: "🔍 Find nearby photo shops"
+- Do NOT generate troubles. Leave it as an empty list [].
+- No comments, no explanations, no markdown, JSON only.
+"""
 
-Create a JSON object with 5 sections (use appropriate section names in the user's language):
-1. Preparation: What to prepare beforehand
-2. Required Documents: List of necessary documents
-3. Location & Time: How to get there, operating hours, contact
-4. Procedures: Step-by-step process
-5. Important Notes: Special requirements based on nationality
-
-Priority for information sources:
-- Government/official sources first
-- Reliable sources second
-- Logical reasoning last
-
-Format: Clear, concise, use bullet points. Return JSON only."""
         
         try:
             response = self.model.generate_content(prompt)
