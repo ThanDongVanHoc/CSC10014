@@ -1,0 +1,331 @@
+/* Added styles for map overlay, logo, fullscreen and handle */
+#map {
+  position: relative;
+  height: calc(100vh - 120px);
+  border-radius: 16px;
+  box-shadow: 0 4px 24px rgba(15, 23, 42, 0.08);
+  overflow: hidden;
+  border: 1px solid rgba(15, 23, 42, 0.05);
+}
+
+/* Fullscreen map styles - Chiếm toàn bộ vùng app */
+#map {
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+#map.fullscreen {
+  position: fixed !important;
+  left: 0 !important;
+  top: 80px !important; /* Chừa header phía trên */
+  width: 100vw !important;
+  height: calc(100vh - 80px) !important;
+  border-radius: 0 !important;
+  z-index: 2000 !important;
+  margin: 0 !important;
+}
+
+/* Reveal handle when sidebar hidden */
+.map-handle {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 36px;
+  height: 140px;
+  border-radius: 0 8px 8px 0;
+  background: rgba(255, 255, 255, 0.92);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 8px 20px rgba(2, 6, 23, 0.12);
+  cursor: pointer;
+  font-weight: 700;
+  color: rgba(11, 18, 32, 0.6);
+  transition: width 0.28s ease, left 0.2s ease, opacity 0.2s ease;
+  z-index: 1190;
+}
+.map-handle.expanded {
+  width: 380px;
+  left: 0;
+}
+
+/* Responsive tweaks */
+@media (max-width: 900px) {
+  .map-chat-wrapper {
+    left: 8px;
+    transform: none;
+    width: calc(100% - 16px);
+    bottom: 8px;
+  }
+  .map-sidebar {
+    width: 240px;
+    max-width: 45%;
+  }
+  .map-chat-panel {
+    flex: 1 1 auto;
+    max-width: none;
+  }
+}
+
+.map-controls {
+  position: absolute;
+  bottom: 22px;
+  right: 12px;
+  z-index: 2200; /* Cao hơn overlay */
+  display: flex;
+  gap: 8px;
+}
+
+.map-btn {
+  background: rgba(255, 255, 255, 0.95);
+  border: 0;
+  padding: 8px 10px;
+  border-radius: 10px;
+  box-shadow: 0 6px 18px rgba(2, 6, 23, 0.08);
+  cursor: pointer;
+}
+
+.map-logo {
+  position: absolute;
+  z-index: 2150; /* Cao hơn overlay để luôn click được */
+  left: 12px;
+  bottom: 22px;
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  box-shadow: 0 8px 24px rgba(2, 6, 23, 0.2);
+  background: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: grab;
+  transition: transform 0.35s ease, left 0.2s ease, top 0.2s ease,
+    right 0.2s ease, bottom 0.2s ease;
+  user-select: none;
+}
+.map-logo img {
+  width: 60%;
+  height: 60%;
+  object-fit: contain;
+  display: block;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.map-logo.dragging {
+  cursor: grabbing;
+  transform: scale(1.02);
+  transition: none;
+}
+/* === Location cards (modern, responsive) === */
+.locations-container {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 12px;
+}
+
+.location-status {
+  margin: 0 0 8px 0;
+  font-size: 13px;
+  font-weight: 700;
+  color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.location-card {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 14px 16px;
+  border-radius: 14px;
+  background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  box-shadow: 0 4px 16px rgba(2, 6, 23, 0.08);
+  transition: all 0.2s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.location-card::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(
+    135deg,
+    rgba(0, 123, 255, 0.02) 0%,
+    transparent 100%
+  );
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.location-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 12px 28px rgba(0, 123, 255, 0.15);
+  border-color: rgba(0, 123, 255, 0.25);
+}
+
+.location-card:hover::after {
+  opacity: 1;
+}
+
+.location-card::before {
+  content: "📍";
+  position: absolute;
+  top: 12px;
+  right: 14px;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  font-size: 18px;
+}
+
+.location-card:hover::before {
+  opacity: 1;
+}
+
+.location-card h3 {
+  margin: 0;
+  font-size: 15px;
+  color: #0b1220;
+  font-weight: 700;
+  letter-spacing: -0.3px;
+  position: relative;
+  z-index: 1;
+}
+
+.location-card .address {
+  margin: 0;
+  font-size: 13px;
+  color: #64748b;
+  line-height: 1.4;
+  position: relative;
+  z-index: 1;
+}
+
+.location-card .phone {
+  margin: 0;
+  font-size: 13px;
+  color: #059669;
+  font-weight: 600;
+  position: relative;
+  z-index: 1;
+}
+
+.location-card .card-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 4px;
+  position: relative;
+  z-index: 1;
+}
+
+.location-card .links {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.location-card .links a {
+  font-size: 12px;
+  color: var(--brand);
+  text-decoration: none;
+  background: rgba(0, 123, 255, 0.08);
+  padding: 6px 10px;
+  border-radius: 6px;
+  transition: all 0.2s ease;
+  font-weight: 600;
+}
+
+.location-card .links a:hover {
+  background: rgba(0, 123, 255, 0.15);
+  text-decoration: none;
+  transform: translateY(-2px);
+  box-shadow: 0 2px 8px rgba(0, 123, 255, 0.2);
+}
+
+.location-card .distance {
+  min-width: 70px;
+  text-align: center;
+  background: linear-gradient(
+    135deg,
+    rgba(0, 123, 255, 0.15) 0%,
+    rgba(0, 123, 255, 0.08) 100%
+  );
+  color: var(--brand);
+  font-weight: 700;
+  padding: 8px 12px;
+  border-radius: 8px;
+  font-size: 13px;
+  box-shadow: 0 2px 4px rgba(0, 123, 255, 0.1);
+}
+
+/* -------------------------------------- */
+/* KHUNG CHỨA CHUNG (Mới)                 */
+/* -------------------------------------- */
+/* Class này giúp gom nhóm ảnh và sóng vào 1 khối thống nhất */
+.avatar-marker-container {
+  position: relative; /* Làm mốc toạ độ cho con absolute */
+  width: 50px;
+  height: 50px;
+  display: flex; /* Dùng flex để căn giữa tuyệt đối */
+  justify-content: center; /* Căn giữa ngang */
+  align-items: center; /* Căn giữa dọc */
+}
+
+/* -------------------------------------- */
+/* 2. Avatar chính                        */
+/* -------------------------------------- */
+.avatar-pin-img {
+  width: 100%; /* Theo kích thước container (50px) */
+  height: 100%; /* Theo kích thước container (50px) */
+  border-radius: 50%;
+
+  /* QUAN TRỌNG: Tính viền vào trong kích thước 50px */
+  box-sizing: border-box;
+
+  border: 3px solid #fff;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+
+  position: absolute; /* Đè lên sóng */
+  z-index: 2;
+  /* Bỏ top/left vì đã dùng Flexbox ở container để căn giữa */
+}
+
+/* -------------------------------------- */
+/* 3. Lớp Sóng Lan Tỏa                    */
+/* -------------------------------------- */
+.avatar-ripple {
+  width: 100%; /* Theo kích thước container */
+  height: 100%; /* Theo kích thước container */
+  border-radius: 50%;
+  background-color: #0099ff;
+
+  position: absolute; /* Nằm dưới ảnh */
+  z-index: 1;
+
+  /* Animation giữ nguyên */
+  animation: ripple 2s infinite cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+/* Keyframe giữ nguyên */
+@keyframes ripple {
+  0% {
+    transform: scale(1);
+    opacity: 0.8;
+  }
+  100% {
+    transform: scale(1.5);
+    opacity: 0;
+  } /* Tăng scale lên chút cho đẹp */
+}

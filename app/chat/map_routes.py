@@ -36,12 +36,7 @@ def pois():
     pois_places = query_pois_db(query_kw, south, north, east, west)
 
     pois_response = [
-        {
-            "description": place.name,
-            "lat": place.lat,
-            "lng": place.lng
-        }
-        for place in pois_places
+       place.to_dict() for place in pois_places
     ]
     
     return jsonify(pois_response)

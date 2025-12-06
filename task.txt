@@ -1,0 +1,64 @@
+Làm thêm 1 model interactive ( model nhẹ , chạy nhanh hơn) vd: 1.5 flash: để thu thập thông tin của user theo một structure nhất định:
+Ví dụ: Tên, năm sinh, địa chỉ, vấn đề, quốc tịch, .. Người dùng chưa cung cấp đủ thì hỏi tiếp. Đến khi đủ thì trong json trả về bật trạng thái đủ lên -> đủ rồi thì call model của tui để lấy top k. Đồng thời đưa ra tiếp instruction cho topk (hoặc top 1 thôi, user muốn coi thêm thì optional)  ( hướng dẫn chuẩn bị, thủ tục, ... ) bằng cách RAG theo thứ tự ưu tiên : mấy web uy tín(chính phủ) -> mấy web tier thấp hơn -> rồi mới reasoning, cũng nên structure cái instruction luôn cho dễ: vd chuẩn bị, giấy tờ, đi đến phòng ban nào, ...
+
+Hiện tại tôi đã có 1 mô hình A, trả về top k điểm phù hợp, đã được sort. Nhưng mà có vấn đề hiện tại người ta query vô mô hình A, mô hình A trả về chưa có interactive. Giờ tôi sẽ làm phần interactive. Mục đích của cái này là để hỏi thêm thông tin. mình cần structure: địa chỉ hiện tại, số người gặp vấn đề, người nước nào,problem gì,...(phân tích cố định cái này).
+Đầu tiên khi phân tích 1 query, phân tích query xem coi có loại nào chưa. Loại nào có rồi thì 1, chưa thì 0. cái nào còn 0 thì call model để hỏi người dùng. Model sẽ trả ra 1 list câu hỏi. Người dùng trả lời được gì thì đánh dấu 1. 
+lúc nào cũng trả về 1 cái json (câu hỏi, thông tin jj đó, 1 biến xem coi đủ hết hay chưa). Nếu backend kiểm tra chưa đủ thì không gọi model A mà gọi model interactive.
+sau khi hỏi xong hết rồi, lấy hết các thông tin này, thành 1 cái json con trong json chính để backend lấy cái đó bỏ vào model A.
+Backend có json của mình , query từ user. Gửi qua qua model A. Model A trả về top k. Rồi lấy top 1. thực hiện query loại 2. 
+query loại 1 là để interactive. 
+query loại 2: Thêm một trường instruction, cái này không có trong query nhưng ta tạo thêm ->query loại 2. Lấy cái top 1 của model A trả vể . Model của mình sẽ lấy cái đó và tạo ra cái guide hướng dẫn cho user.
+Nhắc lại:
+Ta có 1 json đang fill 0 hết. user nhập vô 1 query, trong query đó có thông tin để fill 1. Nếu chưa đủ thì hỏi lại để fill 1. 
+mỗi câu đều gửi json về cho be. chưa đủ gọi model của mình, đủ thì gọi model A. Model A làm ra top-k. backend sẽ tự gửi lại cho model mình nó sẽ là query loại 2( bao gồm topk đó và query gốc của user). Thật ra topk cũng là có json(nhưng tôi chưa có hãy tự tạo ->ko khó)
+gọi api nhẹ như 1.5 flash.
+
+(làm xong hết chí tính chỉ fast api)
+
+tạo một cái branch mới để code. tạo thư mục mới đặt tên là interactive model
+code local thôi
+ko cần train j hết. Chỉ cần call api. 
+
+Nếu mà 1 query có vài thông tin không liên quan. có thể cắt nó ra khỏi json, r gửi nó cho backend. (kiểu thông tin nó dạng 0.5 , k phải là 0 hoặc 1 -> không cần gửi cho backend)
+
+ví dụ json backend gửi về từ model A:
+{
+  "predicted_category": "LanhSuQuan",
+  "total_processing_time_ms": 12450,
+  "results_count": 10,
+  "results": [
+    {
+      "Ma": "LSQ_001",
+      "Ten": "Tổng Lãnh sự quán Indonesia",
+      "DiaChi": "18 Phùng Khắc Khoan, P. Đa Kao, Quận 1",
+      "Lat": "10.7813",
+      "Lng": "106.6953",
+      "SDT": "02838251888",
+      "Website": "https://www.kemlu.go.id/hochiminhcity",
+      "Category": "LanhSuQuan",
+      "raw_distance_km": 0.354,
+      "distance_score": 1.0,
+      "spec_score": 0.9,
+      "spec_reason": "Địa điểm này là Lãnh sự quán của Indonesia, hoàn toàn khớp với yêu cầu 'người Indonesia' trong query.",
+      "total_score": 0.92
+    },
+    {
+      "Ma": "LSQ_012",
+      "Ten": "Tổng Lãnh sự quán Malaysia",
+      "DiaChi": "120 Nguyễn Đình Chiểu, P. Võ Thị Sáu, Quận 3",
+      "Lat": "10.7818",
+      "Lng": "106.6918",
+      "SDT": "02838299023",
+      "Website": "https://www.kln.gov.my/web/vnm_ho-chi-minh-city",
+      "Category": "LanhSuQuan",
+      "raw_distance_km": 0.187,
+      "distance_score": 1.0,
+      "spec_score": 0.1,
+      "spec_reason": "Đây là Lãnh sự quán Malaysia, không liên quan đến 'Indonesia'.",
+      "total_score": 0.28
+    }
+  ]
+}
+nó sẽ gửi thêm cái query gốc.
+
+có thể áp dụng thêm rag vô cái query 2 (tạo guide cho user) để tôi ưu.ví dụ Ưu tiên thông tin từ đâu trước như thông tin chính phủ, ...

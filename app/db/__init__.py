@@ -6,7 +6,6 @@ from flask_migrate import Migrate
 from sqlalchemy import select
 import pandas as pd
 import pathlib
-import os
 
 # 1. Định nghĩa Base Class
 class Base(DeclarativeBase):
@@ -25,16 +24,19 @@ def init_db_command():
 @with_appcontext
 def load_place_data_command():
     from .models import Place
-    has_data = db.session.scalar(select(Place).limit(1))
+    # Thêm dòng này để chắc chắn bảng đã tồn tại trước khi select
+    db.create_all() 
 
+    # Kiểm tra dữ liệu cũ
+    has_data = db.session.scalar(select(Place).limit(1))
     if has_data:
-        # Thêm một thông báo để biết rõ tại sao nó không chạy
         click.echo('Data already exists. Skipping load.')
         return
     
     try:
+        # Đường dẫn file (Giữ nguyên logic của bạn)
         current_dir = pathlib.Path(__file__).parent.parent.parent
-        data_dir = current_dir / 'Dataset' / 'crawler' / 'raw_data_realtime.csv'
+        data_dir = current_dir / 'Dataset' / 'crawler' / 'raw_data_robust.csv'
         
         df = pd.read_csv(data_dir)
 
@@ -46,26 +48,40 @@ def load_place_data_command():
         return
 
     click.echo('CSV file read successfully. Preparing data...')
-    data_to_dict = df.to_dict('records') 
-    from .func import poi_csv_to_db
     
+    # Chuyển DataFrame thành List of Dict
+    data_to_dict = df.to_dict('records') 
+    
+    # Import hàm xử lý đã sửa ở trên
+    from .func import poi_csv_to_db 
+    
+    valid_data_to_insert = []
+    
+    # --- TỐI ƯU HÓA VÒNG LẶP ---
+    # Chỉ gọi hàm poi_csv_to_db một lần mỗi dòng
     try:
-        data_to_insert = [poi_csv_to_db(record).to_dict() for record in data_to_dict]
+        for record in data_to_dict:
+            place_obj = poi_csv_to_db(record)
+            
+            # Nếu place_obj không phải là None thì mới thêm vào danh sách
+            if place_obj is not None:
+                # Chuyển object thành dict để dùng bulk_insert_mappings
+                valid_data_to_insert.append(place_obj.to_dict())
+                
     except Exception as e:
-        print(f"Lỗi khi xử lý dữ liệu (poi_csv_to_db): {e}")
+        print(f"Lỗi khi xử lý dữ liệu: {e}")
         return
 
-    click.echo('Data prepared. Inserting into database...')
+    click.echo(f'Data prepared. Found {len(valid_data_to_insert)} valid records. Inserting into database...')
     
     try:
-        db.session.bulk_insert_mappings(Place, data_to_insert)
+        # Dùng bulk_insert_mappings cực nhanh
+        db.session.bulk_insert_mappings(Place, valid_data_to_insert)
         db.session.commit()
-        # Thêm thông báo thành công!
-        click.echo(f'Successfully loaded {len(data_to_insert)} records.')
+        click.echo(f'Successfully loaded {len(valid_data_to_insert)} records.')
         
     except Exception as e:
         db.session.rollback()
-        # **Đây là phần quan trọng nhất**
         print(f"LỖI KHI INSERT VÀO DATABASE: {e}")
         print("Data load failed. Transaction rolled back.")
             

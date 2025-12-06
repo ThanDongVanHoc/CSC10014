@@ -36,13 +36,17 @@ class User(db.Model):
 # 2. PLACE MODEL (Giữ nguyên)
 class Place(db.Model):
     id = db.mapped_column(db.Integer, primary_key=True)
-    name = db.mapped_column(db.String(100), nullable=False)
-    location = db.mapped_column(db.String(150), nullable=False)
-    lat = db.mapped_column(db.Float, nullable=True)
-    lng = db.mapped_column(db.Float, nullable=True)
-    original_keyword = db.mapped_column(db.String(100), nullable=False)
-    query_kw = db.mapped_column(db.String(100), nullable=False) 
-    
+    name = db.mapped_column(db.Text, nullable=False)
+    location = db.mapped_column(db.Text, nullable=False)
+    lat = db.mapped_column(db.Float, nullable=False)
+    lng = db.mapped_column(db.Float, nullable=False)
+    img = db.mapped_column(db.Text, nullable=False)
+    original_keyword = db.mapped_column(db.Text, nullable=False)
+    intro = db.mapped_column(db.Text, nullable=False)
+    phone_number = db.mapped_column(db.Text, nullable=True)
+    website = db.mapped_column(db.Text, nullable=True)
+    query_kw = db.mapped_column(db.Text, nullable=False) 
+
     __table_args__=(
         Index('ix_place_lat_lng', 'lat', 'lng'),
         Index('ix_query_kw', 'query_kw')

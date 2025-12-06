@@ -413,7 +413,7 @@ async function loadSelectedChatToUI() {
   const rawTitle = current ? current.title || "Conversation" : "Loading...";
 
   // Cắt title nếu quá dài và thêm dấu "..."
-  const maxLength = 25;
+  const maxLength = 20;
   convTitle.textContent =
     rawTitle.length > maxLength
       ? rawTitle.slice(0, maxLength) + "..."
@@ -459,7 +459,7 @@ function renderSidebar(filter = "") {
         : "New chat");
 
     // Cắt tên nếu quá dài và thêm dấu "..."
-    const maxLength = 25; // Độ dài tối đa
+    const maxLength = 20; // Độ dài tối đa
     const title =
       rawTitle.length > maxLength
         ? rawTitle.slice(0, maxLength) + "..."
