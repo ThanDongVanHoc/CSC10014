@@ -151,7 +151,7 @@ async function fetchPOIsFromServer() {
         latlng: latlng,
         name: name,
         image: `/chat/pois/${rawImg}`,
-        category: poi.intro || "Địa điểm",
+        intro: poi.intro || "Địa điểm",
         location: poi.location || "Chưa có địa chỉ",
         phone: poi.phone_number || "---",
         website: poi.website || "#",

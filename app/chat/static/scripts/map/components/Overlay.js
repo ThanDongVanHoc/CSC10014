@@ -119,7 +119,7 @@ export function initMapOverlay(mapInstance) {
 async function handleScreenEvent() {
   try {
     // Import động module chat nếu cần
-    const { hideSearchWrapper } = await import("../chat.js");
+    const { hideSearchWrapper } = await import("../../chat.js");
     const isCurrentlyFullscreen = mapEl.classList.contains("fullscreen");
 
     if (!isCurrentlyFullscreen) {

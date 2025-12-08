@@ -31,7 +31,7 @@ export class PoiSidebar {
     }
     this.currentData = poiData;
 
-    const { id, image, name, category, location, phone, website } = poiData;
+    const { id, image, name, intro, location, phone, website } = poiData;
 
     // Nếu đang mở đúng POI này rồi thì không render lại
     if (this.activePoiId === id && this.sidebar.classList.contains("active")) {
@@ -52,7 +52,7 @@ export class PoiSidebar {
         <div class="sidebar-body-container">
             <div class="sidebar-info-header">
                 <h3 class="sidebar-title">${name}</h3>
-                <span class="sidebar-category">${category}</span>
+                <span class="sidebar-category">${intro}</span>
             </div>
 
             <div class="sidebar-actions"></div>
