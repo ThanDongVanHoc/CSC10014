@@ -133,3 +133,244 @@
   width: 100%;
   left: 0;
 }
+
+/* poi.css - Ultra Premium Design */
+
+:root {
+  --sidebar-width: 320px;
+  --primary-color: #1a73e8;
+  --text-color: #202124;
+  --text-secondary: #5f6368;
+  --bg-glass: rgba(255, 255, 255, 0.95);
+  --shadow-elevation: 0 24px 48px rgba(0, 0, 0, 0.18),
+    0 10px 16px rgba(0, 0, 0, 0.08);
+  --radius: 28px;
+}
+
+/* 1. KHUNG CHÍNH (FLOATING CARD) */
+.poi-sidebar {
+  position: absolute;
+  /* Căn chỉnh vị trí an toàn tuyệt đối */
+  top: 100px;
+  right: 12px;
+  bottom: 70px; /* Không chạm đáy để tránh nút Zoom */
+
+  width: var(--sidebar-width);
+  max-height: 75%; /* Giới hạn chiều cao */
+
+  /* Hiệu ứng kính mờ cao cấp */
+  background: var(--bg-glass);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+
+  border-radius: var(--radius);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  box-shadow: var(--shadow-elevation);
+
+  z-index: 2000;
+
+  display: flex;
+  flex-direction: column;
+
+  /* Animation trượt nảy (Spring physics) */
+  transform: translateX(120%);
+  transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+
+  font-family: -apple-system, BlinkMacSystemFont, "Google Sans", "Segoe UI",
+    Roboto, sans-serif;
+  overflow: hidden; /* Bo góc ảnh */
+}
+
+.poi-sidebar.active {
+  transform: translateX(0);
+}
+
+/* 2. HEADER ẢNH & NÚT ĐÓNG */
+.sidebar-header-wrapper {
+  position: relative;
+  width: 100%;
+  height: 180px;
+  flex-shrink: 0;
+}
+
+.sidebar-header-img {
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-position: center;
+  /* Gradient đen mờ từ trên xuống để nút Close nổi bật */
+  mask-image: linear-gradient(to bottom, black 80%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to bottom, black 80%, transparent 100%);
+}
+
+.sidebar-close-btn {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  width: 36px;
+  height: 36px;
+
+  /* Hiệu ứng nút nổi */
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(8px);
+  border: none;
+  border-radius: 50%;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+
+  color: #333;
+  font-size: 16px;
+  cursor: pointer;
+
+  /* Căn giữa icon X tuyệt đối */
+  display: grid;
+  place-items: center;
+
+  transition: all 0.2s ease;
+}
+
+.sidebar-close-btn:hover {
+  transform: scale(1.1) rotate(90deg);
+  background: white;
+}
+
+/* 3. NỘI DUNG (SCROLL) */
+.sidebar-body-container {
+  padding: 10px 24px 24px 24px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+
+  /* Ẩn thanh cuộn */
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.sidebar-body-container::-webkit-scrollbar {
+  display: none;
+}
+
+/* Tiêu đề & Loại */
+.sidebar-info-header {
+  margin-top: -10px; /* Đẩy lên 1 chút đè lên phần mờ của ảnh */
+}
+
+.sidebar-title {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--text-color);
+  margin: 0 0 6px 0;
+  line-height: 1.25;
+  letter-spacing: -0.5px;
+}
+
+.sidebar-category {
+  display: inline-block;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--primary-color);
+  background: rgba(26, 115, 232, 0.1);
+  padding: 6px 10px;
+  border-radius: 8px;
+}
+
+/* 4. THANH HÀNH ĐỘNG (ACTIONS) - FIX LỆCH ICON */
+.sidebar-actions {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr); /* Chia đều 4 cột */
+  gap: 8px;
+  padding: 16px 0;
+  border-top: 1px solid rgba(0, 0, 0, 0.05);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.action-item {
+  background: none;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 0;
+  transition: transform 0.2s;
+}
+
+.action-item:hover {
+  transform: translateY(-4px);
+}
+
+.material-symbols-rounded {
+  font-size: 24px; /* Kích thước icon chuẩn */
+  font-variation-settings: "FILL" 1, "wght" 400, "GRAD" 0, "opsz" 24;
+}
+
+.action-icon-circle {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: #fff;
+  border: 1px solid #f1f3f4;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  color: var(--primary-color);
+  font-size: 20px;
+
+  /* KỸ THUẬT GRID: CĂN GIỮA TUYỆT ĐỐI */
+  display: grid;
+  place-items: center;
+
+  transition: all 0.2s;
+}
+
+.action-item:hover .action-icon-circle {
+  background: var(--primary-color);
+  color: white;
+  box-shadow: 0 8px 16px rgba(26, 115, 232, 0.3);
+  border-color: transparent;
+}
+
+.action-label {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+/* 5. THÔNG TIN CHI TIẾT (LIST) */
+.sidebar-details {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.info-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  font-size: 14px;
+  color: var(--text-color);
+  line-height: 1.5;
+}
+
+.info-icon {
+  width: 20px;
+  height: 20px;
+  color: var(--text-secondary);
+  /* Căn giữa icon */
+  display: grid;
+  place-items: center;
+  margin-top: 2px;
+}
+
+.info-text {
+  flex: 1;
+}
+
+.info-link {
+  color: var(--primary-color);
+  text-decoration: none;
+  font-weight: 500;
+}
+.info-link:hover {
+  text-decoration: underline;
+}

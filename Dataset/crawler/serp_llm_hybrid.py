@@ -5,6 +5,7 @@ import requests
 import hashlib
 from serpapi import GoogleSearch
 from dotenv import load_dotenv
+import re
 
 load_dotenv()
 SERPAPI_API_KEY = os.getenv("SERPAPI_API_KEY")
@@ -13,7 +14,7 @@ queries_filename = "queries_list.txt"
 raw_filename = "raw_data_robust.csv"
 image_folder = "downloaded_images" 
 
-START_FROM_QUERY = 1
+START_FROM_QUERY = 315
 
 if not os.path.exists(image_folder):
     os.makedirs(image_folder)
@@ -163,6 +164,18 @@ def create_item(ten, diachi, loai, sdt, anh, mota, web, query):
         'Website': web if web else "Không có", 'Lat': '', 'Lng': '', 'Tu khoa goc': query
     }
 
+def get_high_res_url(url):
+    if not url: return None
+    if "googleusercontent.com" in url:
+        try:
+            base_url = url.rsplit('=', 1)[0]
+            new_url = f"{base_url}=w1920-h1920-no"
+            return new_url
+        except:
+            return url
+            
+    return url
+
 def parse_results(results, query, limit):
     local_results = results.get("local_results", [])
     if not local_results and results.get("place_results"):
@@ -172,28 +185,39 @@ def parse_results(results, query, limit):
     for item in local_results[:limit]:
         try:
             if not isinstance(item, dict): continue
+           
+            img_url = None
             
-            img = item.get('thumbnail')
-            if not img and 'photos' in item:
+            if 'photos' in item:
                 photos = item.get('photos')
                 if isinstance(photos, list) and len(photos) > 0:
-                     if isinstance(photos[0], dict):
-                        img = photos[0].get('image')
+                    first_photo = photos[0]
+                    if isinstance(first_photo, dict):
+                        raw_url = first_photo.get('image')
+                        img_url = get_high_res_url(raw_url)
+            if not img_url:
+                raw_thumb = item.get('thumbnail')
+                # Thêm dòng này bao bọc raw_thumb:
+                img_url = get_high_res_url(raw_thumb)
+
+            # -----------------------------
 
             data.append({
                 'Ten': item.get('title'),
                 'Dia chi': item.get('address'),
                 'Loai': item.get('type'),
                 'So dien thoai': item.get('phone', 'Không có'),
-                'Hinh anh': download_image(img) if img else "Không có",
-                'Link Anh Goc': img,
+                # Tải ảnh từ URL chất lượng cao vừa tìm được
+                'Hinh anh': download_image(img_url) if img_url else "Không có",
+                'Link Anh Goc': img_url,
                 'Gioi thieu': item.get('description', 'Không có'),
                 'Website': item.get('website', 'Không có'),
                 'Lat': item.get('gps_coordinates', {}).get('latitude', '') if item.get('gps_coordinates') else '',
                 'Lng': item.get('gps_coordinates', {}).get('longitude', '') if item.get('gps_coordinates') else '',
                 'Tu khoa goc': query
             })
-        except:
+        except Exception as e:
+            print(f"Lỗi parse item: {e}")
             continue
     return data
 
