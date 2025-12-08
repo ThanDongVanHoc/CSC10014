@@ -6,6 +6,7 @@
   max-height: 100%; /* Không vượt quá parent */
   overflow: hidden; /* Chặn overflow */
   font-family: "Inter", sans-serif; /* Đảm bảo font nhất quán */
+  border-radius: 15px;
 }
 
 .chat .card {

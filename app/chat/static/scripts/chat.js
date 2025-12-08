@@ -213,7 +213,7 @@ async function sendMessage(text) {
       // Mock mode: Load từ file JSON
       try {
         const resp = await fetch(
-          "/chat/static/mock_responses/sample_chat_response.json"
+          "/chat/static/mock_responses/guide.json"
         );
         data = await resp.json();
       } catch (e) {
@@ -312,6 +312,7 @@ function appendMessageToUI(role, text) {
   chatMessages.scrollTop = chatMessages.scrollHeight;
 }
 
+
 // Hàm vẽ thẻ địa điểm (Đã cập nhật logic click và hiển thị chi tiết)
 function appendLocationCardsToUI(locations) {
   const container = document.createElement("div");
@@ -328,8 +329,9 @@ function appendLocationCardsToUI(locations) {
     card.style.cursor = "pointer";
 
     const distance = loc.raw_distance_km ? loc.raw_distance_km.toFixed(1) : "?";
-    const phoneLink = loc.SDT
-      ? `<a href="tel:${loc.SDT}">${loc.SDT}</a>`
+    const locSDT = find_phone_number(loc.Ten);
+    const phoneLink = locSDT
+      ? `<a href="tel:${locSDT}">${locSDT}</a>`
       : "Không có";
 
     const webLink = loc.Website
