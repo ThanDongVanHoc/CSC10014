@@ -49,6 +49,10 @@
   rel="stylesheet"
   href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
 />
+<link
+  rel="stylesheet"
+  href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,1,0"
+/>
 {% endblock %} {% block content %}
 
 <div class="app">
@@ -58,10 +62,33 @@
 
   <!-- MAP -->
   <div id="map">
-    <div class="transport-btns">
-      <button data-travel="driving" class="active">Driving</button>
-      <button data-travel="Motorcycling">Motorcycling</button>
-      <button data-travel="walking">Walking</button>
+
+    <div class="transport-panel">
+      
+      <div class="transport-modes">
+        <button data-travel="driving" class="t-btn active" title="Driving">
+          <i class="fas fa-car"></i>
+        </button>
+        <button data-travel="Motorcycling" class="t-btn" title="Motorcycling">
+          <i class="fas fa-motorcycle"></i>
+        </button>
+        <button data-travel="walking" class="t-btn" title="Walking">
+          <i class="fas fa-walking"></i>
+        </button>
+      </div>
+
+      <div id="routeInfoDisplay" class="route-info">
+        <div class="divider"></div>
+        <div class="info-item">
+          <span class="info-label">Time</span>
+          <span id="infoDuration" class="info-value">-- min</span>
+        </div>
+        <div class="info-item">
+          <span class="info-label">Distance</span>
+          <span id="infoDistance" class="info-value">-- km</span>
+        </div>
+      </div>
+
     </div>
 
     <!-- Fullscreen & controls -->
@@ -91,6 +118,7 @@
         padding: 0 20px 40px;
       "
     ></div>
+    <div id="poi-sidebar" class="poi-sidebar"></div>
   </div>
 </div>
 {% endblock %} {% block script %}

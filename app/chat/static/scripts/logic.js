@@ -1,41 +1,21 @@
 // logic.js
-import { initMap, invalidateMapSize } from "./map.js";
-import { initPoiFeature } from "./poi.js";
-import { initMapOverlay } from "./map_overlay.js";
+import { initMap } from "./map/index.js";
+import { invalidateMapSize } from "./map/services/markerUtils.js";
 import { initChat, setMapReference } from "./chat.js";
 
 async function initialize() {
   console.log("🚀 logic.js loaded: Initializing app...");
-
-  // ============================
   // 1. KHỞI TẠO MAP
-  // ============================
   const { map, pinLocationToMap } = initMap();
 
-  // ============================
-  // 2. KHỞI TẠO CÁC FEATURE CỦA MAP
-  // ============================
-
-  // Khởi tạo POI (cần map instance)
-  initPoiFeature(map);
-
-  // Khởi tạo Overlay Controls (Fullscreen, Logo)
-  initMapOverlay(map);
-
-  // ============================
-  // 3. KẾT NỐI MAP VỚI CHAT
-  // ============================
+  // 2. KẾT NỐI MAP VỚI CHAT
   // Truyền hàm vẽ map vào cho module Chat sử dụng
   setMapReference(pinLocationToMap);
 
-  // ============================
-  // 4. KHỞI TẠO CHAT SYSTEM
-  // ============================
+  // 3. KHỞI TẠO CHAT SYSTEM
   await initChat();
 
-  // ============================
-  // 5. XỬ LÝ UI RESIZE
-  // ============================
+  // 4. XỬ LÝ UI RESIZE
   const hideBtn = document.getElementById("hideBtn");
   const showBtn = document.getElementById("showSidebar");
 
@@ -51,9 +31,7 @@ async function initialize() {
     });
   }
 
-  // ============================
-  // 6. DỌN DẸP SESSION
-  // ============================
+  // 5. DỌN DẸP SESSION
   window.addEventListener("beforeunload", () => {
     navigator.sendBeacon("/chat/clear_session");
   });

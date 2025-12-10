@@ -3,6 +3,7 @@
   --dark-text: #1c1e21;
   --light-text: #606770;
   --error-color: #e23a3a;
+  --font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 /* Ẩn biểu tượng 'con mắt' (reveal) mặc định của Edge */
@@ -16,7 +17,7 @@ input[type="password"]::-ms-clear {
 }
 
 body {
-  font-family: "Segoe UI", sans-serif;
+  font-family: var(--font-family);
   background-color: #f8f9fa;
   margin: 0;
   padding: 0;

@@ -1,6 +1,7 @@
 const GUEST_STORAGE_KEY = "con_cho_cao_bang_pc"; // Key cho sessionStorage
 let isLoggedIn = false;
 
+import { findPlace } from "./map/components/POIManager.js"
 import { startGuideFlow } from "./guide_manager.js"; // Nhớ import ở đầu file
 
 // Mock mode flag: default false. Can be toggled from console or UI checkbox.
@@ -314,93 +315,123 @@ function appendMessageToUI(role, text) {
 
 
 // Hàm vẽ thẻ địa điểm (Đã cập nhật logic click và hiển thị chi tiết)
-function appendLocationCardsToUI(locations) {
-  const container = document.createElement("div");
-  container.className = "locations-container";
+/**
+ * Hàm hiển thị danh sách địa điểm lên giao diện chat
+ * Đã tối ưu Async/Await và DOM manipulation
+ */
+async function appendLocationCardsToUI(locations) {
+    if (!locations || locations.length === 0) return;
 
-  const statusHeader = document.createElement("p");
-  statusHeader.className = "location-status";
-  statusHeader.textContent = `Tìm thấy ${locations.length} địa điểm liên quan:`;
-  container.appendChild(statusHeader);
+    const locationsWithDetails = await Promise.all(
+        locations.map(async (loc) => {
+            try {
+                const currentPlace = await findPlace(loc.Ten);
+                return currentPlace ? { ...loc, placeDetails: currentPlace } : null;
+            } catch (error) {
+                console.warn(`Lỗi khi tìm địa điểm: ${loc.Ten}`, error);
+                return null;
+            }
+        })
+    );
 
-  locations.forEach((loc) => {
-    const card = document.createElement("div");
-    card.className = "location-card";
-    card.style.cursor = "pointer";
+    const validLocations = locationsWithDetails.filter(item => item !== null);
+    const container = document.createElement("div");
+    container.className = "locations-container";
 
-    const distance = loc.raw_distance_km ? loc.raw_distance_km.toFixed(1) : "?";
-    const locSDT = find_phone_number(loc.Ten);
-    const phoneLink = locSDT
-      ? `<a href="tel:${locSDT}">${locSDT}</a>`
-      : "Không có";
+    const statusHeader = document.createElement("p");
+    statusHeader.className = "location-status";
+    statusHeader.textContent = `Tìm thấy ${validLocations.length} địa điểm liên quan:`;
+    container.appendChild(statusHeader);
 
-    const webLink = loc.Website
-      ? `<a href="${
-          loc.Website.startsWith("http") ? loc.Website : "//" + loc.Website
-        }" target="_blank">Website</a>`
-      : "";
+    // Sử dụng DocumentFragment để tối ưu hiệu suất (chỉ append vào DOM thật 1 lần)
+    const fragment = document.createDocumentFragment();
 
-    card.innerHTML = `
-            <h3>${loc.Ten}</h3>
-            <p class="address">${loc.DiaChi}</p>
+    validLocations.forEach((data) => {
+        const { placeDetails } = data; // Lấy thông tin chi tiết
+        
+        const card = document.createElement("div");
+        card.className = "location-card";
+        card.style.cursor = "pointer";
+
+        // Xử lý logic hiển thị link/sđt gọn gàng hơn
+        const phoneLink = placeDetails.phone_number
+            ? `<a href="tel:${placeDetails.phone_number}">${placeDetails.phone_number}</a>`
+            : "Không có";
+
+        let webLink = "";
+        if (placeDetails.website) {
+            const url = placeDetails.website.startsWith("http") 
+                ? placeDetails.website 
+                : `//${placeDetails.website}`;
+            webLink = `<a href="${url}" target="_blank">Website</a>`;
+        }
+
+        card.innerHTML = `
+            <h3>${placeDetails.name}</h3>
+            <p class="address">${placeDetails.location}</p>
             <p class="phone">SĐT: ${phoneLink}</p>
             <div class="card-footer">
                 <div class="links">
                     ${webLink}
-                    <a href="#" class="map-link" data-lat="${loc.Lat}" data-lng="${loc.Lng}">
-                        Xem trên Bản đồ
-                    </a>
+                    <a href="#" class="map-link">Xem trên Bản đồ</a>
                 </div>
-                 <button class="btn-guide-trigger" style="border:1px solid #0078ff; color:#0078ff; background:white; padding:6px 10px; border-radius:6px; cursor:pointer;">
+                <button class="btn-guide-trigger" style="border:1px solid #0078ff; color:#0078ff; background:white; padding:6px 10px; border-radius:6px; cursor:pointer;">
                     <i class="fas fa-list-check"></i> Hướng dẫn
                 </button>
             </div>
         `;
 
-    // Map link click
-    const mapLinkEl = card.querySelector(".map-link");
-    mapLinkEl.addEventListener("click", (e) => {
-      e.preventDefault();
-      if (pinLocationToMapFn) {
-        pinLocationToMapFn(
-          loc.Lat,
-          loc.Lng,
-          loc.Ten,
-          loc.SDT,
-          loc.Website,
-          loc.raw_distance_km
-        );
-      }
+        // --- Event Handlers ---
+        
+        const mapLinkEl = card.querySelector(".map-link");
+        mapLinkEl.addEventListener("click", (e) => {
+            e.preventDefault();
+            e.stopPropagation(); // Ngăn chặn sự kiện click lan ra card
+            if (typeof pinLocationToMapFn === 'function') {
+                    pinLocationToMapFn(
+                        placeDetails.lat,
+                        placeDetails.lng,
+                        data.Ten,
+                        placeDetails 
+                    );
+            }
+        });
+
+        // 2. Nút hướng dẫn
+        const guideBtn = card.querySelector(".btn-guide-trigger");
+        guideBtn.addEventListener("click", (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            startGuideFlow(data.Ten);
+        });
+
+
+        card.addEventListener("click", (e) => {
+            // Kiểm tra safety: Nếu user click trúng thẻ A hoặc btn-guide thì bỏ qua (dù đã có stopPropagation, check thêm cho chắc)
+            if (e.target.tagName === "A" || e.target.closest(".btn-guide-trigger")) return;
+
+            if (typeof pinLocationToMapFn === 'function') {
+                    pinLocationToMapFn(
+                        placeDetails.lat,
+                        placeDetails.lng,
+                        data.Ten,
+                        placeDetails 
+                    );
+            }
+        });
+
+        fragment.appendChild(card);
     });
 
-    // Guide button click
-    const guideBtn = card.querySelector(".btn-guide-trigger");
-    guideBtn.addEventListener("click", (e) => {
-      e.stopPropagation();
-      startGuideFlow(loc.Ten);
+    // BƯỚC 3: Append vào DOM chính
+    container.appendChild(fragment);
+    chatMessages.appendChild(container);
+    
+    // Smooth scroll xuống dưới cùng
+    chatMessages.scrollTo({
+        top: chatMessages.scrollHeight,
+        behavior: 'smooth'
     });
-
-    // Click vào thẻ (trừ link và button)
-    card.addEventListener("click", (e) => {
-      if (e.target.tagName === "A" || e.target.closest(".btn-guide-trigger"))
-        return;
-      if (pinLocationToMapFn) {
-        pinLocationToMapFn(
-          loc.Lat,
-          loc.Lng,
-          loc.Ten,
-          loc.SDT,
-          loc.Website,
-          loc.raw_distance_km
-        );
-      }
-    });
-
-    container.appendChild(card);
-  });
-
-  chatMessages.appendChild(container);
-  chatMessages.scrollTop = chatMessages.scrollHeight;
 }
 
 async function loadSelectedChatToUI() {

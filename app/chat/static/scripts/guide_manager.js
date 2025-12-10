@@ -2,6 +2,8 @@
  * guide_manager.js
  * UPDATED VERSION: Support guide.json structure
  */
+
+import {handleScreenEvent} from './map/components/Overlay.js'
 const MOCK_SCENARIO = {
   title: "Thủ tục Sao y tại UBND",
   steps: [
@@ -82,6 +84,7 @@ function _normalizeGuideData(guideItem) {
 // ==========================================
 class SmartGuideController {
     constructor(scenario) {
+        this.locName = null; 
         this.scenario = scenario;
         this.steps = scenario.steps;
         this.currentIndex = 0;
@@ -89,17 +92,17 @@ class SmartGuideController {
         this._injectCelebrationStyles();
     }
 
+
     start(locationName) {
         this.currentIndex = 0;
         // Sử dụng title từ scenario nếu có
         const displayTitle = this.scenario.title || locationName;
         
-        this._uiAppendMessage('bot', `🚀 Bắt đầu: **${displayTitle}**. Vui lòng nhìn bản đồ.`);
+        this._uiAppendMessage('bot', `🚀 Bắt đầu: ${displayTitle}. Vui lòng nhìn bản đồ.`);
         this._toggleFullscreen(true);
         this._renderCurrentStep();
     }
 
-    // ... (GIỮ NGUYÊN CÁC PHƯƠNG THỨC KHÁC: nextStep, performSuggestion, v.v...) ...
     
     nextStep(stepId) {
         this._uiDisableCard(stepId);
@@ -162,6 +165,9 @@ class SmartGuideController {
     }
 
     // --- PRIVATE LOGIC ---
+    _set(locName){
+        this.locName = locName;
+    }
 
     _calculateSolution(stepId, userText) {
         const step = this.steps.find(s => s.id === stepId);
@@ -176,7 +182,7 @@ class SmartGuideController {
         }
         // Logic fallback lat/lng nếu có trong JSON
         if (step && step.fallback_lat && (lowerInput.includes("xe") || lowerInput.includes("chỗ"))) {
-            result.text = `Đừng lo! Tôi tìm thấy địa điểm thay thế **${step.fallback_desc || 'gần đây'}**.`;
+            result.text = `Đừng lo! Tôi tìm thấy địa điểm thay thế ${step.fallback_desc || 'gần đây'}.`;
             result.newLat = step.fallback_lat;
             result.newLng = step.fallback_lng;
         }
@@ -193,7 +199,7 @@ class SmartGuideController {
         }
 
         if (window.MapGuideUI) {
-            window.MapGuideUI.renderStep(step, this.steps.length, this.currentIndex, {
+            window.MapGuideUI.renderStep(this.locName, step, this.steps.length, this.currentIndex, {
                 onNext: () => { this.currentIndex++; this._renderCurrentStep(); },
                 onUndo: () => { if (this.currentIndex > 0) { this.currentIndex--; this._renderCurrentStep(); } },
                 onSuggestion: (query) => this.performSuggestion(query)
@@ -307,19 +313,8 @@ class SmartGuideController {
     }
 
     _toggleFullscreen(enable) {
-        const mapEl = document.getElementById(this.selectors.map);
-        if (!mapEl) return;
-        // Sử dụng class fullscreen CSS thay vì API native để tránh xung đột UI
-        if (enable) {
-            mapEl.classList.add('fullscreen');
-            // Gọi hàm xử lý UI trong logic.js nếu cần (ẩn sidebar, hiện logo map)
-        } else {
-            mapEl.classList.remove('fullscreen');
-        }
-        // Trigger resize map
-        setTimeout(() => {
-            if(window.invalidateMapSize) window.invalidateMapSize();
-        }, 300);
+        if(enable)
+            handleScreenEvent();
     }
 }
 
@@ -373,6 +368,7 @@ export function startGuideFlow(locationNameOrData) {
     if (scenarioData) {
         // Khởi tạo controller mới với dữ liệu vừa chuẩn hóa
         guideApp = new SmartGuideController(scenarioData);
+        guideApp._set(locationNameOrData);
         guideApp.start(locationNameOrData.title || scenarioData.title);
     } else {
         // Thông báo lỗi ra Chat UI

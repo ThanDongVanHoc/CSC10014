@@ -3,7 +3,6 @@ from .models import Place
 
 def poi_csv_to_db(record):
     query_kw = "other" 
-    
     # Lấy dữ liệu
     name = record.get("Ten")
     location = record.get("Dia chi")
@@ -13,12 +12,12 @@ def poi_csv_to_db(record):
     phone_number = record.get("So dien thoai")
     website = record.get("Website")
     intro = record.get("Loai")
-    original_kw = record.get("Tu khoa goc", "") # Để mặc định chuỗi rỗng để tránh lỗi split/in
+    original_kw = record.get("Tu khoa goc", "") 
 
-    # --- KHẮC PHỤC LỖI TẠI ĐÂY ---
-    # Sử dụng pd.isna() để bắt chính xác giá trị NaN (Not a Number) của Pandas
-    # Và kiểm tra cả chuỗi rỗng hoặc None
-    if pd.isna(location) or pd.isna(lat) or pd.isna(lng) or pd.isna(img):
+    if pd.isna(location) or pd.isna(lat) or pd.isna(lng) or \
+       pd.isna(img) or str(img).strip() == "Không có" or \
+       pd.isna(intro):
+        
         return None
         
     # Logic gán query_kw

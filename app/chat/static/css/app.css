@@ -35,7 +35,7 @@
   height: 100%;
   max-height: 100%; /* Giới hạn theo parent, không phải viewport */
   min-height: 0; /* Cho phép flex shrink */
-  font-family: "Inter", sans-serif; /* Đảm bảo font nhất quán */
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 
   /* Viền mỏng bên phải để ngăn cách với chat */
   border-right: 1px solid rgba(0, 0, 0, 0.06);
@@ -140,7 +140,7 @@
   background: transparent;
   color: #334155;
   font-size: 14px;
-  font-family: "Inter", sans-serif;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   font-weight: 500;
   text-align: left;
   border-radius: 8px;
@@ -343,7 +343,7 @@
   padding: 8px 12px; /* Tăng từ 6px 10px lên 8px 12px */
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
   border: 1px solid rgba(15, 23, 42, 0.05);
-  font-family: "Inter", sans-serif; /* Thêm font-family */
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 .avatar {
@@ -364,14 +364,14 @@
   display: flex;
   flex-direction: column;
   gap: 2px; /* Tăng từ 1px lên 2px */
-  font-family: "Inter", sans-serif; /* Thêm font-family */
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 .greeting {
   font-size: 14px; /* Tăng từ 13px lên 14px */
   color: #0b1220;
   font-weight: 600;
-  font-family: "Inter", sans-serif; /* Thêm font-family */
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 .logout-link {
@@ -379,7 +379,7 @@
   color: var(--brand);
   text-decoration: none;
   transition: all 0.2s ease;
-  font-family: "Inter", sans-serif; /* Thêm font-family */
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 .logout-link:hover {
