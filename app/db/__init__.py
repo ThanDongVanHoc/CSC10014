@@ -24,17 +24,13 @@ def init_db_command():
 @with_appcontext
 def load_place_data_command():
     from .models import Place
-    # Thêm dòng này để chắc chắn bảng đã tồn tại trước khi select
     db.create_all() 
-
-    # Kiểm tra dữ liệu cũ
     has_data = db.session.scalar(select(Place).limit(1))
     if has_data:
         click.echo('Data already exists. Skipping load.')
         return
     
     try:
-        # Đường dẫn file (Giữ nguyên logic của bạn)
         current_dir = pathlib.Path(__file__).parent.parent.parent
         data_dir = current_dir / 'Dataset' / 'crawler' / 'raw_data_robust.csv'
         
@@ -56,9 +52,7 @@ def load_place_data_command():
     from .func import poi_csv_to_db 
     
     valid_data_to_insert = []
-    
-    # --- TỐI ƯU HÓA VÒNG LẶP ---
-    # Chỉ gọi hàm poi_csv_to_db một lần mỗi dòng
+
     try:
         for record in data_to_dict:
             place_obj = poi_csv_to_db(record)

@@ -4,34 +4,91 @@
   href="{{ url_for('static', filename='images/logo.png') }}"
   type="image/x-icon"
 />
-
 <link
   rel="stylesheet"
-  href="{{ url_for('chat.static', filename='css/app.css') }}"
+  href="{{ url_for('chat.static', filename='css/app/core/layout.css') }}"
+/>
+<link
+  rel="stylesheet"
+  href="{{ url_for('chat.static', filename='css/app/core/responsive.css') }}"
 />
 
 <link
   rel="stylesheet"
-  href="{{ url_for('chat.static', filename='css/map.css') }}"
+  href="{{ url_for('chat.static', filename='css/app/sidebar/structure.css') }}"
 />
 <link
   rel="stylesheet"
-  href="{{ url_for('chat.static', filename='css/chat.css') }}"
+  href="{{ url_for('chat.static', filename='css/app/sidebar/controls.css') }}"
 />
-
+<link
+  rel="stylesheet"
+  href="{{ url_for('chat.static', filename='css/app/sidebar/history.css') }}"
+/>
+<link
+  rel="stylesheet"
+  href="{{ url_for('chat.static', filename='css/app/sidebar/collapsed.css') }}"
+/>
+<link
+  rel="stylesheet"
+  href="{{ url_for('chat.static', filename='css/app/components/user-profile.css') }}"
+/>
+<link
+  rel="stylesheet"
+  href="{{ url_for('chat.static', filename='css/chat/core.css') }}"
+/>
+<link
+  rel="stylesheet"
+  href="{{ url_for('chat.static', filename='css/chat/messages.css') }}"
+/>
+<link
+  rel="stylesheet"
+  href="{{ url_for('chat.static', filename='css/chat/input.css') }}"
+/>
+<link
+  rel="stylesheet"
+  href="{{ url_for('chat.static', filename='css/chat/components.css') }}"
+/>
 <link
   rel="stylesheet"
   href="{{ url_for('chat.static', filename='css/guide_manager.css') }}"
 />
-
 <link
   rel="stylesheet"
-  href="{{ url_for('chat.static', filename='css/map_overlay.css') }}"
+  href="{{ url_for('chat.static', filename='css/map/core/layout.css') }}"
+/>
+<link
+  rel="stylesheet"
+  href="{{ url_for('chat.static', filename='css/map/core/controls.css') }}"
+/>
+<link
+  rel="stylesheet"
+  href="{{ url_for('chat.static', filename='css/map/core/markers.css') }}"
+/>
+<link
+  rel="stylesheet"
+  href="{{ url_for('chat.static', filename='css/map/core/location-cards.css') }}"
+/>
+<link
+  rel="stylesheet"
+  href="{{ url_for('chat.static', filename='css/map/core/search.css') }}"
+/>
+<link
+  rel="stylesheet"
+  href="{{ url_for('chat.static', filename='css/map/core/animations.css') }}"
+/>
+<link
+  rel="stylesheet"
+  href="{{ url_for('chat.static', filename='css/map/overlay/chat.css') }}"
 />
 
 <link
   rel="stylesheet"
-  href="{{ url_for('chat.static', filename='css/poi.css') }}"
+  href="{{ url_for('chat.static', filename='css/map/poi/filter.css') }}"
+/>
+<link
+  rel="stylesheet"
+  href="{{ url_for('chat.static', filename='css/map/poi/sidebar.css') }}"
 />
 <link
   href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
@@ -62,9 +119,7 @@
 
   <!-- MAP -->
   <div id="map">
-
     <div class="transport-panel">
-      
       <div class="transport-modes">
         <button data-travel="driving" class="t-btn active" title="Driving">
           <i class="fas fa-car"></i>
@@ -88,13 +143,12 @@
           <span id="infoDistance" class="info-value">-- km</span>
         </div>
       </div>
-
     </div>
 
     <!-- Fullscreen & controls -->
     <div class="map-controls">
       <button id="mapFullscreenBtn" title="Toggle fullscreen" class="map-btn">
-        <i class="fas fa-expand"></i>
+        <i id="fullscreenIcon" class="fas fa-expand"></i>
       </button>
     </div>
 

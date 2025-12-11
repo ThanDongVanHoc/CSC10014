@@ -1,0 +1,237 @@
+/* chat/components.css */
+
+/* --- TRANSPORT PANEL --- */
+.transport-panel {
+  position: absolute;
+  top: 15px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1000;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(6px);
+  padding: 4px 6px;
+  border-radius: 36px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 280ms cubic-bezier(0.22, 0.9, 0.25, 1);
+}
+
+.transport-modes {
+  display: flex;
+  gap: 5px;
+}
+
+.t-btn {
+  width: 32px;
+  height: 32px;
+  border: none;
+  border-radius: 50%;
+  background: transparent;
+  color: #666;
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.t-btn:hover {
+  background-color: #f0f2f5;
+  color: #333;
+}
+
+.t-btn.active {
+  background-color: black;
+  color: white;
+  box-shadow: 0 6px 14px rgba(43, 140, 255, 0.16);
+  transform: scale(1.02);
+}
+
+.route-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  overflow: hidden;
+  max-width: 190px;
+  opacity: 1;
+  transition: max-width 320ms cubic-bezier(0.22, 0.9, 0.25, 1),
+    opacity 240ms ease, transform 240ms ease;
+}
+
+.route-info.hidden {
+  max-width: 0;
+  opacity: 0;
+  padding: 0;
+  margin: 0;
+  transform: translateX(8px);
+}
+
+/* Compact Behavior */
+.transport-panel.compact .transport-modes .t-btn:not(.active) {
+  opacity: 0;
+  transform: translateX(-6px) scale(0.84);
+  pointer-events: none;
+}
+
+.transport-panel.compact:hover {
+  padding: 6px 10px;
+}
+
+.transport-panel.compact:hover .transport-modes .t-btn:not(.active) {
+  opacity: 1;
+  transform: translateX(0) scale(1);
+  pointer-events: auto;
+}
+
+.transport-panel.compact:hover .route-info {
+  max-width: 260px;
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.transport-modes .t-btn {
+  transition: transform 260ms cubic-bezier(0.22, 0.9, 0.25, 1),
+    opacity 200ms ease;
+}
+.transport-modes .t-btn:nth-child(1) {
+  transition-delay: 0ms;
+}
+.transport-modes .t-btn:nth-child(2) {
+  transition-delay: 40ms;
+}
+.transport-modes .t-btn:nth-child(3) {
+  transition-delay: 80ms;
+}
+
+.info-value {
+  font-size: 0.9rem;
+}
+.divider {
+  width: 1px;
+  height: 24px;
+  background-color: #ddd;
+}
+.info-item {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.2;
+}
+.info-label {
+  font-size: 0.7rem;
+  color: #888;
+  font-weight: 500;
+}
+.info-value {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #2c3e50;
+  white-space: nowrap;
+}
+
+/* --- POPUP INPUTS & BUTTONS --- */
+.note-input {
+  width: 160px;
+  padding: 6px 10px;
+  font-size: 12px;
+  margin-top: 4px;
+  border: 1px solid rgba(15, 23, 42, 0.1);
+  border-radius: 6px;
+  background: white;
+  color: #0b1220;
+}
+
+.pin-btns {
+  display: flex;
+  justify-content: space-between;
+  gap: 6px;
+  margin-top: 8px;
+}
+
+.pin-btns button {
+  font-size: 12px;
+  border: 1px solid rgba(0, 123, 255, 0.2);
+  border-radius: 6px;
+  cursor: pointer;
+  padding: 6px 10px;
+  background: rgba(0, 123, 255, 0.05);
+  color: var(--brand);
+  font-weight: 600;
+  transition: all 0.2s ease;
+  flex: 1;
+}
+
+.pin-btns button:hover {
+  background: rgba(0, 123, 255, 0.1);
+  border-color: rgba(0, 123, 255, 0.4);
+}
+
+/* --- CHAT ITEM LIST --- */
+.chat-item {
+  position: relative;
+  display: flex;
+  flex: 1;
+  align-items: center;
+  justify-content: space-between;
+  transition: all 0.2s ease;
+  padding: 8px 12px;
+  border-radius: 8px;
+}
+
+.chat-item:hover {
+  background-color: rgba(0, 123, 255, 0.05);
+}
+
+.chat-name {
+  font-size: 14px;
+  font-weight: 600;
+  color: #0b1220;
+}
+
+.chat-options {
+  position: relative;
+}
+
+.dots {
+  display: none;
+  cursor: pointer;
+  font-size: 18px;
+  line-height: 0;
+  padding: 4px 6px;
+  user-select: none;
+  color: #94a3b8;
+  transition: color 0.2s ease;
+}
+
+.chat-item:hover .dots,
+.dots-active {
+  display: inline-block;
+  color: var(--brand);
+}
+
+.chat-item.active {
+  background-color: linear-gradient(
+    135deg,
+    rgba(0, 123, 255, 0.12) 0%,
+    rgba(0, 123, 255, 0.06) 100%
+  );
+  border-left: 3px solid var(--brand);
+}
+
+/* Compact layout media query */
+@media (max-width: 720px) {
+  .location-card {
+    padding: 12px 14px;
+  }
+  .location-card .card-footer {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+  .location-card .distance {
+    align-self: flex-end;
+    min-width: auto;
+  }
+}

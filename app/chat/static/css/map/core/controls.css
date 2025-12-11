@@ -1,0 +1,49 @@
+.map-controls {
+  position: absolute;
+  bottom: 22px;
+  right: 12px;
+  z-index: 2200; /* Cao hơn overlay */
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.map-btn-gps {
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.95);
+  border: 0;
+  border-radius: 10px;
+  box-shadow: 0 6px 18px rgba(2, 6, 23, 0.08);
+  cursor: pointer;
+  padding: 0;
+}
+
+/* --- [NEW] Loading State cho GPS Button --- */
+.map-btn-gps.loading img,
+.map-btn-gps.loading svg {
+  display: none; /* Ẩn icon gốc khi đang load */
+}
+
+.map-btn-gps.loading::after {
+  content: "";
+  display: block;
+  width: 20px;
+  height: 20px;
+  border: 2px solid #e5e5e5;
+  border-top: 2px solid #007aff;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+.map-btn {
+  background: rgba(255, 255, 255, 0.95);
+  border: 0;
+  padding: 8px 10px;
+  border-radius: 10px;
+  box-shadow: 0 6px 18px rgba(2, 6, 23, 0.08);
+  cursor: pointer;
+}

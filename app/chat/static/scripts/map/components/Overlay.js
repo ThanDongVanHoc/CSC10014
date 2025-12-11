@@ -121,6 +121,7 @@ export async function handleScreenEvent() {
     // Import động module chat nếu cần
     const { hideSearchWrapper } = await import("../../chat.js");
     const isCurrentlyFullscreen = mapEl.classList.contains("fullscreen");
+    const fullscreenIcon = document.getElementById("fullscreenIcon");
 
     if (!isCurrentlyFullscreen) {
       // Chuyển sang Fullscreen
@@ -128,6 +129,11 @@ export async function handleScreenEvent() {
       mapChatOverlay.appendChild(chatContainer);
       mapChatOverlay.classList.add("hidden");
       if (mapLogo) mapLogo.style.display = "block";
+      // Đổi icon thành compress
+      if (fullscreenIcon) {
+        fullscreenIcon.classList.remove("fa-expand");
+        fullscreenIcon.classList.add("fa-compress");
+      }
       // Ngăn chặn click xuyên qua khung chat
       if (chatContainer) {
         chatContainer.addEventListener("click", stopPropagation);
@@ -140,6 +146,11 @@ export async function handleScreenEvent() {
       document.querySelector(".app").prepend(chatContainer);
       mapChatOverlay.classList.add("hidden");
       if (mapLogo) mapLogo.style.display = "none";
+      // Đổi icon thành expand
+      if (fullscreenIcon) {
+        fullscreenIcon.classList.remove("fa-compress");
+        fullscreenIcon.classList.add("fa-expand");
+      }
       if (chatContainer) {
         chatContainer.removeEventListener("click", stopPropagation);
         chatContainer.removeEventListener("mousedown", stopPropagation);

@@ -1,4 +1,3 @@
-/* Layout riêng cho trang sign-up */
 html,
 body {
   height: 100%;
@@ -64,7 +63,6 @@ header.nav {
   }
 }
 
-/* left column */
 .left {
   padding: 36px;
 }
@@ -98,7 +96,6 @@ p.lead {
   font-weight: 600;
 }
 
-/* right column (form) */
 .right {
   padding: 28px;
 }

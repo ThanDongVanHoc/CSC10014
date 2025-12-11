@@ -1,16 +1,11 @@
 from flask import redirect, render_template, url_for, session, request, abort, flash
 from . import auth_bp
+from . import oauth  
 import os
 from dotenv import load_dotenv
-from google.oauth2 import id_token
-from google_auth_oauthlib.flow import Flow
-import cachecontrol
-import google.auth.transport.requests
-import pathlib
-import requests
+import time
 from app.db import db
 from werkzeug.security import generate_password_hash
-import time
 from .mail import send_verification_mail
 from .utils import (
     login_is_required,
@@ -27,25 +22,16 @@ from .utils import (
     clear_auth_session
 )
 
-load_dotenv()
-
-GOOGLE_CLIENT_ID = os.environ.get("GOOGLE_CLIENT_ID")
-client_secrets_file = os.path.join(pathlib.Path(__file__).parent, "client_secrets.json")
-# Chỉ dùng cho development, không dùng "1" trên production
-os.environ["OAUTHLIB_INSECURE_TRANSPORT"] = "1" 
-
-flow = Flow.from_client_secrets_file(
-    client_secrets_file=client_secrets_file,
-    scopes=["https://www.googleapis.com/auth/userinfo.profile", "https://www.googleapis.com/auth/userinfo.email", "openid"],
-    redirect_uri="http://127.0.0.1:5000/auth/callback"
-)
+load_dotenv() # Load lại cho chắc chắn các biến khác trong routes cần dùng
 
 @auth_bp.route('/google_login')
 @clear_auth_session
 def google_login():
     if "user_id" in session:
         return redirect(url_for('home_page'))
-    authorization_url, state = flow.authorization_url()
+    # Gọi hàm bên oauth.py
+    authorization_url, state = oauth.get_google_auth_url()
+    
     session["state"] = state
     return redirect(authorization_url)
 
@@ -54,48 +40,37 @@ def callback():
     if "user_id" in session:
         return redirect(url_for('home_page'))
     
-    try:
-        flow.fetch_token(authorization_response=request.url)
+    # Kiểm tra state
+    if "state" not in session or session["state"] != request.args.get("state"):
+        abort(500) # Lỗi state mismatch
 
-        if "state" not in session or session["state"] != request.args["state"]:
-            abort(500) # Lỗi state mismatch
+    # Gọi hàm xác thực bên oauth.py
+    id_info = oauth.verify_google_token(request.url)
 
-        credentials = flow.credentials
-        
-        request_session = requests.session()
-        cached_session = cachecontrol.CacheControl(request_session)
-        token_request = google.auth.transport.requests.Request(session=cached_session)
-
-        id_info = id_token.verify_oauth2_token(
-            id_token=credentials._id_token,
-            request=token_request,
-            audience=GOOGLE_CLIENT_ID
-        )
-        
-        google_sub_id = id_info.get("sub")
-        google_email = id_info.get("email")
-
-        user = get_user_by_google_sub_or_email(google_sub_id, google_email)
-
-        if user:
-            login_user_session(user)
-            session.pop('google_signup_data', None) # Dọn dẹp
-            return redirect(url_for('home_page'))
-        else:
-            # User chưa có tài khoản, lưu thông tin để điền form bổ sung
-            session["google_signup_data"] = {
-                'sub' : google_sub_id, 
-                'fullname' : id_info.get('name'),
-                'email': id_info.get('email'),
-                'picture': id_info.get('picture'),
-                'expires_at': time.time() + 300 # 5 phút để hoàn tất
-            }
-            return redirect(url_for('.google_setup')) 
-            
-    except Exception as e:
-        print(f"Lỗi khi xác thực Google: {e}")
+    if not id_info:
         flash("Google authentication failed. Please try again.", "danger")
         return redirect(url_for('.signup_page'))
+
+    google_sub_id = id_info.get("sub")
+    google_email = id_info.get("email")
+
+    user = get_user_by_google_sub_or_email(google_sub_id, google_email)
+
+    if user:
+        login_user_session(user)
+        session.pop('google_signup_data', None) # Dọn dẹp
+        return redirect(url_for('home_page'))
+    else:
+        # User chưa có tài khoản, lưu thông tin để điền form bổ sung
+        session["google_signup_data"] = {
+            'sub' : google_sub_id, 
+            'fullname' : id_info.get('name'),
+            'email': id_info.get('email'),
+            'picture': id_info.get('picture'),
+            'expires_at': time.time() + 300 # 5 phút để hoàn tất
+        }
+        return redirect(url_for('.google_setup')) 
+
 
 @auth_bp.route('/google-setup', methods=['GET', 'POST'])
 def google_setup():
@@ -207,12 +182,12 @@ def signup_page():
             "phone": phone,
             "lang": lang,
             "password_hash": hashed_pw,
-            "expires_at": time.time() + 600, # 10 phút để xác minh
-            "errors": {} # Thêm một key để chứa lỗi xác minh
+            "expires_at": time.time() + 600, 
+            "errors": {} 
         }
         
         if send_verification_mail(email):
-            session["verification_last_sent"] = time.time() # Chống spam resend
+            session["verification_last_sent"] = time.time() 
             return redirect(url_for('.handle_verify_signup'))
         else:
             errors['email'] = 'Failed to send verification email. Please check the address and try again.'
@@ -220,7 +195,7 @@ def signup_page():
                 'fullname': fullname, 'email': email, 'phone': phone, 
                 'lang': lang, 'password': password, 'confirm': confirm
             }
-            session.pop("signup_info", None) # Xóa session nếu gửi mail lỗi
+            session.pop("signup_info", None) 
             return render_template('sign-up.html', errors=errors, form_data=form_data)
     else:
         return render_template('sign-up.html', errors={}, form_data={})
@@ -236,7 +211,6 @@ def logout():
 @signup_info_required 
 def handle_verify_signup():
     signup_info = session["signup_info"]
-    # Lấy lỗi từ session (nếu có) và sau đó xóa đi
     errors = signup_info.get("errors", {})
     if "errors" in session["signup_info"]:
          session["signup_info"]["errors"] = {} 
@@ -265,12 +239,10 @@ def verify_signup():
             errors["code"] = "Code does not match. Please try again."
 
     if errors:
-        # Lưu lỗi vào session và redirect về trang handle để hiển thị
         session["signup_info"]["errors"] = errors
         session.modified = True
         return redirect(url_for('.handle_verify_signup'))
 
-    # Nếu không lỗi -> Tạo user
     new_user = create_local_user(signup_info)
 
     login_user_session(new_user)
@@ -283,7 +255,7 @@ def verify_signup():
 def resendcode_verify():
     last_sent_time = session.get("verification_last_sent", 0)
     current_time = time.time()
-    wait_time = 10 # Chờ 10 giây
+    wait_time = 10 
     
     if current_time - last_sent_time < wait_time:
         seconds_left = int(wait_time - (current_time - last_sent_time))
@@ -396,7 +368,7 @@ def verify_reset_pass():
 def resendcode_resetpass():
     last_sent_time = session.get("verification_last_sent", 0)
     current_time = time.time()
-    wait_time = 10 # Chờ 10 giây
+    wait_time = 10 
     
     if current_time - last_sent_time < wait_time:
         seconds_left = int(wait_time - (current_time - last_sent_time))

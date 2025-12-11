@@ -1,0 +1,66 @@
+/* map-markers.css */
+.map-logo {
+  position: absolute;
+  z-index: 2150;
+  left: 12px;
+  bottom: 22px;
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  box-shadow: 0 8px 24px rgba(2, 6, 23, 0.2);
+  background: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: grab;
+  transition: transform 0.35s ease, left 0.2s ease, top 0.2s ease,
+    right 0.2s ease, bottom 0.2s ease;
+  user-select: none;
+}
+.map-logo img {
+  width: 60%;
+  height: 60%;
+  object-fit: contain;
+  display: block;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.map-logo.dragging {
+  cursor: grabbing;
+  transform: scale(1.02);
+  transition: none;
+}
+
+/* Avatar Marker & Ripple Effect */
+.avatar-marker-container {
+  position: relative;
+  width: 50px;
+  height: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.avatar-pin-img {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  box-sizing: border-box;
+  border: 3px solid #fff;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+  position: absolute;
+  z-index: 2;
+}
+
+.avatar-ripple {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background-color: #0099ff;
+  position: absolute;
+  z-index: 1;
+  animation: ripple 2s infinite cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
