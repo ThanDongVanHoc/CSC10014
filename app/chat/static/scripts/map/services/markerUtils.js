@@ -320,20 +320,36 @@ export function setMainMarker(latlng, text, shouldFly = true) {
 }
 
 // Tạo Pin tạm thời khi click vào bản đồ
+// Tạo Pin tạm thời khi click vào bản đồ (Có Reverse Geocoding)
 export function createPin(latlng, name) {
   const { map } = state;
   const marker = L.marker(latlng, { icon: icons.blue }).addTo(map);
   let isSaved = false;
 
+  // 1. Biến lưu tên địa điểm.
+  // Nếu là click chuột (Marked Point) thì để placeholder, còn nếu từ search thì dùng luôn.
+  let resolvedName = name === "Marked Point" ? "Đang lấy địa chỉ..." : name;
+  const isNeedReverse = name === "Marked Point";
+
+  poiSidebarUI.close();
+
+  // Tạo ID ngẫu nhiên để lát nữa cập nhật lại nội dung thẻ <b>
+  const titleId = `pin-title-${Date.now()}`;
+
   const popupDiv = document.createElement("div");
   L.DomEvent.disableClickPropagation(popupDiv);
+
+  // HTML Popup: Thêm ID cho thẻ <b> và style cho icon xoay (loading)
   popupDiv.innerHTML = `
         <div style="text-align: center; padding: 5px;"> 
-            <b>${name}</b><br>
+            <b id="${titleId}">
+                ${resolvedName} 
+                ${isNeedReverse ? '<span class="spinner">↻</span>' : ""}
+            </b><br>
             <small style="color: #666;">${latlng.lat.toFixed(
               5
             )}, ${latlng.lng.toFixed(5)}</small>
-            <input type="text" placeholder="Take note" class="note-input" style="width: 90%; margin: 8px 0; padding: 4px; border: 1px solid #ccc; border-radius: 4px; text-align: center;"> <br>
+            <input type="text" placeholder="Note..." class="note-input" style="width: 90%; margin: 8px 0; padding: 4px; border: 1px solid #ccc; border-radius: 4px; text-align: center;"> <br>
             <div class="pin-btns" style="display: flex; justify-content: space-around; gap: 5px; margin-top: 5px;">
                 <button class="btn-start" style="flex: 1; background:#4CAF50; color:white; border: none; padding: 6px 10px; border-radius: 4px; cursor: pointer; font-size: 0.9em;">Start</button>
                 <button class="btn-end" style="flex: 1; background:#F44336; color:white; border: none; padding: 6px 10px; border-radius: 4px; cursor: pointer; font-size: 0.9em;">End</button>
@@ -344,17 +360,40 @@ export function createPin(latlng, name) {
 
   const noteInput = popupDiv.querySelector(".note-input");
 
-  // Xử lý các nút trong Popup tạm thời
+  // 2. Logic gọi API Nominatim (Reverse Geocoding)
+  if (isNeedReverse) {
+    // Cấu hình: zoom=18 (chi tiết nhất), accept-language=vi (ưu tiên tiếng Việt)
+    const url = `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latlng.lat}&lon=${latlng.lng}&zoom=18&addressdetails=1&accept-language=vi`;
+
+    fetch(url)
+      .then((res) => res.json())
+      .then((data) => {
+        // Lấy tên hiển thị (Ưu tiên tên ngắn gọn nếu có, không thì lấy display_name full)
+        const newName = data.display_name || "Vị trí không xác định";
+        resolvedName = newName; // Cập nhật biến để dùng cho nút bấm
+
+        // Cập nhật giao diện (Xóa spinner, hiện tên mới)
+        const titleEl = popupDiv.querySelector(`#${titleId}`);
+        if (titleEl) titleEl.innerText = newName;
+      })
+      .catch((err) => {
+        console.warn("Reverse geocode failed:", err);
+        const titleEl = popupDiv.querySelector(`#${titleId}`);
+        if (titleEl) titleEl.innerText = "Vị trí đã chọn";
+        resolvedName = "Vị trí đã chọn";
+      });
+  }
+
+  // 3. Xử lý các nút (Sử dụng biến resolvedName đã được cập nhật)
   popupDiv.querySelector(".btn-start").onclick = () => {
-    const userNote = noteInput.value || name || "(No note !)";
+    const userNote = noteInput.value || resolvedName;
     setNormalStartPoint(latlng, userNote);
   };
   popupDiv.querySelector(".btn-end").onclick = () => {
-    const userNote = noteInput.value || name || "(No note !)";
+    const userNote = noteInput.value || resolvedName;
     setNormalEndPoint(latlng, userNote);
   };
 
-  // Nếu người dùng đóng popup mà chưa lưu -> Xóa marker
   marker.on("popupclose", function (e) {
     if (!isSaved) {
       map.removeLayer(marker);
@@ -362,9 +401,8 @@ export function createPin(latlng, name) {
     }
   });
 
-  // Nút Pin để lưu marker vĩnh viễn
   popupDiv.querySelector(".btn-pin").onclick = () => {
-    const userNote = noteInput.value || "(No note !)";
+    const userNote = noteInput.value || resolvedName; // Lưu với tên mới tìm được
     isSaved = true;
     map.removeLayer(marker);
     marker.closePopup();
@@ -379,6 +417,7 @@ export function setPoiMarker(latlng, name, extraData = {}) {
   const { map } = state;
   if (!map) return;
 
+  poiSidebarUI.close();
   const ll = L.latLng(latlng);
   map.flyTo(latlng, 17, { animate: true, duration: 1.2 });
   const poiMarker = L.marker(ll, { icon: icons.blue }).addTo(map);

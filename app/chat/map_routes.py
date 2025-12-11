@@ -1,9 +1,11 @@
-from app.db.models import Place
+from app.db.models import Place, SearchHistory
+from datetime import datetime
 from . import chat_bp
 from flask import redirect, render_template, send_from_directory, url_for, session, request, jsonify
 from sqlalchemy import select, and_, or_
 from app.db import db
 import os
+from .utilis import get_user
 
 def query_pois_db(query_kw, south, north, east, west):
     stmt = select(Place).where(
@@ -104,3 +106,59 @@ def serve_poi_img(filename):
     BASE_DIR = os.path.join(os.getcwd(), 'Dataset/crawler')
     print(f"DEBUG IMAGE PATH: {BASE_DIR} | Filename: {filename}")
     return send_from_directory(BASE_DIR, filename)
+
+@chat_bp.route('/log_search_history', methods=['POST'])
+def log_search_history():
+    data = request.get_json()
+    if not data:
+        return jsonify({"status": "error"}), 400
+    keyword = data.get("keyword", "").strip()
+    if not keyword:
+        return jsonify({"status": "ignored"})
+
+    user_email = session.get("user_email", None)
+    current_time = datetime.now()
+
+    if not user_email:
+        history = session.get("search_history", [])
+        history = [item for item in history if item["keyword"] != keyword]
+        history.insert(0, {
+            "keyword": keyword,
+            "created_at": current_time.isoformat() 
+        })
+        history = history[:10]
+        session["search_history"] = history
+        return jsonify({"status": "success", "history": history})
+    user = get_user(user_email)
+    if not user:
+        return jsonify({"status": "error"}), 404
+
+    existing_log = SearchHistory.query.filter_by(user_id=user.id, keyword=keyword).first()
+
+    if existing_log:
+        existing_log.created_at = current_time
+    else:
+        new_log = SearchHistory(
+            user_id=user.id,
+            keyword=keyword,
+            created_at=current_time
+        )
+        db.session.add(new_log)
+
+    db.session.commit()
+    return jsonify({"status": "success"})
+
+
+@chat_bp.route('/get_search_history')
+def get_search_history():
+    user_email = session.get("user_email", None)
+    if not user_email:
+        history = session.get("search_history", [])
+        return jsonify(history)
+    user = get_user(user_email)
+    if not user:
+         return jsonify([])
+    histories = SearchHistory.query.filter_by(user_id=user.id)\
+        .order_by(SearchHistory.created_at.desc()).all()
+    history_list = [h.to_dict() for h in histories]
+    return jsonify(history_list)

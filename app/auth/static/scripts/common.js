@@ -1,8 +1,3 @@
-/**
- * common.js (hoặc utils.js)
- * Chứa các hàm tiện ích dùng chung cho toàn bộ website.
- */
-
 function validateEmail(v) {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
 }

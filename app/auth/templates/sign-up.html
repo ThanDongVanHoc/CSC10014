@@ -10,14 +10,20 @@
       href="{{ url_for('static', filename='images/logo.png') }}"
     />
 
-    <link rel="stylesheet" href="{{ url_for('auth.static', filename='css/signup.css') }}">
-
     <link
       href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap"
       rel="stylesheet"
     />
 
-    </head>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('auth.static', filename='css/common.css') }}"
+    />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('auth.static', filename='css/pages/sign-up.css') }}"
+    />
+  </head>
   <body>
     <div class="site-wrap">
       <header class="nav">
@@ -72,12 +78,7 @@
         </section>
 
         <aside class="right">
-          <form
-            id="signupForm"
-            novalidate
-            action="{{ url_for('auth.signupforgoogle') }}"
-            method="POST"
-          >
+          <form id="signupForm" novalidate action="/auth/signup" method="POST">
             <div
               style="
                 display: flex;
@@ -89,6 +90,31 @@
               <h2 style="margin: 0">Sign up</h2>
               <small class="muted">It takes less than a minute</small>
             </div>
+
+            <div class="field">
+              <label for="fullname">Full name</label>
+              <input
+                id="fullname"
+                name="fullname"
+                type="text"
+                placeholder="It's me Nam"
+                required
+              />
+              <div class="error" id="err-name" aria-live="polite"></div>
+            </div>
+
+            <div class="field">
+              <label for="email">Email</label>
+              <input
+                id="email"
+                name="email"
+                type="email"
+                placeholder="you@example.com"
+                required
+              />
+              <div class="error" id="err-email" aria-live="polite"></div>
+            </div>
+
             <div class="row">
               <div class="field">
                 <label for="phone">Phone (optional)</label>
@@ -97,24 +123,28 @@
                   name="phone"
                   type="text"
                   placeholder="+84 9xx xxx xxx"
-                  value="{{ form_data.phone or '' }}"
                 />
               </div>
               <div class="field">
                 <label for="lang">Preferred language</label>
                 <select id="lang" name="lang">
-                  <option value="en" {% if form_data.lang == 'en' %}selected{% endif %}>
-                    English
-                  </option>
-                  <option value="vi" {% if form_data.lang == 'vi' %}selected{% endif %}>
-                    Tiếng Việt
-                  </option>
-                  <option value="zh" {% if form_data.lang == 'zh' %}selected{% endif %}>
-                    中文
-                  </option>
-                  <option value="ja" {% if form_data.lang == 'ja' %}selected{% endif %}>
-                    日本語
-                  </option>
+                  {% if form_data.lang == 'en' %}
+                  <option value="en" selected>English</option>
+                  {% else %}
+                  <option value="en">English</option>
+                  {% endif %} {% if form_data.lang == 'vi' %}
+                  <option value="vi" selected>Tiếng Việt</option>
+                  {% else %}
+                  <option value="vi">Tiếng Việt</option>
+                  {% endif %} {% if form_data.lang == 'zh' %}
+                  <option value="zh" selected>中文</option>
+                  {% else %}
+                  <option value="zh">中文</option>
+                  {% endif %} {% if form_data.lang == 'ja' %}
+                  <option value="ja" selected>日本語</option>
+                  {% else %}
+                  <option value="ja">日本語</option>
+                  {% endif %}
                 </select>
               </div>
             </div>
@@ -161,9 +191,7 @@
               <div class="note" id="pwNote">
                 Use at least 8 characters including a number and a symbol.
               </div>
-              <div class="error" id="err-pw" aria-live="polite">
-                {{ errors.password or '' }}
-              </div>
+              <div class="error" id="err-pw" aria-live="polite"></div>
             </div>
 
             <div class="field">
@@ -175,9 +203,7 @@
                 placeholder="Repeat password"
                 required
               />
-              <div class="error" id="err-confirm" aria-live="polite">
-                {{ errors.confirm or '' }}
-              </div>
+              <div class="error" id="err-confirm" aria-live="polite"></div>
             </div>
 
             <div class="terms">
@@ -187,15 +213,31 @@
                 <a href="#">Privacy Policy</a>.</label
               >
             </div>
-            <div class="error" id="err-terms">
-                {{ errors.terms or '' }}
-            </div>
+            <div class="error" id="err-terms">{{ errors.terms or '' }}</div>
 
             <button class="btn primary" type="submit">Create account</button>
 
+            <div class="divider" style="margin-top: 8px">or</div>
+
+            <div class="socials">
+              <a
+                href="{{ url_for('auth.google_login') }}"
+                class="oauth-btn"
+                aria-label="Continue with Google"
+              >
+                <img
+                  src="https://www.svgrepo.com/show/475656/google-color.svg"
+                  width="18"
+                  alt="Google Logo"
+                />
+                Continue with Google
+              </a>
+            </div>
+
             <div class="note">
-              By creating an account, you consent to receive important service messages.
-              Your personal data is protected and shared only with your consent.
+              By creating an account, you consent to receive important service
+              messages. Your personal data is protected and shared only with
+              your consent.
             </div>
           </form>
         </aside>
@@ -210,6 +252,6 @@
     </div>
 
     <script src="{{ url_for('auth.static', filename='scripts/common.js') }}"></script>
-    <script src="{{ url_for('auth.static', filename='scripts/signupforgoogle.js') }}"></script>
+    <script src="{{ url_for('auth.static', filename='scripts/pages/sign-up.js') }}"></script>
   </body>
 </html>

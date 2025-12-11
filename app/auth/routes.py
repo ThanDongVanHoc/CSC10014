@@ -40,7 +40,7 @@ flow = Flow.from_client_secrets_file(
     redirect_uri="http://127.0.0.1:5000/auth/callback"
 )
 
-@auth_bp.route('/googlelogin')
+@auth_bp.route('/google_login')
 @clear_auth_session
 def google_login():
     if "user_id" in session:
@@ -90,15 +90,15 @@ def callback():
                 'picture': id_info.get('picture'),
                 'expires_at': time.time() + 300 # 5 phút để hoàn tất
             }
-            return redirect(url_for('.signupforgoogle')) 
+            return redirect(url_for('.google_setup')) 
             
     except Exception as e:
         print(f"Lỗi khi xác thực Google: {e}")
         flash("Google authentication failed. Please try again.", "danger")
         return redirect(url_for('.signup_page'))
 
-@auth_bp.route('/signupforgoogle', methods=['GET', 'POST'])
-def signupforgoogle():
+@auth_bp.route('/google-setup', methods=['GET', 'POST'])
+def google_setup():
     if "user_id" in session:
         session.pop('google_signup_data', None)
         return redirect(url_for('home_page'))
@@ -121,7 +121,7 @@ def signupforgoogle():
             
         if errors:
             form_data = {'phone': phone, 'lang': lang}
-            return render_template('signupforgoogle.html', errors=errors, form_data=form_data, signup_data=signup_data)
+            return render_template('google-setup.html', errors=errors, form_data=form_data, signup_data=signup_data)
         
         new_user = create_google_user(
             data=signup_data, 
@@ -137,7 +137,7 @@ def signupforgoogle():
         return redirect(url_for('home_page')) 
 
     else:
-        return render_template('signupforgoogle.html', errors={}, form_data={}, signup_data=signup_data)
+        return render_template('google-setup.html', errors={}, form_data={}, signup_data=signup_data)
 
 @auth_bp.route('/signin', methods=['GET', 'POST'])
 @clear_auth_session
@@ -164,9 +164,9 @@ def signin_page():
             if not errors:
                 login_user_session(user) 
                 return redirect(url_for('home_page'))
-        return render_template('signin.html', errors=errors, form_data=form_data)
+        return render_template('sign-in.html', errors=errors, form_data=form_data)
     else:
-        return render_template('signin.html', errors=errors, form_data=form_data)
+        return render_template('sign-in.html', errors=errors, form_data=form_data)
 
 @auth_bp.route('/signup', methods=['GET', 'POST'])
 @clear_auth_session
@@ -197,7 +197,7 @@ def signup_page():
                 'fullname': fullname, 'email': email, 'phone': phone, 
                 'lang': lang, 'password': password, 'confirm': confirm
             }
-            return render_template('signup.html', errors=errors, form_data=form_data)
+            return render_template('sign-up.html', errors=errors, form_data=form_data)
         
         hashed_pw = generate_password_hash(password)
 
@@ -221,9 +221,9 @@ def signup_page():
                 'lang': lang, 'password': password, 'confirm': confirm
             }
             session.pop("signup_info", None) # Xóa session nếu gửi mail lỗi
-            return render_template('signup.html', errors=errors, form_data=form_data)
+            return render_template('sign-up.html', errors=errors, form_data=form_data)
     else:
-        return render_template('signup.html', errors={}, form_data={})
+        return render_template('sign-up.html', errors={}, form_data={})
 
 @auth_bp.route('/logout')
 @login_is_required
@@ -325,7 +325,7 @@ def reset_pass():
         
         if errors:
             form_data = {"email":email}
-            return render_template('resetpass.html', form_data = form_data, errors = errors)
+            return render_template('reset-pass.html', form_data = form_data, errors = errors)
         else:
             hashed_pw = generate_password_hash(password)
             session["reset_pass_info"] = {
@@ -342,10 +342,10 @@ def reset_pass():
                 errors['email'] = 'Failed to send verification email. Please check the address and try again.'
                 form_data = {"email":email}
                 session.pop("reset_pass_info", None)
-                return render_template('resetpass.html', form_data = form_data, errors = errors)
+                return render_template('reset-pass.html', form_data = form_data, errors = errors)
             
     else:
-        return render_template('resetpass.html', form_data = {}, errors = {})
+        return render_template('reset-pass.html', form_data = {}, errors = {})
     
 @auth_bp.route('/handle_reset_pass')
 @reset_pass_info_required 

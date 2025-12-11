@@ -13,7 +13,12 @@
 
     <link
       rel="stylesheet"
-      href="{{ url_for('auth.static', filename='css/auth-card.css') }}"
+      href="{{ url_for('auth.static', filename='css/common.css') }}"
+    />
+
+    <link
+      rel="stylesheet"
+      href="{{ url_for('auth.static', filename='css/pages/auth-card.css') }}"
     />
 
     <style>
@@ -74,7 +79,12 @@
         Enter your email address and choose a new, strong password.
       </p>
 
-      <form id="resetForm" action="{{ url_for('auth.reset_pass') }}" method="POST" novalidate>
+      <form
+        id="resetForm"
+        action="{{ url_for('auth.reset_pass') }}"
+        method="POST"
+        novalidate
+      >
         <div class="form-content">
           <div class="phone-info" style="margin-bottom: 4px">Email address</div>
           <div class="input-field">
@@ -105,11 +115,7 @@
               placeholder="Create a new password"
               required
             />
-            <button
-              type="button"
-              id="togglePw"
-              title="Show / Hide password"
-            >
+            <button type="button" id="togglePw" title="Show / Hide password">
               Show
             </button>
           </div>
@@ -118,7 +124,11 @@
             <span
               id="pwBar"
               style="
-                background: linear-gradient(90deg, var(--brand), var(--brand-600));
+                background: linear-gradient(
+                  90deg,
+                  var(--brand),
+                  var(--brand-600)
+                );
                 width: 0%;
               "
             ></span>
@@ -151,20 +161,20 @@
             {{ errors.confirm or '' }}
           </div>
         </div>
-          <div class="buttons">
-            <a
-              href="{{ url_for('auth.signin_page') }}"
-              class="btn btn-cancel"
-              style="text-decoration: none; line-height: 36px"
-              >Cancel</a
-            >
-            <button type="submit" class="btn btn-primary">Continue</button>
-          </div>
+
+        <div class="buttons">
+          <a
+            href="{{ url_for('auth.signin_page') }}"
+            class="btn btn-cancel"
+            style="text-decoration: none; line-height: 36px"
+            >Cancel</a
+          >
+          <button type="submit" class="btn btn-primary">Continue</button>
         </div>
       </form>
     </div>
 
     <script src="{{ url_for('auth.static', filename='scripts/common.js') }}"></script>
-    <script src="{{ url_for('auth.static', filename='scripts/resetpass.js') }}"></script>
+    <script src="{{ url_for('auth.static', filename='scripts/pages/reset-pass.js') }}"></script>
   </body>
 </html>

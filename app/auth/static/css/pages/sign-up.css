@@ -1,51 +1,18 @@
-:root {
-  --navbar-color: white;
-  --primary-color: #00b37e;
-  --dark-blue: #0d2c54;
-  --text-light: #555;
-  --bg-light: #f4f8f7;
-  --brand: #00b37e;
-  --brand-600: #009966;
-  --muted: #6b7280;
-  --bg: #fbfdff;
-  --card: #ffffff;
-  --radius: 12px;
-  --glass: rgba(255, 255, 255, 0.6);
-  --shadow: 0 6px 20px rgba(13, 17, 23, 0.08);
-  --max-width: 1100px;
-}
-
-/* Ẩn biểu tượng 'con mắt' (reveal) mặc định của Edge */
-input[type="password"]::-ms-reveal {
-  display: none;
-}
-
-/* Ẩn luôn nút 'x' (clear) mặc định (nếu có) */
-input[type="password"]::-ms-clear {
-  display: none;
-}
-
-[data-theme="dark"] {
-  --navbar-color: #0b0e12;
-  --brand: #00d58a;
-  --muted: #9aa1a8;
-  --bg: #0b0e12;
-  --card: #071023;
-  --glass: rgba(255, 255, 255, 0.03);
-  --shadow: 0 8px 30px rgba(2, 6, 23, 0.6);
-}
-
-* {
-  box-sizing: border-box;
-}
+/* Layout riêng cho trang sign-up */
 html,
 body {
   height: 100%;
-  margin: 0;
-  font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto,
-    "Helvetica Neue", Arial;
-  color: var(--dark-blue);
-  background: var(--bg);
+  display: block; /* Ghi đè flex center của body common */
+  font-family: "Inter", sans-serif;
+  -webkit-font-smoothing: antialiased; /* Giúp chữ mượt hơn */
+  color: #1a1a1a;
+}
+
+input,
+button,
+select,
+textarea {
+  font-family: inherit;
 }
 
 .site-wrap {
@@ -63,11 +30,7 @@ header.nav {
   border-radius: 14px;
   box-shadow: var(--shadow);
 }
-.logo {
-  display: flex;
-  gap: 12px;
-  align-items: center;
-}
+
 .logo img {
   width: 44px;
   height: 44px;
@@ -91,6 +54,7 @@ header.nav {
   gap: 28px;
   align-items: center;
 }
+
 @media (max-width: 980px) {
   .grid {
     grid-template-columns: 1fr;
@@ -192,18 +156,15 @@ input:focus {
   background: var(--brand);
   color: white;
 }
-
 .btn.primary:hover {
   border-color: #aaa;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   transform: translateY(-1px);
 }
-
 .btn.primary:active {
   transform: translateY(0);
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
 }
-
 .btn.ghost {
   background: transparent;
   border: 1px solid rgba(11, 18, 32, 0.06);
@@ -221,84 +182,14 @@ input:focus {
 
 .socials {
   display: flex;
-  gap: 10px;
-  margin: 6px 0;
-}
-    .oauth-btn {
-        width: 100%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 10px;
-        padding: 12px;
-        margin-top: 10px;
-        cursor: pointer;
-        transition: all 0.2s ease-in-out;
-
-        background-color: white;
-        color: var(--text, #333);
-        border: 1px solid #ccc;
-        border-radius: 8px;
-        
-        font-size: 15px;
-        font-weight: 600;
-        line-height: 1;
-
-        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
-    }
-
-    .oauth-btn:hover {
-        border-color: #aaa;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        background-color: #f9f9f9;
-        transform: translateY(-1px);
-    }
-
-    .oauth-btn:active {
-        transform: translateY(0);
-        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
-        background-color: #f0f0f0;
-    }
-
-.divider {
-  display: flex;
-  align-items: center;
+  flex-direction: column;
   gap: 12px;
-  color: var(--muted);
-  font-size: 13px;
-}
-.divider::before,
-.divider::after {
-  content: "";
-  flex: 1;
-  border-bottom: 1px solid black;
+  margin-top: -16px; 
 }
 
 .note {
   font-size: 13px;
   color: var(--muted);
-}
-
-.error {
-  color: #e23a3a;
-  font-size: 13px;
-}
-.success {
-  color: #0b8f5a;
-  font-weight: 700;
-}
-
-.pw-meter {
-  height: 8px;
-  border-radius: 999px;
-  background: rgba(11, 18, 32, 0.06);
-  overflow: hidden;
-}
-.pw-meter > span {
-  display: block;
-  height: 100%;
-  width: 0%;
-  transition: width 220ms ease;
 }
 
 footer.page-foot {
@@ -310,8 +201,6 @@ footer.page-foot {
   justify-content: space-between;
   align-items: center;
 }
-
-/* small helpers */
 .text-right {
   text-align: right;
 }

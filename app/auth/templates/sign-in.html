@@ -10,8 +10,17 @@
       href="{{ url_for('static', filename='images/logo.png') }}"
     />
 
-    <link rel="stylesheet" href="{{url_for('auth.static', filename='css/signin.css')}}"
+    <link
+      rel="stylesheet"
+      href="{{url_for('auth.static',
+    filename='css/common.css')}}"
+    />
 
+    <link
+      rel="stylesheet"
+      href="{{url_for('auth.static',
+    filename='css/pages/sign-in.css')}}"
+    />
   </head>
 
   <body>
@@ -46,7 +55,9 @@
         <div class="form-group">
           <label>
             Password
-            <a href="{{ url_for('auth.reset_pass') }}" class="forgot">Forgot password ?</a>
+            <a href="{{ url_for('auth.reset_pass') }}" class="forgot"
+              >Forgot password ?</a
+            >
           </label>
           <input
             id="password"
@@ -57,7 +68,7 @@
             required
           />
           {% if errors.password %}
-              <div class="error">{{ errors.password }}</div>
+          <div class="error">{{ errors.password }}</div>
           {% endif %}
         </div>
 
@@ -82,6 +93,6 @@
       </div>
     </div>
 
-    <script src="{{ url_for('auth.static', filename='scripts/signin.js') }}"></script>
+    <script src="{{ url_for('auth.static', filename='scripts/pages/sign-in.js') }}"></script>
   </body>
 </html>

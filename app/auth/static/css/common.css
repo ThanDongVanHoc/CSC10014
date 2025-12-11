@@ -1,0 +1,144 @@
+:root {
+  /* Màu sắc từ auth-card */
+  --brand-color: #00b37e;
+  --dark-text: #1c1e21;
+  --light-text: #606770;
+  --error-color: #e23a3a;
+
+  /* Màu sắc từ sign-up */
+  --navbar-color: white;
+  --primary-color: #00b37e;
+  --dark-blue: #0d2c54;
+  --text-light: #555;
+  --bg-light: #f4f8f7;
+  --brand: #00b37e;
+  --brand-600: #009966;
+  --muted: #6b7280;
+  --bg: #fbfdff;
+  --card: #ffffff;
+  --radius: 12px;
+  --glass: rgba(255, 255, 255, 0.6);
+  --shadow: 0 6px 20px rgba(13, 17, 23, 0.08);
+  --max-width: 1100px;
+}
+
+[data-theme="dark"] {
+  --navbar-color: #0b0e12;
+  --brand: #00d58a;
+  --muted: #9aa1a8;
+  --bg: #0b0e12;
+  --card: #071023;
+  --glass: rgba(255, 255, 255, 0.03);
+  --shadow: 0 8px 30px rgba(2, 6, 23, 0.6);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Segoe UI", Inter, system-ui, -apple-system, Roboto,
+    "Helvetica Neue", Arial, sans-serif;
+  background-color: var(--bg); /* Mặc định dùng màu từ sign-up */
+  margin: 0;
+  padding: 0;
+  /* Canh giữa mặc định cho body (dùng cho auth-card và sign-in) */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+}
+
+/* Ẩn icon mặc định của Edge/IE */
+input[type="password"]::-ms-reveal,
+input[type="password"]::-ms-clear {
+  display: none;
+}
+
+/* --- Common Components --- */
+
+/* Logo chung */
+.logo {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+/* Đường kẻ phân cách (Hoặc) */
+.divider {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: var(--muted);
+  font-size: 13px;
+  text-align: center;
+  margin: 15px 0;
+}
+.divider::before,
+.divider::after {
+  content: "";
+  flex: 1;
+  border-bottom: 1px solid black; /* Hoặc #ccc tùy ngữ cảnh */
+}
+.divider:not(:empty)::before {
+  margin-right: 0.75em;
+}
+.divider:not(:empty)::after {
+  margin-left: 0.75em;
+}
+
+/* Nút đăng nhập Google/OAuth (Giống hệt nhau ở các file) */
+.oauth-btn {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 12px;
+  margin-top: 10px;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  background-color: white;
+  color: var(--text, #333);
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+.oauth-btn:hover {
+  border-color: #aaa;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  background-color: #f9f9f9;
+  transform: translateY(-1px);
+}
+.oauth-btn:active {
+  transform: translateY(0);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  background-color: #f0f0f0;
+}
+
+/* Thanh độ mạnh mật khẩu */
+.pw-meter {
+  height: 8px;
+  border-radius: 999px;
+  background: rgba(11, 18, 32, 0.06);
+  overflow: hidden;
+}
+.pw-meter > span {
+  display: block;
+  height: 100%;
+  width: 0%;
+  transition: width 220ms ease;
+}
+
+/* Tiện ích text */
+.error {
+  color: var(--error-color);
+  font-size: 13px;
+}
+.success {
+  color: #0b8f5a;
+  font-weight: 700;
+}

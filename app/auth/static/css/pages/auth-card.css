@@ -1,29 +1,6 @@
-:root {
-  --brand-color: #00b37e;
-  --dark-text: #1c1e21;
-  --light-text: #606770;
-  --error-color: #e23a3a;
-}
-
-/* Ẩn biểu tượng 'con mắt' (reveal) mặc định của Edge */
-input[type="password"]::-ms-reveal {
-  display: none;
-}
-
-/* Ẩn luôn nút 'x' (clear) mặc định (nếu có) */
-input[type="password"]::-ms-clear {
-  display: none;
-}
-
-body {
-  font-family: "Segoe UI", sans-serif;
+/* Ghi đè body background riêng cho trang này nếu cần */
+body.auth-page {
   background-color: #f8f9fa;
-  margin: 0;
-  padding: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 100vh;
 }
 
 .verification-card {
@@ -35,9 +12,12 @@ body {
   text-align: center;
 }
 
-.logo {
+.verification-card .logo {
   width: 60px;
   margin-bottom: 20px;
+  margin-left: auto;
+  margin-right: auto;
+  display: block; /* Ghi đè display flex của common */
 }
 
 .verification-card h2 {
@@ -104,8 +84,6 @@ body {
 }
 
 .error {
-  color: var(--error-color);
-  font-size: 13px;
   text-align: left;
   margin-top: 4px;
   margin-bottom: 15px;
@@ -156,17 +134,4 @@ body {
   background-color: #009966;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   transform: translateY(-1px);
-}
-
-.pw-meter {
-  height: 8px;
-  border-radius: 999px;
-  background: rgba(11, 18, 32, 0.06);
-  overflow: hidden;
-}
-.pw-meter > span {
-  display: block;
-  height: 100%;
-  width: 0%;
-  transition: width 220ms ease;
 }

@@ -1,4 +1,8 @@
-/* Added styles for map overlay, logo, fullscreen and handle */
+/* map.css */
+
+/* ========================================= */
+/* 1. CORE MAP LAYOUT & OVERLAY              */
+/* ========================================= */
 #map {
   position: relative;
   height: calc(100vh - 120px);
@@ -6,13 +10,10 @@
   box-shadow: 0 4px 24px rgba(15, 23, 42, 0.08);
   overflow: hidden;
   border: 1px solid rgba(15, 23, 42, 0.05);
-}
-
-/* Fullscreen map styles - Chiếm toàn bộ vùng app */
-#map {
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
+/* Fullscreen map styles - Chiếm toàn bộ vùng app */
 #map.fullscreen {
   position: fixed !important;
   left: 0 !important;
@@ -67,13 +68,48 @@
   }
 }
 
+/* ========================================= */
+/* 2. MAP CONTROLS (BUTTONS)                 */
+/* ========================================= */
 .map-controls {
   position: absolute;
   bottom: 22px;
   right: 12px;
   z-index: 2200; /* Cao hơn overlay */
   display: flex;
+  flex-direction: column;
   gap: 8px;
+}
+
+.map-btn-gps {
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.95);
+  border: 0;
+  border-radius: 10px;
+  box-shadow: 0 6px 18px rgba(2, 6, 23, 0.08);
+  cursor: pointer;
+  padding: 0;
+}
+
+/* --- [NEW] Loading State cho GPS Button --- */
+.map-btn-gps.loading img,
+.map-btn-gps.loading svg {
+  display: none; /* Ẩn icon gốc khi đang load */
+}
+
+.map-btn-gps.loading::after {
+  content: "";
+  display: block;
+  width: 20px;
+  height: 20px;
+  border: 2px solid #e5e5e5;
+  border-top: 2px solid #007aff;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
 }
 
 .map-btn {
@@ -85,9 +121,12 @@
   cursor: pointer;
 }
 
+/* ========================================= */
+/* 3. LOGO & MARKERS                         */
+/* ========================================= */
 .map-logo {
   position: absolute;
-  z-index: 2150; /* Cao hơn overlay để luôn click được */
+  z-index: 2150;
   left: 12px;
   bottom: 22px;
   width: 64px;
@@ -119,7 +158,52 @@
   transform: scale(1.02);
   transition: none;
 }
-/* === Location cards (modern, responsive) === */
+
+/* Avatar Marker & Ripple Effect */
+.avatar-marker-container {
+  position: relative;
+  width: 50px;
+  height: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.avatar-pin-img {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  box-sizing: border-box;
+  border: 3px solid #fff;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+  position: absolute;
+  z-index: 2;
+}
+
+.avatar-ripple {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background-color: #0099ff;
+  position: absolute;
+  z-index: 1;
+  animation: ripple 2s infinite cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+@keyframes ripple {
+  0% {
+    transform: scale(1);
+    opacity: 0.8;
+  }
+  100% {
+    transform: scale(1.5);
+    opacity: 0;
+  }
+}
+
+/* ========================================= */
+/* 4. LOCATION CARDS                         */
+/* ========================================= */
 .locations-container {
   display: flex;
   flex-direction: column;
@@ -270,62 +354,374 @@
   box-shadow: 0 2px 4px rgba(0, 123, 255, 0.1);
 }
 
-/* -------------------------------------- */
-/* KHUNG CHỨA CHUNG (Mới)                 */
-/* -------------------------------------- */
-/* Class này giúp gom nhóm ảnh và sóng vào 1 khối thống nhất */
-.avatar-marker-container {
-  position: relative; /* Làm mốc toạ độ cho con absolute */
-  width: 50px;
-  height: 50px;
-  display: flex; /* Dùng flex để căn giữa tuyệt đối */
-  justify-content: center; /* Căn giữa ngang */
-  align-items: center; /* Căn giữa dọc */
+/* ========================================= */
+/* 5. SEARCH & GEOCODER (LEAFLET CONTROL)    */
+/* ========================================= */
+
+/* 1. CONTAINER CHÍNH - BAN ĐẦU LÀ HÌNH TRÒN */
+.leaflet-control-geocoder {
+  /* Kích thước & Hình dáng mặc định */
+  width: 40px;
+  height: 40px;
+  border-radius: 20px !important; /* = 1/2 chiều cao để tròn tuyệt đối */
+
+  /* Màu sắc & Shadow */
+  background: white;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  border: none !important;
+
+  /* Định vị */
+  margin-top: 10px !important;
+  margin-left: 10px !important;
+  position: relative !important;
+  z-index: 2000;
+
+  /* Layout bên trong */
+  display: flex;
+  align-items: center;
+
+  /* Hiệu ứng chuyển động mượt */
+  transition: width 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
 }
 
-/* -------------------------------------- */
-/* 2. Avatar chính                        */
-/* -------------------------------------- */
-.avatar-pin-img {
-  width: 100%; /* Theo kích thước container (50px) */
-  height: 100%; /* Theo kích thước container (50px) */
+/* 2. TRẠNG THÁI MỞ RỘNG (HOVER hoặc ĐANG NHẬP LIỆU) */
+.leaflet-control-geocoder:hover,
+.leaflet-control-geocoder:focus-within {
+  width: 180px; /* Chiều dài khi kéo ra */
+}
+
+/* 4. FORM BAO QUANH INPUT */
+.leaflet-control-geocoder-form {
+  position: absolute; /* Thay đổi thành absolute để đè lên layer cũ */
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+
+  /* CẮT BỎ PHẦN TRÀN (QUAN TRỌNG) */
+  overflow: hidden;
+  border-radius: 20px;
+  z-index: 5; /* Nằm dưới icon kính lúp (z-index 10) nhưng trên nền */
+}
+
+.leaflet-control-geocoder-form input {
+  width: 100% !important;
+  height: 100%;
+  border: 0;
+  background-color: transparent;
+  outline: none;
+  font-size: 14px;
+  color: #333;
+  border-radius: 20px;
+
+  /* BẮT BUỘC: Để padding nằm trong width */
+  box-sizing: border-box !important;
+
+  /* Padding trái: né icon kính lúp */
+  padding-left: 40px !important;
+  /* Padding phải: tạo khoảng trống lớn ở đuôi để chữ không dính lề */
+  padding-right: 5px !important;
+  text-align: left !important; /* Luôn căn trái */
+  text-indent: 0 !important; /* Không thụt đầu dòng thêm nữa */
+  font-size: 14px !important;
+
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease-in-out;
+}
+
+/* --- [FIX 3: GIỮ INPUT LUÔN HIỆN KHI CÓ FOCUS] --- */
+/* Khi hover HOẶC khi đang gõ (focus) thì phải hiện input lên */
+.leaflet-control-geocoder:hover input,
+.leaflet-control-geocoder-form input:focus,
+.leaflet-control-geocoder:focus-within input {
+  opacity: 1;
+  pointer-events: auto;
+  cursor: text;
+}
+
+/* --- [FIX 4: CHỈNH PLACEHOLDER CHO ĐẸP] --- */
+/* Placeholder không nên chịu ảnh hưởng của RTL, nó nên căn trái (hoặc phải tùy ý) */
+.leaflet-control-geocoder-form input::placeholder {
+  direction: ltr; /* Quay về chiều trái-phải bình thường */
+  text-align: left; /* Căn trái cho dễ đọc */
+  color: #999;
+  opacity: 1; /* Firefox fix */
+}
+
+/* 3. ICON KÍNH LÚP (MẪU 3: REALISTIC + CĂN GIỮA TUYỆT ĐỐI) */
+/* 3. ICON KÍNH LÚP (MẪU 3: REALISTIC + MÀU NHẠT -> ĐEN) */
+.leaflet-control-geocoder-icon {
+  /* 1. Kích thước chuẩn & Hình dáng */
+  width: 40px !important;
+  height: 40px !important;
   border-radius: 50%;
 
-  /* QUAN TRỌNG: Tính viền vào trong kích thước 50px */
-  box-sizing: border-box;
+  /* 2. Xóa sạch style cũ của thư viện */
+  border-radius: 50% !important; /* Bắt buộc có để background cắt theo hình tròn */
+  background-color: white !important;
+  background-image: none !important;
+  border: none !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  text-indent: 0 !important;
+  line-height: 40px !important;
 
-  border: 3px solid #fff;
-  box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
-
-  position: absolute; /* Đè lên sóng */
-  z-index: 2;
-  /* Bỏ top/left vì đã dùng Flexbox ở container để căn giữa */
+  /* 3. Định vị khung */
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 10;
+  cursor: pointer;
+  display: block !important;
 }
 
-/* -------------------------------------- */
-/* 3. Lớp Sóng Lan Tỏa                    */
-/* -------------------------------------- */
-.avatar-ripple {
-  width: 100%; /* Theo kích thước container */
-  height: 100%; /* Theo kích thước container */
-  border-radius: 50%;
-  background-color: #0099ff;
-
-  position: absolute; /* Nằm dưới ảnh */
-  z-index: 1;
-
-  /* Animation giữ nguyên */
-  animation: ripple 2s infinite cubic-bezier(0.25, 0.46, 0.45, 0.94);
+/* Ẩn phần tử rác ::after nếu có */
+.leaflet-control-geocoder-icon::after {
+  content: none !important;
+  display: none !important;
 }
 
-/* Keyframe giữ nguyên */
-@keyframes ripple {
+/* VẼ ICON VÀ XỬ LÝ MÀU SẮC */
+.leaflet-control-geocoder-icon::before {
+  content: "";
+  display: block;
+
+  /* Kích thước icon Mẫu 3 */
+  width: 22px;
+  height: 22px;
+
+  /* --- CĂN GIỮA TUYỆT ĐỐI --- */
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  margin: 0 !important;
+
+  /* --- MÀU SẮC MẶC ĐỊNH (NHẠT) --- */
+  background-color: #a0a0a0; /* Màu xám nhạt */
+
+  /* ICON MẪU 3 (Có vệt sáng phản chiếu) */
+  -webkit-mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 3a8 8 0 1 0 0 16 8 8 0 0 0 0-16z"/><path d="M21 21l-4.35-4.35"/><path d="M8 11a3 3 0 0 1 3-3"/></svg>')
+    no-repeat center;
+  mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 3a8 8 0 1 0 0 16 8 8 0 0 0 0-16z"/><path d="M21 21l-4.35-4.35"/><path d="M8 11a3 3 0 0 1 3-3"/></svg>')
+    no-repeat center;
+
+  -webkit-mask-size: contain;
+  mask-size: contain;
+
+  /* Hiệu ứng chuyển màu mượt */
+  transition: background-color 0.3s ease;
+}
+
+/* --- MÀU SẮC KHI HOVER (ĐEN) --- */
+.leaflet-control-geocoder-icon:hover::before {
+  background-color: #000000; /* Chuyển sang màu đen */
+}
+
+/* 4. Ô INPUT (MẶC ĐỊNH ẨN, HIỆN KHI EXPAND) */
+.leaflet-control-geocoder-form {
+  flex: 1;
+  height: 100%;
+  display: flex;
+}
+
+.leaflet-control-geocoder-form input {
+  width: 100%;
+  height: 100%;
+  border: 0;
+  background-color: transparent;
+  outline: none;
+  font-size: 14px;
+  color: #333;
+  border-radius: 20px; /* Bo cong theo cha */
+
+  /* Padding trái = kích thước icon để chữ không đè lên kính lúp */
+  padding-left: 40px;
+  padding-right: 15px;
+
+  /* Mặc định ẩn input để chỉ thấy hình tròn */
+  opacity: 0;
+  pointer-events: none; /* Không cho click khi đang đóng */
+  transition: opacity 0.3s ease-in-out;
+}
+
+/* Khi cha mở rộng -> Hiện input */
+.leaflet-control-geocoder:hover input,
+.leaflet-control-geocoder:focus-within input {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* 5. DROPDOWN KẾT QUẢ & LỊCH SỬ (ĐIỀU CHỈNH VỊ TRÍ) */
+
+.leaflet-control-geocoder-alternatives {
+  width: 100% !important;
+  background: white;
+  border: 1px solid #eee;
+  border-radius: 12px;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+
+  position: absolute;
+  top: 48px;
+  left: 0;
+  z-index: 10000;
+
+  list-style: none;
+  padding: 0 !important;
+  margin: 0 !important;
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+/* 1. KHUNG CHỨA TỪNG DÒNG (LI) */
+.leaflet-control-geocoder-alternatives li {
+  /* Dùng Flexbox để xếp Icon và Chữ nằm ngang */
+  display: flex !important;
+  flex-direction: row !important; /* Bắt buộc nằm ngang */
+  align-items: center !important; /* Căn giữa theo chiều dọc */
+
+  padding: 10px 12px !important;
+  border-bottom: 1px solid #eee;
+  cursor: pointer;
+  background: transparent;
+}
+
+/* 2. ICON ĐỊA ĐIỂM (📍) */
+.leaflet-control-geocoder-alternatives li::before {
+  content: "📍" !important;
+  font-size: 16px;
+  margin-right: 10px !important; /* Cách chữ ra 10px */
+  color: #555;
+  display: inline-block; /* Đảm bảo icon là một khối */
+  flex-shrink: 0; /* Không cho icon bị bóp méo */
+}
+
+/* 3. THẺ CHỨA TÊN ĐỊA ĐIỂM (<a>) */
+.leaflet-control-geocoder-alternatives li a {
+  /* Reset các thuộc tính mặc định gây lỗi xuống dòng */
+  display: inline-block !important; /* Hoặc block nhưng trong flex item */
+  padding: 0 !important;
+  margin: 0 !important;
+  border: none !important;
+  background: transparent !important;
+
+  /* Style chữ */
+  font-size: 13px !important;
+  color: #333 !important;
+  text-decoration: none !important;
+  line-height: 1.4 !important;
+
+  /* Xử lý chữ dài quá thì cắt bớt (...) */
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  flex: 1 !important; /* Chiếm hết khoảng trống còn lại */
+}
+
+/* Hiệu ứng Hover */
+.leaflet-control-geocoder-alternatives li:hover,
+.leaflet-control-geocoder-selected {
+  background-color: #f5f5f7 !important;
+}
+
+/* Bo góc item đầu/cuối */
+.leaflet-control-geocoder-alternatives li:first-child {
+  border-top-left-radius: 12px;
+  border-top-right-radius: 12px;
+}
+.leaflet-control-geocoder-alternatives li:last-child {
+  border-bottom-left-radius: 12px;
+  border-bottom-right-radius: 12px;
+  border-bottom: none;
+}
+
+/* Lịch sử tìm kiếm */
+.search-history-dropdown {
+  display: none;
+  background: white;
+  border: 1px solid #eee;
+
+  position: absolute;
+  top: 48px; /* Khớp với alternatives */
+  left: 0;
+  width: 100%;
+
+  z-index: 1000;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+  border-radius: 12px;
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.history-item {
+  padding: 10px 12px;
+  cursor: pointer;
+  border-bottom: 1px solid #eee;
+  font-size: 13px;
+  color: #333;
+  display: flex;
+  align-items: center;
+}
+.history-item:hover {
+  background-color: #f5f5f5;
+}
+
+/* ========================================= */
+/* 6. LOADING SPINNER                        */
+/* ========================================= */
+
+@keyframes spin {
   0% {
-    transform: scale(1);
-    opacity: 0.8;
+    transform: rotate(0deg);
   }
   100% {
-    transform: scale(1.5);
-    opacity: 0;
-  } /* Tăng scale lên chút cho đẹp */
+    transform: rotate(360deg);
+  }
+}
+
+/* Spinner animation cho nút GPS và Create Pin */
+.spinner {
+  display: inline-block;
+  animation: spin 0.8s linear infinite;
+}
+
+/* Xoay icon kính lúp khi đang tìm kiếm */
+.leaflet-control-geocoder-icon.searching::before {
+  opacity: 0; /* Ẩn icon kính lúp tĩnh */
+}
+
+/* map.css - Thay thế đoạn ở cuối file */
+
+.leaflet-control-geocoder-icon.searching::after {
+  /* 1. Thay vì vẽ viền, ta dùng nội dung là ký tự ↻ */
+  content: "↻" !important;
+
+  /* 2. Căn giữa ký tự trong ô vuông */
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+
+  /* 3. Style cho chữ (Giống style trong GPSControl.js) */
+  font-size: 20px !important; /* Kích thước chữ */
+  font-weight: 400; /* Độ đậm bình thường */
+  color: #333; /* Màu chữ (xám đen) */
+
+  /* 4. Xóa bỏ các thuộc tính border cũ (nếu còn sót) */
+  border: none !important;
+  background: transparent !important;
+  border-radius: 0 !important;
+
+  /* 5. Hiệu ứng xoay */
+  animation: spin 0.8s linear infinite;
+}
+
+.leaflet-control-geocoder-error {
+  display: none !important;
 }

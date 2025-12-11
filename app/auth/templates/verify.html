@@ -13,7 +13,12 @@
 
     <link
       rel="stylesheet"
-      href="{{ url_for('auth.static', filename='css/auth-card.css') }}"
+      href="{{ url_for('auth.static', filename='css/common.css') }}"
+    />
+
+    <link
+      rel="stylesheet"
+      href="{{ url_for('auth.static', filename='css/pages/auth-card.css') }}"
     />
 
     <style>
@@ -64,9 +69,7 @@
         </div>
 
         <div class="actions">
-          <a href="{{ resend_url }}" class="link-text"
-            >Didn't get a code?</a
-          >
+          <a href="{{ resend_url }}" class="link-text">Didn't get a code?</a>
           <div class="buttons">
             <a
               href="{{ previous_url }}"

@@ -25,8 +25,14 @@ class User(db.Model):
     
     # Quan hệ 1-Nhiều với Conversation
     conversations: Mapped[List["Conversation"]] = relationship(
-        'Conversation', 
-        back_populates='user', 
+        "Conversation", 
+        back_populates="user", 
+        cascade="all, delete-orphan"
+    )
+
+    search_histories : Mapped[List["SearchHistory"]] = relationship(
+        "SearchHistory",
+        back_populates="user",
         cascade="all, delete-orphan"
     )
 
@@ -109,5 +115,19 @@ class Message(db.Model):
             "id": self.id,
             "role": self.role,
             "content": self.content,
+            "created_at": self.created_at.isoformat() if self.created_at else None
+        }
+
+class SearchHistory(db.Model):   
+    id = db.mapped_column(db.Integer, primary_key=True)
+    user_id = db.mapped_column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    keyword = db.mapped_column(db.Text, nullable=False)
+    created_at = db.mapped_column(db.DateTime, server_default=func.now())
+    user = relationship("User", back_populates="search_histories")
+
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "keyword": self.keyword,
             "created_at": self.created_at.isoformat() if self.created_at else None
         }
