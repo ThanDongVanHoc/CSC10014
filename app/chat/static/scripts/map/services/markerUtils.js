@@ -248,7 +248,7 @@ export function saveNormalPinToMap(latlng, name) {
   const popupContent = document.createElement("div");
   popupContent.innerHTML = `
         <div style="text-align: center; padding: 5px;">
-            <b>Saved pin:</b><br>
+            <b>📍 Saved pin</b><br>
             <div style="margin: 5px 0 10px 0;">${name}</div>
             <button id="unpinBtn" style="background:#dc3545; color:white; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer; font-size: 0.9em;">
                 Unpin
@@ -469,6 +469,9 @@ export function pinLocationToMap(lat, lng, name, extraData = {}) {
 
   if (poiSidebarUI) {
     poiSidebarUI.open(sidebarData);
+    newLocationMarker.on('click', function(e) {
+      poiSidebarUI.open(sidebarData);
+    });
   } else {
     console.error("Chưa khởi tạo poiSidebarUI");
   }

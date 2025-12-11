@@ -1,4 +1,5 @@
 import { state } from "../state.js";
+import { findPlace, pinLocationProK} from "../components/POIManager.js"
 
 let currentStepMarker = null; // Marker cho bước hướng dẫn hiện tại
 let guideContainer = null; // Container HTML của khung hướng dẫn
@@ -46,7 +47,7 @@ export const MapGuideUI = {
   },
 
   // Render HTML cho một bước
-  renderStep: function (stepData, totalSteps, currentIndex, callbacks) {
+  renderStep: function (locName, stepData, totalSteps, currentIndex, callbacks) {
     this.init();
     const icon =
       stepData.type === "move" ? "🛵" : stepData.type === "doc" ? "📄" : "📍";
@@ -135,29 +136,39 @@ export const MapGuideUI = {
       issueBtn.onclick = () => {
         window.toggleIssueForm(stepData.id, true);
       };
-    this.updateMapCamera(stepData);
+    this.updateMapCamera(stepData, locName);
   },
 
-  // Cập nhật vị trí camera khi đổi bước
-  updateMapCamera: function (step) {
-    const { map } = state;
-    if (!map) return;
-    if (currentGuideMarker) map.removeLayer(currentGuideMarker);
-    if (step.lat && step.lng) {
-      map.flyTo([step.lat, step.lng], 17, { duration: 1.5 });
-      currentGuideMarker = L.marker([step.lat, step.lng], {
-        icon: new L.Icon({
-          iconUrl:
-            "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-violet.png",
-          shadowUrl:
-            "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-shadow.png",
-          iconSize: [25, 41],
-          iconAnchor: [12, 41],
-          popupAnchor: [1, -34],
-          shadowSize: [41, 41],
-        }),
-      }).addTo(map);
-    }
+
+  updateMapCamera: async function (step, locName) {
+      const { map } = state;
+      if (!map) return;
+      if (currentGuideMarker) map.removeLayer(currentGuideMarker);
+
+      const currentPlace = await findPlace(locName); 
+      
+      if (currentPlace) { 
+          map.flyTo([currentPlace.lat, currentPlace.lng], 17, { duration: 1.5 }); 
+          
+          console.log(currentPlace); // In ra đối tượng Place          
+          currentGuideMarker = pinLocationProK(currentPlace);           
+          
+      } else if (step.lat && step.lng) {
+          map.flyTo([step.lat, step.lng], 17, { duration: 1.5 });
+          
+          currentGuideMarker = L.marker([step.lat, step.lng], {
+              icon: new L.Icon({
+                  iconUrl:
+                      "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-violet.png",
+                  shadowUrl:
+                      "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-shadow.png",
+                  iconSize: [25, 41],
+                  iconAnchor: [12, 41],
+                  popupAnchor: [1, -34],
+                  shadowSize: [41, 41],
+              }),
+          }).addTo(map);
+      }
   },
 
   // Xử lý gợi ý thông minh (Smart Suggestion)
@@ -208,7 +219,6 @@ export const MapGuideUI = {
     } catch (e) {}
   },
 
-  // Dọn dẹp UI khi tắt hướng dẫn
   close: function () {
     const { map } = state;
     if (guideContainer) guideContainer.innerHTML = "";

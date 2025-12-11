@@ -5,7 +5,8 @@
   height: 100%;
   max-height: 100%; /* Không vượt quá parent */
   overflow: hidden; /* Chặn overflow */
-  font-family: "Inter", sans-serif; /* Đảm bảo font nhất quán */
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  border-radius: 15px;
 }
 
 .chat .card {
@@ -209,7 +210,7 @@
   background: white;
   color: #0b1220;
   font-size: 14px;
-  font-family: "Inter", sans-serif;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   transition: all 0.2s ease;
 }
 
@@ -250,44 +251,149 @@
   transform: translateY(0);
 }
 
-.transport-btns {
+
+
+
+/* Container chính: Nằm giữa, trên cùng */
+.transport-panel {
   position: absolute;
-  top: 12px;
+  top: 15px;
   left: 50%;
   transform: translateX(-50%);
-  background: white;
-  border-radius: 12px;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
-  padding: 8px;
   z-index: 1000;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(6px); /* nhẹ hơn */
+  padding: 4px 6px; /* nhỏ hơn nữa */
+  border-radius: 36px; /* Bo tròn dạng viên thuốc */
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
   display: flex;
-  gap: 6px;
-  border: 1px solid rgba(0, 0, 0, 0.08);
+  align-items: center;
+  gap: 6px; /* giảm gap giữa phần icon và info */
+  transition: all 280ms cubic-bezier(0.22, 0.9, 0.25, 1);
 }
 
-.transport-btns button {
-  padding: 8px 14px;
+/* Các nút phương tiện */
+.transport-modes {
+  display: flex;
+  gap: 5px;
+}
+
+.t-btn {
+  width: 32px;
+  height: 32px;
+  border: none;
+  border-radius: 50%;
+  background: transparent;
+  color: #666;
+  font-size: 1.1rem;
   cursor: pointer;
-  border: 1px solid rgba(0, 0, 0, 0.08);
-  border-radius: 8px;
-  background: #f8fafc;
-  color: #0b1220;
-  font-size: 13px;
-  font-weight: 500;
-  transition: all 0.2s ease;
+  transition: all 0.3s ease;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-.transport-btns button:hover {
-  background: #f1f5f9;
-  border-color: var(--brand);
+.t-btn:hover {
+  background-color: #f0f2f5;
+  color: #333;
 }
 
-.transport-btns button.active {
-  background: linear-gradient(135deg, var(--brand) 0%, #0056b3 100%);
+/* Trạng thái Active */
+.t-btn.active {
+  background-color: black;
   color: white;
-  border-color: var(--brand);
-  box-shadow: 0 2px 8px rgba(0, 123, 255, 0.3);
+  box-shadow: 0 6px 14px rgba(43, 140, 255, 0.16);
+  transform: scale(1.02);
 }
+
+/* Phần hiển thị thông tin lộ trình */
+.route-info {
+  display: flex;
+  align-items: center;
+  gap: 8px; /* reduce space between info items */
+  overflow: hidden;
+  max-width: 190px; /* nhỏ lại cho gọn */
+  opacity: 1;
+  transition: max-width 320ms cubic-bezier(0.22,0.9,0.25,1), opacity 240ms ease, transform 240ms ease;
+}
+
+/* Class ẩn thông tin (khi chưa có đường) */
+.route-info.hidden {
+  max-width: 0;
+  opacity: 0;
+  padding: 0;
+  margin: 0;
+  transform: translateX(8px);
+}
+
+/* Compact / Expanded transport panel behavior */
+
+/* default compact: only show active icon clearly */
+.transport-panel.compact .transport-modes .t-btn:not(.active) {
+  opacity: 0;
+  transform: translateX(-6px) scale(0.84);
+  pointer-events: none;
+}
+
+/* when hovered (pointer devices), expand smoothly */
+.transport-panel.compact:hover {
+  padding: 6px 10px;
+}
+
+.transport-panel.compact:hover .transport-modes .t-btn:not(.active) {
+  opacity: 1;
+  transform: translateX(0) scale(1);
+  pointer-events: auto;
+}
+
+/* tie the route-info to expand at the same time (no gap) */
+.transport-panel.compact:hover .route-info {
+  max-width: 260px; /* allow info to be visible when hovered */
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.transport-modes .t-btn {
+  transition: transform 260ms cubic-bezier(0.22, 0.9, 0.25, 1), opacity 200ms ease;
+}
+
+/* Stagger the appearance when expanding */
+.transport-modes .t-btn:nth-child(1) { transition-delay: 0ms; }
+.transport-modes .t-btn:nth-child(2) { transition-delay: 40ms; }
+.transport-modes .t-btn:nth-child(3) { transition-delay: 80ms; }
+
+/* Slightly smaller text for the info values */
+.info-value {
+  font-size: 0.9rem;
+}
+
+/* Đường gạch dọc ngăn cách */
+.divider {
+  width: 1px;
+  height: 24px;
+  background-color: #ddd;
+}
+
+.info-item {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.2;
+}
+
+.info-label {
+  font-size: 0.7rem;
+  color: #888;
+  font-weight: 500;
+}
+
+.info-value {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #2c3e50;
+  white-space: nowrap;
+}
+
+
 .note-input {
   width: 160px;
   padding: 6px 10px;

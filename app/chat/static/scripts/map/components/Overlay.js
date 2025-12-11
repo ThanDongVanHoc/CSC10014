@@ -116,7 +116,7 @@ export function initMapOverlay(mapInstance) {
 }
 
 // Hàm chuyển đổi chế độ Fullscreen
-async function handleScreenEvent() {
+export async function handleScreenEvent() {
   try {
     // Import động module chat nếu cần
     const { hideSearchWrapper } = await import("../../chat.js");

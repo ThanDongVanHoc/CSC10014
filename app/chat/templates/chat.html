@@ -62,10 +62,33 @@
 
   <!-- MAP -->
   <div id="map">
-    <div class="transport-btns">
-      <button data-travel="driving" class="active">Driving</button>
-      <button data-travel="Motorcycling">Motorcycling</button>
-      <button data-travel="walking">Walking</button>
+
+    <div class="transport-panel">
+      
+      <div class="transport-modes">
+        <button data-travel="driving" class="t-btn active" title="Driving">
+          <i class="fas fa-car"></i>
+        </button>
+        <button data-travel="Motorcycling" class="t-btn" title="Motorcycling">
+          <i class="fas fa-motorcycle"></i>
+        </button>
+        <button data-travel="walking" class="t-btn" title="Walking">
+          <i class="fas fa-walking"></i>
+        </button>
+      </div>
+
+      <div id="routeInfoDisplay" class="route-info">
+        <div class="divider"></div>
+        <div class="info-item">
+          <span class="info-label">Time</span>
+          <span id="infoDuration" class="info-value">-- min</span>
+        </div>
+        <div class="info-item">
+          <span class="info-label">Distance</span>
+          <span id="infoDistance" class="info-value">-- km</span>
+        </div>
+      </div>
+
     </div>
 
     <!-- Fullscreen & controls -->

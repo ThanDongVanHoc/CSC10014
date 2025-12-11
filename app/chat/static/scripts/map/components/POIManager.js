@@ -1,5 +1,5 @@
 import { state } from "../state.js";
-import { clearMapState } from "../services/markerUtils.js";
+import { clearMapState, pinLocationToMap } from "../services/markerUtils.js";
 import { poiSidebarUI } from "./POISidebar.js";
 
 let poiLayer = null; // LayerGroup chứa các marker POI
@@ -118,6 +118,118 @@ function closeSidebar() {
   poiSidebarUI.close();
 }
 
+export function pinLocationProK(poi){
+  const {map} = state;
+  if (!map) return null;
+
+  const latlng = L.latLng(poi.lat, poi.lng);
+  const name = poi.name;
+  const currentId = poi.id;
+  
+  let rawImg = poi.img || poi.image;
+  
+  if (rawImg) {
+    rawImg = rawImg.replace(/\\/g, "/"); // Fix lỗi đường dẫn ảnh Windows
+  }
+
+  // Chuẩn bị data cho Sidebar
+  const sidebarData = {
+    id: currentId,
+    latlng: latlng,
+    name: name,
+    image: `/chat/pois/${rawImg}`,
+    intro: poi.intro || "Địa điểm",
+    location: poi.location || "Chưa có địa chỉ",
+    phone: poi.phone_number || "---",
+    website: poi.website || "#",
+  };
+
+  const marker = L.marker(latlng).addTo(map);
+
+  // Khi click vào Marker POI
+  marker.on("click", (e) => {
+    L.DomEvent.stopPropagation(e);
+    activePoiId = currentId;
+
+    map.flyTo(latlng, 17, { animate: true, duration: 1.2 });
+    
+    poiSidebarUI.open(sidebarData);
+  });
+
+  return marker;
+}
+
+function pinLocationPro(poi){
+  const { map } = state; 
+  if (!map) return
+
+  const latlng = L.latLng(poi.lat, poi.lng);
+  const name = poi.name;
+  const currentId = poi.id;
+  
+  let rawImg = poi.img || poi.image;
+  
+  if (rawImg) {
+    rawImg = rawImg.replace(/\\/g, "/"); // Fix lỗi đường dẫn ảnh Windows
+  }
+
+  // Chuẩn bị data cho Sidebar
+  const sidebarData = {
+    id: currentId,
+    latlng: latlng,
+    name: name,
+    image: `/chat/pois/${rawImg}`,
+    intro: poi.intro || "Địa điểm",
+    location: poi.location || "Chưa có địa chỉ",
+    phone: poi.phone_number || "---",
+    website: poi.website || "#",
+  };
+
+  const marker = L.marker(latlng).addTo(poiLayer);
+
+  // Khi click vào Marker POI
+  marker.on("click", (e) => {
+    L.DomEvent.stopPropagation(e);
+    const sidebar = document.getElementById("poi-sidebar");
+
+    activePoiId = currentId;
+
+    // Bay đến vị trí marker
+    map.flyTo(latlng, 17, { animate: true, duration: 1.2 });
+
+    // Mở Sidebar chi tiết
+    poiSidebarUI.open(sidebarData);
+  });
+}
+
+export async function findPlace(name) {
+  if (!name) {
+    console.error("Place name is required.");
+    return null;
+  }
+
+  const url = `/chat/getOnePlace?name=${encodeURIComponent(name)}`;
+
+  try {
+    const response = await fetch(url); 
+
+    if (!response.ok) {
+      console.error(`HTTP error! Status: ${response.status}`);
+      const errorBody = await response.json().catch(() => ({ message: 'Unknown error' }));
+      console.error("Server message:", errorBody.message);
+      return null;
+    }
+
+    const placeData = await response.json(); 
+
+    return placeData;
+
+  } catch (error) {
+    console.error("Network or parsing error during fetch:", error);
+    return null;
+  }
+}
+
 // Hàm chính gọi API lấy POI dựa trên khung nhìn (bounds) của bản đồ
 async function fetchPOIsFromServer() {
   const { map } = state;
@@ -137,41 +249,7 @@ async function fetchPOIsFromServer() {
     poiLayer.clearLayers(); // Xóa POI cũ
 
     pois.forEach((poi) => {
-      const latlng = L.latLng(poi.lat, poi.lng);
-      const name = poi.name;
-      const currentId = poi.id;
-      let rawImg = poi.img || poi.image;
-      if (rawImg) {
-        rawImg = rawImg.replace(/\\/g, "/"); // Fix lỗi đường dẫn ảnh Windows
-      }
-
-      // Chuẩn bị data cho Sidebar
-      const sidebarData = {
-        id: currentId,
-        latlng: latlng,
-        name: name,
-        image: `/chat/pois/${rawImg}`,
-        intro: poi.intro || "Địa điểm",
-        location: poi.location || "Chưa có địa chỉ",
-        phone: poi.phone_number || "---",
-        website: poi.website || "#",
-      };
-
-      const marker = L.marker(latlng).addTo(poiLayer);
-
-      // Khi click vào Marker POI
-      marker.on("click", (e) => {
-        L.DomEvent.stopPropagation(e);
-        const sidebar = document.getElementById("poi-sidebar");
-
-        activePoiId = currentId;
-
-        // Bay đến vị trí marker
-        map.flyTo(latlng, 17, { animate: true, duration: 1.2 });
-
-        // Mở Sidebar chi tiết
-        poiSidebarUI.open(sidebarData);
-      });
+      pinLocationPro(poi);
     });
   } catch (err) {
     console.error(err);

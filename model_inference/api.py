@@ -137,5 +137,5 @@ if __name__ == "__main__":
     print("Key này sẽ bị LỘ ra nếu code bị rò rỉ. Vui lòng THU HỒI KEY này và dùng file .env.")
     
     # host="0.0.0.0" nghĩa là "cho phép BẤT KỲ AI có IP của máy này gọi vào"
-    print("\nKhởi chạy server. Truy cập UI Test tại: http://127.0.0.1:8000")
-    uvicorn.run(app, host="0.0.0.0", port=8000)
+    print("\nKhởi chạy server. Truy cập UI Test tại: http://127.0.0.1:8001")
+    uvicorn.run(app, host="0.0.0.0", port=8001)

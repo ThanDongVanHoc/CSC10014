@@ -24,26 +24,64 @@ export function initMap() {
   initMapOverlay(map);
   initSearchService(map);
   initGPSControl(map);
-
-  // 3. Khởi tạo sự kiện bản đồ (Click/Drag) 
   initMapEvents(map);
 
-  // 4. Xử lý các nút chọn phương tiện (Transport Buttons)
-  document.querySelectorAll(".transport-btns button").forEach((trans_btn) => {
-    trans_btn.addEventListener("click", () => {
-      document
-        .querySelectorAll(".transport-btns button")
-        .forEach((btn) => btn.classList.remove("active"));
-      trans_btn.classList.add("active");
 
+  const transportButtons = document.querySelectorAll(".t-btn");
+  const transportPanel = document.querySelector('.transport-panel');
+  // Start compact to save space
+  if (transportPanel) transportPanel.classList.add('compact');
+
+  // Detect whether the device supports hover (pointer devices)
+  const supportsHover = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+
+  transportButtons.forEach((trans_btn, idx) => {
+    trans_btn.dataset.i = idx;
+
+    // Selection behavior (always): change active and update state
+    trans_btn.addEventListener("click", (ev) => {
+      ev.stopPropagation();
+      transportButtons.forEach((btn) => btn.classList.remove("active"));
+      trans_btn.classList.add("active");
       updateState("flag_pin", false);
       updateState("currentMode", trans_btn.dataset.travel);
-
       if (state.startMarker && state.endMarker) drawRoute();
+
+      // For touch devices, toggle collapse/expand on click so user can see options
+      if (!supportsHover && transportPanel) {
+        transportPanel.classList.remove('expanded');
+        transportPanel.classList.add('compact');
+      }
     });
   });
 
-  // 5. Expose Global
+  // If device supports hover, rely on CSS :hover for expansion (no JS needed)
+  if (!supportsHover && transportPanel) {
+    // For touch devices: tap active icon to expand, tap outside to collapse
+    transportPanel.addEventListener('click', (e) => {
+      // if clicked on panel but not on a button, toggle expanded state
+      if (e.target && !e.target.classList.contains('t-btn')) {
+        // ignore
+        return;
+      }
+      // If already expanded, do nothing here (selection collapses after click)
+      if (transportPanel.classList.contains('compact')) {
+        transportPanel.classList.remove('compact');
+        transportPanel.classList.add('expanded');
+      }
+    });
+
+    document.addEventListener('click', (e) => {
+      if (!transportPanel) return;
+      if (!transportPanel.contains(e.target)) {
+        transportPanel.classList.remove('expanded');
+        transportPanel.classList.add('compact');
+      }
+    });
+  }
+  
+  // 9. Expose (Công khai) các hàm cần thiết ra Global Window
+  // Để các đoạn mã HTML String (onclick="...") có thể gọi được
   window.MapGuideUI = MapGuideUI;
   window.updateMapForGuideStep = updateMapForGuideStep;
 

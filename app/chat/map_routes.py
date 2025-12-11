@@ -47,6 +47,23 @@ def check_poi_db(max_lat, max_lng, min_lat, min_lng, name):
             closest_place = place   
     return closest_place
 
+@chat_bp.route('/getOnePlace')
+def getOnePlace():
+    name = request.args.get('name') 
+    
+    if not name:
+        return jsonify({"error": "Missing required parameter: name"}), 400
+
+    stmt = select(Place).where(Place.name == name).limit(1)
+    place = db.session.scalar(stmt)
+
+    
+    if place:
+        return jsonify(place.to_dict()), 200
+    else:
+        return jsonify({"message": f"Place with name '{name}' not found"}), 404
+
+
 @chat_bp.route('/pois')
 def pois():
     query_kw = request.args.get("type")

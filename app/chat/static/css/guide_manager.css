@@ -145,7 +145,7 @@
   font-size: 13px;
   margin-bottom: 8px;
   resize: none;
-  font-family: inherit;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 .guide-problem-input:focus {
@@ -222,6 +222,7 @@
   flex-direction: column;
   gap: 10px;
   transition: all 0.3s ease;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 .map-guide-card {
