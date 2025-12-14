@@ -6,6 +6,7 @@ from sqlalchemy import select, and_, or_
 from app.db import db
 import os
 from .utilis import get_user
+import requests
 
 def query_pois_db(query_kw, south, north, east, west):
     stmt = select(Place).where(
@@ -179,3 +180,49 @@ def get_search_history():
         .order_by(SearchHistory.created_at.desc()).all()
     history_list = [h.to_dict() for h in histories]
     return jsonify(history_list)
+
+@chat_bp.route('/api/proxy_route/<mode>/<coords>')
+def proxy_route(mode, coords):
+    API_KEY = "eyJvcmciOiI1YjNjZTM1OTc4NTExMTAwMDFjZjYyNDgiLCJpZCI6ImJhYjE2MmYwZDdjMDRlZGM4MWNmNDMyOGY0YjYxZTE2IiwiaCI6Im11cm11cjY0In0="
+    try:
+        ors_profile = "driving-car" 
+        if mode == 'motor': 
+            ors_profile = "cycling-regular" 
+        elif mode == 'walking':
+            ors_profile = "foot-walking"
+
+        points = coords.split(';')
+        if len(points) < 2:
+            return jsonify({"error": "Invalid coordinates"}), 400
+        start_point = points[0]
+        end_point = points[1]
+
+        base_url = f"https://api.openrouteservice.org/v2/directions/{ors_profile}"
+        url = f"{base_url}?api_key={API_KEY}&start={start_point}&end={end_point}"
+        
+        resp = requests.get(url, timeout=30)
+        data = resp.json()
+        
+        if resp.status_code != 200:
+             print(f"⚠️ ORS Error: {data}")
+             return jsonify(data), resp.status_code
+
+        if 'features' in data and len(data['features']) > 0:
+            feat = data['features'][0]
+            summary = feat['properties']['summary']
+            
+            osrm_like_response = {
+                "code": "Ok",
+                "routes": [{
+                    "geometry": feat['geometry'], 
+                    "distance": summary['distance'],
+                    "duration": summary['duration']
+                }]
+            }
+            return jsonify(osrm_like_response)
+        else:
+            return jsonify({"error": "No route found"}), 404
+
+    except Exception as e:
+        print(f"❌ Exception: {e}")
+        return jsonify({"error": str(e)}), 500
