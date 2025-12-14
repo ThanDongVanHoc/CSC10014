@@ -2,10 +2,11 @@
 Information Collector - Handles information extraction and analysis
 """
 import json
-from typing import Dict, Any, List
+import time
+import re
+from typing import Dict, Any, List, Optional
 import google.generativeai as genai
 from config import REQUIRED_FIELDS
-
 
 class InformationCollector:
     """Manages information collection from user queries"""
@@ -14,173 +15,164 @@ class InformationCollector:
         self.model = model
         self.required_fields = list(REQUIRED_FIELDS.keys())
     
-    def filter_relevant_fields(self, query: str, collected_info: Dict[str, Any]) -> List[str]:
-        """Filter relevant fields based on the user's query and problem category
-        
-        Args:
-            query: User's query
-            collected_info: Already collected information
-            
-        Returns:
-            List of relevant field names (subset of REQUIRED_FIELDS)
+    def process_query_optimized(self, query: str, collected_info: Dict[str, Any]) -> Dict[str, Any]:
         """
-        # Build field descriptions
-        fields_desc = "\n".join([
-            f"- {field}: {REQUIRED_FIELDS[field]['description']}"
+        VERSION FINAL: Strict Logic Enforcement & Token Minimization
+        """
+        
+        # [LAYER 1] Lọc dữ liệu đầu vào - TIẾT KIỆM TOKEN & GIẢM NHIỄU
+        # Chỉ gửi cho AI những field ĐÃ CÓ dữ liệu. Bỏ qua toàn bộ null.
+        existing_data = {k: v for k, v in collected_info.items() if v and v != "null"}
+        current_data_str = json.dumps(existing_data, ensure_ascii=False, separators=(',', ':'))
+
+        # Định nghĩa schema ngắn gọn
+        fields_short = "\n".join([
+            f"{field}: {REQUIRED_FIELDS[field].get('description', '')}"
             for field in self.required_fields
         ])
-        
-        # Get problem category if available
-        problem_category = collected_info.get('problem_category', 'unknown')
-        
-        prompt = f"""Analyze the user query and determine which information fields are RELEVANT to collect.
 
-Query: "{query}"
-Problem Category: {problem_category}
-Already collected: {json.dumps(collected_info, ensure_ascii=False)}
+        # [LAYER 2] Prompt chặt chẽ hơn về 'Relevance'
+        prompt = f"""Role: Legal Assistant. Return JSON.
 
-Available fields:
-{fields_desc}
+SCHEMA:
+{fields_short}
 
-RULES:
-1. Only select fields that are NECESSARY for this specific problem
-2. Core fields (nationality, current_location, language_spoken, problem_category) should ALWAYS be included
-3. For visa issues: Include visa_type, visa_expiry_status, document_condition, residence_type
-4. For medical issues: Include symptom_urgency, insurance_status, mobility_status, medical_history
-5. For lost items/theft: Include incident_location, police_report_status, lost_items, document_condition
-6. For general issues: Include relevant fields based on context
-7. DO NOT include fields already in collected_info
-8. Maximum 15 fields total
+DATA:
+- Known: {current_data_str}
+- Input: "{query}"
 
-Return ONLY a JSON array of field names: ["field1", "field2", ...]
+TASKS:
+1. MERGE: Extract info from Input (English val).
+2. PROBLEM: Identify 'problem_category'.
+3. FILTER: Select ONLY fields relevant to this problem.
+   - E.g: If 'Notarization' -> Ignore 'threat_level', 'vehicle_involved'.
+4. STATUS: 1=Has Data, 0=Missing.
+   - CRITICAL: If field is NOT in "Known" and NOT in "Input" -> Status MUST be 0.
+5. ASK: 3 conversational questions for Missing Relevant fields (Match Input Language).
 
-Example outputs:
-- Visa query: ["nationality", "current_location", "visa_type", "visa_expiry_status", "time_constraint"]
-- Medical query: ["current_location", "symptom_urgency", "insurance_status", "mobility_status"]
-- Lost passport: ["nationality", "incident_location", "police_report_status", "lost_items", "document_condition"]"""
-        
-        try:
-            response = self.model.generate_content(prompt)
-            response_text = self._clean_response(response.text)
-            relevant_fields = json.loads(response_text)
-            
-            # Validate and filter
-            if not isinstance(relevant_fields, list):
-                print("[WARN] Invalid response format, using all fields")
-                return self.required_fields
-            
-            # Only keep valid field names
-            valid_fields = [f for f in relevant_fields if f in self.required_fields]
-            
-            # Always include core fields if not present
-            core_fields = ['nationality', 'current_location', 'language_spoken', 'problem_category']
-            for core in core_fields:
-                if core not in valid_fields and core not in collected_info:
-                    valid_fields.insert(0, core)
-            
-            print(f"[INFO] Filtered {len(self.required_fields)} fields → {len(valid_fields)} relevant fields")
-            return valid_fields
-            
-        except Exception as e:
-            print(f"[ERROR] Filter failed: {e}")
-            # Fallback: return all fields
-            return self.required_fields
-    
-    def extract_from_query(self, query: str, collected_info: Dict[str, Any]) -> Dict[str, Any]:
-        """Extract information from user query"""
-        # Build field descriptions dynamically from config
-        fields_desc = "\n".join([
-            f"- {field}: {REQUIRED_FIELDS[field]['description']} (e.g., {', '.join(map(str, REQUIRED_FIELDS[field]['examples'][:2]))})"
-            for field in self.required_fields
-        ])
-        
-        prompt = f"""Extract structured information from user query.
+OUTPUT: {{"collected_info": {{...}}, "info_status": {{...}}, "questions": [...]}}"""
 
-Query: "{query}"
-Existing data: {json.dumps(collected_info, ensure_ascii=False)}
+        max_retries = 3
+        generation_config = genai.types.GenerationConfig(temperature=0.3)
 
-Fields to extract:
-{fields_desc}
-
-IMPORTANT RULES:
-- Extract explicitly mentioned information only
-- Translate extracted values to ENGLISH for storage
-- Preserve factual information (names, numbers, addresses keep original)
-- Merge with existing data
-- Return valid JSON only
-
-Examples:
-- "người Indonesia" → "nationality": "Indonesian"
-- "gia hạn visa" → "problem": "visa renewal"
-- "quận 1" → "current_address": "District 1" (or keep "quận 1" if address)
-- "Budi Santoso" → "full_name": "Budi Santoso" (keep as is)
-
-Format: {{"field": "value", ...}}"""
-        
-        try:
-            response = self.model.generate_content(prompt)
-            response_text = self._clean_response(response.text)
-            extracted = json.loads(response_text)
-            
-            # Merge
-            updated = {**collected_info, **{k: v for k, v in extracted.items() if v}}
-            return updated
-        except Exception as e:
-            print(f"[ERROR] Extract failed: {e}")
-            return collected_info
-    
-    def analyze_status(self, query: str, collected_info: Dict[str, Any], relevant_fields: List[str] = None) -> Dict[str, int]:
-        """Analyze which fields are collected (1), missing (0), or partial (0.5)
-        
-        Args:
-            query: User's query
-            collected_info: Already collected information
-            relevant_fields: Optional list of relevant fields to analyze (if None, uses all required_fields)
-        """
-        fields_to_check = relevant_fields if relevant_fields else self.required_fields
-        status = {}
-        
-        # Check existing data first
-        for field in fields_to_check:
-            status[field] = 1 if (field in collected_info and collected_info[field]) else 0
-        
-        # If any missing, check current query
-        if any(s == 0 for s in status.values()):
-            missing = [f for f in fields_to_check if status[f] == 0]
-            fields_desc = ", ".join([f"{f} ({REQUIRED_FIELDS[f]['description']})" for f in missing])
-            
-            prompt = f"""Analyze if the query contains information for these fields: {fields_desc}
-
-Query: "{query}"
-
-Return JSON format: {{"field": status}}
-Status values:
-- 1: clearly present in query
-- 0: not mentioned
-- 0.5: partially mentioned or unclear
-
-Only return the JSON object."""
-            
+        for attempt in range(max_retries):
             try:
-                response = self.model.generate_content(prompt)
-                response_text = self._clean_response(response.text)
-                new_status = json.loads(response_text)
+                response = self.model.generate_content(prompt, generation_config=generation_config)
                 
-                # Update only missing fields
-                for field in missing:
-                    if field in new_status:
-                        status[field] = new_status[field]
+                # Clean response string
+                text = response.text.strip().replace("```json", "").replace("```", "")
+                if text.startswith("json"): text = text[4:].strip()
+                
+                result = json.loads(text)
+                
+                # --- [LAYER 3] LOGIC HẬU KIỂM (QUAN TRỌNG) ---
+                
+                # 1. Merge Data an toàn
+                new_info = result.get("collected_info", {})
+                final_info = collected_info.copy()
+                for k, v in new_info.items():
+                    if v and v not in ["null", "None"]:
+                        final_info[k] = v
+                
+                # 2. Sửa lỗi Hallucination của AI (Status 1 nhưng Data Null)
+                raw_status = result.get("info_status", {})
+                clean_status = {}
+                
+                # Chỉ lấy status của những field liên quan mà AI gợi ý
+                for field, status in raw_status.items():
+                    # Kiểm tra thực tế trong dữ liệu
+                    has_data = bool(final_info.get(field))
+                    
+                    if has_data:
+                        clean_status[field] = 1 # Force 1 nếu đã có data
+                    else:
+                        # Nếu AI bảo 1 mà data rỗng -> Force 0
+                        clean_status[field] = 0 if status == 1 else status
+
+                # 3. Đảm bảo các field quan trọng luôn hiện diện
+                core = ['problem_category', 'nationality', 'current_location']
+                for f in core:
+                    if final_info.get(f):
+                        clean_status[f] = 1
+                    elif f not in clean_status:
+                        clean_status[f] = 0
+
+                # Cập nhật lại result
+                result["collected_info"] = final_info
+                result["info_status"] = clean_status
+                
+                return result
+
             except Exception as e:
-                print(f"[ERROR] Analyze failed: {e}")
+                print(f"Error: {e}")
+                time.sleep(1)
+
+        return self._get_fallback_response(query, collected_info)
+
+    def _optimize_status_display(self, raw_status: Dict, relevant_fields: List) -> Dict:
+        """Helper to limit info_status to essential fields for display"""
+        priority_status = {}
         
-        return status
-    
-    def _clean_response(self, text: str) -> str:
-        """Remove markdown code blocks from response"""
-        text = text.strip()
-        if text.startswith("```"):
-            lines = text.split("\n")
-            text = "\n".join(lines[1:-1]) if len(lines) > 2 else text
-            if text.startswith("json"):
-                text = text[4:].strip()
-        return text.strip()
+        # 1. Add Core Fields
+        core_fields = ['nationality', 'current_location', 'problem_category']
+        for f in core_fields:
+            if f in raw_status:
+                priority_status[f] = raw_status[f]
+            elif f in relevant_fields:
+                priority_status[f] = 0 
+        
+        # 2. Add Missing Fields (Status 0)
+        for f, s in raw_status.items():
+            if len(priority_status) >= 10: break
+            if s == 0 and f not in priority_status:
+                priority_status[f] = s
+                
+        # 3. Add Present Fields (Status 1)
+        for f, s in raw_status.items():
+            if len(priority_status) >= 10: break
+            if s == 1 and f not in priority_status:
+                priority_status[f] = s
+                
+        return priority_status
+
+    def _get_fallback_response(self, query: str, collected_info: Dict) -> Dict:
+        """Fallback when API fails completely"""
+        print("[ERROR] Using fallback response")
+        core_fields = ['nationality', 'current_location', 'problem_category']
+        
+        # Improved Language Detection for Fallback
+        vietnamese_chars = 'àáạảãâầấậẩẫăằắặẳẵèéẹẻẽêềếệểễìíịỉĩòóọỏõôồốộổỗơờớợởỡùúụủũưừứựửữỳýỵỷỹđ'
+        is_vietnamese = any(c in query.lower() for c in vietnamese_chars) or " là " in query or " tôi " in query
+        
+        if is_vietnamese:
+            base_questions = {
+                'nationality': "Quốc tịch của bạn là gì?",
+                'current_location': "Bạn đang sinh sống ở khu vực nào?",
+                'problem_category': "Vấn đề pháp lý chính bạn đang gặp phải là gì?"
+            }
+            default_q = "Vui lòng cung cấp thêm thông tin chi tiết."
+        else:
+            base_questions = {
+                'nationality': "What is your nationality?",
+                'current_location': "Where are you currently located?",
+                'problem_category': "What is the specific legal issue?"
+            }
+            default_q = "Please provide more details."
+            
+        # Determine missing info
+        status = {}
+        questions = []
+        
+        for field in core_fields:
+            if collected_info.get(field):
+                status[field] = 1
+            else:
+                status[field] = 0
+                questions.append(base_questions.get(field, default_q))
+        
+        return {
+            "collected_info": collected_info,
+            "relevant_fields": core_fields,
+            "info_status": status,
+            "questions": questions
+        }

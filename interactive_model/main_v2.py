@@ -84,14 +84,12 @@ def validate_query2_request(data: Dict[str, Any]) -> Dict[str, Any]:
 @app.post("/query1")
 async def query_type_1(request: Request) -> JSONResponse:
     """
-    Query Type 1: Interactive information collection (SAME AS V1)
+    Query Type 1: Interactive information collection (OPTIMIZED - SINGLE API CALL)
     
     Flow:
-    1. Extract info from query
-    2. Analyze status of each field
-    3. Filter partial info (0.5)
-    4. Check if complete
-    5. Generate questions (AI auto-detects user's language)
+    1. Single API call to: extract info, filter fields, analyze status, generate questions
+    2. Filter partial info (0.5)
+    3. Return result
     """
     # Parse and validate request
     data = await request.json()
@@ -101,27 +99,24 @@ async def query_type_1(request: Request) -> JSONResponse:
     collected_info = validated_data["collected_info"] or {}
     query = validated_data["query"]
     
-    # Extract information
-    collected_info = collector.extract_from_query(query, collected_info)
-    
-    # Filter relevant fields based on query (NEW FEATURE)
-    relevant_fields = collector.filter_relevant_fields(query, collected_info)
-    
-    # Analyze status (only for relevant fields)
-    info_status = collector.analyze_status(query, collected_info, relevant_fields)
+    # OPTIMIZED: Single API call for all operations
+    result = collector.process_query_optimized(query, collected_info)
     
     # Filter out partial info (0.5)
+    info_status = result.get("info_status", {})
+    extracted_info = result.get("collected_info", collected_info)
+    
     clean_status = {k: v for k, v in info_status.items() if v != 0.5}
     clean_collected_info = {
-        k: v for k, v in collected_info.items() 
+        k: v for k, v in extracted_info.items() 
         if info_status.get(k, 0) != 0.5
     }
     
     # Check completion (only check relevant fields)
-    is_complete = all(status == 1 for status in clean_status.values())
+    is_complete = all(status == 1 for status in clean_status.values()) if clean_status else False
     
-    # Generate questions (max 5 important questions)
-    questions = [] if is_complete else question_gen.generate(clean_status, clean_collected_info, query)
+    # Get questions from result (already generated in single call)
+    questions = [] if is_complete else result.get("questions", [])
     
     return JSONResponse(content={
         "questions": questions,

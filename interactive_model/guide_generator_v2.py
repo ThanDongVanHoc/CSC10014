@@ -40,33 +40,22 @@ class GuideGeneratorV2:
     ) -> Dict[str, Any]:
         """Generate structured guide for a single location"""
         
-        prompt = f"""Create a detailed, structured guide for the user.
-IMPORTANT: Use the SAME LANGUAGE as the user's query.
+        prompt = f"""Create guide in user's language. Return JSON.
 
-Location information:
-- Name: {location.get('Ten', 'N/A')}
-- Address: {location.get('DiaChi', 'N/A')}
-- Phone: {location.get('SDT', 'N/A')}
-- Website: {location.get('Website', 'N/A')}
-- Category: {location.get('Category', 'N/A')}
+Location: {location.get('Ten', 'N/A')}, {location.get('DiaChi', 'N/A')}
+Phone: {location.get('SDT', 'N/A')}, Web: {location.get('Website', 'N/A')}
 
-User's query: "{original_query}"
-Nationality: {user_info.get('nationality', 'N/A')}
-Problem: {user_info.get('problem', 'N/A')}
+Query: "{original_query}"
+Nationality: {user_info.get('nationality', 'N/A')}, Issue: {user_info.get('problem', 'N/A')}
 
-Create a JSON object with 5 sections (use appropriate section names in the user's language):
-1. Preparation: What to prepare beforehand
-2. Required Documents: List of necessary documents
-3. Location & Time: How to get there, operating hours, contact
-4. Procedures: Step-by-step process
-5. Important Notes: Special requirements based on nationality
+5 sections (use user's language):
+1. Preparation
+2. Required Documents
+3. Location & Time (address, hours, contact)
+4. Procedures (step-by-step)
+5. Important Notes (nationality-specific)
 
-Priority for information sources:
-- Government/official sources first
-- Reliable sources second
-- Logical reasoning last
-
-Format: Clear, concise, use bullet points. Return JSON only."""
+Use official sources first. Concise bullets. JSON only."""
         
         try:
             response = self.model.generate_content(prompt)
