@@ -1,7 +1,7 @@
 // logic.js
 import { initMap } from "./map/index.js";
 import { invalidateMapSize } from "./map/services/markerUtils.js";
-import { initChat, setMapReference } from "./chat.js";
+import { initChat, setMapReference } from "./chat/index.js";
 import { startGuideFlow } from "./guide_manager/guide_manager.js";
 
 async function initialize() {
