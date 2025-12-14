@@ -6,6 +6,21 @@ let mapEl = null;
 let chatContainer = null;
 let mapLogo = null;
 let mapChatOverlay = null;
+let pinned = false;
+
+function toggleChatEvents(enable) {
+  if (!chatContainer) return;
+
+  const events = ["click", "mousedown", "dblclick", "wheel"]; // Thêm wheel và dblclick
+
+  events.forEach((evt) => {
+    if (enable) {
+      chatContainer.addEventListener(evt, stopPropagation);
+    } else {
+      chatContainer.removeEventListener(evt, stopPropagation);
+    }
+  });
+}
 
 // Hàm khởi tạo overlay
 export function initMapOverlay(mapInstance) {
@@ -19,7 +34,6 @@ export function initMapOverlay(mapInstance) {
 
   // --- LOGIC KÉO THẢ (DRAG) CHO LOGO ---
   let isDragging = false;
-  let pinned = false; // Trạng thái ghim chat
   let offsetX = 0,
     offsetY = 0;
   let dragStartX = 0,
@@ -62,7 +76,7 @@ export function initMapOverlay(mapInstance) {
     });
 
     // Thả chuột (kết thúc kéo)
-    document.addEventListener("mouseup", (e) => {
+    document.addEventListener("mouseup", async (e) => {
       if (!isDragging) return;
       isDragging = false;
       mapLogo.classList.remove("dragging");
@@ -89,7 +103,38 @@ export function initMapOverlay(mapInstance) {
             mapChatOverlay.appendChild(chatContainer);
           mapChatOverlay.classList.remove("hidden");
           mapChatOverlay.classList.add("pinned");
+          toggleChatEvents(true);
           invalidateMapSize();
+          try {
+            const { State } = await import("../../chat/services/core.js");
+            const { renderEmptyState, hideSearchWrapper } = await import(
+              "../../chat/components/message_ui.js"
+            );
+            const { DataManager } = await import("../../chat/services/data.js");
+
+            let hasContent = false;
+
+            // Kiểm tra: Nếu đã chọn chat ID, xem chat đó có tin nhắn không
+            if (State.selectedId) {
+              const msgs = await DataManager.getMessages(State.selectedId);
+              if (msgs && msgs.length > 0) {
+                hasContent = true;
+              }
+            }
+
+            // CHỈ LOAD ANIMATION NẾU CHAT RỖNG (Không có nội dung)
+            if (!hasContent) {
+              State.selectedId = null; // Reset về trạng thái New Chat
+              renderEmptyState();
+            }
+
+            hideSearchWrapper();
+
+            const chatInput = document.getElementById("chatInput");
+            if (chatInput) chatInput.focus();
+          } catch (err) {
+            console.error("Lỗi khi check trạng thái chat:", err);
+          }
         } else {
           // Trả Logo về góc
           mapLogo.style.left = "16px";
@@ -98,6 +143,7 @@ export function initMapOverlay(mapInstance) {
           mapLogo.style.transform = "";
           mapChatOverlay.classList.add("hidden");
           mapChatOverlay.classList.remove("pinned");
+          toggleChatEvents(false);
           invalidateMapSize();
         }
       }
@@ -122,6 +168,7 @@ export async function handleScreenEvent() {
     const { hideSearchWrapper } = await import("../../chat/index.js");
     const isCurrentlyFullscreen = mapEl.classList.contains("fullscreen");
     const fullscreenIcon = document.getElementById("fullscreenIcon");
+    const mapLogo = document.getElementById("mapLogo");
 
     if (!isCurrentlyFullscreen) {
       // Chuyển sang Fullscreen
@@ -142,9 +189,18 @@ export async function handleScreenEvent() {
       if (hideSearchWrapper) hideSearchWrapper();
     } else {
       // Thoát Fullscreen
+      mapLogo.style.left = "16px";
+      mapLogo.style.bottom = "22px";
+      mapLogo.style.top = "auto";
+      mapLogo.style.transform = "";
       mapEl.classList.remove("fullscreen");
       document.querySelector(".app").prepend(chatContainer);
       mapChatOverlay.classList.add("hidden");
+      mapChatOverlay.classList.add("hidden");
+      mapChatOverlay.classList.remove("pinned");
+      invalidateMapSize();
+      toggleChatEvents(false);
+      pinned = false;
       if (mapLogo) mapLogo.style.display = "none";
       // Đổi icon thành expand
       if (fullscreenIcon) {
