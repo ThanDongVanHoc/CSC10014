@@ -39,7 +39,7 @@ class GuideGeneratorV2:
         user_info: Dict[str, Any]
     ) -> Dict[str, Any]:
         """Generate structured guide for a single location"""
-        
+        print('dcm')
         prompt = f"""
 Return JSON only in the EXACT structure below (no text outside):
 
@@ -66,6 +66,11 @@ Return JSON only in the EXACT structure below (no text outside):
 
 Rules:
 - Write entirely in the user's language.
+- DO NOT translate, rename, or modify ANY key names.
+- Keys such as "reply", "title", "steps", "id", "type", "desc", "lat", "lng",
+   "suggestion_type", "suggestion_text", "fallback_desc",
+   "fallback_lat", "fallback_lng", "troubles" 
+
 - Choose one for "type": doc, move, action, finish.
 - Generate 3 to 7 steps.
 - Base content on:
