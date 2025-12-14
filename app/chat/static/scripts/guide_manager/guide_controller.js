@@ -1,4 +1,5 @@
 import { handleScreenEvent } from "../map/components/Overlay.js";
+import {clearSuggestionMarkers} from "../map/services/search.js"
 
 // ==========================================
 // 2. CONTROLLER CLASS (Giữ nguyên logic cũ, chỉ sửa nhỏ)
@@ -237,7 +238,8 @@ export class SmartGuideController {
         
         // Xóa các suggestion markers khi finish
         clearSuggestionMarkers();
-        
+        if (window.MapGuideUI) window.MapGuideUI.close();
+
         setTimeout(() => {
             if (window.MapGuideUI) window.MapGuideUI.close();
             this._toggleFullscreen(false);
