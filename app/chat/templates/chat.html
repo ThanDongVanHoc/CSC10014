@@ -51,7 +51,15 @@
 />
 <link
   rel="stylesheet"
-  href="{{ url_for('chat.static', filename='css/guide_manager.css') }}"
+  href="{{ url_for('chat.static', filename='css/guide_manager/guide_map.css') }}"
+/>
+<link
+  rel="stylesheet"
+  href="{{ url_for('chat.static', filename='css/guide_manager/guide_ui.css') }}"
+/>
+<link
+  rel="stylesheet"
+  href="{{ url_for('chat.static', filename='css/guide_manager/guide_troubleshoot.css') }}"
 />
 <link
   rel="stylesheet"
@@ -181,9 +189,5 @@
 <script
   type="module"
   src="{{ url_for('chat.static', filename='scripts/logic.js') }}"
-></script>
-<script
-  type="module"
-  src="{{ url_for('chat.static', filename='scripts/guide_manager.js') }}"
 ></script>
 {% endblock %}

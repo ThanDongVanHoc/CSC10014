@@ -1,5 +1,5 @@
 import { state } from "../state.js";
-import { findPlace, pinLocationProK} from "../components/POIManager.js"
+import { findPlace, pinLocationProK } from "../components/POIManager.js";
 
 let currentStepMarker = null; // Marker cho bước hướng dẫn hiện tại
 let guideContainer = null; // Container HTML của khung hướng dẫn
@@ -47,7 +47,13 @@ export const MapGuideUI = {
   },
 
   // Render HTML cho một bước
-  renderStep: function (locName, stepData, totalSteps, currentIndex, callbacks) {
+  renderStep: function (
+    locName,
+    stepData,
+    totalSteps,
+    currentIndex,
+    callbacks
+  ) {
     this.init();
     const icon =
       stepData.type === "move" ? "🛵" : stepData.type === "doc" ? "📄" : "📍";
@@ -55,11 +61,13 @@ export const MapGuideUI = {
     // HTML gợi ý thông minh
     let suggestionHtml = "";
     if (stepData.suggestion_query) {
-      suggestionHtml = `<div class="smart-suggestion-btn" onclick="window.MapGuideUI.triggerSuggestion('${
-        stepData.suggestion_query
-      }')"><i class="fas fa-search-location"></i> ${
+      suggestionHtml = `<div id="btn-suggestion-${
+        stepData.id
+      }" class="smart-suggestion-btn">
+      <i class="fas fa-search-location"></i> ${
         stepData.suggestion_text || "Tìm địa điểm hỗ trợ gần đây"
-      }</div>`;
+      }
+  </div>`;
     }
 
     // HTML chính của Card hướng dẫn
@@ -123,52 +131,62 @@ export const MapGuideUI = {
     // Gắn sự kiện cho các nút trong HTML vừa render
     const btnNext = document.getElementById(`btn-guide-next-${stepData.id}`);
     if (btnNext)
-      btnNext.onclick = () => {
+      btnNext.onclick = (e) => {
+        e.stopPropagation();
         if (typeof callbacks.onNext === "function") callbacks.onNext();
       };
+    const btnSuggestion = document.getElementById(
+      `btn-suggestion-${stepData.id}`
+    );
+    if (btnSuggestion) {
+      btnSuggestion.onclick = (e) => {
+        e.stopPropagation();
+        window.MapGuideUI.triggerSuggestion(stepData.suggestion_query);
+      };
+    }
     const btnUndo = document.getElementById("btn-guide-undo");
     if (btnUndo)
-      btnUndo.onclick = () => {
+      btnUndo.onclick = (e) => {
+        e.stopPropagation();
         if (typeof callbacks.onUndo === "function") callbacks.onUndo();
       };
     const issueBtn = document.getElementById(`btn-guide-issue-${stepData.id}`);
     if (issueBtn)
-      issueBtn.onclick = () => {
+      issueBtn.onclick = (e) => {
+        e.stopPropagation();
         window.toggleIssueForm(stepData.id, true);
       };
     this.updateMapCamera(stepData, locName);
   },
 
-
   updateMapCamera: async function (step, locName) {
-      const { map } = state;
-      if (!map) return;
-      if (currentGuideMarker) map.removeLayer(currentGuideMarker);
+    const { map } = state;
+    if (!map) return;
+    if (currentGuideMarker) map.removeLayer(currentGuideMarker);
 
-      const currentPlace = await findPlace(locName); 
-      
-      if (currentPlace) { 
-          map.flyTo([currentPlace.lat, currentPlace.lng], 17, { duration: 1.5 }); 
-          
-          console.log(currentPlace); // In ra đối tượng Place          
-          currentGuideMarker = pinLocationProK(currentPlace);           
-          
-      } else if (step.lat && step.lng) {
-          map.flyTo([step.lat, step.lng], 17, { duration: 1.5 });
-          
-          currentGuideMarker = L.marker([step.lat, step.lng], {
-              icon: new L.Icon({
-                  iconUrl:
-                      "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-violet.png",
-                  shadowUrl:
-                      "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-shadow.png",
-                  iconSize: [25, 41],
-                  iconAnchor: [12, 41],
-                  popupAnchor: [1, -34],
-                  shadowSize: [41, 41],
-              }),
-          }).addTo(map);
-      }
+    const currentPlace = await findPlace(locName);
+
+    if (currentPlace) {
+      map.flyTo([currentPlace.lat, currentPlace.lng], 17, { duration: 1.5 });
+
+      console.log(currentPlace); // In ra đối tượng Place
+      currentGuideMarker = pinLocationProK(currentPlace);
+    } else if (step.lat && step.lng) {
+      map.flyTo([step.lat, step.lng], 17, { duration: 1.5 });
+
+      currentGuideMarker = L.marker([step.lat, step.lng], {
+        icon: new L.Icon({
+          iconUrl:
+            "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-violet.png",
+          shadowUrl:
+            "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-shadow.png",
+          iconSize: [25, 41],
+          iconAnchor: [12, 41],
+          popupAnchor: [1, -34],
+          shadowSize: [41, 41],
+        }),
+      }).addTo(map);
+    }
   },
 
   // Xử lý gợi ý thông minh (Smart Suggestion)

@@ -1,0 +1,171 @@
+/* MAP GUIDE OVERLAY (Floating Card) */
+.map-guide-container {
+  position: absolute;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 90%;
+  max-width: 450px;
+  z-index: 2000; /* Cao hơn mọi thứ */
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  transition: all 0.3s ease;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.map-guide-card {
+  background: rgba(255, 255, 255, 0.98);
+  backdrop-filter: blur(10px);
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  padding: 0;
+  overflow: hidden;
+  animation: slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(100px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* Header tiến trình */
+.guide-overlay-header {
+  padding: 12px 16px;
+  background: #0f172a;
+  color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.guide-progress-text {
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+.guide-step-badge {
+  background: #3b82f6;
+  padding: 2px 8px;
+  border-radius: 12px;
+  font-size: 11px;
+}
+
+/* Nội dung */
+.guide-overlay-body {
+  padding: 16px;
+  position: relative;
+}
+.guide-step-title {
+  font-size: 18px;
+  font-weight: 800;
+  color: #1e293b;
+  margin-bottom: 6px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.guide-step-desc {
+  font-size: 14px;
+  color: #475569;
+  line-height: 1.5;
+  margin-bottom: 12px;
+}
+
+/* Smart Suggestion Button (Nút gợi ý thông minh) */
+.smart-suggestion-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #eff6ff;
+  color: #2563eb;
+  border: 1px dashed #bfdbfe;
+  padding: 10px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  width: 100%;
+  margin-bottom: 12px;
+  transition: all 0.2s;
+}
+.smart-suggestion-btn:hover {
+  background: #dbeafe;
+}
+
+/* Controls Buttons */
+.guide-overlay-actions {
+  display: flex;
+  gap: 8px;
+  padding-top: 8px;
+  border-top: 1px solid #f1f5f9;
+}
+
+.action-btn {
+  flex: 1;
+  padding: 12px;
+  border-radius: 10px;
+  border: none;
+  font-weight: 600;
+  cursor: pointer;
+  font-size: 14px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 6px;
+  transition: transform 0.1s;
+}
+.action-btn:active {
+  transform: scale(0.96);
+}
+
+.btn-undo {
+  background: #f1f5f9;
+  color: #64748b;
+  flex: 0 0 50px;
+}
+.btn-issue {
+  background: #fef2f2;
+  color: #ef4444;
+}
+.btn-next {
+  background: #10b981;
+  color: white;
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+}
+
+/* Vùng hiển thị lỗi (Troubleshoot) */
+.trouble-panel {
+  display: none;
+  background: #fff1f2;
+  padding: 12px;
+  border-radius: 8px;
+  margin-bottom: 10px;
+  border: 1px solid #fecdd3;
+}
+.trouble-options button {
+  display: block;
+  width: 100%;
+  text-align: left;
+  background: white;
+  border: 1px solid #fda4af;
+  padding: 8px;
+  margin-top: 6px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 13px;
+  color: #9f1239;
+}
+.trouble-options button:hover {
+  background: #fff0f1;
+}
+.trouble-options button:hover {
+  background: #fff0f1;
+}
