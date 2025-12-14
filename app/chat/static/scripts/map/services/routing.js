@@ -134,8 +134,15 @@ export async function drawRoute() {
     const km = (route.distance / 1000).toFixed(1);
     let mins = route.duration / 60;
 
-    const scale = { driving: 1, motor: 1.1, walking: 5, bike: 2.5 };
+    const scale = { driving: 1, motor: 1.1, walking: 4, bike: 2.5 };
     mins = Math.round(mins * (scale[osrmKey] || 1));
+
+
+    if(osrmKey != 'motor'){
+      mins = route.duration / 60; 
+      mins = Math.round(mins); 
+    }
+    
 
     let timeString = `${mins} min`;
     if (mins >= 60) {

@@ -1,6 +1,7 @@
 import { state } from "../state.js";
 import { clearMapState, pinLocationToMap } from "../services/markerUtils.js";
 import { poiSidebarUI } from "./POISidebar.js";
+import {icons} from "../config.js"
 
 let poiLayer = null; // LayerGroup chứa các marker POI
 let poiControl = null; // Control thanh lọc POI
@@ -144,7 +145,7 @@ export function pinLocationProK(poi){
     website: poi.website || "#",
   };
 
-  const marker = L.marker(latlng).addTo(map);
+  const marker = L.marker(latlng, {icon : icons.purple_with_ripple}).addTo(map);
 
   // Khi click vào Marker POI
   marker.on("click", (e) => {

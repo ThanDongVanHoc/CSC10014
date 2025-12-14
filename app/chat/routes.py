@@ -12,6 +12,7 @@ from .utilis import (
 
 from .ChatPro import ChatPro
 
+
 os.makedirs("outputs", exist_ok=True)
 
 assistant = ChatPro(
@@ -19,7 +20,7 @@ assistant = ChatPro(
     interact_model_url="http://localhost:8000"
 )
 
-API_KEY = "AIzaSyAkteio2f4Is6odTtvwLGwem_ZJboG8hxg"
+API_KEY = os.getenv("GEMINI_API_KEY")
 BASE_MODEL_NAME = "gemini-2.5-flash" 
 
 system_prompt = r"""
@@ -43,6 +44,7 @@ Rules:
 """
 
 MODEL_API_ENDPOINT = "http://127.0.0.1:8000/recommend"
+current_data = {}
 
 @chat_bp.route('/')
 def chat_page():
@@ -68,7 +70,8 @@ def chat():
     # TRƯỜNG HỢP A: Chưa đủ thông tin -> Hỏi tiếp
     if not is_complete:
         questions = analysis_result.get("questions", [])
-        bot_reply = questions[0] if questions else "Tôi cần thêm thông tin."
+        questions = ''.join(questions)
+        bot_reply = questions if questions else "Tôi cần thêm thông tin."
     
         print(current_info)
         return jsonify({
@@ -97,9 +100,130 @@ def chat():
         filename = f"outputs/guide.json"
         with open(filename, "w", encoding="utf-8") as f:
             json.dump(guide_data, f, ensure_ascii=False, indent=2)
-        
+
+        with open(filename, 'r', encoding='utf-8') as file:
+            current_data = json.load(file)
+
         return guide_data
+
+
+
+
+def build_issue_prompt(scenario_title, steps_done, user_issue, step_stuck_content):
+    """Creates a detailed prompt string for the Gemini model."""
     
+    # 1. System Role and Core Context
+    prompt = "You are a smart guide assistant specialized in providing quick, practical solutions for user issues encountered during public service procedures. "
+    prompt += f"The user is executing the detailed scenario: '{scenario_title}'.\n\n"
+    
+    # 2. Completed Steps Context
+    if steps_done:
+        done_list = "\n".join([f"- Step {s.get('id')}: {s.get('title')}" for s in steps_done])
+        prompt += f"The steps successfully completed so far are:\n{done_list}\n\n"
+    else:
+        prompt += "The user is encountering an issue at the very beginning.\n\n"
+        
+    # 3. Current Stuck Step Info (Using the content provided)
+    # Renaming step_stuck to step_stuck_content for clarity in the prompt body
+    prompt += "The user is currently stuck at the following instruction/step content:\n"
+    prompt += f"**[STUCK STEP]**\n---\n{step_stuck_content}\n---\n\n"
+
+    # 4. The User's Problem
+    prompt += f"The exact problem the user reported is: **'{user_issue}'**.\n\n"
+    
+    # 5. Instruction and Output Request
+    prompt += "Based on the completed steps and the current instruction, provide a **detailed, HELPFUL, and PRACTICAL SOLUTION** (only the answer text). Ensure the solution is contextually relevant. If the problem is minor or requires human intervention (e.g., asking a guard), keep the answer brief and polite. DO NOT repeat the step content or the user's question."
+    
+    return prompt
+
+@chat_bp.route('/chat_issue', methods = ['POST'])
+def chat_issue():
+    data = request.get_json()
+    
+    steps_done = data.get('done', [])        # Danh sách các bước đã hoàn thành (List of dicts: id, title)
+    user_issue = data.get('issue', "")       # Vấn đề người dùng
+    step_stuck = data.get('step_stuck', None)   # ID bước bị kẹt
+    scenario_title = data.get('title', None) # Tiêu đề kịch bản/Địa điểm
+    
+    print(scenario_title)
+    print(step_stuck)
+
+    if not scenario_title or not step_stuck:
+        return jsonify({"text": "Lỗi: Thiếu thông tin kịch bản/bước để tra cứu.", 
+                        "newLat": None, "newLng": None})
+    
+        
+
+    result = {
+        "text": "Tôi hiểu vấn đề này. Hãy thử hỏi nhân viên bảo vệ hoặc bàn hướng dẫn gần đó.",
+        "newLat": None,
+        "newLng": None
+    }
+
+
+    prompt = build_issue_prompt(scenario_title, steps_done, user_issue, step_stuck)
+
+    base_url = f"https://generativelanguage.googleapis.com/v1beta/models/{BASE_MODEL_NAME}:generateContent"
+    headers = {"Content-Type": "application/json"}
+    payload = {
+        "contents": [
+            {
+            "parts": [
+                {"text": f"{user_issue}"} 
+                ]
+            }
+        ],
+
+        "systemInstruction": {"parts": [{"text": prompt}]},
+        "generationConfig": {
+            "temperature": 0.5,
+            "responseMimeType": "application/json"
+        }
+    }
+
+# 3. Gọi API
+    try:
+        # Lấy API key từ biến môi trường
+        api_key = os.environ.get("GEMINI_API_KEY")
+        if not api_key:
+             raise ValueError("GEMINI_API_KEY is not set.")
+             
+        response = requests.post(base_url, json=payload, params={"key": api_key})
+        data = response.json()
+        
+        # 4. Xử lý lỗi HTTP và Phản hồi Bị chặn
+        if response.status_code != 200:
+            error_msg = data.get("error", {}).get("message", "Lỗi API không rõ.")
+            result["text"] = f"Lỗi API Gemini (HTTP {response.status_code}): {error_msg}"
+            return jsonify(result)
+
+        candidates = data.get("candidates")
+        if not candidates:
+            reason = data.get("promptFeedback", {}).get("blockReason", "UNKNOWN")
+            result["text"] = f"Lỗi: Phản hồi bị chặn do chính sách an toàn ({reason})."
+            return jsonify(result)
+        
+        # 5. Trích xuất văn bản phản hồi
+        # Lấy văn bản từ vị trí tiêu chuẩn của Gemini API
+        gemini_text = candidates[0].get("content", {}).get("parts", [{}])[0].get("text")
+        
+        if gemini_text:
+            # Loại bỏ các ký tự markdown thừa (**, #)
+            result["text"] = gemini_text.replace('**', '').replace('*', '').replace('#', '').strip()
+        else:
+            result["text"] = "Lỗi: Gemini trả về phản hồi rỗng."
+
+    except requests.exceptions.RequestException as e:
+        # Lỗi mạng
+        result["text"] = f"Lỗi kết nối: Không thể liên hệ với máy chủ Gemini. ({e})"
+    except Exception as e:
+        # Lỗi xử lý khác (ví dụ: KeyError, ValueError)
+        result["text"] = f"Lỗi xử lý phản hồi: {e}"
+
+    # 6. Trả về kết quả cuối cùng (có thể là giải pháp AI hoặc thông báo lỗi)
+    return jsonify(result)
+
+@chat_bp.route('/chat_for_fun', methods = ['POST'])   
 def chat_prepare():
     data = request.get_json()
     user_msg = data.get("message", "")

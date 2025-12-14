@@ -54,7 +54,7 @@ Return JSON only in the EXACT structure below (no text outside):
       "desc": "",
       "lat": null,
       "lng": null,
-      "suggestion_query": null,
+      "suggestion_type": null,
       "suggestion_text": null,
       "fallback_desc": null,
       "fallback_lat": null,
@@ -74,7 +74,7 @@ Rules:
     • Nationality: {user_info.get('nationality')}
     • Problem: {user_info.get('problem')}
 - Use lat/lng if available, else null.
-- suggestion_query examples: "photo shop"
+- suggestion_type examples: "photoshop, cafe, atm, etc."
 - suggestion_text example: "🔍 Find nearby photo shops"
 - Do NOT generate troubles. Leave it as an empty list [].
 - No comments, no explanations, no markdown, JSON only.

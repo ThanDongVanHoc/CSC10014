@@ -29,7 +29,7 @@ GEMINI_SLEEP_PER_BATCH = 3  # Thời gian nghỉ (giây) giữa các batch để
 
 # ----------------- CẤU HÌNH API GEMINI -----------------
 load_dotenv()
-GEMINI_API_KEY = 'AIzaSyCpnWjIB6fQvEAj_UAh3Ob8nITX05ykU0s' # Lưu ý: API Key của bạn bị lộ, nên thu hồi
+GEMINI_API_KEY =os.getenv("GEMINI_API_KEY2")# Lưu ý: API Key của bạn bị lộ, nên thu hồi
 gemini_model = None
 
 if GEMINI_API_KEY:

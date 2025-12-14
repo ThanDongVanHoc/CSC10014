@@ -11,6 +11,16 @@ export const icons = {
     popupAnchor: [1, -34],
     shadowSize: [41, 41],
   }),
+  purple: new L.Icon({
+    iconUrl:
+      "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-violet.png",
+    shadowUrl:
+      "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-shadow.png",
+    iconSize: [25, 41],
+    iconAnchor: [12, 41],
+    popupAnchor: [1, -34],
+    shadowSize: [41, 41],
+  }),
   // Icon màu đỏ (thường dùng cho điểm Đích - End Point)
   red: new L.Icon({
     iconUrl:
@@ -57,4 +67,21 @@ export const icons = {
     iconAnchor: [25, 25],
     popupAnchor: [0, -30],
   }),
+
+  purple_with_ripple: L.divIcon({
+    className: "custom-marker-container",
+    html: `
+      <div class="pin-wrapper">
+        <div class="small-ripple"></div>
+        <img src="https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-violet.png";
+        alt="Purple Icon" class="purple-icon-img" />
+      </div>
+      `,
+    // Sử dụng kích thước lớn hơn để chứa hiệu ứng ripple
+    iconSize: [50, 50], 
+    // Neo vào chân icon 25x41
+    iconAnchor: [25, 41], 
+    popupAnchor: [1, -34],
+})
+
 };

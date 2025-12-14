@@ -126,8 +126,6 @@
   margin: 8px 0;
 }
 
-/* ... (Code guide-card cũ giữ nguyên) ... */
-
 /* Form nhập vấn đề (Troubleshooting Form) */
 .guide-problem-form {
   padding: 12px 16px;
@@ -168,6 +166,11 @@
   font-size: 12px;
   font-weight: 600;
   cursor: pointer;
+  transition: background 0.2s;
+}
+
+.btn-submit-issue:hover {
+  background: #c53030;
 }
 
 .btn-cancel-issue {
@@ -178,6 +181,12 @@
   border-radius: 6px;
   font-size: 12px;
   cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-cancel-issue:hover {
+  background: #f7fafc;
+  border-color: #a0aec0;
 }
 
 /* AI Solution Box (Giải pháp AI đưa ra) */
@@ -247,6 +256,17 @@
   }
 }
 
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 /* Header tiến trình */
 .guide-overlay-header {
   padding: 12px 16px;
@@ -256,17 +276,20 @@
   justify-content: space-between;
   align-items: center;
 }
+
 .guide-progress-text {
   font-size: 12px;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 1px;
 }
+
 .guide-step-badge {
   background: #3b82f6;
   padding: 2px 8px;
   border-radius: 12px;
   font-size: 11px;
+  margin-left: 8px;
 }
 
 /* Nội dung */
@@ -274,6 +297,7 @@
   padding: 16px;
   position: relative;
 }
+
 .guide-step-title {
   font-size: 18px;
   font-weight: 800;
@@ -283,6 +307,7 @@
   align-items: center;
   gap: 8px;
 }
+
 .guide-step-desc {
   font-size: 14px;
   color: #475569;
@@ -294,6 +319,7 @@
 .smart-suggestion-btn {
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 8px;
   background: #eff6ff;
   color: #2563eb;
@@ -306,9 +332,56 @@
   width: 100%;
   margin-bottom: 12px;
   transition: all 0.2s;
+  position: relative;
 }
-.smart-suggestion-btn:hover {
+
+.smart-suggestion-btn:hover:not(.loading) {
   background: #dbeafe;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(37, 99, 235, 0.2);
+}
+
+.smart-suggestion-btn:active:not(.loading) {
+  transform: translateY(0);
+}
+
+.smart-suggestion-btn.loading {
+  opacity: 0.6;
+  pointer-events: none;
+  cursor: not-allowed;
+}
+
+.smart-suggestion-btn.loading::after {
+  content: '';
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  border: 2px solid #2563eb;
+  border-top-color: transparent;
+  border-radius: 50%;
+  animation: spin 0.6s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Suggestion Result Box */
+.suggestion-result {
+  padding: 10px;
+  background: #f0fdf4;
+  border: 1px solid #86efac;
+  border-radius: 6px;
+  font-size: 13px;
+  color: #166534;
+  animation: slideIn 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.suggestion-result i {
+  font-size: 16px;
 }
 
 /* Controls Buttons */
@@ -331,10 +404,15 @@
   justify-content: center;
   align-items: center;
   gap: 6px;
-  transition: transform 0.1s;
+  transition: all 0.2s;
 }
+
 .action-btn:active {
   transform: scale(0.96);
+}
+
+.action-btn:hover {
+  transform: translateY(-2px);
 }
 
 .btn-undo {
@@ -342,14 +420,31 @@
   color: #64748b;
   flex: 0 0 50px;
 }
+
+.btn-undo:hover {
+  background: #e2e8f0;
+}
+
 .btn-issue {
   background: #fef2f2;
   color: #ef4444;
+  border: 1px solid #fecaca;
 }
+
+.btn-issue:hover {
+  background: #fee2e2;
+  box-shadow: 0 2px 8px rgba(239, 68, 68, 0.2);
+}
+
 .btn-next {
   background: #10b981;
   color: white;
   box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+}
+
+.btn-next:hover {
+  background: #059669;
+  box-shadow: 0 6px 16px rgba(16, 185, 129, 0.4);
 }
 
 /* Vùng hiển thị lỗi (Troubleshoot) */
@@ -360,7 +455,9 @@
   border-radius: 8px;
   margin-bottom: 10px;
   border: 1px solid #fecdd3;
+  animation: slideIn 0.3s ease;
 }
+
 .trouble-options button {
   display: block;
   width: 100%;
@@ -373,10 +470,94 @@
   cursor: pointer;
   font-size: 13px;
   color: #9f1239;
+  transition: all 0.2s;
 }
+
 .trouble-options button:hover {
   background: #fff0f1;
+  border-color: #fb7185;
+  transform: translateX(2px);
 }
-.trouble-options button:hover {
-  background: #fff0f1;
+
+/* Window Controls */
+.guide-window-controls {
+  display: flex;
+  gap: 5px;
+}
+
+.win-btn {
+  border: none;
+  background: transparent;
+  color: white;
+  cursor: pointer;
+  font-size: 14px;
+  padding: 4px 8px;
+  border-radius: 4px;
+  transition: all 0.2s;
+}
+
+.win-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+}
+
+.win-btn:active {
+  transform: scale(0.95);
+}
+
+/* Minimized state */
+.map-guide-card.minimized .guide-overlay-body {
+  display: none;
+}
+
+.map-guide-card.minimized {
+  width: auto;
+  min-width: 250px;
+}
+
+.map-guide-card.minimized .guide-overlay-header {
+  border-radius: 16px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .map-guide-container {
+    width: 95%;
+    max-width: none;
+  }
+  
+  .guide-step-title {
+    font-size: 16px;
+  }
+  
+  .guide-step-desc {
+    font-size: 13px;
+  }
+  
+  .action-btn {
+    padding: 10px;
+    font-size: 13px;
+  }
+  
+  .smart-suggestion-btn {
+    font-size: 12px;
+    padding: 8px;
+  }
+}
+
+/* Confetti animation for completion */
+.confetti {
+  position: fixed;
+  width: 10px;
+  height: 10px;
+  z-index: 9999;
+  pointer-events: none;
+  animation: fall linear forwards;
+}
+
+@keyframes fall {
+  to {
+    transform: translateY(100vh) rotate(720deg);
+    opacity: 0;
+  }
 }
