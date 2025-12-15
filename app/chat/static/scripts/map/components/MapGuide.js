@@ -39,6 +39,21 @@ export const MapGuideUI = {
     guideContainer.className = "map-guide-container";
     document.getElementById("map").appendChild(guideContainer);
 
+    // 🚫 Chặn mọi tương tác UI lan xuống map
+    L.DomEvent.disableClickPropagation(guideContainer);
+    L.DomEvent.disableScrollPropagation(guideContainer);
+
+    // 🔥 BẮT BUỘC – nếu không map vẫn bị drag
+    L.DomEvent.on(guideContainer, 'mousedown', L.DomEvent.stopPropagation);
+    L.DomEvent.on(guideContainer, 'touchstart', L.DomEvent.stopPropagation);
+    L.DomEvent.on(guideContainer, 'dblclick', L.DomEvent.stopPropagation);
+    L.DomEvent.on(guideContainer, 'pointerdown', L.DomEvent.stopPropagation);
+
+    // Optional
+    L.DomEvent.on(guideContainer, 'wheel', L.DomEvent.stopPropagation);
+    L.DomEvent.on(guideContainer, 'contextmenu', L.DomEvent.stopPropagation);
+
+
     // CSS cho window controls và minimize
     const style = document.createElement('style');
     style.innerHTML = `
@@ -107,7 +122,13 @@ export const MapGuideUI = {
           </div>
           
           <div id="problem-form-${stepData.id}" style="display:none; margin-top:10px;">
-            <input id="problem-input-${stepData.id}" class="guide-problem-input" placeholder="Mô tả sự cố (ví dụ: bãi xe hết chỗ)" />
+            <textarea
+              id="problem-input-${stepData.id}"
+              class="guide-problem-input"
+              rows="3"
+              placeholder="Mô tả sự cố (ví dụ: bãi xe hết chỗ)"
+            ></textarea>
+
             <div style="display:flex; gap:8px; margin-top:8px;">
               <button class="btn-submit-issue" onclick="window.submitIssue(${stepData.id})">Gửi vấn đề</button>
               <button class="btn-cancel-issue" onclick="window.toggleIssueForm(${stepData.id}, false)">Hủy</button>
@@ -131,13 +152,44 @@ export const MapGuideUI = {
     `;
 
     // Event Bindings
-    document.getElementById(`btn-guide-next-${stepData.id}`).onclick = () => callbacks.onNext?.();
+    // Nút Tiếp theo
+    const btnNext = document.getElementById(`btn-guide-next-${stepData.id}`);
+    if (btnNext) {
+      stopMapEvent(btnNext);
+      btnNext.onclick = () => callbacks.onNext?.();
+    }
+
+    // Nút Undo
     const btnUndo = document.getElementById("btn-guide-undo");
-    if (btnUndo) btnUndo.onclick = () => callbacks.onUndo?.();
-    
-    document.getElementById(`btn-guide-issue-${stepData.id}`).onclick = () => {
+    if (btnUndo) {
+      stopMapEvent(btnUndo);
+      btnUndo.onclick = () => callbacks.onUndo?.();
+    }
+
+    // Nút Báo sự cố
+    const btnIssue = document.getElementById(`btn-guide-issue-${stepData.id}`);
+    if (btnIssue) {
+      stopMapEvent(btnIssue);
+      btnIssue.onclick = () => {
         this.toggleIssueForm(stepData.id, true);
-    };
+      };
+    }
+
+      const input = document.getElementById(`problem-input-${stepData.id}`);
+
+      if (input) {
+        stopMapEvent(input); 
+
+        input.addEventListener("keydown", (e) => {
+          if (e.key === "Enter" && !e.shiftKey) {
+            e.preventDefault();     
+            e.stopPropagation();     
+
+            window.submitIssue(stepData.id); 
+          }
+        });
+      }
+
 
     // Window Control Bindings
     document.getElementById('btn-guide-min').onclick = () => this.toggleMinimize();
@@ -321,3 +373,12 @@ export const MapGuideUI = {
     clearSuggestionMarkers();
   },
 };
+
+  function stopMapEvent(el) {
+    if (!el) return;
+    ['mousedown', 'touchstart', 'pointerdown', 'dblclick', 'click'].forEach(evt => {
+      el.addEventListener(evt, e => {
+        e.stopPropagation();
+      });
+    });
+  }

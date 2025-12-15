@@ -6,8 +6,6 @@ import {
   _normalizeGuideData,
 } from "./guide_data.js";
 
-
-
 let guideApp = null;
 
 // Tải dữ liệu khi file js được load
@@ -21,8 +19,8 @@ fetch("/chat/static/mock_responses/guide.json")
   })
   .catch(err => console.error("❌ Load guide JSON failed:", err));
 
-// Hàm Main được gọi từ chat.js
-export function startGuideFlow(locationNameOrData) {
+
+  export function startGuideFlow(locationNameOrData) {
     let scenarioData = null;
 
     // Trường hợp 1: Truyền vào tên địa điểm (String) -> Tìm trong JSON đã load

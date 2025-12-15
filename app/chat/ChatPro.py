@@ -30,7 +30,7 @@ class ChatPro:
                     reverse=True
                 )
 
-                return sorted_results[: 3]
+                return sorted_results[: 2]
             else:
                 print(f"⚠️ Search API Error: {response.status_code} - {response.text}")
                 return []            
