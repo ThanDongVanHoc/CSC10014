@@ -90,3 +90,46 @@ FORM_METADATA = [
         "pdf_filename": "na9_trc_renew.pdf",
     },
 ]
+
+FORMS_AI_DATA = [
+    {
+        "id": "criminal_record_req",
+        "description": "Dùng cho cá nhân yêu cầu cấp Phiếu Lý lịch tư pháp (Thường là cho mục đích xin Giấy phép lao động hoặc đăng ký kết hôn)."
+    },
+    {
+        "id": "dl_exchange_form",
+        "description": "Bắt buộc. Dùng để nộp tại Sở Giao thông Vận tải khi đổi bằng lái xe nước ngoài sang bằng Việt Nam."
+    },
+    {
+        "id": "hospital_discharge_paper",
+        "description": "Văn bản xác nhận việc bệnh nhân đã được xuất viện. Thường cần cho việc thanh toán bảo hiểm hoặc chứng minh tình trạng sức khỏe."
+    },
+    {
+        "id": "ls_hph_consular_legalization",
+        "description": "Dùng để nộp tại Bộ Ngoại giao (Cục Lãnh sự) khi hợp pháp hóa giấy tờ do nước ngoài cấp để sử dụng tại Việt Nam (VD: Giấy khai sinh, Giấy độc thân)."
+    },
+    {
+        "id": "marriage_reg_form",
+        "description": "Dùng cho thủ tục đăng ký kết hôn giữa công dân Việt Nam và người nước ngoài tại Sở Tư pháp."
+    },
+    {
+        "id": "na1_visa_app",
+        "description": "Dùng cho người nước ngoài đề nghị cấp thị thực (visa) tại cửa khẩu hoặc Đại sứ quán."
+    },
+    {
+        "id": "na3_relative_guarantee",
+        "description": "Do cá nhân (người Việt) bảo lãnh người thân nước ngoài nhập cảnh Việt Nam."
+    },
+    {
+        "id": "na5_visa_extension",
+        "description": "Bắt buộc. Dùng để xin gia hạn visa hoặc tạm trú tại Cục Quản lý Xuất nhập cảnh."
+    },
+    {
+        "id": "na8_trc_application",
+        "description": "Do người nước ngoài khai để xin cấp thẻ tạm trú lần đầu tại Việt Nam."
+    },
+    {
+        "id": "na9_trc_renew",
+        "description": "Dùng khi thẻ tạm trú cũ sắp hết hạn hoặc bị mất."
+    }
+]

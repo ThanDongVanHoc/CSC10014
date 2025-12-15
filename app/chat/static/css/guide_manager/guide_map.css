@@ -13,7 +13,7 @@
   flex-direction: column;
   gap: 10px;
   transition: all 0.3s ease;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
 
 .map-guide-card {
@@ -134,7 +134,7 @@
 }
 
 .smart-suggestion-btn.loading::after {
-  content: '';
+  content: "";
   display: inline-block;
   width: 14px;
   height: 14px;
@@ -145,7 +145,9 @@
 }
 
 @keyframes spin {
-  to { transform: rotate(360deg); }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 /* Suggestion Result Box */
@@ -261,8 +263,6 @@
   transform: translateX(2px);
 }
 
-
-
 /* Window Controls */
 .guide-window-controls {
   display: flex;
@@ -309,20 +309,20 @@
     width: 95%;
     max-width: none;
   }
-  
+
   .guide-step-title {
     font-size: 16px;
   }
-  
+
   .guide-step-desc {
     font-size: 13px;
   }
-  
+
   .action-btn {
     padding: 10px;
     font-size: 13px;
   }
-  
+
   .smart-suggestion-btn {
     font-size: 12px;
     padding: 8px;
@@ -344,4 +344,184 @@
     transform: translateY(100vh) rotate(720deg);
     opacity: 0;
   }
+}
+
+/* NEW: DOWNLOAD BUTTONS STYLE */
+
+.form-actions-container {
+  display: flex;
+  gap: 12px;
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px dashed rgba(0, 0, 0, 0.12); /* Đường kẻ mờ tinh tế hơn */
+  justify-content: flex-start;
+  flex-wrap: wrap;
+}
+
+/* --- Base Button Style (Giữ nguyên cấu trúc cũ) --- */
+.btn-doc-action {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 20px; /* Padding rộng hơn chút cho sang */
+  border-radius: 8px;
+  font-family: "Segoe UI Semibold", "Segoe UI", Tahoma, sans-serif; /* Font dày hơn chút */
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.4px;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  /* Viền trên sáng hơn viền dưới tạo hiệu ứng nổi 3D nhẹ */
+  border-top: 1px solid rgba(255, 255, 255, 0.25);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  border-left: none;
+  border-right: none;
+  color: white !important;
+  min-width: 135px;
+  position: relative;
+  overflow: hidden;
+  box-sizing: border-box; /* Đảm bảo padding không làm vỡ khung */
+}
+
+.btn-doc-action i {
+  margin-right: 10px;
+  font-size: 17px; /* Icon to hơn xíu */
+  transition: transform 0.2s;
+  filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.1)); /* Icon có bóng nhẹ */
+}
+
+/* Hover effects chung */
+.btn-doc-action:hover {
+  transform: translateY(-3px);
+}
+.btn-doc-action:hover i {
+  transform: scale(1.1) rotate(-5deg); /* Icon lắc nhẹ khi hover */
+}
+.btn-doc-action:active {
+  transform: translateY(-1px);
+  filter: brightness(95%); /* Tối đi chút khi bấm xuống */
+}
+
+/* --- 1. PDF BUTTON (POWERPOINT STYLE - REDDISH ORANGE) --- */
+.btn-pdf-preview {
+  /* Gradient cam đặc trưng của PowerPoint */
+  background: linear-gradient(135deg, #f35429 0%, #d63f1c 100%);
+  /* Bóng đổ màu cam */
+  box-shadow: 0 4px 15px rgba(214, 63, 28, 0.35),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+.btn-pdf-preview:hover {
+  /* Khi hover thì sáng hơn */
+  background: linear-gradient(135deg, #ff6a3d 0%, #e64a25 100%);
+  box-shadow: 0 8px 20px rgba(214, 63, 28, 0.45),
+    inset 0 1px 0 rgba(255, 255, 255, 0.3);
+}
+
+/* --- 2. DOCX BUTTON (WORD STYLE - DEEP BLUE) --- */
+.btn-docx-download {
+  /* Gradient xanh dương đậm đặc trưng của Word */
+  background: linear-gradient(135deg, #2b579a 0%, #1f407a 100%);
+  /* Bóng đổ màu xanh đậm */
+  box-shadow: 0 4px 15px rgba(31, 64, 122, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+.btn-docx-download:hover {
+  /* Khi hover thì sáng hơn */
+  background: linear-gradient(135deg, #3a6ab5 0%, #284d8f 100%);
+  box-shadow: 0 8px 20px rgba(31, 64, 122, 0.5),
+    inset 0 1px 0 rgba(255, 255, 255, 0.3);
+}
+
+/* --- Shine Effect (Giữ nguyên) --- */
+.btn-doc-action::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -120%;
+  width: 100%;
+  height: 100%;
+  /* Vệt sáng sắc nét hơn */
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.25),
+    transparent
+  );
+  transition: 0.6s ease-in-out;
+  transform: skewX(-20deg); /* Nghiêng vệt sáng */
+}
+
+.btn-doc-action:hover::after {
+  left: 120%;
+}
+
+/* NEW: GMAIL STYLE PREVIEW MODAL */
+.gmail-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.85); /* Đen mờ tối */
+  z-index: 99999; /* Luôn nổi trên cùng */
+  display: none; /* Mặc định ẩn */
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(2px);
+}
+
+.gmail-modal-header {
+  width: 90%;
+  max-width: 1000px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 0;
+  color: #fff;
+}
+
+.gmail-doc-title {
+  font-size: 16px;
+  font-weight: 500;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-family: "Segoe UI", sans-serif;
+}
+
+.btn-close-modal {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: white;
+  padding: 6px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  transition: background 0.2s;
+}
+
+.btn-close-modal:hover {
+  background: rgba(255, 255, 255, 0.25);
+}
+
+.gmail-modal-content {
+  width: 90%;
+  max-width: 1000px;
+  height: 85vh;
+  background: #333;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+}
+
+.pdf-frame {
+  width: 100%;
+  height: 100%;
+  border: none;
 }
