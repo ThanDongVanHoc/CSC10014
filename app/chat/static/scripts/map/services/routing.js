@@ -1,9 +1,9 @@
 import { state, updateState } from "../state.js";
 
 const OSRM_SERVERS = {
-  driving: "/chat/api/proxy_route/driving",
-  motor: "/chat/api/proxy_route/motor",
-  walking: "/chat/api/proxy_route/walking",
+  driving: "/chat/proxy_route/driving",
+  motor: "/chat/proxy_route/motor",
+  walking: "/chat/proxy_route/walking",
 };
 
 const MODE_MAP = {

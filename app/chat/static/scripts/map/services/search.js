@@ -50,7 +50,7 @@ export async function handleSearchResult(geocodeData, map) {
   // Kiểm tra xem địa điểm có phải là POI trong database không
   const poiCheck = await checkIsPoi(center.lat, center.lng, name);
 
-  if (poiCheck && poiCheck.isPPoi) {
+  if (poiCheck && poiCheck.isPoi) {
     // Nếu là POI -> Hiển thị Sidebar thông tin
     const dbData = poiCheck.poi;
     setPoiMarker([dbData.lat, dbData.lng], dbData.name, dbData);

@@ -5,48 +5,8 @@ from flask import redirect, render_template, send_from_directory, url_for, sessi
 from sqlalchemy import select, and_, or_
 from app.db import db
 import os
-from .utilis import get_user
+from .utilis import get_user, query_pois_db, check_poi_db
 import requests
-
-def query_pois_db(query_kw, south, north, east, west):
-    stmt = select(Place).where(
-    and_(
-        Place.query_kw == query_kw,
-        Place.lat.between(south, north), 
-        Place.lng.between(west, east)   
-        )
-    )
-    return db.session.scalars(stmt).all()
-
-def check_poi_db(max_lat, max_lng, min_lat, min_lng, name):
-    candidates = Place.query.filter(
-        Place.lat <= max_lat,
-        Place.lat >= min_lat,
-        Place.lng <= max_lng,
-        Place.lng >= min_lng
-    ).all() 
-
-    if not candidates:
-        return None
-    
-    input_lat = (max_lat + min_lat) / 2
-    input_lng = (max_lng + min_lng) / 2 
-    closest_place = None
-    min_dist = float('inf')
-
-    search_name_norm = name.lower()
-
-    for place in candidates:
-        dist = (place.lat - input_lat)**2 + (place.lng - input_lng)**2
-        if dist < 0.0000005:
-             return place
-        place_name_norm = place.name.lower()
-        if place_name_norm in search_name_norm or search_name_norm in place_name_norm:
-            return place
-        if dist < min_dist:
-            min_dist = dist
-            closest_place = place   
-    return closest_place
 
 @chat_bp.route('/getOnePlace')
 def getOnePlace():
@@ -115,14 +75,13 @@ def check_poi():
     
     poi_place = check_poi_db(max_lat, max_lng, min_lat, min_lng, name)
     if poi_place:
-        return jsonify({"isPPoi": True, "poi": poi_place.to_dict()}), 200
+        return jsonify({"isPoi": True, "poi": poi_place.to_dict()}), 200
     else:
-        return jsonify({"isPPoi": False}), 200
+        return jsonify({"isPoi": False}), 200
 
 @chat_bp.route('/pois/<path:filename>')
 def serve_poi_img(filename):
     BASE_DIR = os.path.join(os.getcwd(), 'Dataset/crawler')
-    print(f"DEBUG IMAGE PATH: {BASE_DIR} | Filename: {filename}")
     return send_from_directory(BASE_DIR, filename)
 
 @chat_bp.route('/log_search_history', methods=['POST'])
@@ -181,7 +140,7 @@ def get_search_history():
     history_list = [h.to_dict() for h in histories]
     return jsonify(history_list)
 
-@chat_bp.route('/api/proxy_route/<mode>/<coords>')
+@chat_bp.route('/proxy_route/<mode>/<coords>')
 def proxy_route(mode, coords):
     API_KEY = "eyJvcmciOiI1YjNjZTM1OTc4NTExMTAwMDFjZjYyNDgiLCJpZCI6ImJhYjE2MmYwZDdjMDRlZGM4MWNmNDMyOGY0YjYxZTE2IiwiaCI6Im11cm11cjY0In0="
     try:
@@ -204,7 +163,6 @@ def proxy_route(mode, coords):
         data = resp.json()
         
         if resp.status_code != 200:
-             print(f"⚠️ ORS Error: {data}")
              return jsonify(data), resp.status_code
 
         if 'features' in data and len(data['features']) > 0:
@@ -224,5 +182,16 @@ def proxy_route(mode, coords):
             return jsonify({"error": "No route found"}), 404
 
     except Exception as e:
-        print(f"❌ Exception: {e}")
         return jsonify({"error": str(e)}), 500
+    
+@chat_bp.route('/forms/<path:filename>')
+def serve_form_file(filename):
+    BASE_DIR = os.path.join(os.getcwd(), 'Dataset/crawler/forms')
+    ext = os.path.splitext(filename)[1].lower()
+    if ext == '.pdf':
+        return send_from_directory(BASE_DIR, filename, as_attachment=False)
+    elif ext == '.docx' :
+        return send_from_directory(BASE_DIR, filename, as_attachment=True)
+    else:
+        return jsonify({"error": "Unsupported file type"}), 400
+    

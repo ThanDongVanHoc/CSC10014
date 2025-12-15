@@ -1,9 +1,9 @@
 # app/chat/services.py
 
-from sqlalchemy import select
+from sqlalchemy import select, and_
 from sqlalchemy.sql import func
 from app.db import db
-from app.db.models import User, Conversation, Message
+from app.db.models import User, Conversation, Message, Place
 
 # USER SERVICES
 
@@ -160,3 +160,43 @@ def get_messages(email, conversation_id):
         } 
         for msg in messages
     ]
+
+def query_pois_db(query_kw, south, north, east, west):
+    stmt = select(Place).where(
+    and_(
+        Place.query_kw == query_kw,
+        Place.lat.between(south, north), 
+        Place.lng.between(west, east)   
+        )
+    )
+    return db.session.scalars(stmt).all()
+
+def check_poi_db(max_lat, max_lng, min_lat, min_lng, name):
+    candidates = Place.query.filter(
+        Place.lat <= max_lat,
+        Place.lat >= min_lat,
+        Place.lng <= max_lng,
+        Place.lng >= min_lng
+    ).all() 
+
+    if not candidates:
+        return None
+    
+    input_lat = (max_lat + min_lat) / 2
+    input_lng = (max_lng + min_lng) / 2 
+    closest_place = None
+    min_dist = float('inf')
+
+    search_name_norm = name.lower()
+
+    for place in candidates:
+        dist = (place.lat - input_lat)**2 + (place.lng - input_lng)**2
+        if dist < 0.0000005:
+             return place
+        place_name_norm = place.name.lower()
+        if place_name_norm in search_name_norm or search_name_norm in place_name_norm:
+            return place
+        if dist < min_dist:
+            min_dist = dist
+            closest_place = place   
+    return closest_place
