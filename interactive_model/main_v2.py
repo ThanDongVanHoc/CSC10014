@@ -1,6 +1,7 @@
 """
-Refactored main.py using OOP principles
-Clean, maintainable, and easy to extend
+Refactored main_v2.py - Version 2 with enhanced Query2
+Query1: Same as original (interactive information collection)
+Query2: Generate guides for ALL k locations (not just top 1)
 """
 from fastapi import FastAPI, HTTPException, Request
 from fastapi.responses import JSONResponse
@@ -13,11 +14,11 @@ from dotenv import load_dotenv
 from config import REQUIRED_FIELDS, GEMINI_MODEL_NAME, API_HOST, API_PORT
 from collector import InformationCollector
 from question_generator import QuestionGenerator
-from guide_generator import GuideGenerator
+from guide_generator_v2 import GuideGeneratorV2
 
 load_dotenv()
 
-app = FastAPI(title="Interactive Model API")
+app = FastAPI(title="Interactive Model API V2")
 
 # Initialize Gemini model
 genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
@@ -26,7 +27,7 @@ model = genai.GenerativeModel(GEMINI_MODEL_NAME)
 # Initialize components
 collector = InformationCollector(model)
 question_gen = QuestionGenerator(model)
-guide_gen = GuideGenerator(model)
+guide_gen_v2 = GuideGeneratorV2(model)
 
 
 # ============= Validation Functions =============
@@ -83,14 +84,12 @@ def validate_query2_request(data: Dict[str, Any]) -> Dict[str, Any]:
 @app.post("/query1")
 async def query_type_1(request: Request) -> JSONResponse:
     """
-    Query Type 1: Interactive information collection
+    Query Type 1: Interactive information collection (OPTIMIZED - SINGLE API CALL)
     
     Flow:
-    1. Extract info from query
-    2. Analyze status of each field
-    3. Filter partial info (0.5)
-    4. Check if complete
-    5. Generate questions (AI auto-detects user's language)
+    1. Single API call to: extract info, filter fields, analyze status, generate questions
+    2. Filter partial info (0.5)
+    3. Return result
     """
     # Parse and validate request
     data = await request.json()
@@ -100,30 +99,34 @@ async def query_type_1(request: Request) -> JSONResponse:
     collected_info = validated_data["collected_info"] or {}
     query = validated_data["query"]
     
-    # Extract information
-    collected_info = collector.extract_from_query(query, collected_info)
-    
-    # Filter relevant fields based on query (NEW FEATURE)
-    relevant_fields = collector.filter_relevant_fields(query, collected_info)
-    
-    # Analyze status (only for relevant fields)
-    info_status = collector.analyze_status(query, collected_info, relevant_fields)
+    # OPTIMIZED: Single API call for all operations
+    result = collector.process_query_optimized(query, collected_info)
     
     # Filter out partial info (0.5)
+    info_status = result.get("info_status", {})
+    extracted_info = result.get("collected_info", collected_info)
+    
     clean_status = {k: v for k, v in info_status.items() if v != 0.5}
     clean_collected_info = {
-        k: v for k, v in collected_info.items() 
+        k: v for k, v in extracted_info.items() 
         if info_status.get(k, 0) != 0.5
     }
     
-    # Check completion - FIXED LOGIC:
-    # Complete if core fields are present (minimum requirement)
+    # Check completion - STRICT LOGIC:
+    # ONLY complete if ALL 3 core fields have real data
     core_fields = ['problem_category', 'nationality', 'current_location']
-    has_core_data = all(clean_collected_info.get(f) for f in core_fields)
+    has_core_data = all(
+        clean_collected_info.get(f) and 
+        str(clean_collected_info.get(f)).strip() and 
+        clean_collected_info.get(f) != "null"
+        for f in core_fields
+    )
+    
+    # Must have all core data, no shortcuts
     is_complete = has_core_data
     
-    # Generate questions (max 5 important questions)
-    questions = [] if is_complete else question_gen.generate(clean_status, clean_collected_info, query)
+    # Get questions from result (already generated in single call)
+    questions = [] if is_complete else result.get("questions", [])
     
     return JSONResponse(content={
         "questions": questions,
@@ -136,12 +139,12 @@ async def query_type_1(request: Request) -> JSONResponse:
 @app.post("/query2")
 async def query_type_2(request: Request) -> JSONResponse:
     """
-    Query Type 2: Generate guidance from Model A results
+    Query Type 2 V2: Generate guidance for ALL k locations (NOT just top 1)
     
     Flow:
-    1. Get top result
-    2. Generate comprehensive guide (AI auto-detects user's language from query)
-    3. Return structured guide
+    1. Get all k results
+    2. Generate comprehensive guide for EACH location (AI auto-detects user's language from query)
+    3. Return structured guides for all locations
     """
     # Parse and validate request
     data = await request.json()
@@ -151,18 +154,16 @@ async def query_type_2(request: Request) -> JSONResponse:
     if not validated_data["top_k_results"]:
         raise HTTPException(status_code=400, detail="No results provided from Model A")
     
-    top_result = validated_data["top_k_results"][0]
-    
-    # Generate guide (AI will detect language from original_query)
-    guide = guide_gen.generate(
-        top_result=top_result,
+    # Generate guides for ALL k locations (AI will detect language from original_query)
+    guides = guide_gen_v2.generate_for_all_locations(
+        top_k_results=validated_data["top_k_results"],
         original_query=validated_data["original_query"],
         user_info=validated_data["collected_info"]
     )
     
     return JSONResponse(content={
-        "guide": guide,
-        "top_result": top_result
+        "total_locations": len(guides),
+        "guides": guides
     })
 
 
@@ -170,11 +171,15 @@ async def query_type_2(request: Request) -> JSONResponse:
 async def root():
     """API information"""
     return {
-        "message": "Interactive Model API",
-        "version": "2.0 (OOP Refactored)",
+        "message": "Interactive Model API V2",
+        "version": "2.0 (Enhanced Query2 - Returns guides for ALL k locations)",
+        "changes": {
+            "query1": "Same as V1 - Interactive information collection",
+            "query2": "NEW - Returns guides for ALL k locations instead of just top 1"
+        },
         "endpoints": {
             "/query1": "Interactive information collection (Query Type 1)",
-            "/query2": "Generate guidance from Model A results (Query Type 2)",
+            "/query2": "Generate guidance for ALL locations from Model A results (Query Type 2 V2)",
             "/fields": "Get required fields configuration"
         }
     }

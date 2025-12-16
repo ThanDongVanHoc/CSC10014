@@ -18,11 +18,6 @@ REQUIRED_FIELDS = {
         "description": "Địa chỉ/Khu vực hiện tại (Bắt buộc để tính khoảng cách Haversine).",
         "examples": ["District 1", "Thao Dien Ward", "123 Nguyen Hue"]
     },
-    "language_spoken": {
-        "type": "str",
-        "description": "Ngôn ngữ người dùng có thể giao tiếp (Để tìm nơi có phiên dịch/staff phù hợp).",
-        "examples": ["English only", "Vietnamese & English", "Korean"]
-    },
     "problem_category": {
         "type": "str",
         "description": "Phân loại vấn đề chính để chọn database tìm kiếm.",
@@ -46,6 +41,11 @@ REQUIRED_FIELDS = {
         "type": "list",
         "description": "Danh sách các tài sản bị mất.",
         "examples": ["Passport", "Wallet", "Phone", "Laptop"]
+    },
+    "document_type": {
+        "type": "str",
+        "description": "Loại giấy tờ chính cần xử lý/làm việc (Ngoài Visa).",
+        "examples": ["Passport", "Work Permit", "Driving License", "TRC (Residence Card)", "Birth Certificate"]
     },
     "visa_type": {
         "type": "str",
@@ -133,16 +133,12 @@ REQUIRED_FIELDS = {
         "type": "str",
         "description": "Ràng buộc về thời gian xử lý.",
         "examples": ["Urgent (Now)", "Tomorrow", "Next week"]
-    },
-    "full_name": {
-         "type": "str",
-         "description": "Họ tên (Chỉ hỏi khi thực sự cần điền form, ưu tiên ẩn danh).",
-         "examples": ["John Doe", "Nguyễn Văn A"]
     }
 }
 
 # Model configuration
-GEMINI_MODEL_NAME = 'gemini-2.5-flash'
+# GEMINI_MODEL_NAME = 'gemini-flash-lite-latest'  # Free tier: 20 requests/day - TOO LIMITED!
+GEMINI_MODEL_NAME = 'gemini-2.5-flash-lite'  # Free tier: 1500 requests/day (75x more!)
 
 # API settings
 API_HOST = "0.0.0.0"
