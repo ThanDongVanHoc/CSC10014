@@ -139,8 +139,8 @@ export function pinLocationProK(poi){
     latlng: latlng,
     name: name,
     image: `/chat/pois/${rawImg}`,
-    intro: poi.intro || "Địa điểm",
-    location: poi.location || "Chưa có địa chỉ",
+    intro: poi.intro || "Place",
+    location: poi.location || "No address available",
     phone: poi.phone_number || "---",
     website: poi.website || "#",
   };
@@ -180,8 +180,8 @@ function pinLocationPro(poi){
     latlng: latlng,
     name: name,
     image: `/chat/pois/${rawImg}`,
-    intro: poi.intro || "Địa điểm",
-    location: poi.location || "Chưa có địa chỉ",
+    intro: poi.intro || "Place",
+    location: poi.location || "No address available",
     phone: poi.phone_number || "---",
     website: poi.website || "#",
   };

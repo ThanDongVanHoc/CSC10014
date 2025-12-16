@@ -71,7 +71,7 @@ def chat():
     if not is_complete:
         questions = analysis_result.get("questions", [])
         questions = ''.join(questions)
-        bot_reply = questions if questions else "Tôi cần thêm thông tin."
+        bot_reply = questions if questions else "I need more information to assist you."
     
         print(current_info)
         return jsonify({
@@ -149,13 +149,13 @@ def chat_issue():
     print(step_stuck)
 
     if not scenario_title or not step_stuck:
-        return jsonify({"text": "Lỗi: Thiếu thông tin kịch bản/bước để tra cứu.", 
+        return jsonify({"text": "Error: Missing scenario or step information for lookup.", 
                         "newLat": None, "newLng": None})
     
         
 
     result = {
-        "text": "Tôi hiểu vấn đề này. Hãy thử hỏi nhân viên bảo vệ hoặc bàn hướng dẫn gần đó.",
+        "text": "I understand the issue. Please try asking a nearby security guard or information desk.",
         "newLat": None,
         "newLng": None
     }
@@ -193,14 +193,14 @@ def chat_issue():
         
         # 4. Xử lý lỗi HTTP và Phản hồi Bị chặn
         if response.status_code != 200:
-            error_msg = data.get("error", {}).get("message", "Lỗi API không rõ.")
-            result["text"] = f"Lỗi API Gemini (HTTP {response.status_code}): {error_msg}"
+            error_msg = data.get("error", {}).get("message", "Unknown API error.")
+            result["text"] = f"Gemini API error (HTTP {response.status_code}): {error_msg}"
             return jsonify(result)
 
         candidates = data.get("candidates")
         if not candidates:
             reason = data.get("promptFeedback", {}).get("blockReason", "UNKNOWN")
-            result["text"] = f"Lỗi: Phản hồi bị chặn do chính sách an toàn ({reason})."
+            result["text"] = f"Error: Response blocked due to safety policy ({reason})."
             return jsonify(result)
         
         # 5. Trích xuất văn bản phản hồi
@@ -211,14 +211,14 @@ def chat_issue():
             # Loại bỏ các ký tự markdown thừa (**, #)
             result["text"] = gemini_text.replace('**', '').replace('*', '').replace('#', '').strip()
         else:
-            result["text"] = "Lỗi: Gemini trả về phản hồi rỗng."
+            result["text"] = "Error: Gemini returned an empty response."
 
     except requests.exceptions.RequestException as e:
-        # Lỗi mạng
-        result["text"] = f"Lỗi kết nối: Không thể liên hệ với máy chủ Gemini. ({e})"
+        # Network error
+        result["text"] = f"Connection error: Unable to reach Gemini server. ({e})"
     except Exception as e:
-        # Lỗi xử lý khác (ví dụ: KeyError, ValueError)
-        result["text"] = f"Lỗi xử lý phản hồi: {e}"
+        # Other processing errors (e.g., KeyError, ValueError)
+        result["text"] = f"Response processing error: {e}"
 
     # 6. Trả về kết quả cuối cùng (có thể là giải pháp AI hoặc thông báo lỗi)
     return jsonify(result)
@@ -247,7 +247,7 @@ def chat_prepare():
     # 3. Kiểm tra đầu vào
     if not user_msg:
         session["history"].pop() # Xóa tin nhắn rỗng khỏi lịch sử
-        return jsonify({"reply": "Bạn chưa nhập gì cả.", "locations": []})
+        return jsonify({"reply": "You haven't entered anything.", "locations": []})
     
 
     # kiểm tra user đăng nhập chưa
@@ -270,7 +270,7 @@ def chat_prepare():
     history_parts = [{"role": h["role"], "parts": [{"text": h["content"]}]} for h in history]
 
     if not API_KEY:
-        return jsonify({"reply": "Lỗi cấu hình: Không tìm thấy GEMINI_API_KEY.", "locations": []})
+        return jsonify({"reply": "Configuration error: GEMINI_API_KEY not found.", "locations": []})
 
     # 4. Chuẩn bị gọi Gemini
     base_url = f"https://generativelanguage.googleapis.com/v1beta/models/{BASE_MODEL_NAME}:generateContent"
@@ -293,24 +293,23 @@ def chat_prepare():
         response = requests.post(base_url, json=payload, params={"key": API_KEY})
         data = response.json()
         if response.status_code != 200:
-            error_msg = data.get("error", {}).get("message", "Lỗi API không rõ.")
-            return jsonify({"reply": f"Lỗi API Gemini: {error_msg}"})
+            error_msg = data.get("error", {}).get("message", "Unknown API error.")
+            return jsonify({"reply": f"Gemini API error: {error_msg}"})
 
         candidates = data.get("candidates")
         if not candidates:
             reason = data.get("promptFeedback", {}).get("blockReason", "UNKNOWN")
-            return jsonify({"reply": f"Lỗi: Phản hồi bị chặn do chính sách an toàn ({reason})."})
+            return jsonify({"reply": f"Error: Response blocked due to safety policy ({reason})."})
         
         gemini_json_string = candidates[0].get("content", {}).get("parts", [{}])[0].get("text")
         if not gemini_json_string:
-            return jsonify({"reply": "Lỗi: Gemini trả về phản hồi rỗng."})
-
+            return jsonify({"reply": "Error: Gemini returned an empty response."})
         # 6. Xử lý JSON từ Gemini
         try:
             parsed_data = json.loads(gemini_json_string)
             
             # LƯU Ý: Lưu phản hồi SẠCH ngay lập tức
-            gemini_reply_clean = parsed_data.get("reply", "Lỗi: Không tìm thấy 'reply' trong JSON.")
+            gemini_reply_clean = parsed_data.get("reply", "Error: 'reply' not found in JSON.")
             gemini_reply_to_user = gemini_reply_clean # Mặc định, gửi phản hồi sạch
             
             action = parsed_data.get("action", "none")
@@ -332,27 +331,27 @@ def chat_prepare():
                         # (Đã xóa dòng thêm status, client JS sẽ tự xử lý)
                     else:
                         # THAY ĐỔI: Chỉ thêm lỗi vào biến gửi cho user
-                        gemini_reply_to_user += f"\n (Lỗi khi gọi model tìm kiếm: {model_response.status_code})"
+                        gemini_reply_to_user += f"\n (Error calling search model: {model_response.status_code})"
 
                 except requests.exceptions.RequestException as e:
-                    gemini_reply_to_user += f"\n (Lỗi kết nối đến model tìm kiếm: {e})"
+                    gemini_reply_to_user += f"\n (Connection error to search model: {e})"
                 except Exception as e:
-                    gemini_reply_to_user += f"\n (Lỗi xử lý model: {e})"
+                    gemini_reply_to_user += f"\n (Error processing search model: {e})"
 
         except json.JSONDecodeError:
-            gemini_reply_clean = "Lỗi: Không thể phân tích cú pháp JSON từ Gemini."
+            gemini_reply_clean = "Error: Unable to parse JSON from Gemini."
             gemini_reply_to_user = gemini_reply_clean
-            print(f"Lỗi JSONDecodeError. Phản hồi thô từ Gemini: {gemini_json_string}")
+            print(f"JSONDecodeError. Raw response from Gemini: {gemini_json_string}")
         except Exception as e:
-            gemini_reply_clean = f"Lỗi xử lý JSON: {e}"
+            gemini_reply_clean = f"JSON processing error: {e}"
             gemini_reply_to_user = gemini_reply_clean
 
 
     except requests.exceptions.RequestException as e:
-        gemini_reply_clean = f"Lỗi kết nối: Không thể liên hệ với máy chủ Gemini. ({e})"
+        gemini_reply_clean = f"Connection error: Unable to reach Gemini server. ({e})"
         gemini_reply_to_user = gemini_reply_clean
     except Exception as e:
-        gemini_reply_clean = f"Lỗi xử lý phản hồi: {e}"
+        gemini_reply_clean = f"Response processing error: {e}"
         gemini_reply_to_user = gemini_reply_clean
     
     

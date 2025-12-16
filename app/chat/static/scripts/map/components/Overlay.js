@@ -196,7 +196,6 @@ export async function handleScreenEvent() {
       mapEl.classList.remove("fullscreen");
       document.querySelector(".app").prepend(chatContainer);
       mapChatOverlay.classList.add("hidden");
-      mapChatOverlay.classList.add("hidden");
       mapChatOverlay.classList.remove("pinned");
       invalidateMapSize();
       toggleChatEvents(false);

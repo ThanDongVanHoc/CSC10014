@@ -13,7 +13,7 @@ class ChatPro:
             return response.json()
         except Exception as e:
             print(f"❌ Error analyze_query: {e}")
-            return {"is_complete": False, "questions": ["Lỗi kết nối Server phân tích."], "collected_info": current_info}
+            return {"is_complete": False, "questions": ["Analysis server connection error."], "collected_info": current_info}
 
     def search_locations(self, search_query, user_lat, user_lng):
         try:

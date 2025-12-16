@@ -30,7 +30,7 @@ export async function startGuideFlow(locationNameOrData) {
     if (found) {
       scenarioData = await _normalizeGuideData(found);
     } else {
-      console.warn(`⚠️ Không tìm thấy hướng dẫn cho: ${locationNameOrData}`);
+      console.warn(`⚠️ No guide found for: ${locationNameOrData}`);
     }
   }
   // Trường hợp 2: Truyền vào Object dữ liệu trực tiếp (từ Backend API trả về)
@@ -55,7 +55,7 @@ export async function startGuideFlow(locationNameOrData) {
     if (window.appendMessageToUI) {
       window.appendMessageToUI(
         "model",
-        `Xin lỗi, tôi chưa có dữ liệu hướng dẫn chi tiết cho địa điểm này.`
+        `Sorry, I don't have detailed guide data for this location yet.`
       );
     }
   }
