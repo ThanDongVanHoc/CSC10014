@@ -113,8 +113,18 @@ async def query_type_1(request: Request) -> JSONResponse:
         if info_status.get(k, 0) != 0.5
     }
     
-    # Check completion (only check relevant fields)
-    is_complete = all(status == 1 for status in clean_status.values()) if clean_status else False
+    # Check completion - STRICT LOGIC:
+    # ONLY complete if ALL 3 core fields have real data
+    core_fields = ['problem_category', 'nationality', 'current_location']
+    has_core_data = all(
+        clean_collected_info.get(f) and 
+        str(clean_collected_info.get(f)).strip() and 
+        clean_collected_info.get(f) != "null"
+        for f in core_fields
+    )
+    
+    # Must have all core data, no shortcuts
+    is_complete = has_core_data
     
     # Get questions from result (already generated in single call)
     questions = [] if is_complete else result.get("questions", [])

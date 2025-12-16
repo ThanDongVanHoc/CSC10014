@@ -1,15 +1,14 @@
 """
-Information Collector - Handles information extraction and analysis
+Information Collector - Optimized for Precision and Stability
 """
 import json
 import time
-import re
-from typing import Dict, Any, List, Optional
+from typing import Dict, Any, List
 import google.generativeai as genai
 from config import REQUIRED_FIELDS
 
 class InformationCollector:
-    """Manages information collection from user queries"""
+    """Manages information collection from user queries with Strict Logic"""
     
     def __init__(self, model: genai.GenerativeModel):
         self.model = model
@@ -17,162 +16,174 @@ class InformationCollector:
     
     def process_query_optimized(self, query: str, collected_info: Dict[str, Any]) -> Dict[str, Any]:
         """
-        VERSION FINAL: Strict Logic Enforcement & Token Minimization
+        VERSION 2.0: Chain of Thought & Deterministic Extraction
         """
         
-        # [LAYER 1] Lọc dữ liệu đầu vào - TIẾT KIỆM TOKEN & GIẢM NHIỄU
-        # Chỉ gửi cho AI những field ĐÃ CÓ dữ liệu. Bỏ qua toàn bộ null.
-        existing_data = {k: v for k, v in collected_info.items() if v and v != "null"}
-        current_data_str = json.dumps(existing_data, ensure_ascii=False, separators=(',', ':'))
+        # [PRE-PROCESSING] Chỉ giữ lại data đã tồn tại (không gửi null để tiết kiệm token)
+        existing_data = {k: v for k, v in collected_info.items() if v and v not in ["null", "None", ""]}
+        current_data_str = json.dumps(existing_data, ensure_ascii=False)
 
-        # Định nghĩa schema ngắn gọn
-        fields_short = "\n".join([
-            f"{field}: {REQUIRED_FIELDS[field].get('description', '')}"
-            for field in self.required_fields
-        ])
+        # Định nghĩa Schema rút gọn
+        fields_desc = "\n".join([f"- {k}: {v.get('description', '')}" for k, v in REQUIRED_FIELDS.items()])
 
-        # [LAYER 2] Prompt chặt chẽ hơn về 'Relevance'
-        prompt = f"""Role: Legal Assistant. Return JSON.
+        # [PROMPT ENGINEERING] Chain of Thought Approach
+        prompt = f"""You are a strict Legal Data Extractor. Your job is to extract specific fields from user input into JSON format.
 
-SCHEMA:
-{fields_short}
+### CONTEXT DATA (Existing Information):
+{current_data_str}
 
-DATA:
-- Known: {current_data_str}
-- Input: "{query}"
+### INPUT QUERY:
+"{query}"
 
-TASKS:
-1. MERGE: Extract info from Input (English val).
-2. PROBLEM: Identify 'problem_category'.
-3. FILTER: Select ONLY fields relevant to this problem.
-   - E.g: If 'Notarization' -> Ignore 'threat_level', 'vehicle_involved'.
-4. STATUS: 1=Has Data, 0=Missing.
-   - CRITICAL: If field is NOT in "Known" and NOT in "Input" -> Status MUST be 0.
-5. ASK: 3 conversational questions for Missing Relevant fields (Match Input Language).
+### REQUIRED FIELDS SCHEMA:
+{fields_desc}
 
-OUTPUT: {{"collected_info": {{...}}, "info_status": {{...}}, "questions": [...]}}"""
+### INSTRUCTIONS:
+1. **Analyze Language**: Detect the language of the INPUT QUERY (e.g., Vietnamese, English, German).
+2. **Extract Data**: Extract values for the fields in the SCHEMA from the INPUT. 
+   - Translate extracted values to English (standardized).
+   - If a value is NOT mentioned, do NOT invent it.
+   - **problem_category**: Infer strictly from keywords (e.g., "mất ví" -> "Lost Property", "tai nạn" -> "Traffic Accident").
+3. **Check Status**:
+   - 1: Data exists (either in CONTEXT or newly extracted).
+   - 0: Data is completely missing.
+4. **Determine Sufficiency**: TRUE only if 'nationality', 'current_location', and 'problem_category' ALL have valid values.
+5. **Generate Questions**: If 'is_sufficient' is false, generate max 4 follow-up questions in the SAME LANGUAGE as the INPUT QUERY to get missing core fields.
 
-        max_retries = 3
-        generation_config = genai.types.GenerationConfig(temperature=0.3)
+### OUTPUT FORMAT (JSON ONLY):
+{{
+    "_thought": "Brief reasoning about what was extracted and why.",
+    "collected_info": {{ "field_name": "extracted_value_or_existing_value", ... }},
+    "info_status": {{ "field_name": 1 or 0, ... }},
+    "is_sufficient": boolean,
+    "questions": ["Question 1", "Question 2"]
+}}
+"""
 
+        # Cấu hình sinh nội dung: Temperature = 0 để tối đa hóa sự chính xác
+        generation_config = genai.types.GenerationConfig(
+            temperature=0.2, 
+        )
+
+        max_retries = 2
         for attempt in range(max_retries):
             try:
                 response = self.model.generate_content(prompt, generation_config=generation_config)
                 
-                # Clean response string
-                text = response.text.strip().replace("```json", "").replace("```", "")
-                if text.startswith("json"): text = text[4:].strip()
+                # Clean and Parse JSON
+                text = response.text.strip()
+                # Xử lý trường hợp model bọc code block
+                if text.startswith("```"):
+                    text = text.split("```")[1]
+                    if text.startswith("json"): text = text[4:]
                 
                 result = json.loads(text)
                 
-                # --- [LAYER 3] LOGIC HẬU KIỂM (QUAN TRỌNG) ---
-                
-                # 1. Merge Data an toàn
-                new_info = result.get("collected_info", {})
-                final_info = collected_info.copy()
-                for k, v in new_info.items():
-                    if v and v not in ["null", "None"]:
-                        final_info[k] = v
-                
-                # 2. Sửa lỗi Hallucination của AI (Status 1 nhưng Data Null)
-                raw_status = result.get("info_status", {})
-                clean_status = {}
-                
-                # Chỉ lấy status của những field liên quan mà AI gợi ý
-                for field, status in raw_status.items():
-                    # Kiểm tra thực tế trong dữ liệu
-                    has_data = bool(final_info.get(field))
-                    
-                    if has_data:
-                        clean_status[field] = 1 # Force 1 nếu đã có data
-                    else:
-                        # Nếu AI bảo 1 mà data rỗng -> Force 0
-                        clean_status[field] = 0 if status == 1 else status
-
-                # 3. Đảm bảo các field quan trọng luôn hiện diện
-                core = ['problem_category', 'nationality', 'current_location']
-                for f in core:
-                    if final_info.get(f):
-                        clean_status[f] = 1
-                    elif f not in clean_status:
-                        clean_status[f] = 0
-
-                # Cập nhật lại result
-                result["collected_info"] = final_info
-                result["info_status"] = clean_status
-                
-                return result
+                # --- [POST-PROCESSING] LOGIC KIỂM SOÁT ---
+                return self._finalize_result(result, collected_info)
 
             except Exception as e:
-                print(f"Error: {e}")
+                print(f"[Attempt {attempt+1}] Error: {e}")
                 time.sleep(1)
 
+        # Fallback nếu AI thất bại hoàn toàn
         return self._get_fallback_response(query, collected_info)
 
-    def _optimize_status_display(self, raw_status: Dict, relevant_fields: List) -> Dict:
-        """Helper to limit info_status to essential fields for display"""
-        priority_status = {}
+    def _finalize_result(self, ai_result: Dict, old_info: Dict) -> Dict:
+        """
+        Hợp nhất dữ liệu AI với dữ liệu cũ một cách an toàn.
+        """
+        new_info = ai_result.get("collected_info", {})
+        final_info = old_info.copy()
         
-        # 1. Add Core Fields
-        core_fields = ['nationality', 'current_location', 'problem_category']
-        for f in core_fields:
-            if f in raw_status:
-                priority_status[f] = raw_status[f]
-            elif f in relevant_fields:
-                priority_status[f] = 0 
+        # 1. Merge Data: Chỉ update nếu AI tìm thấy giá trị mới hợp lệ
+        for k, v in new_info.items():
+            if v and v not in ["null", "None", "", "unknown"]:
+                final_info[k] = v
         
-        # 2. Add Missing Fields (Status 0)
-        for f, s in raw_status.items():
-            if len(priority_status) >= 10: break
-            if s == 0 and f not in priority_status:
-                priority_status[f] = s
+        # 2. Re-evaluate Status & Sufficiency (Python Logic > AI Logic)
+        core_fields = ['problem_category', 'nationality', 'current_location']
+        clean_status = {}
+        
+        # Tính toán status dựa trên dữ liệu thực tế sau khi merge
+        all_fields = set(list(final_info.keys()) + list(REQUIRED_FIELDS.keys()))
+        for field in all_fields:
+            if field in final_info and final_info[field]:
+                clean_status[field] = 1
+            else:
+                clean_status[field] = 0
                 
-        # 3. Add Present Fields (Status 1)
-        for f, s in raw_status.items():
-            if len(priority_status) >= 10: break
-            if s == 1 and f not in priority_status:
-                priority_status[f] = s
-                
-        return priority_status
+        # Kiểm tra điều kiện đủ (Hard Check)
+        has_all_core = all(final_info.get(f) for f in core_fields)
+        
+        # Cập nhật lại kết quả
+        ai_result["collected_info"] = final_info
+        ai_result["info_status"] = clean_status
+        ai_result["is_sufficient"] = has_all_core
+        
+        # Nếu đã đủ thông tin, xóa câu hỏi thừa
+        if has_all_core:
+            ai_result["questions"] = []
+            
+        return ai_result
 
     def _get_fallback_response(self, query: str, collected_info: Dict) -> Dict:
-        """Fallback when API fails completely"""
-        print("[ERROR] Using fallback response")
+        """Fallback thông minh: Dịch tên trường sang tiếng Việt/Anh tự nhiên"""
+        print("[System] Using fallback logic")
+        
+        # 1. Từ điển ánh xạ tên trường kỹ thuật sang ngôn ngữ tự nhiên
+        field_labels = {
+            'nationality': {
+                'vi': 'quốc tịch', 
+                'en': 'nationality'
+            },
+            'current_location': {
+                'vi': 'nơi ở hiện tại', 
+                'en': 'current location'
+            },
+            'problem_category': {
+                'vi': 'vấn đề bạn đang gặp', 
+                'en': 'the issue you are facing'
+            }
+        }
+
+        # 2. Logic đoán ngôn ngữ (Mở rộng thêm từ khóa không dấu)
+        # Check dấu tiếng việt HOẶC các từ phổ biến: tôi, là, ở, bị...
+        vi_indicators = ['à','á','ạ','ả','ã','â','ầ','ấ','ậ','ẩ','ẫ','ă','ằ','ắ','ặ','ẳ','ẵ','è','é','ẹ','ẻ','ẽ','ê','ề','ế','ệ','ể','ễ','ì','í','ị','ỉ','ĩ','ò','ó','ọ','ỏ','õ','ô','ồ','ố','ộ','ổ','ỗ','ơ','ờ','ớ','ợ','ở','ỡ','ù','ú','ụ','ủ','ũ','ư','ừ','ứ','ự','ử','ữ','ỳ','ý','ỵ','ỷ','ỹ','đ', 'tôi', 'mình', 'là', 'đang', 'bị', 'cần']
+        is_vietnamese = any(w in query.lower() for w in vi_indicators)
+        
         core_fields = ['nationality', 'current_location', 'problem_category']
-        
-        # Improved Language Detection for Fallback
-        vietnamese_chars = 'àáạảãâầấậẩẫăằắặẳẵèéẹẻẽêềếệểễìíịỉĩòóọỏõôồốộổỗơờớợởỡùúụủũưừứựửữỳýỵỷỹđ'
-        is_vietnamese = any(c in query.lower() for c in vietnamese_chars) or " là " in query or " tôi " in query
-        
-        if is_vietnamese:
-            base_questions = {
-                'nationality': "Quốc tịch của bạn là gì?",
-                'current_location': "Bạn đang sinh sống ở khu vực nào?",
-                'problem_category': "Vấn đề pháp lý chính bạn đang gặp phải là gì?"
-            }
-            default_q = "Vui lòng cung cấp thêm thông tin chi tiết."
-        else:
-            base_questions = {
-                'nationality': "What is your nationality?",
-                'current_location': "Where are you currently located?",
-                'problem_category': "What is the specific legal issue?"
-            }
-            default_q = "Please provide more details."
-            
-        # Determine missing info
-        status = {}
         questions = []
         
-        for field in core_fields:
-            if collected_info.get(field):
-                status[field] = 1
-            else:
-                status[field] = 0
-                questions.append(base_questions.get(field, default_q))
+        # 3. Xác định trường thiếu
+        missing_fields = [f for f in core_fields if not collected_info.get(f)]
         
+        if missing_fields:
+            # Chuyển tên trường (ví dụ: 'nationality') sang tên hiển thị (ví dụ: 'quốc tịch')
+            lang_key = 'vi' if is_vietnamese else 'en'
+            readable_missing = [field_labels.get(f, {}).get(lang_key, f) for f in missing_fields]
+            
+            # Tạo câu hỏi tự nhiên hơn
+            if is_vietnamese:
+                q_str = ", ".join(readable_missing)
+                questions = [f"Để hỗ trợ tốt nhất, mình cần biết thêm về: {q_str}."]
+            else:
+                q_str = ", ".join(readable_missing)
+                questions = [f"To assist you better, I need to know your: {q_str}."]
+
+        # 4. Tạo info_status đầy đủ (bao gồm cả trường thiếu = 0)
+        full_status = {}
+        # Duyệt qua danh sách core_fields để đảm bảo báo cáo đủ status 0 cho trường thiếu
+        all_relevant = set(list(collected_info.keys()) + core_fields)
+        for field in all_relevant:
+            if collected_info.get(field) and collected_info[field] not in ["null", "None", ""]:
+                full_status[field] = 1
+            else:
+                full_status[field] = 0
+
         return {
             "collected_info": collected_info,
-            "relevant_fields": core_fields,
-            "info_status": status,
+            "info_status": full_status,
+            "is_sufficient": len(missing_fields) == 0,
             "questions": questions
         }
