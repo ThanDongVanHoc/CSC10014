@@ -116,8 +116,11 @@ async def query_type_1(request: Request) -> JSONResponse:
         if info_status.get(k, 0) != 0.5
     }
     
-    # Check completion (only check relevant fields)
-    is_complete = all(status == 1 for status in clean_status.values())
+    # Check completion - FIXED LOGIC:
+    # Complete if core fields are present (minimum requirement)
+    core_fields = ['problem_category', 'nationality', 'current_location']
+    has_core_data = all(clean_collected_info.get(f) for f in core_fields)
+    is_complete = has_core_data
     
     # Generate questions (max 5 important questions)
     questions = [] if is_complete else question_gen.generate(clean_status, clean_collected_info, query)
