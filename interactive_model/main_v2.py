@@ -113,8 +113,8 @@ async def query_type_1(request: Request) -> JSONResponse:
     }
     
     # Check completion - STRICT LOGIC:
-    # ONLY complete if ALL 3 core fields have real data
-    core_fields = ['problem_category', 'nationality', 'current_location']
+    # ONLY complete if ALL core fields have real data
+    core_fields = ['problem_category', 'nationality']
     has_core_data = all(
         clean_collected_info.get(f) and 
         str(clean_collected_info.get(f)).strip() and 

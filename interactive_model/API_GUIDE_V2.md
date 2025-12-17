@@ -192,7 +192,6 @@ _(Tên các phần trong guide sẽ tự động dịch sang ngôn ngữ của n
   "collected_info": {
     "nationality": "Indonesian",
     "problem_category": "Visa_Issue",
-    "current_location": "District 1",
     "visa_type": "Tourist",
     "visa_expiry_status": "Expires in 3 days"
   }

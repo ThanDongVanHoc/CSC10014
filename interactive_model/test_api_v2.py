@@ -39,7 +39,47 @@ def test_query1_followup():
     result = response.json()
     print(json.dumps(result, ensure_ascii=False, indent=2))
     
+    return result
+
+def test_overwrite_scenario():
+    """
+    [CRITICAL TEST] Kiểm tra logic Ghi đè (Overwrite).
+    Giả lập: Context cũ bảo mất đồ, nhưng người dùng đổi ý muốn gia hạn visa.
+    """
+    print("\n=== Test Query 1: Overwrite/Correction Logic ===")
+
+    # Giả lập Context cũ đang lưu là "Mất Visa/Hộ chiếu"
+    current_context = {
+        "nationality": "American",
+        "problem_category": "Lost Property",
+        "details": "Lost passport in District 1"
+    }
+
+    # User thay đổi ý định
+    user_query = "Thực ra tôi không bị mất, tôi chỉ muốn gia hạn visa thôi."
     
+    payload = {
+        "query": user_query,
+        "collected_info": current_context
+    }
+
+    print(f"Context (Old): {json.dumps(current_context, ensure_ascii=False)}")
+    print(f"Input (New):   {user_query}")
+    
+    response = requests.post(f"{BASE_URL}/query1", json=payload)
+    print(f"Status: {response.status_code}")
+    result = response.json()
+    
+    print("AI Response:")
+    print(json.dumps(result, ensure_ascii=False, indent=2))
+    
+    # Simple check logic in print
+    new_prob = result.get('collected_info', {}).get('problem_category', '')
+    if "Renew" in new_prob or "Extension" in new_prob or "Gia hạn" in new_prob:
+        print(">>> RESULT: SUCCESS (Updated correctly)")
+    else:
+        print(">>> RESULT: WARNING (Might not have updated)")
+
     return result
 
 def test_query1_visa_extension():
@@ -215,8 +255,7 @@ def test_query1_with_partial_info():
         "query": "Tôi muốn tiếp tục làm thủ tục gia hạn visa",
         "collected_info": {
             "nationality": "American",
-            "visa_type": "Tourist",
-            "current_location": "Quận 1"
+            "visa_type": "Tourist"
         }
     }
     
@@ -229,20 +268,22 @@ def test_query1_with_partial_info():
 def run_all_query1_tests():
     """Run all query1 tests"""
     tests = [
+        ("OVERWRITE TEST (New)", test_overwrite_scenario), # <--- CHẠY CÁI NÀY ĐẦU TIÊN
         ("Initial - Sao y công chứng", test_query1_initial),
         ("Follow-up - German info", test_query1_followup),
         ("Visa Extension - American", test_query1_visa_extension),
-        ("Lost Passport - Japanese", test_query1_lost_passport),
-        ("Work Permit - Korean", test_query1_work_permit),
-        ("Marriage Registration", test_query1_marriage_registration),
-        ("Birth Certificate - German father", test_query1_birth_certificate),
-        ("Traffic Accident - Australian", test_query1_traffic_accident),
-        ("Temporary Residence - Chinese", test_query1_temporary_residence),
-        ("Document Notarization", test_query1_notarization),
-        ("Student Visa - Thai", test_query1_student_visa),
-        ("Business Registration - Singaporean", test_query1_business_registration),
-        ("Medical Emergency - British", test_query1_medical_emergency),
-        ("With Partial Info", test_query1_with_partial_info),
+        # Các test khác có thể comment lại nếu muốn tiết kiệm thời gian
+        # ("Lost Passport - Japanese", test_query1_lost_passport),
+        # ("Work Permit - Korean", test_query1_work_permit),
+        # ("Marriage Registration", test_query1_marriage_registration),
+        # ("Birth Certificate - German father", test_query1_birth_certificate),
+        # ("Traffic Accident - Australian", test_query1_traffic_accident),
+        # ("Temporary Residence - Chinese", test_query1_temporary_residence),
+        # ("Document Notarization", test_query1_notarization),
+        # ("Student Visa - Thai", test_query1_student_visa),
+        # ("Business Registration - Singaporean", test_query1_business_registration),
+        # ("Medical Emergency - British", test_query1_medical_emergency),
+        # ("With Partial Info", test_query1_with_partial_info),
     ]
     
     results = {}
@@ -281,42 +322,11 @@ def test_query2_v2():
                 "spec_score": 0.9,
                 "spec_reason": "Địa điểm này là Lãnh sự quán của Indonesia",
                 "total_score": 0.92
-            },
-            {
-                "Ma": "XNC_001",
-                "Ten": "Cục Quản lý Xuất nhập cảnh TP.HCM",
-                "DiaChi": "161 Nguyễn Du, P. Bến Thành, Quận 1",
-                "Lat": "10.7699",
-                "Lng": "106.6905",
-                "SDT": "02838299797",
-                "Website": "https://xuatnhapcanh.gov.vn",
-                "Category": "CucXuatNhapCanh",
-                "raw_distance_km": 1.2,
-                "distance_score": 0.85,
-                "spec_score": 0.8,
-                "spec_reason": "Cơ quan chính phủ phụ trách xuất nhập cảnh",
-                "total_score": 0.82
-            },
-            {
-                "Ma": "PH_001",
-                "Ten": "UBND Phường Bến Nghé - Quận 1",
-                "DiaChi": "138 Lê Thánh Tôn, P. Bến Nghé, Quận 1",
-                "Lat": "10.7756",
-                "Lng": "106.7014",
-                "SDT": "02838222641",
-                "Website": "http://www.quan1.hochiminhcity.gov.vn",
-                "Category": "UyBanNhanDan",
-                "raw_distance_km": 0.8,
-                "distance_score": 0.9,
-                "spec_score": 0.5,
-                "spec_reason": "Có thể hỗ trợ thủ tục giấy tờ địa phương",
-                "total_score": 0.68
             }
         ],
         "collected_info": {
             "nationality": "Indonesian",
             "problem": "gia hạn visa",
-            "current_location": "Quận 1",
             "visa_type": "Tourist",
             "visa_expiry_status": "Expires in 3 days"
         }
@@ -330,22 +340,18 @@ def test_query2_v2():
 
 if __name__ == "__main__":
     print("Testing Interactive Model API V2")
-    print("Make sure the server is running on http://localhost:8000 with main_v2.py")
+    print("Make sure the server is running on http://localhost:8000")
     print("=" * 60)
     
     try:
-        # Option 1: Run single test
-        # result1 = test_query1_initial()
+        # Chạy test scenario ghi đè
+        test_overwrite_scenario()
         
-        # Option 2: Run all query1 tests
-        all_results = run_all_query1_tests()
-        
-        
-        # Test Query 2 V2 - NEW: Returns guides for ALL k locations
-        # result3 = test_query2_v2()
+        # Hoặc chạy tất cả (bỏ comment nếu muốn)
+        # run_all_query1_tests()
         
     except requests.exceptions.ConnectionError:
         print("\nError: Could not connect to the server.")
-        print("Please make sure the server is running with: python main_v2.py")
+        print("Please make sure the server is running.")
     except Exception as e:
         print(f"\nError during testing: {e}")

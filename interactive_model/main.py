@@ -118,7 +118,7 @@ async def query_type_1(request: Request) -> JSONResponse:
     
     # Check completion - FIXED LOGIC:
     # Complete if core fields are present (minimum requirement)
-    core_fields = ['problem_category', 'nationality', 'current_location']
+    core_fields = ['problem_category', 'nationality']
     has_core_data = all(clean_collected_info.get(f) for f in core_fields)
     is_complete = has_core_data
     
