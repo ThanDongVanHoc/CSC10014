@@ -1,6 +1,5 @@
 import { SmartGuideController } from "./guide_controller.js";
 import {
-  MOCK_SCENARIO,
   GLOBAL_GUIDE_DATA,
   setGlobalGuideData,
   _normalizeGuideData,

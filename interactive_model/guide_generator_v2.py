@@ -4,6 +4,12 @@ Guide Generator V2 - Creates instruction guides for ALL locations from Model A r
 import json
 from typing import Dict, Any, List
 import google.generativeai as genai
+import os
+import sys
+current_dir = os.path.dirname(os.path.abspath(__file__))
+root_dir = os.path.dirname(current_dir)
+sys.path.append(root_dir)
+from app.chat.forms_data import FORMS_AI_DATA
 
 
 class GuideGeneratorV2:
@@ -39,7 +45,7 @@ class GuideGeneratorV2:
         user_info: Dict[str, Any]
     ) -> Dict[str, Any]:
         """Generate structured guide for a single location"""
-        print('dcm')
+        forms_context = json.dumps(FORMS_AI_DATA, ensure_ascii=False, indent=2)
         prompt = f"""
 Return JSON only in the EXACT structure below (no text outside):
 
@@ -59,20 +65,28 @@ Return JSON only in the EXACT structure below (no text outside):
       "fallback_desc": null,
       "fallback_lat": null,
       "fallback_lng": null,
-      "troubles": []
+      "troubles": [],
+      "required_forms_id": null
     }}
   ]
 }}
+
+AVAILABLE FORMS:
+{forms_context}
 
 Rules:
 - Write entirely in the user's language.
 - DO NOT translate, rename, or modify ANY key names.
 - Keys such as "reply", "title", "steps", "id", "type", "desc", "lat", "lng",
    "suggestion_type", "suggestion_text", "fallback_desc",
-   "fallback_lat", "fallback_lng", "troubles" 
+   "fallback_lat", "fallback_lng", "troubles", "required_forms_id".
 
 - Choose one for "type": doc, move, action, finish.
 - Generate 3 to 7 steps.
+- **Form Selection Logic**: 
+    - Review the "AVAILABLE FORMS" list above.
+    - If a step requires filling out a specific form from that list, set "required_forms_id" to the exact "id" of that form.
+    - If no form is needed or the form is not in the list, set "required_forms_id" to null.
 - Base content on:
     • Location: {location.get('Ten', 'N/A')}, {location.get('DiaChi', 'N/A')}, {location.get('SDT', 'N/A')}, {location.get('Website', 'N/A')}
     • Query: "{original_query}"
