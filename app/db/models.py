@@ -73,6 +73,10 @@ class Conversation(db.Model):
     created_at = db.mapped_column(db.DateTime, server_default=func.now())
     updated_at = db.mapped_column(db.DateTime, server_default=func.now(), onupdate=func.now())
 
+    # Lưu collected_info/Guide dưới dạng JSON string ---
+    # Dùng db.Text để tương thích tốt nhất (SQLite/MySQL), khi dùng sẽ json.loads sau
+    context_data = db.mapped_column(db.Text, nullable=True)
+    
     # Relationship ngược về User
     user: Mapped["User"] = relationship('User', back_populates='conversations')
 
@@ -100,6 +104,10 @@ class Message(db.Model):
     
     # Vai trò: 'user' hoặc 'model'
     role = db.mapped_column(db.String(20), nullable=False) 
+
+    # Nếu tin nhắn này là một bài hướng dẫn, cột này sẽ chứa JSON.
+    # Nếu là tin nhắn thường, cột này là NULL.
+    guide_data = db.mapped_column(db.Text, nullable=True)
     
     # Nội dung tin nhắn (Text để lưu dài)
     content = db.mapped_column(db.Text, nullable=False)
@@ -115,6 +123,7 @@ class Message(db.Model):
             "id": self.id,
             "role": self.role,
             "content": self.content,
+            "guide_data": self.guide_data,
             "created_at": self.created_at.isoformat() if self.created_at else None
         }
 

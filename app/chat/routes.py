@@ -8,6 +8,10 @@ from .utilis import (
     create_conversation,
     rename_conversation,
     delete_conversation,
+    get_latest_bot_reply,
+    update_conversation_context,
+    get_conversation_context,
+    get_latest_guide_context
 )
 
 from .ChatPro import ChatPro
@@ -56,46 +60,116 @@ def chat():
     user_msg = data.get("message", "")
     user_lat = data.get("user_lat")
     user_lng = data.get("user_lng")
+    convo_id = data.get("convo_id")
     
-    # Lấy context từ session
-    current_info = session.get("collected_info", {})
+    user_email = session.get("user_email")
+    
+    # 1. LOAD CONTEXT
+    current_info = {}
+    last_bot_reply = None
+
+    if user_email and convo_id:
+        # USER: Lấy từ Database
+        current_info = get_conversation_context(user_email, convo_id)
+        save_message(user_email, "user", user_msg, convo_id)
+        last_bot_reply = get_latest_bot_reply(user_email, convo_id)
+    else:
+        # GUEST: Lấy từ Client gửi lên (Stateless)
+        current_info = data.get("context", {}) 
+        last_bot_reply = data.get("last_bot_reply", None)
+    
+    intent = assistant.detect_intent_hybrid(user_msg, current_info, last_bot_reply)
+
+    if intent == "greeting":
+        # Trả lời ngay lập tức, không gọi API analyze
+        return jsonify({
+            "reply": "Hello! How can I help you regarding administrative, healthcare, or security issues?", 
+            "locations": [], 
+            "context": current_info
+        })
+
+    status = current_info.get("status", None)
+    print(f"🔍 DEBUG Current Status: {status}, Detected Intent: {intent}")
+
+    if current_info.get("status") == "finished":
+        last_bot_reply = get_latest_bot_reply(user_email, convo_id) if (user_email and convo_id) else None
+        
+        if intent == "follow_up":
+            # === LẤY GUIDE TỪ TIN NHẮN GẦN NHẤT ===
+            saved_guide = {}
+            if user_email and convo_id:
+                saved_guide = get_latest_guide_context(user_email, convo_id)
+            else:
+                saved_guide = current_info.get("final_guide", {}) # Fallback session
+            
+            bot_reply = assistant.chat_with_guide(user_msg, saved_guide)
+            
+            if user_email and convo_id:
+                save_message(user_email, "model", bot_reply, convo_id)
+
+            return jsonify({
+                "reply": bot_reply, 
+                "action": "none", 
+                "locations": [],
+                "context": current_info # Trả lại context cũ để client lưu tiếp
+            })
+        
+        elif intent == "greeting":
+             return jsonify({"reply": "Hello! How can I help you?", "locations": [], "context": current_info})
+        else:
+            # New Topic -> Reset Context
+            current_info = {}
+            if user_email and convo_id:
+                update_conversation_context(user_email, convo_id, {})
 
     # BƯỚC 1: Phân tích yêu cầu (Dùng method của Class)
     analysis_result = assistant.analyze_query(user_msg, current_info)
-    
     # Cập nhật session
-    session["collected_info"] = analysis_result.get("collected_info", {})
+    new_info = analysis_result.get("collected_info", {})
     is_complete = analysis_result.get("is_complete", False)
+
+    if user_email and convo_id:
+        update_conversation_context(user_email, convo_id, new_info)
 
     # TRƯỜNG HỢP A: Chưa đủ thông tin -> Hỏi tiếp
     if not is_complete:
         questions = analysis_result.get("questions", [])
         questions = ''.join(questions)
         bot_reply = questions if questions else "I need more information to assist you."
+
+        if user_email and convo_id:
+            save_message(user_email, "model", bot_reply, convo_id)
     
         print(current_info)
+
         return jsonify({
-            "reply": bot_reply,
-            "action": "clarify",
-            "locations": []
+            "reply": bot_reply, 
+            "action": "clarify", 
+            "locations": [],
+            "context": new_info # Gửi context mới về cho Client lưu
         })
 
     # TRƯỜNG HỢP B: Đủ thông tin -> Tìm kiếm & Hướng dẫn
     else:
         # Tự động tạo query tìm kiếm
-        collected_info = session["collected_info"]
-        search_query = f"{collected_info.get('problem_category', '')} in {collected_info.get('current_location', '')}"
+        search_query = f"{new_info.get('problem_category', '')} in {new_info.get('current_location', '')}"
         
-        print(session["collected_info"])
+        print(new_info)
 
         # Gọi các method xử lý logic
         locations = assistant.search_locations(search_query, user_lat, user_lng)
-        guide_data = assistant.generate_guide(user_msg, locations, collected_info)
+        guide_data = assistant.generate_guide(user_msg, locations, new_info)
 
         print(guide_data)
 
         guide_data['locations'] =  locations
-
+        new_info['status'] = 'finished'
+        new_info['final_guide'] = guide_data
+        
+        if user_email and convo_id:
+            # User login: Lưu vào DB (Message table)
+            update_conversation_context(user_email, convo_id, new_info)
+            save_message(user_email, "model", "I have generated a detailed guide for you.", convo_id, guide_data=guide_data)
         
         filename = f"outputs/guide.json"
         with open(filename, "w", encoding="utf-8") as f:
@@ -104,7 +178,12 @@ def chat():
         with open(filename, 'r', encoding='utf-8') as file:
             current_data = json.load(file)
 
-        return guide_data
+        return jsonify({
+            "reply": "I have created a detailed guide for you below.",
+            "guide": guide_data, 
+            "locations": locations,
+            "context": new_info # Client phải lưu cái này
+        })
 
 
 
@@ -222,153 +301,6 @@ def chat_issue():
 
     # 6. Trả về kết quả cuối cùng (có thể là giải pháp AI hoặc thông báo lỗi)
     return jsonify(result)
-
-@chat_bp.route('/chat_for_fun', methods = ['POST'])   
-def chat_prepare():
-    data = request.get_json()
-    user_msg = data.get("message", "")
-    convo_id = data.get("convo_id")   # nhận conversation id từ frontend
-    
-    user_lat = data.get("user_lat") 
-    user_lng = data.get("user_lng")
-
-    # 2. Xử lý Session
-    session.permanent = False 
-
-    if "history" not in session:
-        session["history"] = []
-
-    session["history"].append({"role": "user", "content": user_msg})
-    history_parts = [{"role": h["role"], "parts": [{"text": h["content"]}]} for h in session["history"]]
-
-    for h in session["history"]:
-         print(h["content"]); 
-
-    # 3. Kiểm tra đầu vào
-    if not user_msg:
-        session["history"].pop() # Xóa tin nhắn rỗng khỏi lịch sử
-        return jsonify({"reply": "You haven't entered anything.", "locations": []})
-    
-
-    # kiểm tra user đăng nhập chưa
-    user_email = session.get("user_email", None)
-
-    if user_email:
-        if not convo_id:
-            convo = create_conversation(user_email, title=user_msg[:40] or "New chat")
-            convo_id = convo["id"]
-
-        # lấy lịch sử messages theo conversation
-        history = get_messages(user_email, convo_id)
-        # lưu tin nhắn user
-        save_message(user_email, "user", user_msg, convo_id)
-        history.append({"role": "user", "content": user_msg})
-    else:
-        history = session["history"]
-
-    # chuẩn bị dữ liệu gửi lên Gemini
-    history_parts = [{"role": h["role"], "parts": [{"text": h["content"]}]} for h in history]
-
-    if not API_KEY:
-        return jsonify({"reply": "Configuration error: GEMINI_API_KEY not found.", "locations": []})
-
-    # 4. Chuẩn bị gọi Gemini
-    base_url = f"https://generativelanguage.googleapis.com/v1beta/models/{BASE_MODEL_NAME}:generateContent"
-    headers = {"Content-Type": "application/json"}
-    payload = {
-        "contents": history_parts,
-        "systemInstruction": {"parts": [{"text": system_prompt}]},
-        "generationConfig": {
-            "temperature": 0.5,
-            "responseMimeType": "application/json"
-        }
-    }
-
-    model_locations = []
-    gemini_reply_clean = ""
-    gemini_reply_to_user = "" 
-
-    # 5. Gọi API
-    try:
-        response = requests.post(base_url, json=payload, params={"key": API_KEY})
-        data = response.json()
-        if response.status_code != 200:
-            error_msg = data.get("error", {}).get("message", "Unknown API error.")
-            return jsonify({"reply": f"Gemini API error: {error_msg}"})
-
-        candidates = data.get("candidates")
-        if not candidates:
-            reason = data.get("promptFeedback", {}).get("blockReason", "UNKNOWN")
-            return jsonify({"reply": f"Error: Response blocked due to safety policy ({reason})."})
-        
-        gemini_json_string = candidates[0].get("content", {}).get("parts", [{}])[0].get("text")
-        if not gemini_json_string:
-            return jsonify({"reply": "Error: Gemini returned an empty response."})
-        # 6. Xử lý JSON từ Gemini
-        try:
-            parsed_data = json.loads(gemini_json_string)
-            
-            # LƯU Ý: Lưu phản hồi SẠCH ngay lập tức
-            gemini_reply_clean = parsed_data.get("reply", "Error: 'reply' not found in JSON.")
-            gemini_reply_to_user = gemini_reply_clean # Mặc định, gửi phản hồi sạch
-            
-            action = parsed_data.get("action", "none")
-            search_query = parsed_data.get("search_query")
-
-            if action == "search_location" and search_query:
-                try:
-                    model_payload = {
-                        "query": search_query,
-                        "lat": user_lat,
-                        "lng": user_lng
-                    }
-                    
-                    model_response = requests.post(MODEL_API_ENDPOINT, json=model_payload, timeout=20)
-
-                    if model_response.status_code == 200:
-                        model_data = model_response.json()
-                        model_locations = model_data.get("results", [])
-                        # (Đã xóa dòng thêm status, client JS sẽ tự xử lý)
-                    else:
-                        # THAY ĐỔI: Chỉ thêm lỗi vào biến gửi cho user
-                        gemini_reply_to_user += f"\n (Error calling search model: {model_response.status_code})"
-
-                except requests.exceptions.RequestException as e:
-                    gemini_reply_to_user += f"\n (Connection error to search model: {e})"
-                except Exception as e:
-                    gemini_reply_to_user += f"\n (Error processing search model: {e})"
-
-        except json.JSONDecodeError:
-            gemini_reply_clean = "Error: Unable to parse JSON from Gemini."
-            gemini_reply_to_user = gemini_reply_clean
-            print(f"JSONDecodeError. Raw response from Gemini: {gemini_json_string}")
-        except Exception as e:
-            gemini_reply_clean = f"JSON processing error: {e}"
-            gemini_reply_to_user = gemini_reply_clean
-
-
-    except requests.exceptions.RequestException as e:
-        gemini_reply_clean = f"Connection error: Unable to reach Gemini server. ({e})"
-        gemini_reply_to_user = gemini_reply_clean
-    except Exception as e:
-        gemini_reply_clean = f"Response processing error: {e}"
-        gemini_reply_to_user = gemini_reply_clean
-    
-    
-    # 7. LƯU MESSAGE CỦA BOT
-    if user_email:
-        # user đã login: lưu vào DB theo conversation
-        save_message(user_email, "model", gemini_reply_clean, convo_id)
-    else:
-        # guest: lưu vào session như cũ
-        session["history"].append({"role": "model", "content": gemini_reply_clean})
-
-    # 8. Trả về
-    return jsonify({
-        "reply": gemini_reply_to_user, # Gửi phản hồi (có thể có lỗi) cho user
-        "locations": model_locations 
-    })
-
 
 @chat_bp.route('/clear_session', methods=['POST'])
 def clear_session():

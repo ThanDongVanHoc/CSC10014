@@ -166,8 +166,8 @@ export const MapGuideUI = {
                 } / ${totalSteps}</span>
             </div>
             <div class="guide-window-controls">
-                <button class="win-btn" id="btn-guide-min" title="Thu nhỏ"><i class="fas fa-minus"></i></button>
-                <button class="win-btn" id="btn-guide-close" title="Đóng"><i class="fas fa-times"></i></button>
+                <button class="win-btn" id="btn-guide-min" title="Minimize"><i class="fas fa-minus"></i></button>
+                <button class="win-btn" id="btn-guide-close" title="Close"><i class="fas fa-times"></i></button>
             </div>
         </div>
 

@@ -9,6 +9,8 @@ from typing import Optional, Dict, List, Any
 import google.generativeai as genai
 import os
 from dotenv import load_dotenv
+from pydantic import BaseModel
+import json
 
 # Import our modular components
 from config import REQUIRED_FIELDS, GEMINI_MODEL_NAME, API_HOST, API_PORT
@@ -196,6 +198,39 @@ async def get_fields():
         "count": len(REQUIRED_FIELDS)
     }
 
+class ContextChatRequest(BaseModel):
+    message: str
+    guide_context: Dict[str, Any] # Đây chính là cái Guide mà chúng ta sẽ feed cho AI
+
+@app.post("/chat_context")
+async def chat_context(req: ContextChatRequest):
+    """
+    AI đọc Guide và trả lời user
+    """
+    try:
+        # Chuyển Guide JSON thành text để AI đọc
+        guide_str = json.dumps(req.guide_context, ensure_ascii=False)
+        
+        prompt = f"""
+        You are a helpful assistant.
+        
+        CONTEXT (The user has this guide):
+        {guide_str}
+        
+        USER QUESTION: "{req.message}"
+        
+        TASK: Answer the user's question using ONLY the information in the CONTEXT above.
+        - If the info is there, answer politely in the user's language.
+        - If the info is NOT in the guide, use your general knowledge about this location type in Vietnam, but mention that it's general advice.
+        - Keep it short and helpful.
+        
+        Return JSON ONLY: {{ "reply": "Your answer here" }}
+        """
+        response = model.generate_content(prompt)
+        text = response.text.strip().replace("```json", "").replace("```", "")
+        return JSONResponse(content=json.loads(text))
+    except Exception as e:
+        return JSONResponse(content={"reply": f"Sorry, I encountered an error: {str(e)}"})
 
 if __name__ == "__main__":
     import uvicorn

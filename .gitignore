@@ -225,3 +225,5 @@ migrations
 
 model_inference/final3/model.safetensors
 model_inference/final3/optimizer.pt
+
+app/chat/.env

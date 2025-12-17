@@ -25,11 +25,21 @@ export function renderEmptyState() {
 }
 
 // Append Message
-export function appendMessageToUI(role, text) {
+export function appendMessageToUI(role, text, guideData = null) {
   const doc = document.createElement("div");
   doc.className = "msg " + (role === "user" ? "user" : "bot");
-  doc.innerHTML = text.replace(/\n/g, "<br>");
+
+  // Tạo container riêng cho text để tách biệt với thẻ location (tùy chọn, giúp CSS đẹp hơn)
+  const textContent = document.createElement("div");
+  textContent.innerHTML = text.replace(/\n/g, "<br>");
+  doc.appendChild(textContent);
+
   DOM.chatMessages.appendChild(doc);
+
+  if (role === "model" && guideData) {
+    appendLocationCardsToUI(guideData.locations, guideData, doc);
+  }
+
   DOM.chatMessages.scrollTop = DOM.chatMessages.scrollHeight;
 }
 
@@ -55,12 +65,15 @@ export async function loadSelectedChatToUI() {
   if (!msgs || msgs.length === 0) {
     renderEmptyState();
   } else {
-    msgs.forEach((m) => appendMessageToUI(m.role, m.content));
+    msgs.forEach((m) => {
+      const guidePayload = m.guide || m.guide_data || null;
+      appendMessageToUI(m.role, m.content, guidePayload);
+    });
   }
 }
 
 // Append Location Cards
-export async function appendLocationCardsToUI(locations) {
+export async function appendLocationCardsToUI(locations, guideData, parentElement = null) {
   if (!locations || locations.length === 0) return;
 
   const locationsWithDetails = await Promise.all(
@@ -126,7 +139,7 @@ export async function appendLocationCardsToUI(locations) {
     card.querySelector(".btn-guide-trigger").addEventListener("click", (e) => {
       e.preventDefault();
       e.stopPropagation();
-      startGuideFlow(data.Ten);
+      startGuideFlow(data.Ten, guideData);
     });
 
     card.addEventListener("click", (e) => {
@@ -145,9 +158,13 @@ export async function appendLocationCardsToUI(locations) {
   });
 
   container.appendChild(fragment);
-  DOM.chatMessages.appendChild(container);
-  DOM.chatMessages.scrollTo({
-    top: DOM.chatMessages.scrollHeight,
-    behavior: "smooth",
-  });
+  if (parentElement) {
+    parentElement.appendChild(container);
+  } else {
+    DOM.chatMessages.appendChild(container);
+    DOM.chatMessages.scrollTo({
+      top: DOM.chatMessages.scrollHeight,
+      behavior: "smooth",
+    });
+  }
 }
