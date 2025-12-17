@@ -97,13 +97,11 @@ Content-Type: application/json
   ],
   "collected_info": {
     "nationality": "Indonesian",
-    "problem_category": "Visa_Issue",
-    "current_location": "District 1"
+    "problem_category": "Visa_Issue"
   },
   "is_complete": false,
   "info_status": {
     "nationality": 1,
-    "current_location": 1,
     "problem_category": 1,
     "language_spoken": 0,
     "visa_type": 0,
@@ -147,7 +145,6 @@ Content-Type: application/json
   "is_complete": false,
   "info_status": {
     "nationality": 0,
-    "current_location": 0,
     "incident_location": 0,
     "police_report_status": 0,
     "symptom_urgency": 0,
@@ -169,7 +166,6 @@ Content-Type: application/json
   "query": "I'm American, living in District 3, need visa renewal, tourist visa expires in 2 days",
   "collected_info": {
     "nationality": "American",
-    "current_location": "District 3",
     "language_spoken": "English"
   }
 }
@@ -182,7 +178,6 @@ Content-Type: application/json
   "questions": [],
   "collected_info": {
     "nationality": "American",
-    "current_location": "District 3",
     "language_spoken": "English",
     "problem_category": "Visa_Issue",
     "visa_type": "Tourist",
@@ -192,7 +187,6 @@ Content-Type: application/json
   "is_complete": true,
   "info_status": {
     "nationality": 1,
-    "current_location": 1,
     "language_spoken": 1,
     "problem_category": 1,
     "visa_type": 1,
@@ -327,7 +321,6 @@ _(Tên các phần sẽ tự động dịch sang ngôn ngữ của người dùn
   "collected_info": {
     "nationality": "Indonesian",
     "problem_category": "Visa_Issue",
-    "current_location": "District 1",
     "visa_type": "Tourist",
     "visa_expiry_status": "Expires in 3 days",
     "language_spoken": "English, Indonesian"

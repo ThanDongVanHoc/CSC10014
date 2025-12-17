@@ -13,11 +13,6 @@ REQUIRED_FIELDS = {
         "description": "Quốc tịch của người dùng (Bắt buộc để tìm Lãnh sự quán phù hợp).",
         "examples": ["Indonesian", "French", "Japanese", "American"]
     },
-    "current_location": {
-        "type": "str",
-        "description": "Địa chỉ/Khu vực hiện tại (Bắt buộc để tính khoảng cách Haversine).",
-        "examples": ["District 1", "Thao Dien Ward", "123 Nguyen Hue"]
-    },
     "problem_category": {
         "type": "str",
         "description": "Phân loại vấn đề chính để chọn database tìm kiếm.",
