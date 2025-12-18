@@ -1,3 +1,236 @@
 {
-  "locations": []
+  "total_locations": 2,
+  "guides": [
+    {
+      "location": {
+        "Ten": "Đội Cảnh Sát Giao Thông - Trật Tự - Cơ Động Quận 5",
+        "Dia chi": "946 Võ Văn Kiệt, Phường 5, Quận 5, Thành phố Hồ Chí Minh, Việt Nam",
+        "Loai": "Văn phòng chính quyền địa phương",
+        "Lat": "10.7496638",
+        "Lng": "106.6731527",
+        "Tu khoa goc": "Đội Cảnh sát giao thông Quận 5",
+        "Immigration": "0",
+        "Residence / Local Police": "1",
+        "Embassy / Consulate": "0",
+        "Healthcare": "0",
+        "Administrative": "1",
+        "Emergency": "0",
+        "raw_distance_km": 1.2597983870819929,
+        "distance_score": 1.0,
+        "spec_score": 0.5,
+        "spec_reason": "Lỗi API/JSON",
+        "total_score": 0.6000000000000001
+      },
+      "guide": {
+        "reply": "Để làm lại visa của bạn, bạn cần thực hiện các bước sau:",
+        "title": "Xin cấp lại visa (Dutch National)",
+        "steps": [
+          {
+            "id": 1,
+            "type": "doc",
+            "title": "Chuẩn bị hồ sơ xin gia hạn visa",
+            "desc": "Bạn cần chuẩn bị các giấy tờ sau:\n1. Hộ chiếu gốc còn hạn ít nhất 6 tháng.\n2. Tờ khai đề nghị xin cấp thị thực, gia hạn tạm trú (mẫu NA5).\n3. Ảnh thẻ kích thước 4x6cm, nền trắng, chụp không quá 6 tháng.\n4. Giấy tờ chứng minh mục đích lưu trú tại Việt Nam (nếu có).",
+            "lat": null,
+            "lng": null,
+            "suggestion_type": null,
+            "suggestion_text": null,
+            "fallback_desc": null,
+            "fallback_lat": null,
+            "fallback_lng": null,
+            "troubles": [],
+            "required_forms_id": "na5_visa_extension"
+          },
+          {
+            "id": 2,
+            "type": "move",
+            "title": "Nộp hồ sơ tại Cục Quản lý Xuất nhập cảnh",
+            "desc": "Mang hồ sơ đã chuẩn bị đến nộp tại Cục Quản lý Xuất nhập cảnh hoặc Phòng Quản lý Xuất nhập cảnh Công an tỉnh/thành phố nơi bạn đang cư trú.",
+            "lat": null,
+            "lng": null,
+            "suggestion_type": "government office",
+            "suggestion_text": "🔍 Find nearest Immigration Department Office",
+            "fallback_desc": "Tìm địa chỉ Phòng Quản lý Xuất nhập cảnh gần nhất.",
+            "fallback_lat": null,
+            "fallback_lng": null,
+            "troubles": [],
+            "required_forms_id": null
+          },
+          {
+            "id": 3,
+            "type": "action",
+            "title": "Đóng lệ phí",
+            "desc": "Sau khi nộp hồ sơ, bạn sẽ được hướng dẫn về lệ phí xin gia hạn visa và cách thức thanh toán.",
+            "lat": null,
+            "lng": null,
+            "suggestion_type": "atm",
+            "suggestion_text": "🔍 Find nearby ATMs",
+            "fallback_desc": "Tìm cây ATM gần nhất để rút tiền mặt.",
+            "fallback_lat": null,
+            "fallback_lng": null,
+            "troubles": [],
+            "required_forms_id": null
+          },
+          {
+            "id": 4,
+            "type": "finish",
+            "title": "Nhận kết quả",
+            "desc": "Trong thời gian quy định, bạn sẽ nhận được thông báo về việc visa của bạn đã được cấp lại. Mang theo hộ chiếu để nhận visa mới.",
+            "lat": null,
+            "lng": null,
+            "suggestion_type": null,
+            "suggestion_text": null,
+            "fallback_desc": null,
+            "fallback_lat": null,
+            "fallback_lng": null,
+            "troubles": [],
+            "required_forms_id": null
+          }
+        ]
+      },
+      "rank": 1
+    },
+    {
+      "location": {
+        "Ten": "Công An Phường 1, Quận 5",
+        "Dia chi": "660 Võ Văn Kiệt, Phường 1, Quận 5, Thành phố Hồ Chí Minh, Việt Nam",
+        "Loai": "Đồn cảnh sát",
+        "Lat": "10.7520133",
+        "Lng": "106.6837035",
+        "Tu khoa goc": "Công an Quận 5",
+        "Immigration": "0",
+        "Residence / Local Police": "1",
+        "Embassy / Consulate": "0",
+        "Healthcare": "0",
+        "Administrative": "0",
+        "Emergency": "0",
+        "raw_distance_km": 1.4431028997723434,
+        "distance_score": 0.9880154032930003,
+        "spec_score": 0.5,
+        "spec_reason": "Lỗi API/JSON",
+        "total_score": 0.5976030806586001
+      },
+      "guide": {
+        "reply": "Để làm lại visa của bạn, bạn sẽ cần thực hiện các bước sau. Vì bạn là người Hà Lan, bạn có thể cần đến Cục Quản lý Xuất nhập cảnh để gia hạn hoặc xin visa mới.",
+        "title": "Gia hạn/Làm lại Visa cho Người Hà Lan",
+        "steps": [
+          {
+            "id": 1,
+            "type": "move",
+            "title": "Tìm Cục Quản lý Xuất nhập cảnh",
+            "desc": "Bạn cần đến Cục Quản lý Xuất nhập cảnh để thực hiện thủ tục làm lại visa. Địa chỉ là 49Bis Nguyễn Thị Minh Khai, Phường Bến Thành, Quận 1, Thành phố Hồ Chí Minh.",
+            "lat": 10.7757,
+            "lng": 106.6972,
+            "suggestion_type": "office",
+            "suggestion_text": "🔍 Find nearby immigration offices",
+            "fallback_desc": "Tìm kiếm Cục Quản lý Xuất nhập cảnh tại Thành phố Hồ Chí Minh.",
+            "fallback_lat": null,
+            "fallback_lng": null,
+            "troubles": [],
+            "required_forms_id": null
+          },
+          {
+            "id": 2,
+            "type": "doc",
+            "title": "Chuẩn bị hồ sơ xin gia hạn/làm lại visa",
+            "desc": "Mang theo hộ chiếu gốc còn hạn, đơn xin gia hạn/cấp mới visa (theo mẫu NA5), ảnh thẻ và các giấy tờ liên quan khác tùy thuộc vào trường hợp của bạn.",
+            "lat": null,
+            "lng": null,
+            "suggestion_type": null,
+            "suggestion_text": null,
+            "fallback_desc": "Chuẩn bị các giấy tờ cần thiết cho việc làm lại visa.",
+            "fallback_lat": null,
+            "fallback_lng": null,
+            "troubles": [],
+            "required_forms_id": "na5_visa_extension"
+          },
+          {
+            "id": 3,
+            "type": "action",
+            "title": "Nộp hồ sơ và lệ phí",
+            "desc": "Tại Cục Quản lý Xuất nhập cảnh, bạn sẽ nộp hồ sơ đã chuẩn bị và đóng lệ phí theo quy định.",
+            "lat": null,
+            "lng": null,
+            "suggestion_type": null,
+            "suggestion_text": null,
+            "fallback_desc": "Hoàn tất việc nộp hồ sơ và thanh toán lệ phí.",
+            "fallback_lat": null,
+            "fallback_lng": null,
+            "troubles": [],
+            "required_forms_id": null
+          },
+          {
+            "id": 4,
+            "type": "action",
+            "title": "Chờ nhận kết quả",
+            "desc": "Sau khi nộp hồ sơ, bạn sẽ được thông báo về thời gian chờ nhận lại hộ chiếu có visa mới.",
+            "lat": null,
+            "lng": null,
+            "suggestion_type": null,
+            "suggestion_text": null,
+            "fallback_desc": "Kiên nhẫn chờ đợi kết quả làm visa.",
+            "fallback_lat": null,
+            "fallback_lng": null,
+            "troubles": [],
+            "required_forms_id": null
+          },
+          {
+            "id": 5,
+            "type": "finish",
+            "title": "Nhận lại hộ chiếu",
+            "desc": "Đến đúng ngày hẹn để nhận lại hộ chiếu của bạn với visa đã được gia hạn hoặc cấp mới.",
+            "lat": null,
+            "lng": null,
+            "suggestion_type": null,
+            "suggestion_text": null,
+            "fallback_desc": "Hoàn tất thủ tục và nhận lại giấy tờ.",
+            "fallback_lat": null,
+            "fallback_lng": null,
+            "troubles": [],
+            "required_forms_id": null
+          }
+        ]
+      },
+      "rank": 2
+    }
+  ],
+  "locations": [
+    {
+      "Ten": "Đội Cảnh Sát Giao Thông - Trật Tự - Cơ Động Quận 5",
+      "Dia chi": "946 Võ Văn Kiệt, Phường 5, Quận 5, Thành phố Hồ Chí Minh, Việt Nam",
+      "Loai": "Văn phòng chính quyền địa phương",
+      "Lat": "10.7496638",
+      "Lng": "106.6731527",
+      "Tu khoa goc": "Đội Cảnh sát giao thông Quận 5",
+      "Immigration": "0",
+      "Residence / Local Police": "1",
+      "Embassy / Consulate": "0",
+      "Healthcare": "0",
+      "Administrative": "1",
+      "Emergency": "0",
+      "raw_distance_km": 1.2597983870819929,
+      "distance_score": 1.0,
+      "spec_score": 0.5,
+      "spec_reason": "Lỗi API/JSON",
+      "total_score": 0.6000000000000001
+    },
+    {
+      "Ten": "Công An Phường 1, Quận 5",
+      "Dia chi": "660 Võ Văn Kiệt, Phường 1, Quận 5, Thành phố Hồ Chí Minh, Việt Nam",
+      "Loai": "Đồn cảnh sát",
+      "Lat": "10.7520133",
+      "Lng": "106.6837035",
+      "Tu khoa goc": "Công an Quận 5",
+      "Immigration": "0",
+      "Residence / Local Police": "1",
+      "Embassy / Consulate": "0",
+      "Healthcare": "0",
+      "Administrative": "0",
+      "Emergency": "0",
+      "raw_distance_km": 1.4431028997723434,
+      "distance_score": 0.9880154032930003,
+      "spec_score": 0.5,
+      "spec_reason": "Lỗi API/JSON",
+      "total_score": 0.5976030806586001
+    }
+  ]
 }

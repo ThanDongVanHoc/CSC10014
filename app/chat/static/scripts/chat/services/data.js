@@ -36,14 +36,21 @@ export const DataManager = {
       try {
         const res = await fetch(`/chat/messages/${convoId}`);
         const data = await res.json();
-        return Array.isArray(data) ? data : [];
+        return Array.isArray(data)
+          ? data.map((m) => ({ ...m, guide: m.guide_data }))
+          : [];
       } catch (e) {
         return [];
       }
     } else {
+      // GUEST
       const c = State.conversations.find((x) => x.id == convoId);
       return c
-        ? c.messages.map((m) => ({ role: m.role, content: m.text }))
+        ? c.messages.map((m) => ({
+            role: m.role,
+            content: m.text,
+            guide: m.guide,
+          }))
         : [];
     }
   },
@@ -66,6 +73,7 @@ export const DataManager = {
         id: "guest-" + now + Math.random().toString(36).substr(2, 5),
         title: title,
         messages: [],
+        context: {}, 
         created_at: now,
         updated_at: now,
       };

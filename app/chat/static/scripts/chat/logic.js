@@ -29,6 +29,8 @@ export async function sendMessage(text) {
   }
 
   // GUEST logic: Lưu User msg
+  let contextToSend = {};
+  let lastBotReply = null;
   let currentChat = State.conversations.find((c) => c.id == State.selectedId);
   if (!State.isLoggedIn && currentChat) {
     const now = Date.now();
@@ -36,6 +38,11 @@ export async function sendMessage(text) {
     currentChat.updated_at = now;
     if (currentChat.messages.length === 1)
       currentChat.title = text.slice(0, 40);
+    contextToSend = currentChat.context || {};
+    const lastBotMsg = [...currentChat.messages]
+      .reverse()
+      .find((m) => m.role === "model");
+    if (lastBotMsg) lastBotReply = lastBotMsg.text;
     DataManager.saveGuestData();
     renderSidebar();
   }
@@ -63,6 +70,8 @@ export async function sendMessage(text) {
           convo_id: State.selectedId,
           user_lat: lat,
           user_lng: lng,
+          context: contextToSend,
+          last_bot_reply: lastBotReply,
         }),
       });
       data = await res.json();
@@ -71,8 +80,10 @@ export async function sendMessage(text) {
     loadingDiv.remove();
 
     const reply = data.reply || "No response from server.";
-    if (data.guide && window.startGuideFlowFromData)
-      window.startGuideFlowFromData(data.guide);
+    const guideData = data.guide || data.steps ? data.guide || data : null;
+
+    if (guideData && window.startGuideFlowFromData)
+      window.startGuideFlowFromData(guideData);
 
     if (data.convo_id && data.convo_id != State.selectedId) {
       State.selectedId = data.convo_id;
@@ -94,23 +105,33 @@ export async function sendMessage(text) {
       }
     }
 
-    appendMessageToUI("model", reply);
+    appendMessageToUI("model", reply, guideData);
 
     // GUEST logic: Lưu Bot msg
     currentChat = State.conversations.find((c) => c.id == State.selectedId);
     if (!State.isLoggedIn && currentChat) {
       const now = Date.now();
-      currentChat.messages.push({
+
+      if (data.context) {
+        currentChat.context = data.context;
+      }
+
+      const botMsg = {
         role: "model",
         text: reply,
         created_at: now,
-      });
+      };
+
+      // LƯU GUIDE VÀO TIN NHẮN
+      if (guideData) {
+        botMsg.guide = guideData;
+      }
+
+      currentChat.messages.push(botMsg);
       currentChat.updated_at = now;
       DataManager.saveGuestData();
       renderSidebar();
     }
-
-    if (data.locations) appendLocationCardsToUI(data.locations);
   } catch (e) {
     console.error(e);
     loadingDiv.remove();

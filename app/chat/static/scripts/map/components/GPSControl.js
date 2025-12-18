@@ -8,7 +8,7 @@ export function initGPSControl(map) {
   gpsBtn.type = "button";
   gpsBtn.className = "map-btn-gps";
   gpsBtn.id = "useGPS";
-  gpsBtn.title = "Vị trí của tôi";
+  gpsBtn.title = "Use GPS to locate me";
 
   // Icon SVG mặc định
   const defaultIcon = `
@@ -27,7 +27,7 @@ export function initGPSControl(map) {
     e.preventDefault();
     e.stopPropagation();
 
-    if (!navigator.geolocation) return alert("Trình duyệt không hỗ trợ GPS");
+    if (!navigator.geolocation) return alert("Your browser does not support GPS");
 
     // --- SỬ DỤNG SPIN CỦA CREATE PIN ---
     // Thay thế nội dung nút bằng thẻ span chứa ký tự ↻
@@ -51,7 +51,7 @@ export function initGPSControl(map) {
         gpsBtn.innerHTML = defaultIcon;
         gpsBtn.style.pointerEvents = "auto";
         console.warn("GPS Error:", err);
-        alert("Không thể lấy vị trí.");
+        alert("Unable to retrieve your location.");
       }
     );
   });

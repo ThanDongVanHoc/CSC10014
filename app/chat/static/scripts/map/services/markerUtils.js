@@ -328,7 +328,7 @@ export function createPin(latlng, name) {
 
   // 1. Biến lưu tên địa điểm.
   // Nếu là click chuột (Marked Point) thì để placeholder, còn nếu từ search thì dùng luôn.
-  let resolvedName = name === "Marked Point" ? "Đang lấy địa chỉ..." : name;
+  let resolvedName = name === "Marked Point" ? "Getting address..." : name;
   const isNeedReverse = name === "Marked Point";
 
   poiSidebarUI.close();
@@ -369,7 +369,7 @@ export function createPin(latlng, name) {
       .then((res) => res.json())
       .then((data) => {
         // Lấy tên hiển thị (Ưu tiên tên ngắn gọn nếu có, không thì lấy display_name full)
-        const newName = data.display_name || "Vị trí không xác định";
+        const newName = data.display_name || "Location not found";
         resolvedName = newName; // Cập nhật biến để dùng cho nút bấm
 
         // Cập nhật giao diện (Xóa spinner, hiện tên mới)
@@ -380,7 +380,7 @@ export function createPin(latlng, name) {
         console.warn("Reverse geocode failed:", err);
         const titleEl = popupDiv.querySelector(`#${titleId}`);
         if (titleEl) titleEl.innerText = "Vị trí đã chọn";
-        resolvedName = "Vị trí đã chọn";
+        resolvedName = "Selected Location";
       });
   }
 
@@ -431,7 +431,7 @@ export function setPoiMarker(latlng, name, extraData = {}) {
     latlng: ll,
     name: extraData.name || name,
     image: `/chat/pois/${rawImg}` || "",
-    intro: extraData.intro || "Kết quả tìm kiếm",
+    intro: extraData.intro || "Search Result",
     location: extraData.location || "---",
     phone: extraData.phone_number || "---",
     website: extraData.website || "#",
@@ -461,7 +461,7 @@ export function pinLocationToMap(lat, lng, name, extraData = {}) {
     latlng: latlng,
     name: name,
     image: `/chat/pois/${rawImg}`,
-    intro: extraData.intro || "Kết quả tìm kiếm",
+    intro: extraData.intro || "Search Result",
     location: extraData.location || "---",
     phone: extraData.phone_number || "---",
     website: extraData.website || "#",
@@ -473,7 +473,7 @@ export function pinLocationToMap(lat, lng, name, extraData = {}) {
       poiSidebarUI.open(sidebarData);
     });
   } else {
-    console.error("Chưa khởi tạo poiSidebarUI");
+    console.error("poiSidebarUI is not initialized");
   }
 }
 

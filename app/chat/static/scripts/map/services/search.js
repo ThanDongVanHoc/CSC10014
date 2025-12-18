@@ -50,7 +50,7 @@ export async function handleSearchResult(geocodeData, map) {
   // Kiểm tra xem địa điểm có phải là POI trong database không
   const poiCheck = await checkIsPoi(center.lat, center.lng, name);
 
-  if (poiCheck && poiCheck.isPPoi) {
+  if (poiCheck && poiCheck.isPoi) {
     // Nếu là POI -> Hiển thị Sidebar thông tin
     const dbData = poiCheck.poi;
     setPoiMarker([dbData.lat, dbData.lng], dbData.name, dbData);
@@ -196,7 +196,7 @@ function setupHistorySearch(control) {
           });
         });
       } catch (err) {
-        console.warn("Lỗi tải lịch sử:", err);
+        console.warn("Loading search history error:", err);
       }
     };
 
@@ -359,7 +359,7 @@ export async function findPlaceAround(lat, lon, radius, searchQuery) {
   const poiType = detectPoiType(searchQuery);
   const query = getPoiQuery(poiType, lat, lon, radius);
 
-  console.log(`🔍 Đang tìm "${searchQuery}" (${poiType}) trong bán kính ${radius}m...`);
+  console.log(`🔍 Searching for "${searchQuery}" (${poiType}) within a radius of ${radius}m...`);
 
   try {
     const response = await fetch(OVERPASS, {
@@ -380,7 +380,7 @@ export async function findPlaceAround(lat, lon, radius, searchQuery) {
     console.log(`✅ Tìm thấy ${elements.length} địa điểm (${poiType})`);
 
     if (elements.length === 0) {
-      return { success: false, count: 0, message: `Không tìm thấy ${searchQuery} nào trong bán kính ${radius}m` };
+      return { success: false, count: 0, message: `No ${searchQuery} found within a radius of ${radius}m` };
     }
 
     // Thêm markers vào map
@@ -423,11 +423,11 @@ export async function findPlaceAround(lat, lon, radius, searchQuery) {
     };
 
   } catch (err) {
-    console.error("❌ Lỗi tìm kiếm POI:", err);
+    console.error("❌ POI search error:", err);
     return { 
       success: false, 
       count: 0,
-      message: "Lỗi kết nối với dịch vụ tìm kiếm"
+      message: "Search service connection error"
     };
   }
 }
