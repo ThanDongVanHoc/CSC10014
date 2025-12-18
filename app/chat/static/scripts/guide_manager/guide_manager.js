@@ -1,6 +1,5 @@
 import { SmartGuideController } from "./guide_controller.js";
 import {
-  MOCK_SCENARIO,
   GLOBAL_GUIDE_DATA,
   setGlobalGuideData,
   _normalizeGuideData,
@@ -19,18 +18,30 @@ fetch("/chat/static/mock_responses/guide.json")
   })
   .catch((err) => console.error("❌ Load guide JSON failed:", err));
 
-export async function startGuideFlow(locationNameOrData) {
+export async function startGuideFlow(locationNameOrData, contextData = null) {
   let scenarioData = null;
+  let guideTitle = "";
 
   // Trường hợp 1: Truyền vào tên địa điểm (String) -> Tìm trong JSON đã load
   if (typeof locationNameOrData === "string") {
-    const found = GLOBAL_GUIDE_DATA.find(
-      (item) => item.location && item.location.Ten === locationNameOrData
-    );
+    let found = null;
+    guideTitle = locationNameOrData;
+    if (contextData && Array.isArray(contextData.guides)) {
+      found = contextData.guides.find(
+        (item) => item.location && item.location.Ten === locationNameOrData
+      );
+    }
+    if (!found) {
+      found = GLOBAL_GUIDE_DATA.find(
+        (item) => item.location && item.location.Ten === locationNameOrData
+      );
+    }
+
+    // C. Chuẩn hóa dữ liệu nếu tìm thấy
     if (found) {
       scenarioData = await _normalizeGuideData(found);
     } else {
-      console.warn(`⚠️ Không tìm thấy hướng dẫn cho: ${locationNameOrData}`);
+      console.warn(`⚠️ No guide found for: ${locationNameOrData}`);
     }
   }
   // Trường hợp 2: Truyền vào Object dữ liệu trực tiếp (từ Backend API trả về)
@@ -38,10 +49,12 @@ export async function startGuideFlow(locationNameOrData) {
     // Nếu object đã đúng format scenario
     if (locationNameOrData.steps) {
       scenarioData = locationNameOrData;
+      guideTitle = scenarioData.title;
     }
     // Nếu object dạng {location, guide} như guide.json
     else if (locationNameOrData.location && locationNameOrData.guide) {
       scenarioData = await _normalizeGuideData(locationNameOrData);
+      guideTitle = locationNameOrData.location.Ten;
     }
   }
 
@@ -49,13 +62,13 @@ export async function startGuideFlow(locationNameOrData) {
     // Khởi tạo controller mới với dữ liệu vừa chuẩn hóa
     guideApp = new SmartGuideController(scenarioData);
     guideApp._set(locationNameOrData);
-    guideApp.start(locationNameOrData.title || scenarioData.title);
+    guideApp.start(guideTitle);
   } else {
     // Thông báo lỗi ra Chat UI
     if (window.appendMessageToUI) {
       window.appendMessageToUI(
         "model",
-        `Xin lỗi, tôi chưa có dữ liệu hướng dẫn chi tiết cho địa điểm này.`
+        `Sorry, I don't have detailed guide data for this location yet.`
       );
     }
   }

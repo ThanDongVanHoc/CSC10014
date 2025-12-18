@@ -30,7 +30,7 @@ export function updateMapForGuideStep(lat, lng, title, zoomLevel = 18) {
   currentStepMarker = L.marker([lat, lng], { icon: stepIcon }).addTo(map);
   currentStepMarker
     .bindPopup(
-      `<div style="text-align:center;"><b style="color:#6f42c1">STEP: ${title}</b><br>📍 Vị trí này</div>`
+      `<div style="text-align:center;"><b style="color:#6f42c1">STEP: ${title}</b><br>📍 Location</div>`
     )
     .openPopup();
 }
@@ -67,9 +67,9 @@ export const MapGuideUI = {
       const modalHtml = `
             <div id="pdf-gmail-modal" class="gmail-modal-overlay">
                 <div class="gmail-modal-header">
-                    <div class="gmail-doc-title" id="pdf-modal-title">Tài liệu</div>
+                    <div class="gmail-doc-title" id="pdf-modal-title">Document</div>
                     <button class="btn-close-modal" onclick="window.MapGuideUI.closePdfPreview()">
-                        <i class="fas fa-times"></i> Đóng
+                        <i class="fas fa-times"></i> Close
                     </button>
                 </div>
                 <div class="gmail-modal-content">
@@ -126,7 +126,7 @@ export const MapGuideUI = {
                stepData.suggestion_query
              }', ${stepData.id})">
             <i class="fas fa-search-location"></i> ${
-              stepData.suggestion_text || "Tìm địa điểm hỗ trợ gần đây"
+              stepData.suggestion_text || "Find nearby places"
             }
         </div>`;
     }
@@ -140,7 +140,7 @@ export const MapGuideUI = {
                 <button 
                     onclick="window.MapGuideUI.openPdfPreview('${pdf_url}', '${title}')"
                     class="btn-doc-action btn-pdf-preview" 
-                    title="Xem trước file PDF">
+                    title="Preview file PDF">
                     <i class="fas fa-eye"></i> Preview PDF
                 </button>
 
@@ -148,7 +148,7 @@ export const MapGuideUI = {
                     href="${docx_url}" 
                     download
                     class="btn-doc-action btn-docx-download" 
-                    title="Tải file Word về máy">
+                    title="Download file DOCX">
                     <i class="fas fa-file-download"></i> Download DOCX
                 </a>
             </div>
@@ -160,14 +160,14 @@ export const MapGuideUI = {
       <div class="map-guide-card" id="guide-main-card">
         <div class="guide-overlay-header">
             <div style="flex-grow:1">
-                <span class="guide-progress-text">Hướng dẫn chi tiết</span>
+                <span class="guide-progress-text">Detailed Instruction</span>
                 <span class="guide-step-badge">${
                   currentIndex + 1
                 } / ${totalSteps}</span>
             </div>
             <div class="guide-window-controls">
-                <button class="win-btn" id="btn-guide-min" title="Thu nhỏ"><i class="fas fa-minus"></i></button>
-                <button class="win-btn" id="btn-guide-close" title="Đóng"><i class="fas fa-times"></i></button>
+                <button class="win-btn" id="btn-guide-min" title="Minimize"><i class="fas fa-minus"></i></button>
+                <button class="win-btn" id="btn-guide-close" title="Close"><i class="fas fa-times"></i></button>
             </div>
         </div>
 
@@ -194,7 +194,7 @@ export const MapGuideUI = {
               id="problem-input-${stepData.id}"
               class="guide-problem-input"
               rows="3"
-              placeholder="Mô tả sự cố (ví dụ: bãi xe hết chỗ)"
+              placeholder="Describe the issue (e.g., parking lot full)"
             ></textarea>
 
             <div style="display:flex; gap:8px; margin-top:8px;">
@@ -210,7 +210,7 @@ export const MapGuideUI = {
           <div id="solution-box-${
             stepData.id
           }" class="ai-solution-box" style="display:none; margin-top:10px;">
-            <div class="solution-title"><i class="fas fa-robot"></i> Gợi ý từ AI</div>
+            <div class="solution-title"><i class="fas fa-robot"></i> AI Suggestions</div>
             <div id="solution-content-${
               stepData.id
             }" class="solution-content"></div>
@@ -224,12 +224,12 @@ export const MapGuideUI = {
             }
             <button class="action-btn btn-issue" id="btn-guide-issue-${
               stepData.id
-            }"><i class="fas fa-exclamation-triangle"></i> Sự cố</button>
+            }"><i class="fas fa-exclamation-triangle"></i> Issue</button>
             <button class="action-btn btn-next" id="btn-guide-next-${
               stepData.id
             }">
                 ${
-                  currentIndex === totalSteps - 1 ? "Hoàn tất" : "Tiếp theo"
+                  currentIndex === totalSteps - 1 ? "Finish" : "Next"
                 } <i class="fas fa-arrow-right"></i>
             </button>
           </div>
@@ -288,7 +288,7 @@ export const MapGuideUI = {
 
     if (modal && iframe) {
       iframe.src = url;
-      if (titleEl) titleEl.textContent = title || "Xem trước tài liệu";
+      if (titleEl) titleEl.textContent = title || "Preview Document";
       modal.style.display = "flex";
     }
   },
@@ -358,7 +358,7 @@ export const MapGuideUI = {
       if (result.success && result.count > 0) {
         if (resultDiv && resultText) {
           resultText.textContent =
-            result.message || `Đã tìm thấy ${result.count} ${query}`;
+            result.message || `Found ${result.count} ${query}`;
           resultDiv.style.display = "block";
           setTimeout(() => {
             if (resultDiv) resultDiv.style.display = "none";
@@ -369,7 +369,7 @@ export const MapGuideUI = {
           resultDiv.style.background = "#fff7ed";
           resultDiv.style.borderColor = "#fb923c";
           resultText.innerHTML = `<i class="fas fa-info-circle" style="color:#ea580c"></i> ${
-            result.message || "Không tìm thấy địa điểm phù hợp"
+            result.message || "No suitable places found"
           }`;
           resultDiv.style.display = "block";
           setTimeout(() => {
@@ -382,12 +382,12 @@ export const MapGuideUI = {
         }
       }
     } catch (error) {
-      console.error("Lỗi khi tìm kiếm:", error);
+      console.error("Error during search:", error);
       if (resultDiv && resultText) {
         resultDiv.style.background = "#fef2f2";
         resultDiv.style.borderColor = "#fca5a5";
         resultText.innerHTML =
-          '<i class="fas fa-exclamation-triangle" style="color:#dc2626"></i> Có lỗi xảy ra khi tìm kiếm';
+          '<i class="fas fa-exclamation-triangle" style="color:#dc2626"></i> An error occurred during the search';
         resultDiv.style.display = "block";
         setTimeout(() => {
           if (resultDiv) {
@@ -450,6 +450,7 @@ export const MapGuideUI = {
     if (currentGuideMarker && map) map.removeLayer(currentGuideMarker);
     if (currentStepMarker && map) map.removeLayer(currentStepMarker);
     clearSuggestionMarkers();
+    this.closePdfPreview();
   },
 };
 

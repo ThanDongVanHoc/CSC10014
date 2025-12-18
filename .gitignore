@@ -152,6 +152,7 @@ activemq-data/
 .env
 .envrc
 .venv
+.env/
 env/
 venv/
 ENV/
@@ -225,3 +226,5 @@ migrations
 
 model_inference/final3/model.safetensors
 model_inference/final3/optimizer.pt
+
+app/chat/.env

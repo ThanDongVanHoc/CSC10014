@@ -2,6 +2,7 @@
 import { State, DOM } from "../services/core.js";
 import { DataManager } from "../services/data.js";
 import { findPlace } from "../../map/components/POIManager.js";
+import { startGuideFlow } from "../../guide_manager/guide_manager.js"
 
 // Helper
 export function hideSearchWrapper() {
@@ -25,11 +26,21 @@ export function renderEmptyState() {
 }
 
 // Append Message
-export function appendMessageToUI(role, text) {
+export function appendMessageToUI(role, text, guideData = null) {
   const doc = document.createElement("div");
   doc.className = "msg " + (role === "user" ? "user" : "bot");
-  doc.innerHTML = text.replace(/\n/g, "<br>");
+
+  // Tạo container riêng cho text để tách biệt với thẻ location (tùy chọn, giúp CSS đẹp hơn)
+  const textContent = document.createElement("div");
+  textContent.innerHTML = text.replace(/\n/g, "<br>");
+  doc.appendChild(textContent);
+
   DOM.chatMessages.appendChild(doc);
+
+  if (role === "model" && guideData) {
+    appendLocationCardsToUI(guideData.locations, guideData, doc);
+  }
+
   DOM.chatMessages.scrollTop = DOM.chatMessages.scrollHeight;
 }
 
@@ -55,23 +66,42 @@ export async function loadSelectedChatToUI() {
   if (!msgs || msgs.length === 0) {
     renderEmptyState();
   } else {
-    msgs.forEach((m) => appendMessageToUI(m.role, m.content));
+    msgs.forEach((m) => {
+      const guidePayload = m.guide || m.guide_data || null;
+      appendMessageToUI(m.role, m.content, guidePayload);
+    });
   }
 }
+window.handleStartGuideFromAdmin = function(locationName) {
+    console.log("🚀 Starting guide from Admin Page for:", locationName);
+    
+    // 1. Close the Admin Helper Modal/Iframe if it exists
+    const adminModal = document.getElementById('admin-helper-modal'); 
+    if (adminModal) {
+        adminModal.remove(); // Or adminModal.style.display = 'none';
+    }
+
+    // 2. Start the Guide Flow
+    if (locationName) {
+        startGuideFlow(locationName);
+    }
+};
 
 // Open Administrative Helper Page
-function openAdminHelperPage(locationName, locationAddress, placeDetails) {
+function openAdminHelperPage(locationName, locationAddress, placeDetails, guideData) {
   const params = new URLSearchParams({
     name: locationName,
     address: locationAddress,
     lat: placeDetails.lat || '',
     lng: placeDetails.lng || '',
     type: detectLocationType(locationName)
+
   });
   
   // Open in new tab
   const url = `/chat/admin_helper?${params.toString()}`;
   window.open(url, '_blank');
+  
 }
 
 // Detect location type for better data loading
@@ -87,7 +117,7 @@ function detectLocationType(name) {
 }
 
 // Append Location Cards
-export async function appendLocationCardsToUI(locations) {
+export async function appendLocationCardsToUI(locations, guideData, parentElement = null) {
   if (!locations || locations.length === 0) return;
 
   const locationsWithDetails = await Promise.all(
@@ -110,7 +140,7 @@ export async function appendLocationCardsToUI(locations) {
   const fragment = document.createDocumentFragment();
 
   validLocations.forEach((data) => {
-    const { placeDetails } = data;
+    const { placeDetails } = data; // data location in databse
     const card = document.createElement("div");
     card.className = "location-card";
     card.style.cursor = "pointer";
@@ -163,6 +193,7 @@ export async function appendLocationCardsToUI(locations) {
         placeDetails.location,
         placeDetails
       );
+
     });
 
     // Card click - show on map
@@ -182,9 +213,13 @@ export async function appendLocationCardsToUI(locations) {
   });
 
   container.appendChild(fragment);
-  DOM.chatMessages.appendChild(container);
-  DOM.chatMessages.scrollTo({
-    top: DOM.chatMessages.scrollHeight,
-    behavior: "smooth",
-  });
+  if (parentElement) {
+    parentElement.appendChild(container);
+  } else {
+    DOM.chatMessages.appendChild(container);
+    DOM.chatMessages.scrollTo({
+      top: DOM.chatMessages.scrollHeight,
+      behavior: "smooth",
+    });
+  }
 }

@@ -1,4 +1,4 @@
-import { State, DOM } from "../services/core.js"; 
+import { State, DOM } from "../services/core.js";
 import { DataManager } from "../services/data.js";
 import { hideSearchWrapper, loadSelectedChatToUI } from "./message_ui.js";
 
@@ -114,7 +114,7 @@ function createDropdownMenu(event, convo) {
   };
 
   menu.querySelector(".delete").onclick = async () => {
-    if (confirm("Xóa cuộc trò chuyện này?")) {
+    if (confirm("Delete this conversation?")) {
       await DataManager.delete(convo.id);
       if (State.selectedId == convo.id) {
         State.selectedId =

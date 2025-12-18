@@ -102,7 +102,7 @@ export async function drawRoute() {
     const data = await res.json();
 
     if (data.code !== "Ok" || !data.routes || !data.routes.length) {
-      return alert("Không tìm thấy đường đi.");
+      return alert("No route found between the selected points.");
     }
 
     const route = data.routes[0];
@@ -144,6 +144,6 @@ export async function drawRoute() {
     }
   } catch (err) {
     console.error("Fetch Error:", err);
-    alert("Lỗi kết nối server bản đồ. Vui lòng thử lại.");
+    alert("Map server connection error. Please try again.");
   }
 }

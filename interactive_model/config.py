@@ -13,11 +13,6 @@ REQUIRED_FIELDS = {
         "description": "Quốc tịch của người dùng (Bắt buộc để tìm Lãnh sự quán phù hợp).",
         "examples": ["Indonesian", "French", "Japanese", "American"]
     },
-    "current_location": {
-        "type": "str",
-        "description": "Địa chỉ/Khu vực hiện tại (Bắt buộc để tính khoảng cách Haversine).",
-        "examples": ["District 1", "Thao Dien Ward", "123 Nguyen Hue"]
-    },
     "problem_category": {
         "type": "str",
         "description": "Phân loại vấn đề chính để chọn database tìm kiếm.",
@@ -138,7 +133,7 @@ REQUIRED_FIELDS = {
 
 # Model configuration
 # GEMINI_MODEL_NAME = 'gemini-flash-lite-latest'  # Free tier: 20 requests/day - TOO LIMITED!
-GEMINI_MODEL_NAME = 'gemini-2.5-flash'  # Free tier: 1500 requests/day (75x more!)
+GEMINI_MODEL_NAME = 'gemini-2.5-flash-lite'  # Free tier: 1500 requests/day (75x more!)
 
 # API settings
 API_HOST = "0.0.0.0"
