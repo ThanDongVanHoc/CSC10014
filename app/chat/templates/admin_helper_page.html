@@ -1,0 +1,1266 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hệ Thống Quản Trị Hành Chính | Admin Portal</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        /* =========================================
+           CSS VARIABLES & RESET
+           ========================================= */
+        :root {
+            --primary: #0f172a;
+            --primary-light: #1e293b;
+            --accent: #2563eb;
+            --accent-hover: #1d4ed8;
+            
+            --bg-body: #f1f5f9;
+            --bg-surface: #ffffff;
+            
+            --text-main: #0f172a;
+            --text-secondary: #64748b;
+            --text-muted: #94a3b8;
+            
+            --success-bg: #dcfce7;
+            --success-text: #166534;
+            --warning-bg: #fef9c3;
+            --warning-text: #854d0e;
+            --danger-bg: #fee2e2;
+            --danger-text: #991b1b;
+
+            --radius-sm: 6px;
+            --radius-md: 10px;
+            --radius-lg: 16px;
+            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+            --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+            
+            --sidebar-width: 280px;
+            --header-height: 70px;
+            --transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; outline: none; }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            line-height: 1.5;
+            font-size: 14px;
+            overflow-x: hidden;
+        }
+
+        a { text-decoration: none; color: inherit; }
+        ul { list-style: none; }
+        button { cursor: pointer; border: none; font-family: inherit; }
+
+        /* =========================================
+           LAYOUT STRUCTURE
+           ========================================= */
+        .app-wrapper {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* MAIN CONTENT */
+        .main-content {
+            flex: 1;
+            padding: 32px;
+            transition: var(--transition);
+            max-width: 1400px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        /* HEADER */
+        .top-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 32px;
+            background: var(--bg-surface);
+            padding: 20px 28px;
+            border-radius: var(--radius-md);
+            box-shadow: var(--shadow-sm);
+            border: 1px solid #e2e8f0;
+        }
+
+        .breadcrumb h2 { 
+            font-size: 24px; 
+            font-weight: 700; 
+            color: var(--text-main);
+            margin-bottom: 4px;
+        }
+        .breadcrumb span { 
+            font-size: 13px; 
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .header-tools { display: flex; gap: 12px; align-items: center; }
+
+        .btn {
+            padding: 10px 20px;
+            border-radius: var(--radius-sm);
+            font-weight: 500;
+            font-size: 13px;
+            transition: var(--transition);
+            display: inline-flex; 
+            align-items: center; 
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background-color: var(--accent);
+            color: white;
+            box-shadow: 0 4px 6px -1px rgba(37, 99, 235, 0.2);
+        }
+        .btn-primary:hover { 
+            background-color: var(--accent-hover); 
+            transform: translateY(-1px);
+            box-shadow: 0 6px 12px -1px rgba(37, 99, 235, 0.3);
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 1px solid #e2e8f0;
+            color: var(--text-main);
+        }
+        .btn-outline:hover { 
+            border-color: var(--accent); 
+            color: var(--accent); 
+            background: #eff6ff;
+        }
+
+        .current-time {
+            font-variant-numeric: tabular-nums;
+            font-weight: 600;
+            color: var(--text-secondary);
+            background: #f8fafc;
+            padding: 8px 16px;
+            border-radius: 20px;
+            border: 1px solid #e2e8f0;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 20px;
+            margin-bottom: 32px;
+        }
+
+        .stat-card {
+            background: var(--bg-surface);
+            padding: 24px;
+            border-radius: var(--radius-md);
+            box-shadow: var(--shadow-sm);
+            border: 1px solid #e2e8f0;
+            position: relative;
+            overflow: hidden;
+            transition: var(--transition);
+        }
+
+        .stat-card:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .stat-card::after {
+            content: ''; 
+            position: absolute; 
+            top: 0; 
+            left: 0; 
+            width: 4px; 
+            height: 100%;
+            background: var(--accent);
+        }
+        
+        .stat-card.warning::after { background: var(--warning-text); }
+        .stat-card.success::after { background: var(--success-text); }
+        .stat-card.info::after { background: #0891b2; }
+        
+        .stat-top { display: flex; justify-content: space-between; margin-bottom: 16px; }
+        .stat-label { color: var(--text-secondary); font-size: 13px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.5px; }
+        .stat-icon { color: var(--text-muted); font-size: 24px; }
+        .stat-value { font-size: 32px; font-weight: 700; color: var(--text-main); letter-spacing: -0.5px; }
+        .stat-desc { font-size: 12px; margin-top: 8px; color: var(--text-muted); }
+        .stat-trend { color: var(--success-text); font-weight: 600; display: inline-flex; align-items: center; gap: 4px; }
+
+        /* Main Grid */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 24px;
+        }
+
+        .card {
+            background: var(--bg-surface);
+            border-radius: var(--radius-md);
+            box-shadow: var(--shadow-sm);
+            border: 1px solid #e2e8f0;
+            display: flex;
+            flex-direction: column;
+            transition: var(--transition);
+        }
+
+        .card:hover {
+            box-shadow: var(--shadow-md);
+        }
+
+        .card-header {
+            padding: 20px 24px;
+            border-bottom: 1px solid #f1f5f9;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .card-title { 
+            font-size: 16px; 
+            font-weight: 600; 
+            display: flex; 
+            align-items: center; 
+            gap: 10px;
+        }
+        
+        .card-icon-box {
+            width: 36px; 
+            height: 36px; 
+            background: #eff6ff; 
+            color: var(--accent);
+            border-radius: 8px; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            font-size: 16px;
+        }
+
+        .card-body { padding: 24px; }
+
+        /* Checklist Styles */
+        .checklist-wrapper { display: flex; flex-direction: column; gap: 12px; }
+
+        .checklist-item {
+            display: flex;
+            align-items: flex-start;
+            padding: 16px;
+            border: 1px solid #e2e8f0;
+            border-radius: var(--radius-sm);
+            transition: var(--transition);
+            cursor: pointer;
+            background: #fff;
+        }
+
+        .checklist-item:hover { 
+            border-color: var(--accent); 
+            box-shadow: var(--shadow-sm);
+            transform: translateX(2px);
+        }
+        
+        .checklist-item.checked {
+            background-color: #f8fafc;
+            border-color: #e2e8f0;
+        }
+        
+        .checklist-item.checked .item-title { 
+            text-decoration: line-through; 
+            color: var(--text-muted); 
+        }
+        .checklist-item.checked .item-desc { color: #cbd5e1; }
+
+        .custom-checkbox {
+            width: 20px; 
+            height: 20px;
+            border: 2px solid #cbd5e1;
+            border-radius: 4px;
+            margin-right: 16px;
+            margin-top: 2px;
+            display: flex; 
+            align-items: center; 
+            justify-content: center;
+            transition: var(--transition);
+            flex-shrink: 0;
+        }
+
+        .checklist-item.checked .custom-checkbox {
+            background: var(--success-text);
+            border-color: var(--success-text);
+            color: white;
+        }
+
+        .checklist-item.checked .custom-checkbox::after {
+            content: '\f00c'; 
+            font-family: 'Font Awesome 6 Free'; 
+            font-weight: 900; 
+            font-size: 11px;
+        }
+
+        .item-content { flex: 1; }
+        .item-title { 
+            font-weight: 600; 
+            color: var(--text-main); 
+            font-size: 14px; 
+            margin-bottom: 4px; 
+            transition: var(--transition); 
+        }
+        .item-desc { 
+            font-size: 13px; 
+            color: var(--text-secondary); 
+            line-height: 1.4; 
+            transition: var(--transition); 
+        }
+        
+        .tag {
+            font-size: 11px; 
+            font-weight: 600; 
+            padding: 3px 10px; 
+            border-radius: 12px; 
+            text-transform: uppercase; 
+            margin-top: 8px; 
+            display: inline-block;
+        }
+        .tag-required { background: var(--danger-bg); color: var(--danger-text); }
+        .tag-optional { background: #e0f2fe; color: #0369a1; }
+
+        /* Quick Actions Grid */
+        .actions-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+        }
+
+        .action-card {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: var(--radius-sm);
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .action-card:hover {
+            background: white;
+            border-color: var(--accent);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .action-icon {
+            font-size: 28px; 
+            color: var(--accent); 
+            margin-bottom: 12px;
+            height: 56px; 
+            width: 56px; 
+            background: white; 
+            border-radius: 12px;
+            display: inline-flex; 
+            align-items: center; 
+            justify-content: center;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .action-title { 
+            font-weight: 600; 
+            font-size: 13px; 
+            color: var(--text-main);
+            margin-bottom: 4px;
+        }
+
+        .action-desc {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        /* Progress Section */
+        .progress-container { margin-bottom: 24px; }
+        .progress-info { 
+            display: flex; 
+            justify-content: space-between; 
+            margin-bottom: 10px; 
+            font-size: 13px; 
+            font-weight: 600; 
+        }
+        .progress-track { 
+            height: 10px; 
+            background: #e2e8f0; 
+            border-radius: 5px; 
+            overflow: hidden; 
+        }
+        .progress-bar { 
+            height: 100%; 
+            background: linear-gradient(90deg, var(--accent), #60a5fa); 
+            width: 0%; 
+            transition: width 0.5s ease;
+            position: relative;
+        }
+
+        .progress-bar::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            animation: shimmer 2s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        /* Modal System */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(4px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: var(--radius-lg);
+            width: 90%;
+            max-width: 800px;
+            max-height: 85vh;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            animation: slideIn 0.3s ease;
+            box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-30px) scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .modal-header {
+            padding: 24px 28px;
+            border-bottom: 1px solid #f1f5f9;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: linear-gradient(135deg, #f8fafc 0%, #ffffff 100%);
+        }
+
+        .modal-header h2 {
+            font-size: 20px;
+            color: var(--text-main);
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .modal-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--accent);
+            color: white;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+        }
+
+        .modal-close {
+            width: 36px;
+            height: 36px;
+            border: none;
+            background: #f1f5f9;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            color: var(--text-secondary);
+            transition: var(--transition);
+        }
+
+        .modal-close:hover {
+            background: var(--danger-bg);
+            color: var(--danger-text);
+        }
+
+        .modal-body {
+            padding: 24px 28px;
+            overflow-y: auto;
+            flex: 1;
+        }
+
+        .template-grid {
+            display: grid;
+            gap: 12px;
+        }
+
+        .template-item {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 16px;
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .template-item:hover {
+            background: white;
+            border-color: var(--accent);
+            transform: translateX(4px);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .template-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 10px;
+            background: var(--accent);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            flex-shrink: 0;
+        }
+
+        .template-info {
+            flex: 1;
+        }
+
+        .template-name {
+            font-weight: 600;
+            color: var(--text-main);
+            font-size: 14px;
+            margin-bottom: 4px;
+        }
+
+        .template-meta {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        .template-action {
+            color: var(--accent);
+            font-size: 18px;
+        }
+
+        /* Contact List in Modal */
+        .contact-modal-list {
+            display: grid;
+            gap: 12px;
+        }
+
+        .contact-modal-item {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 16px;
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: var(--radius-sm);
+            transition: var(--transition);
+            text-decoration: none;
+        }
+
+        .contact-modal-item:hover {
+            background: white;
+            border-color: var(--success-text);
+            transform: translateX(4px);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .contact-modal-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 10px;
+            background: var(--success-text);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            flex-shrink: 0;
+        }
+
+        /* Notification Toast */
+        #toast-container { 
+            position: fixed; 
+            bottom: 30px; 
+            right: 30px; 
+            z-index: 2000; 
+            display: flex; 
+            flex-direction: column; 
+            gap: 10px; 
+        }
+        
+        .toast {
+            background: white; 
+            padding: 16px 20px; 
+            border-radius: var(--radius-md);
+            box-shadow: var(--shadow-lg); 
+            display: flex; 
+            align-items: center; 
+            gap: 12px;
+            animation: slideInRight 0.3s ease; 
+            border-left: 4px solid var(--success-text);
+            min-width: 320px;
+        }
+        
+        @keyframes slideInRight { 
+            from { transform: translateX(100%); opacity: 0; } 
+            to { transform: translateX(0); opacity: 1; } 
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .dashboard-grid { grid-template-columns: 1fr; }
+        }
+
+        @media (max-width: 768px) {
+            .main-content { padding: 20px; }
+            .stats-grid { grid-template-columns: 1fr; }
+            .top-header { flex-direction: column; gap: 16px; align-items: stretch; }
+            .header-tools { justify-content: stretch; }
+            .btn { flex: 1; justify-content: center; }
+            .actions-grid { grid-template-columns: 1fr; }
+        }
+        
+        @media print {
+            .header-tools, .action-card, .modal-overlay { display: none !important; }
+            .main-content { padding: 0; }
+            .card { box-shadow: none; border: 1px solid #000; page-break-inside: avoid; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="app-wrapper">
+        <main class="main-content">
+            <header class="top-header">
+                <div class="breadcrumb">
+                    <h2>Bảng Điều Khiển Hành Chính</h2>
+                    <span id="locationInfo">
+                        <i class="fas fa-map-marker-alt" style="color:var(--accent)"></i>
+                        Đang tải dữ liệu vị trí...
+                    </span>
+                </div>
+                <div class="header-tools">
+                    <div class="current-time">
+                        <i class="fas fa-clock"></i>
+                        <span id="clock">00:00:00</span>
+                    </div>
+                    <button class="btn btn-outline" onclick="window.print()">
+                        <i class="fas fa-print"></i> In trang
+                    </button>
+                    <button class="btn btn-primary" onclick="triggerGuide()">
+                        <i class="fas fa-play"></i> Hướng dẫn
+                    </button>
+                </div>
+            </header>
+
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-top">
+                        <span class="stat-label">Tiến độ hoàn thành</span>
+                        <i class="fas fa-tasks stat-icon"></i>
+                    </div>
+                    <div class="stat-value" id="statCompleted">0/8</div>
+                    <div class="stat-desc">
+                        <span class="stat-trend"><i class="fas fa-arrow-up"></i> 12%</span> so với hôm qua
+                    </div>
+                </div>
+
+                <div class="stat-card warning">
+                    <div class="stat-top">
+                        <span class="stat-label">Hồ sơ bắt buộc</span>
+                        <i class="fas fa-file-signature stat-icon"></i>
+                    </div>
+                    <div class="stat-value" id="statRequired">5</div>
+                    <div class="stat-desc">Cần ưu tiên xử lý sớm</div>
+                </div>
+
+                <div class="stat-card success">
+                    <div class="stat-top">
+                        <span class="stat-label">Thời gian ước tính</span>
+                        <i class="fas fa-clock stat-icon"></i>
+                    </div>
+                    <div class="stat-value">45 Phút</div>
+                    <div class="stat-desc">Quy trình tiêu chuẩn</div>
+                </div>
+
+                <div class="stat-card info">
+                    <div class="stat-top">
+                        <span class="stat-label">Tài liệu hỗ trợ</span>
+                        <i class="fas fa-folder-open stat-icon"></i>
+                    </div>
+                    <div class="stat-value" id="statDocs">12</div>
+                    <div class="stat-desc">Biểu mẫu & mẫu đơn</div>
+                </div>
+            </div>
+
+            <div class="dashboard-grid">
+                
+                <div class="column-main">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">
+                                <div class="card-icon-box"><i class="fas fa-clipboard-list"></i></div>
+                                Danh Sách Hồ Sơ Cần Chuẩn Bị
+                            </div>
+                            <button class="btn btn-outline" style="padding: 6px 12px; font-size: 12px;" onclick="resetAll()">
+                                <i class="fas fa-redo"></i> Làm mới
+                            </button>
+                        </div>
+                        <div class="card-body">
+                            <div class="progress-container">
+                                <div class="progress-info">
+                                    <span>Trạng thái hoàn thiện</span>
+                                    <span id="progressText" style="color: var(--accent);">0%</span>
+                                </div>
+                                <div class="progress-track">
+                                    <div class="progress-bar" id="progressBar"></div>
+                                </div>
+                            </div>
+                            
+                            <div class="checklist-wrapper" id="checklistContainer">
+                                <!-- Checklist items loaded here -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="column-side" style="display: flex; flex-direction: column; gap: 24px;">
+                    
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">
+                                <div class="card-icon-box"><i class="fas fa-bolt"></i></div>
+                                Truy Cập Nhanh
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="actions-grid">
+                                <div class="action-card" onclick="openModal('forms')">
+                                    <div class="action-icon"><i class="fas fa-file-alt"></i></div>
+                                    <div class="action-title">Biểu mẫu</div>
+                                    <div class="action-desc">Mẫu đơn & form</div>
+                                </div>
+                                <div class="action-card" onclick="openModal('sop')">
+                                    <div class="action-icon"><i class="fas fa-book-reader"></i></div>
+                                    <div class="action-title">Quy trình SOP</div>
+                                    <div class="action-desc">Hướng dẫn chi tiết</div>
+                                </div>
+                                <div class="action-card" onclick="openModal('templates')">
+                                    <div class="action-icon"><i class="fas fa-file-word"></i></div>
+                                    <div class="action-title">Mẫu tài liệu</div>
+                                    <div class="action-desc">Templates</div>
+                                </div>
+                                <div class="action-card" onclick="openModal('contacts')">
+                                    <div class="action-icon"><i class="fas fa-phone-volume"></i></div>
+                                    <div class="action-title">Liên hệ</div>
+                                    <div class="action-desc">Hỗ trợ khẩn cấp</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">
+                                <div class="card-icon-box"><i class="fas fa-phone-alt"></i></div>
+                                Liên Hệ Khẩn Cấp
+                            </div>
+                        </div>
+                        <div class="card-body" style="padding-top: 0;">
+                            <ul id="contactList" style="margin-top: 20px;">
+                                <!-- Contacts loaded here -->
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Modal Overlay -->
+    <div class="modal-overlay" id="modalOverlay" onclick="closeModal(event)">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <div class="modal-header">
+                <h2 id="modalTitle">
+                    <div class="modal-icon" id="modalIcon">
+                        <i class="fas fa-file"></i>
+                    </div>
+                    <span id="modalTitleText">Tiêu đề</span>
+                </h2>
+                <button class="modal-close" onclick="closeModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body" id="modalBody">
+                <!-- Content loaded dynamically -->
+            </div>
+        </div>
+    </div>
+
+    <div id="toast-container"></div>
+
+    <script>
+        // =========================================
+        // DATA & STATE
+        // =========================================
+        const data = {
+            checklist: [
+                { id: 1, title: 'CCCD Gắn Chip (Bản chính)', desc: 'Còn hạn sử dụng, không bị mờ số/ảnh', required: true },
+                { id: 2, title: 'CCCD Gắn Chip (03 bản sao)', desc: 'Đã công chứng không quá 6 tháng', required: true },
+                { id: 3, title: 'Sổ Hộ Khẩu / Giấy Xác Nhận Cư Trú', desc: 'Mẫu CT07 hoặc bản gốc SHK', required: true },
+                { id: 4, title: 'Giấy Khai Sinh', desc: 'Bản sao trích lục (nếu cần đối chiếu)', required: false },
+                { id: 5, title: 'Ảnh thẻ 4x6 (Phông trắng)', desc: 'Chụp không quá 6 tháng, rõ mặt', required: true },
+                { id: 6, title: 'Đơn Đề Nghị (Mẫu 01)', desc: 'Điền đầy đủ thông tin, ký tên', required: true },
+                { id: 7, title: 'Lệ phí hành chính', desc: 'Chuẩn bị tiền mặt hoặc chuyển khoản', required: true },
+                { id: 8, title: 'Giấy Ủy Quyền', desc: 'Có xác nhận của địa phương (nếu đi thay)', required: false },
+            ],
+            contacts: [
+                { name: 'Cảnh Sát Khu Vực', phone: '113', type: 'security' },
+                { name: 'Cứu Hỏa', phone: '114', type: 'fire' },
+                { name: 'Cấp Cứu Y Tế', phone: '115', type: 'medical' },
+                { name: 'Tổng Đài Thành Phố', phone: '1022', type: 'city' }
+            ],
+            forms: [
+                { name: 'Đơn Đăng Ký Thường Trú', type: 'PDF', size: '245 KB', icon: 'fa-file-pdf' },
+                { name: 'Đơn Xin Cấp Giấy Xác Nhận', type: 'DOCX', size: '128 KB', icon: 'fa-file-word' },
+                { name: 'Mẫu Cam Kết Cá Nhân', type: 'PDF', size: '198 KB', icon: 'fa-file-pdf' },
+                { name: 'Biên Bản Xác Minh', type: 'DOCX', size: '156 KB', icon: 'fa-file-word' },
+                { name: 'Giấy Ủy Quyền Chuẩn', type: 'PDF', size: '112 KB', icon: 'fa-file-pdf' },
+                { name: 'Phiếu Tiếp Nhận Hồ Sơ', type: 'XLSX', size: '89 KB', icon: 'fa-file-excel' }
+            ],
+            sops: [
+                { name: 'Quy Trình Tiếp Nhận Hồ Sơ', category: 'Thủ tục hành chính' },
+                { name: 'Hướng Dẫn Kiểm Tra Giấy Tờ', category: 'Xác thực' },
+                { name: 'Quy Định Về Lệ Phí', category: 'Tài chính' },
+                { name: 'Xử Lý Trường Hợp Đặc Biệt', category: 'Ngoại lệ' },
+                { name: 'Quy Trình Bảo Mật Thông Tin', category: 'An ninh' },
+                { name: 'Chuẩn Phục Vụ Công Dân', category: 'Dịch vụ' }
+            ],
+            templates: [
+                { name: 'Biên Bản Họp', type: 'DOCX', size: '145 KB', icon: 'fa-file-word' },
+                { name: 'Báo Cáo Tình Hình', type: 'XLSX', size: '289 KB', icon: 'fa-file-excel' },
+                { name: 'Công Văn Chính Thức', type: 'DOCX', size: '167 KB', icon: 'fa-file-word' },
+                { name: 'Thông Báo Nội Bộ', type: 'PDF', size: '123 KB', icon: 'fa-file-pdf' },
+                { name: 'Biểu Mẫu Thống Kê', type: 'XLSX', size: '234 KB', icon: 'fa-file-excel' }
+            ]
+        };
+
+        // =========================================
+        // DOM ELEMENTS
+        // =========================================
+        const els = {
+            checklist: document.getElementById('checklistContainer'),
+            progressBar: document.getElementById('progressBar'),
+            progressText: document.getElementById('progressText'),
+            statCompleted: document.getElementById('statCompleted'),
+            statRequired: document.getElementById('statRequired'),
+            statDocs: document.getElementById('statDocs'),
+            contactList: document.getElementById('contactList'),
+            clock: document.getElementById('clock'),
+            location: document.getElementById('locationInfo')
+        };
+
+        // =========================================
+        // INITIALIZATION
+        // =========================================
+        
+        function init() {
+            renderChecklist();
+            renderContacts();
+            startClock();
+            updateLocation();
+            loadState();
+            updateStats();
+        }
+
+        // --- Clock ---
+        function startClock() {
+            const update = () => {
+                const now = new Date();
+                els.clock.textContent = now.toLocaleTimeString('vi-VN', { hour12: false });
+            };
+            update();
+            setInterval(update, 1000);
+        }
+
+        function updateLocation() {
+            const params = new URLSearchParams(window.location.search);
+            const name = params.get('name');
+            const address = params.get('address');
+            
+            if (name && address) {
+                els.location.innerHTML = `<i class="fas fa-map-marker-alt" style="color:var(--accent)"></i> ${name}, ${address}`;
+            } else {
+                els.location.innerHTML = '<i class="fas fa-map-marker-alt" style="color:var(--accent)"></i> UBND Quận 1, TP. Hồ Chí Minh';
+            }
+        }
+
+        // --- Checklist Logic ---
+        function renderChecklist() {
+            els.checklist.innerHTML = data.checklist.map((item, index) => `
+                <div class="checklist-item" id="item-${index}" onclick="toggleCheck(${index})">
+                    <div class="custom-checkbox" id="cb-${index}"></div>
+                    <div class="item-content">
+                        <div class="item-title">${item.title}</div>
+                        <div class="item-desc">${item.desc}</div>
+                        <span class="tag ${item.required ? 'tag-required' : 'tag-optional'}">
+                            ${item.required ? 'Bắt buộc' : 'Tùy chọn'}
+                        </span>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function toggleCheck(index) {
+            const itemEl = document.getElementById(`item-${index}`);
+            itemEl.classList.toggle('checked');
+            
+            if(itemEl.classList.contains('checked')) {
+                showToast('Đã hoàn thành: ' + data.checklist[index].title, 'success');
+            }
+
+            updateProgress();
+            saveState();
+        }
+
+        function updateProgress() {
+            const items = document.querySelectorAll('.checklist-item');
+            const checked = document.querySelectorAll('.checklist-item.checked');
+            
+            const percent = Math.round((checked.length / items.length) * 100);
+            
+            els.progressBar.style.width = `${percent}%`;
+            els.progressText.textContent = `${percent}%`;
+            els.statCompleted.textContent = `${checked.length}/${items.length}`;
+
+            if (percent === 100) {
+                els.progressBar.style.background = '#22c55e';
+                showToast('🎉 Chúc mừng! Bạn đã hoàn thành tất cả các bước chuẩn bị!', 'success');
+            }
+        }
+
+        function updateStats() {
+            const required = data.checklist.filter(item => item.required).length;
+            els.statRequired.textContent = required;
+            els.statDocs.textContent = data.forms.length + data.templates.length;
+        }
+
+        // --- Contacts Logic ---
+        function renderContacts() {
+            els.contactList.innerHTML = data.contacts.map(c => `
+                <li style="display: flex; align-items: center; justify-content: space-between; padding: 12px 0; border-bottom: 1px dashed #e2e8f0;">
+                    <div style="display: flex; gap: 12px; align-items: center;">
+                        <div style="width: 36px; height: 36px; background: #fee2e2; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: var(--danger-text);">
+                            <i class="fas ${getContactIcon(c.type)}"></i>
+                        </div>
+                        <div>
+                            <div style="font-weight: 600; font-size: 13px;">${c.name}</div>
+                            <div style="font-size: 12px; color: var(--text-muted);">Hỗ trợ 24/7</div>
+                        </div>
+                    </div>
+                    <a href="tel:${c.phone}" style="color: var(--danger-text); font-weight: 700; font-size: 15px; padding: 6px 12px; background: #fee2e2; border-radius: 6px; font-family: monospace;">
+                        ${c.phone}
+                    </a>
+                </li>
+            `).join('');
+        }
+
+        function getContactIcon(type) {
+            const icons = {
+                security: 'fa-shield-alt',
+                fire: 'fa-fire-extinguisher',
+                medical: 'fa-ambulance',
+                city: 'fa-building'
+            };
+            return icons[type] || 'fa-phone';
+        }
+
+        // --- Modal System ---
+        function openModal(type) {
+            const modal = document.getElementById('modalOverlay');
+            const title = document.getElementById('modalTitleText');
+            const icon = document.getElementById('modalIcon');
+            const body = document.getElementById('modalBody');
+
+            let content = '';
+            let iconHtml = '';
+
+            if (type === 'forms') {
+                title.textContent = 'Biểu Mẫu Đơn Từ';
+                iconHtml = '<i class="fas fa-file-alt"></i>';
+                content = getFormsContent();
+            } else if (type === 'sop') {
+                title.textContent = 'Quy Trình SOP';
+                iconHtml = '<i class="fas fa-book-reader"></i>';
+                content = getSOPContent();
+            } else if (type === 'templates') {
+                title.textContent = 'Mẫu Tài Liệu';
+                iconHtml = '<i class="fas fa-file-word"></i>';
+                content = getTemplatesContent();
+            } else if (type === 'contacts') {
+                title.textContent = 'Danh Bạ Liên Hệ';
+                iconHtml = '<i class="fas fa-phone-volume"></i>';
+                content = getContactsContent();
+            }
+
+            icon.innerHTML = iconHtml;
+            body.innerHTML = content;
+            modal.classList.add('active');
+        }
+
+        function closeModal(event) {
+            if (event && event.target !== event.currentTarget) return;
+            document.getElementById('modalOverlay').classList.remove('active');
+        }
+
+        function getFormsContent() {
+            return `
+                <div class="template-grid">
+                    ${data.forms.map(form => `
+                        <div class="template-item" onclick="downloadFile('${form.name}')">
+                            <div class="template-icon">
+                                <i class="fas ${form.icon}"></i>
+                            </div>
+                            <div class="template-info">
+                                <div class="template-name">${form.name}</div>
+                                <div class="template-meta">${form.type} • ${form.size}</div>
+                            </div>
+                            <i class="fas fa-download template-action"></i>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+        }
+
+        function getSOPContent() {
+            return `
+                <div class="template-grid">
+                    ${data.sops.map(sop => `
+                        <div class="template-item" onclick="viewSOP('${sop.name}')">
+                            <div class="template-icon" style="background: #0891b2;">
+                                <i class="fas fa-book"></i>
+                            </div>
+                            <div class="template-info">
+                                <div class="template-name">${sop.name}</div>
+                                <div class="template-meta">${sop.category}</div>
+                            </div>
+                            <i class="fas fa-chevron-right template-action"></i>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+        }
+
+        function getTemplatesContent() {
+            return `
+                <div class="template-grid">
+                    ${data.templates.map(template => `
+                        <div class="template-item" onclick="downloadFile('${template.name}')">
+                            <div class="template-icon" style="background: #7c3aed;">
+                                <i class="fas ${template.icon}"></i>
+                            </div>
+                            <div class="template-info">
+                                <div class="template-name">${template.name}</div>
+                                <div class="template-meta">${template.type} • ${template.size}</div>
+                            </div>
+                            <i class="fas fa-download template-action"></i>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+        }
+
+        function getContactsContent() {
+            const allContacts = [
+                { name: 'Văn Phòng Chính', phone: '028 1234 5678', dept: 'Hành chính', icon: 'fa-building' },
+                { name: 'Bộ Phận IT', phone: '028 1234 5679', dept: 'Kỹ thuật', icon: 'fa-laptop-code' },
+                { name: 'Phòng Nhân Sự', phone: '028 1234 5680', dept: 'Nhân sự', icon: 'fa-users' },
+                { name: 'Bảo Vệ An Ninh', phone: '028 1234 5681', dept: 'An ninh', icon: 'fa-shield-alt' },
+                { name: 'Quản Lý Cơ Sở', phone: '028 1234 5682', dept: 'Cơ sở vật chất', icon: 'fa-tools' }
+            ];
+
+            return `
+                <div class="contact-modal-list">
+                    ${allContacts.map(contact => `
+                        <a href="tel:${contact.phone}" class="contact-modal-item">
+                            <div class="contact-modal-icon">
+                                <i class="fas ${contact.icon}"></i>
+                            </div>
+                            <div class="template-info">
+                                <div class="template-name">${contact.name}</div>
+                                <div class="template-meta">${contact.dept} • ${contact.phone}</div>
+                            </div>
+                            <i class="fas fa-phone-alt template-action"></i>
+                        </a>
+                    `).join('')}
+                </div>
+            `;
+        }
+
+        // --- Utility Functions ---
+        function downloadFile(name) {
+            showToast('Đang tải xuống: ' + name, 'info');
+            closeModal();
+        }
+
+        function viewSOP(name) {
+            showToast('Đang mở: ' + name, 'info');
+            closeModal();
+        }
+
+        function showToast(msg, type = 'success') {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            toast.className = 'toast';
+            
+            const icons = {
+                success: 'fa-check-circle',
+                info: 'fa-info-circle',
+                warning: 'fa-exclamation-triangle',
+                error: 'fa-times-circle'
+            };
+            
+            const colors = {
+                success: 'var(--success-text)',
+                info: 'var(--accent)',
+                warning:'var(--warning-text)',
+                error: 'var(--danger-text)'
+            };
+
+            // Icon hiển thị
+            const icon = document.createElement('i');
+            icon.className = `fas ${icons[type]}`;
+            icon.style.marginRight = '12px';
+            icon.style.fontSize = '18px';
+            icon.style.color = type === 'success' ? '#10b981' : 
+                             type === 'error' ? '#ef4444' : 
+                             type === 'warning' ? '#f59e0b' : '#3b82f6';
+
+            // Nội dung text
+            const text = document.createElement('span');
+            text.textContent = msg;
+            text.style.color = '#1e293b';
+            text.style.fontWeight = '500';
+
+            toast.appendChild(icon);
+            toast.appendChild(text);
+
+            // Thêm style cho toast
+            toast.style.borderLeft = `4px solid ${icon.style.color}`;
+
+            container.appendChild(toast);
+
+            // Hiệu ứng xuất hiện
+            requestAnimationFrame(() => {
+                toast.classList.add('show');
+            });
+
+            // Tự động tắt sau 3s
+            setTimeout(() => {
+                toast.classList.remove('show');
+                setTimeout(() => {
+                    if (toast.parentNode) toast.parentNode.removeChild(toast);
+                }, 300); // Đợi hiệu ứng trượt ra kết thúc
+            }, 3000);
+        }
+
+        // --- Data Persistence (Lưu trạng thái) ---
+        function saveState() {
+            const checkedIndices = [];
+            document.querySelectorAll('.checklist-item.checked').forEach(item => {
+                // Lấy index từ id "item-1", "item-2"...
+                const id = item.id.replace('item-', '');
+                checkedIndices.push(parseInt(id));
+            });
+            localStorage.setItem('admin_dashboard_state', JSON.stringify(checkedIndices));
+        }
+
+        function loadState() {
+            const saved = localStorage.getItem('admin_dashboard_state');
+            if (saved) {
+                try {
+                    const indices = JSON.parse(saved);
+                    indices.forEach(index => {
+                        const item = document.getElementById(`item-${index}`);
+                        if (item) {
+                            item.classList.add('checked');
+                            // Đánh dấu checkbox con
+                            const cb = document.getElementById(`cb-${index}`);
+                            if(cb) cb.classList.add('checked'); 
+                        }
+                    });
+                    updateProgress();
+                } catch (e) {
+                    console.error('Lỗi đọc dữ liệu cũ', e);
+                }
+            }
+        }
+
+        function resetAll() {
+            if(confirm('Bạn có chắc muốn xóa toàn bộ tiến độ và làm lại từ đầu?')) {
+                localStorage.removeItem('admin_dashboard_state');
+                document.querySelectorAll('.checklist-item').forEach(item => {
+                    item.classList.remove('checked');
+                });
+                updateProgress();
+                showToast('Đã làm mới toàn bộ danh sách!', 'info');
+            }
+        }
+
+        function triggerGuide() {
+            showToast('Hệ thống hướng dẫn đang được cập nhật...', 'warning');
+        }
+
+        // --- Khởi chạy ---
+        window.addEventListener('DOMContentLoaded', init);
+
+    </script>

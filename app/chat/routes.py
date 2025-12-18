@@ -444,3 +444,24 @@ def delete_convo(convo_id):
 @chat_bp.route('/auth_status')
 def auth_status():
     return jsonify({"logged_in": bool(session.get("user_email"))})
+
+
+# In your Flask application file (e.g., routes.py or app.py)
+
+@chat_bp.route('/admin_helper')
+def admin_helper():
+    """Serve the administrative helper page"""
+    location_name = request.args.get('name', 'Unknown Location')
+    location_address = request.args.get('address', 'Address not available')
+    location_type = request.args.get('type', 'default')
+    lat = request.args.get('lat', '')
+    lng = request.args.get('lng', '')
+    
+    return render_template(
+        'admin_helper_page.html',
+        location_name=location_name,
+        location_address=location_address,
+        location_type=location_type,
+        lat=lat,
+        lng=lng
+    )

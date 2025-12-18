@@ -1,7 +1,7 @@
+// js/chat/components/message_ui.js
 import { State, DOM } from "../services/core.js";
 import { DataManager } from "../services/data.js";
 import { findPlace } from "../../map/components/POIManager.js";
-import { startGuideFlow } from "../../guide_manager/guide_manager.js";
 
 // Helper
 export function hideSearchWrapper() {
@@ -59,6 +59,33 @@ export async function loadSelectedChatToUI() {
   }
 }
 
+// Open Administrative Helper Page
+function openAdminHelperPage(locationName, locationAddress, placeDetails) {
+  const params = new URLSearchParams({
+    name: locationName,
+    address: locationAddress,
+    lat: placeDetails.lat || '',
+    lng: placeDetails.lng || '',
+    type: detectLocationType(locationName)
+  });
+  
+  // Open in new tab
+  const url = `/chat/admin_helper?${params.toString()}`;
+  window.open(url, '_blank');
+}
+
+// Detect location type for better data loading
+function detectLocationType(name) {
+  const n = name.toLowerCase();
+  if (n.includes('công chứng') || n.includes('notary')) return 'notary';
+  if (n.includes('cmnd') || n.includes('cccd') || n.includes('id card')) return 'id_card';
+  if (n.includes('hộ chiếu') || n.includes('passport')) return 'passport';
+  if (n.includes('hộ khẩu') || n.includes('residence')) return 'residence';
+  if (n.includes('khai sinh') || n.includes('birth')) return 'birth';
+  if (n.includes('kết hôn') || n.includes('marriage')) return 'marriage';
+  return 'default';
+}
+
 // Append Location Cards
 export async function appendLocationCardsToUI(locations) {
   if (!locations || locations.length === 0) return;
@@ -69,6 +96,7 @@ export async function appendLocationCardsToUI(locations) {
         const currentPlace = await findPlace(loc.Ten);
         return currentPlace ? { ...loc, placeDetails: currentPlace } : null;
       } catch (error) {
+        console.error('Error finding place:', error);
         return null;
       }
     })
@@ -90,6 +118,7 @@ export async function appendLocationCardsToUI(locations) {
     const phoneLink = placeDetails.phone_number
       ? `<a href="tel:${placeDetails.phone_number}">${placeDetails.phone_number}</a>`
       : "Not available";
+    
     let webLink = "";
     if (placeDetails.website) {
       const url = placeDetails.website.startsWith("http")
@@ -99,18 +128,19 @@ export async function appendLocationCardsToUI(locations) {
     }
 
     card.innerHTML = `
-    <h3>${placeDetails.name}</h3>
-    <p class="address">${placeDetails.location}</p>
-    <p class="phone">Phone: ${phoneLink}</p>
-    <div class="card-footer">
+      <h3>${placeDetails.name}</h3>
+      <p class="address">${placeDetails.location}</p>
+      <p class="phone">Phone: ${phoneLink}</p>
+      <div class="card-footer">
         <div class="links">${webLink}<a href="#" class="map-link">View on Map</a></div>
-        <button class="btn-guide-trigger" style="border:1px solid #0078ff; color:#0078ff; background:white; padding:6px 10px; border-radius:6px; cursor:pointer;">
-            <i class="fas fa-list-check"></i> Guide
+        <button class="btn-guide-trigger" style="border:1px solid #0078ff; color:#0078ff; background:white; padding:8px 16px; border-radius:8px; cursor:pointer; font-weight:600; display:flex; align-items:center; gap:6px; transition: all 0.3s ease;">
+          <i class="fas fa-clipboard-check"></i> 
+          <span>Admin Helper</span>
         </button>
-    </div>
-`;
+      </div>
+    `;
 
-    // Events
+    // View on Map
     card.querySelector(".map-link").addEventListener("click", (e) => {
       e.preventDefault();
       e.stopPropagation();
@@ -123,12 +153,19 @@ export async function appendLocationCardsToUI(locations) {
         );
     });
 
+    // Admin Helper Button - Opens dedicated page
     card.querySelector(".btn-guide-trigger").addEventListener("click", (e) => {
       e.preventDefault();
       e.stopPropagation();
-      startGuideFlow(data.Ten);
+      
+      openAdminHelperPage(
+        data.Ten,
+        placeDetails.location,
+        placeDetails
+      );
     });
 
+    // Card click - show on map
     card.addEventListener("click", (e) => {
       if (e.target.tagName === "A" || e.target.closest(".btn-guide-trigger"))
         return;

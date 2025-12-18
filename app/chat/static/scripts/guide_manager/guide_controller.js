@@ -1,9 +1,11 @@
 import { handleScreenEvent } from "../map/components/Overlay.js";
 import {clearSuggestionMarkers} from "../map/services/search.js"
 
-// ==========================================
-// 2. CONTROLLER CLASS (Giữ nguyên logic cũ, chỉ sửa nhỏ)
-// ==========================================
+// Helper function to trigger events
+function triggerGuideEvent(eventName, data) {
+  document.dispatchEvent(new CustomEvent(eventName, { detail: data }));
+}
+
 export class SmartGuideController {
     constructor(scenario) {
         this.locName = null; 
@@ -11,52 +13,87 @@ export class SmartGuideController {
         this.steps = scenario.steps;
         this.currentIndex = 0;
         this.selectors = { map: 'map', chat: 'chatMessages' };
+        this.procedureId = null; // Link to integrated admin procedure
         this._injectCelebrationStyles();
     }
 
     start(locationName) {
         this.currentIndex = 0;
-        // Sử dụng title từ scenario nếu có
         const displayTitle = this.scenario.title || locationName;
         
-        this._uiAppendMessage('bot', `🚀 Bắt đầu: ${displayTitle}. Vui lòng nhìn bản đồ.`);
+        this._uiAppendMessage('bot', `🚀 Starting: ${displayTitle}. Please watch the map.`);
         this._toggleFullscreen(true);
         this._renderCurrentStep();
+
+        // NEW: Trigger guide started event
+        triggerGuideEvent('guideStarted', {
+            guideName: displayTitle,
+            steps: this.steps,
+            totalSteps: this.steps.length
+        });
+
+        // NEW: Add to integrated admin panel
+        if (window.integratedAdmin) {
+            this.procedureId = window.integratedAdmin.addProcedure(displayTitle, this.steps.length);
+            
+            // Show notification
+            if (window.showNotification) {
+                window.showNotification(
+                    '🚀 Guide Started',
+                    `Now tracking: ${displayTitle}`,
+                    3000
+                );
+            }
+        }
     }
 
     nextStep(stepId) {
         this._uiDisableCard(stepId);
-        this._uiAppendMessage('user', 'Đã xong bước này.');
+        this._uiAppendMessage('user', 'Completed this step.');
 
-        this._showThinking('Đang xử lý...', () => {
+        this._showThinking('Processing...', () => {
             this.currentIndex++;
+            
+            // NEW: Update progress in integrated admin
+            if (this.procedureId && window.integratedAdmin) {
+                window.integratedAdmin.updateProcedure(this.procedureId, {
+                    currentStep: this.currentIndex,
+                    status: this.currentIndex >= this.steps.length ? 'completed' : 'active'
+                });
+            }
+
             if (this.currentIndex >= this.steps.length) {
                 this._finish();
             } else {
                 this._renderCurrentStep();
+                
+                // NEW: Trigger step changed event
+                const step = this.steps[this.currentIndex];
+                triggerGuideEvent('guideStepChanged', {
+                    stepNumber: this.currentIndex + 1,
+                    stepTitle: step.title,
+                    totalSteps: this.steps.length,
+                    stepType: step.type
+                });
             }
         });
     }
 
     async performSuggestion(query) {
-        this._uiAppendMessage('user', `Tìm giúp tôi: ${query}`);
+        this._uiAppendMessage('user', `Find for me: ${query}`);
         
         const { map } = state;
         if (!map) {
-            this._uiAppendMessage('bot', '❌ Không thể truy cập bản đồ');
+            this._uiAppendMessage('bot', '❌ Cannot access map');
             return;
         }
 
-        this._showThinking(`Đang tìm kiếm "${query}" quanh đây...`, async () => {
+        this._showThinking(`Searching "${query}" nearby...`, async () => {
             try {
-                // Xóa các markers suggestion cũ
                 clearSuggestionMarkers();
-
-                // Lấy vị trí hiện tại của map
                 const center = map.getCenter();
                 const searchRadius = 2000; // 2km
 
-                // Gọi hàm tìm kiếm thực với Overpass API
                 const result = await findPlaceAround(
                     center.lat,
                     center.lng,
@@ -64,20 +101,19 @@ export class SmartGuideController {
                     query
                 );
 
-                // Hiển thị kết quả
                 if (result.success && result.count > 0) {
                     this._uiAppendMessage('bot', 
-                        `✅ ${result.message}. Các marker màu vàng đã được đánh dấu trên bản đồ.`
+                        `✅ ${result.message}. Yellow markers have been placed on the map.`
                     );
                 } else {
                     this._uiAppendMessage('bot', 
-                        `⚠️ ${result.message || 'Không tìm thấy địa điểm phù hợp'}. Bạn có thể thử mở rộng bán kính tìm kiếm hoặc tìm loại địa điểm khác.`
+                        `⚠️ ${result.message || 'No suitable locations found'}. You can try expanding the search radius or look for different location types.`
                     );
                 }
             } catch (error) {
-                console.error('Lỗi tìm kiếm:', error);
+                console.error('Search error:', error);
                 this._uiAppendMessage('bot', 
-                    '❌ Có lỗi xảy ra khi tìm kiếm. Vui lòng thử lại sau.'
+                    '❌ An error occurred while searching. Please try again later.'
                 );
             }
         });
@@ -103,15 +139,14 @@ export class SmartGuideController {
         const form = document.getElementById(`problem-form-${stepId}`);
         if(form) form.style.display = 'none';
 
-        this._uiAppendMessage('user', `Sự cố: ${userText}`);
+        this._uiAppendMessage('user', `Issue: ${userText}`);
 
-        this._showThinking('AI đang tìm giải pháp thay thế...', async () => {
+        this._showThinking('AI is finding solution...', async () => {
             const solutionData = await this._calculateSolution(stepId, userText);
             this._applySolution(stepId, solutionData);
         });
     }
 
-    // --- PRIVATE LOGIC ---
     _set(locName){
         this.locName = locName;
     }
@@ -120,7 +155,7 @@ export class SmartGuideController {
         const lowerInput = userText.toLowerCase();
         
         let result = {
-            text: "Tôi hiểu vấn đề này. Hãy thử hỏi nhân viên bảo vệ hoặc bàn hướng dẫn gần đó.",
+            text: "I understand this issue. Try asking security staff or the information desk nearby.",
             newLat: null, 
             newLng: null
         };
@@ -135,7 +170,7 @@ export class SmartGuideController {
             }
 
             if (step.fallback_lat && (lowerInput.includes("xe") || lowerInput.includes("chỗ"))) {
-                result.text = `Đừng lo! Tôi tìm thấy địa điểm thay thế ${step.fallback_desc || 'gần đây'}.`;
+                result.text = `Don't worry! I found an alternative location ${step.fallback_desc || 'nearby'}.`;
                 result.newLat = step.fallback_lat;
                 result.newLng = step.fallback_lng;
             }
@@ -174,7 +209,7 @@ export class SmartGuideController {
             }
 
         } catch(error) {
-            console.error("Lỗi khi gọi API /chat/chat_issue:", error);
+            console.error("Error calling /chat/chat_issue API:", error);
         }
 
         return result;
@@ -183,7 +218,6 @@ export class SmartGuideController {
     _renderCurrentStep() {
         const step = this.steps[this.currentIndex];
         
-        // Sửa lỗi index: nếu index vượt quá length thì finish
         if(this.currentIndex >= this.steps.length){
             this._finish();
             if(window.MapGuideUI) window.MapGuideUI.close();
@@ -219,7 +253,7 @@ export class SmartGuideController {
             solContent.innerHTML = data.text;
         }
         if (data.newLat && data.newLng && window.updateMapForGuideStep) {
-            window.updateMapForGuideStep(data.newLat, data.newLng, "Vị trí thay thế (AI)");
+            window.updateMapForGuideStep(data.newLat, data.newLng, "Alternative location (AI)");
         }
         const actions = document.getElementById(`action-buttons-${stepId}`);
         if (actions) {
@@ -230,20 +264,55 @@ export class SmartGuideController {
     _finish() {
         this._uiAppendMessage('bot', `
             <div style="text-align:center; padding: 10px;">
-                <h2 style="color: #d97706; margin: 0;">🎉 XUẤT SẮC! 🎉</h2>
-                <p>Bạn đã hoàn thành mọi thủ tục.</p>
+                <h2 style="color: #d97706; margin: 0;">🎉 EXCELLENT! 🎉</h2>
+                <p>You have completed all procedures.</p>
             </div>
         `);
         this._triggerConfettiEffect();
         
-        // Xóa các suggestion markers khi finish
         clearSuggestionMarkers();
+        
+        // NEW: Trigger guide completed event
+        triggerGuideEvent('guideCompleted', {
+            guideName: this.scenario.title,
+            totalSteps: this.steps.length
+        });
+
+        // NEW: Update integrated admin procedure to completed
+        if (this.procedureId && window.integratedAdmin) {
+            window.integratedAdmin.updateProcedure(this.procedureId, {
+                currentStep: this.steps.length,
+                status: 'completed'
+            });
+        }
+
+        // NEW: Show completion notification
+        if (window.showNotification) {
+            setTimeout(() => {
+                window.showNotification(
+                    '🎉 Procedure Completed!',
+                    `You've successfully completed ${this.scenario.title}`,
+                    5000
+                );
+            }, 1500);
+        }
+
         if (window.MapGuideUI) window.MapGuideUI.close();
 
         setTimeout(() => {
             if (window.MapGuideUI) window.MapGuideUI.close();
             this._toggleFullscreen(false);
             this._removeConfetti();
+            
+            // NEW: Show congratulations with option to view progress
+            setTimeout(() => {
+                if (confirm(`🎉 Congratulations on completing "${this.scenario.title}"!\n\nWould you like to view your progress and other procedures?`)) {
+                    if (window.integratedAdmin) {
+                        window.integratedAdmin.open();
+                        window.integratedAdmin.switchTab('procedures');
+                    }
+                }
+            }, 1000);
         }, 4000);
     }
 
@@ -315,7 +384,6 @@ export class SmartGuideController {
         chatContainer.appendChild(loadingDiv);
         chatContainer.scrollTop = chatContainer.scrollHeight;
         
-        // Giả lập delay suy nghĩ 1 chút cho tự nhiên
         setTimeout(() => {
             loadingDiv.remove();
             if (callback) callback();
@@ -326,15 +394,12 @@ export class SmartGuideController {
         if (window.appendMessageToUI) {
             window.appendMessageToUI(role, html);
         } else {
-            // Fallback nếu không có hàm global
             console.log(`[${role}] ${html}`);
         }
     }
 
     _uiDisableCard(stepId) {
         const card = document.getElementById(`step-card-${stepId}`);
-        // MapGuideUI render lại toàn bộ card nên hàm này có thể không cần thiết lắm 
-        // nhưng giữ lại để tương thích logic cũ
     }
 
     _toggleFullscreen(enable) {
@@ -342,4 +407,3 @@ export class SmartGuideController {
             handleScreenEvent();
     }
 }
-
