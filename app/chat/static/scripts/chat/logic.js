@@ -81,7 +81,7 @@ export async function sendMessage(text) {
 
     const reply = data.reply || "No response from server.";
   
-    const guideData = data.guides || data.steps ? data.guide || data : null;
+    const guideData = data.guide || (data.guides || data.steps ? data : null);
 
     if (data.convo_id && data.convo_id != State.selectedId) {
       State.selectedId = data.convo_id;

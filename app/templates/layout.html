@@ -4,8 +4,12 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{% block title %}My Web App{% endblock %}</title>
-
-    <!-- Leaflet Map (optional if you use maps) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Stencil+Text:wght@100;300;400;500;600;700;800;900&family=Manrope:wght@200;300;400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
     <link
       rel="stylesheet"
       href="{{ url_for('static', filename='css/layout.css') }}"
@@ -13,47 +17,53 @@
     {% block css %}{% endblock %}
   </head>
   <body>
-    <!-- ===== HEADER / NAVBAR ===== -->
     <header class="navigation-bar">
-      <div class="logo">
+      <a
+        href="{{url_for('home_page')}}"
+        class="logo"
+        style="text-decoration: none"
+      >
         <img
           src="{{ url_for('static', filename='images/logo.png') }}"
           class="logo-img"
-          alt="Free5 team"
+          alt="VietConnect"
         />
-
-        <div class="logo-text">VietConnect</div>
-      </div>
+        <div class="logo-text">
+          VIETCONNECT<br />
+          <span class="logo-subtext">RESIDENT SERVICES</span>
+        </div>
+      </a>
 
       <nav class="menu">
-        <a href="{{url_for('home_page')}}">Home</a>
-        <a href="{{url_for('achievements_and_events')}}">Achievements & Events</a>
+        <a href="{{url_for('home_page')}}">Why VietConnect?</a>
         <a href="{{url_for('about_us')}}">About Us</a>
         <a href="https://www.facebook.com/pham.huu.nam.AmnOO" target="_blank"
           >Support</a
         >
       </nav>
 
-      {% if not session.user_id %}
       <div class="auth-buttons">
-        <button href="{{ url_for('auth.signup_page') }}" class="signup-btn">
-          Sign Up
-        </button>
-        <button href="{{ url_for('auth.signin_page') }}" class="signin-btn">
+        {% if not session.user_id %}
+        <a href="{{ url_for('auth.signin_page') }}" class="signin-btn">
           Sign In
-        </button>
-      </div>
-      {% else %}
-      <div class="user-info">
-        <img src="{{ session.avatar }}" alt="User Avatar" class="avatar" />
-        <div class="user-text">
-          <span class="greeting"
-            >Chào, <strong>{{ session.fullname }}</strong>!</span
-          >
-          <a href="{{ url_for('auth.logout') }}" class="logout-link">Log out</a>
+        </a>
+        <a href="{{ url_for('auth.signup_page') }}" class="signup-btn">
+          Sign Up
+        </a>
+        {% else %}
+        <div class="user-info">
+          <img src="{{ session.avatar }}" alt="User Avatar" class="avatar" />
+          <div class="user-text">
+            <span class="greeting"
+              >Hi, <strong>{{ session.fullname }}</strong></span
+            >
+            <a href="{{ url_for('auth.logout') }}" class="logout-link"
+              >Log out</a
+            >
+          </div>
         </div>
+        {% endif %}
       </div>
-      {% endif %}
     </header>
 
     <!-- ===== MAIN CONTENT ===== -->

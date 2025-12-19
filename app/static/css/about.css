@@ -1,193 +1,165 @@
-/* --- DÒNG QUAN TRỌNG NHẤT: TẢI FONT TỪ GOOGLE --- */
-@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@900&family=Poppins:wght@400;500;600;700&display=swap");
-
 /* --- CẤU HÌNH CHUNG --- */
 body {
-  font-family: "Poppins", sans-serif; /* Ép buộc dùng font Poppins cho toàn trang */
+  font-family: "Manrope", sans-serif;
+  background-color: #ffffff;
 }
 
-/* --- BADGE (Cái khung xám bị lỗi font trong hình) --- */
-.status-badge {
-  display: inline-block;
-  padding: 6px 16px;
-  border-radius: 999px;
-  background: rgba(0, 0, 0, 0.04);
-
-  /* Font settings */
-  font-family: "Poppins", sans-serif; /* Khai báo lại cho chắc chắn */
-  font-weight: 600;
-  font-size: 14px;
-  color: #555; /* Hoặc var(--text-light) nếu có */
-
-  margin-bottom: 16px;
-  letter-spacing: 0.5px; /* Giãn chữ ra xíu cho thoáng */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px 80px 20px;
 }
 
-/* --- HERO SECTION (Canh giữa, Style giống Index Introduction) --- */
+/* --- HERO SECTION --- */
 .about-header {
   text-align: center;
-  margin-top: 22px;
-  margin-bottom: 48px;
+  margin-top: 60px;
+  margin-bottom: 60px;
 }
 
-/* Title Free5 - Giữ màu xanh đẹp theo yêu cầu */
+.status-badge {
+  display: inline-block;
+  padding: 8px 20px;
+  border-radius: 999px;
+  background: #f3f4f6;
+  font-weight: 700;
+  font-size: 13px;
+  color: var(--brand-green-dark, #009966);
+  margin-bottom: 20px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
 .hero-title {
-  font-family: "Poppins", sans-serif;
-  font-size: 4rem; /* To hơn title thường */
-  font-weight: 900;
+  font-family: "Manrope", sans-serif;
+  font-size: 48px;
+  font-weight: 800;
   line-height: 1.1;
-  margin: 0;
-
-  /* Gradient Xanh đẹp */
-  background: linear-gradient(to right, #00b09b, #96c93d);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-
-  /* Hiệu ứng bóng sáng */
-  filter: drop-shadow(0 0 15px rgba(150, 201, 61, 0.4));
+  margin: 0 0 24px 0;
+  color: #111827;
 }
 
 .hero-subtitle {
-  color: var(--muted);
+  color: #6b7280;
   font-size: 18px;
-  margin-top: 14px;
+  line-height: 1.6;
   max-width: 600px;
   margin-left: auto;
   margin-right: auto;
 }
 
-/* --- GRID LAYOUT --- */
-.about-grid {
+/* --- TEAM GRID SECTION (ĐÃ SỬA) --- */
+.team-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 24px;
-
-  /* THÊM DÒNG NÀY: */
-  align-items: start; /* Lệnh này bảo các cột: "Đừng có giãn ra, nội dung tới đâu thì cao tới đó thôi" */
+  /* Giảm minmax từ 220px xuống 180px để 5 thẻ vừa khít trên 1 hàng 1200px */
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 20px; /* Giảm khoảng cách một chút */
+  justify-content: center;
 }
 
-/* Cột phải chứa các card nhỏ */
-.side-column {
+/* --- TEAM CARD DESIGN --- */
+.team-card {
+  background: #ffffff;
+  border-radius: 24px;
+  padding: 30px 20px; /* Giảm padding cho gọn */
+  text-align: center;
+  border: 1px solid #f3f4f6;
+  transition: all 0.3s ease;
   display: flex;
   flex-direction: column;
-  gap: 15px;
+  align-items: center;
+  height: 100%; /* Để các thẻ cao bằng nhau */
 }
 
-/* Card Style - Copy logic từ .card của index nhưng chỉnh cho text */
-.card-content {
-  /* Thêm dòng này vào là hết sạch lỗi font */
-  font-family: "Poppins", sans-serif !important;
-
-  /* Các thuộc tính cũ giữ nguyên */
-  background: var(--card);
-  border-radius: var(--radius);
-  padding: 20px;
-  box-shadow: var(--shadow);
-  height: fit-content;
+.team-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.1);
+  border-color: transparent;
 }
 
-.card-content h3 {
-  margin: 0 0 16px 0;
-  font-size: 20px;
-  color: #0b1220;
+/* Avatar Tròn */
+.avatar-wrapper {
+  width: 90px;
+  height: 90px;
+  margin-bottom: 20px;
+  position: relative;
+
+  border-radius: 50%; /* Biến khung vuông thành hình tròn */
+  overflow: hidden; /* Cắt bỏ phần thừa ra ngoài hình tròn */
+  display: flex; /* Căn giữa ảnh trong khung tròn */
+  align-items: center;
+  justify-content: center;
 }
 
-.card-content p {
-  color: var(--muted);
-  font-size: 16px;
-  line-height: 1.6;
-  margin: 0;
+.team-avatar {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+  box-shadow: 0 0 0 4px #ecfdf5;
 }
 
-/* Container chứa các tên */
-.team-badges {
-  display: flex;
-  width: 100%; /* Đảm bảo khung này rộng 100% */
-  gap: 10px; /* Khoảng cách giữa các ô */
-  margin: 20px 0;
+/* Typography cho Card */
+.member-name {
+  font-size: 17px;
+  font-weight: 800;
+  color: #111827;
+  margin: 0 0 6px 0;
 }
 
-/* Từng ô tên thành viên */
-.member-pill {
-  flex: 1; /* THẦN CHÚ: Tự động chia đều không gian cho 5 đứa */
-  text-align: center; /* Canh giữa chữ trong từng ô */
-
-  /* Giữ nguyên style màu sắc cũ của bạn */
-  background: #eaf9f4;
-  color: var(--brand-600); /* Hoặc mã màu #009966 */
-  padding: 8px 0; /* Chỉnh padding trên dưới thôi, bỏ trái phải để nó tự căn */
-  border-radius: 999px;
-  font-weight: 600;
-  font-size: 14px;
-  white-space: nowrap; /* Không cho chữ xuống dòng */
-}
-
-/* --- HIGHLIGHT TEXT --- */
-.highlight {
-  color: var(--brand);
+.member-role {
+  font-size: 11px;
   font-weight: 700;
+  color: var(--brand, #00b37e);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 12px;
 }
 
-.story-block {
-  margin-top: 24px;
-  padding-top: 24px;
-  border-top: 1px solid rgba(0, 0, 0, 0.05);
+.member-bio {
+  font-size: 13px;
+  color: #6b7280;
+  line-height: 1.5;
+  margin-bottom: 20px;
+  flex-grow: 1;
 }
 
-/* --- WARNING CARD (Style riêng) --- */
-.warning-card {
-  /* --- THÊM DÒNG NÀY ĐỂ SỬA LỖI FONT --- */
-  font-family: "Poppins", sans-serif !important;
-
-  background: #fff5f5;
-  border: 1px solid #ffebeb;
+/* Social Icons (Đã sửa để chứa SVG) */
+.social-links {
   display: flex;
-  gap: 16px;
-  align-items: flex-start;
-  padding: 15px;
+  gap: 12px;
+  justify-content: center;
 }
 
-.icon-warning {
-  font-size: 24px;
-  background: rgba(255, 71, 87, 0.1);
-  width: 40px;
-  height: 40px;
+.social-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: #f3f4f6; /* Nền xám nhạt cho icon */
+  color: #111827;
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 8px;
+  text-decoration: none;
+  transition: all 0.2s;
 }
 
-.warning-card h3 {
-  color: #e53935; /* Màu đỏ */
+.social-icon svg {
+  width: 18px;
+  height: 18px;
+  fill: currentColor; /* Để icon đổi màu theo text */
 }
 
-/* --- RATING BOX --- */
-.rating-box {
-  font-family: "Poppins", sans-serif !important;
-  text-align: center;
-  background: linear-gradient(135deg, #0b1220 0%, #1e293b 100%);
-  padding: 15px;
+/* Màu riêng cho từng mạng xã hội khi hover */
+.social-icon:hover {
+  color: #ffffff;
+  transform: translateY(-2px);
 }
 
-.rating-box .quote {
-  color: white;
-  font-style: italic;
-  font-weight: 500;
+.social-icon.fb:hover {
+  background: #1877f2; /* Màu xanh Facebook */
 }
 
-.rating-box .stars {
-  margin-top: 12px;
-  font-size: 24px;
-}
-
-/* Mobile Responsive */
-@media (max-width: 768px) {
-  .about-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .hero-title {
-    font-size: 3rem;
-  }
+.social-icon.in:hover {
+  background: #e1306c; /* Màu gradient Instagram (đơn giản hóa thành hồng) */
 }

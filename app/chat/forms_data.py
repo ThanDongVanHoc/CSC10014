@@ -89,6 +89,33 @@ FORM_METADATA = [
         "docx_filename": "na9_trc_renew.docx",
         "pdf_filename": "na9_trc_renew.pdf",
     },
+    {
+        "id": "report_of_loss",
+        "title_vi": "Đơn trình báo mất tài sản / giấy tờ",
+        "title_en": "Report of Loss of Assets/Passport Form",
+        "description": "Mandatory. Used to report lost passports or assets to the local police for confirmation.",
+        "keywords": ["mat do", "mat ho chieu", "police report", "lost passport"],
+        "docx_filename": "report_of_loss.docx",
+        "pdf_filename": "report_of_loss.pdf",
+    },
+    {
+        "id": "power_of_attorney",
+        "title_vi": "Giấy Ủy Quyền",
+        "title_en": "Power of Attorney (Authorization Letter)",
+        "description": "Legal document authorizing another person to act on your behalf for administrative procedures.",
+        "keywords": ["uy quyen", "authorization", "mandate"],
+        "docx_filename": "power_of_attorney.docx",
+        "pdf_filename": "power_of_attorney.pdf",
+    },
+    {
+        "id": "birth_certificate_copy",
+        "title_vi": "Tờ khai cấp bản sao trích lục hộ tịch",
+        "title_en": "Application for Vital Records Extract (Birth/Marriage/Death)",
+        "description": "Used to request certified copies of birth certificates, marriage certificates, or death certificates.",
+        "keywords": ["trich luc", "khai sinh", "birth certificate", "vital records"],
+        "docx_filename": "birth_certificate_copy.docx",
+        "pdf_filename": "birth_certificate_copy.pdf",
+    }
 ]
 
 FORMS_AI_DATA = [
@@ -131,5 +158,17 @@ FORMS_AI_DATA = [
     {
         "id": "na9_trc_renew",
         "description": "Used when the current Temporary Residence Card is about to expire or has been lost."
+    },
+    {
+        "id": "report_of_loss",
+        "description": "Mandatory. Used to report lost passports or assets to the local police for confirmation."
+    },
+    {
+        "id": "power_of_attorney",
+        "description": "Legal document authorizing another person to act on your behalf."
+    },
+    {
+        "id": "birth_certificate_copy",
+        "description": "Used to request certified copies of birth certificates, marriage certificates, or death certificates."
     }
 ]
