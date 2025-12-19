@@ -1,15 +1,15 @@
 from app.db.models import Place, SearchHistory
 from datetime import datetime
-from . import chat_bp
+from . import map_bp
 from flask import redirect, render_template, send_from_directory, url_for, session, request, jsonify
 from sqlalchemy import select, and_, or_
 from app.db import db
 import os
-from .utilis import get_user, query_pois_db, check_poi_db
+from ..chat.utilis import get_user, query_pois_db, check_poi_db
 import requests
-from .forms_data import FORM_METADATA
+from ..chat.forms_data import FORM_METADATA
 
-@chat_bp.route('/getOnePlace')
+@map_bp.route('/getOnePlace')
 def getOnePlace():
     name = request.args.get('name') 
 
@@ -26,7 +26,7 @@ def getOnePlace():
         return jsonify({"message": f"Place with name '{name}' not found"}), 404
 
 
-@chat_bp.route('/pois')
+@map_bp.route('/pois')
 def pois():
     query_kw = request.args.get("type")
     south_str = request.args.get("south")
@@ -53,7 +53,7 @@ def pois():
     
     return jsonify(pois_response)
 
-@chat_bp.route('/check_poi')
+@map_bp.route('/check_poi')
 def check_poi():
     lat = request.args.get("lat")
     lng = request.args.get("lng")
@@ -80,12 +80,12 @@ def check_poi():
     else:
         return jsonify({"isPoi": False}), 200
 
-@chat_bp.route('/pois/<path:filename>')
+@map_bp.route('/pois/<path:filename>')
 def serve_poi_img(filename):
     BASE_DIR = os.path.join(os.getcwd(), 'Dataset/crawler')
     return send_from_directory(BASE_DIR, filename)
 
-@chat_bp.route('/log_search_history', methods=['POST'])
+@map_bp.route('/log_search_history', methods=['POST'])
 def log_search_history():
     data = request.get_json()
     if not data:
@@ -127,7 +127,7 @@ def log_search_history():
     return jsonify({"status": "success"})
 
 
-@chat_bp.route('/get_search_history')
+@map_bp.route('/get_search_history')
 def get_search_history():
     user_email = session.get("user_email", None)
     if not user_email:
@@ -141,7 +141,7 @@ def get_search_history():
     history_list = [h.to_dict() for h in histories]
     return jsonify(history_list)
 
-@chat_bp.route('/proxy_route/<mode>/<coords>')
+@map_bp.route('/proxy_route/<mode>/<coords>')
 def proxy_route(mode, coords):
     API_KEY = "eyJvcmciOiI1YjNjZTM1OTc4NTExMTAwMDFjZjYyNDgiLCJpZCI6ImJhYjE2MmYwZDdjMDRlZGM4MWNmNDMyOGY0YjYxZTE2IiwiaCI6Im11cm11cjY0In0="
     try:
@@ -185,7 +185,7 @@ def proxy_route(mode, coords):
     except Exception as e:
         return jsonify({"error": str(e)}), 500
     
-@chat_bp.route('/forms/download/<path:filename>')
+@map_bp.route('/forms/download/<path:filename>')
 def download_form_file(filename):
     BASE_DIR = os.path.join(os.getcwd(), 'Dataset/crawler/forms')
     ext = os.path.splitext(filename)[1].lower()
@@ -196,7 +196,7 @@ def download_form_file(filename):
     else:
         return jsonify({"error": "Unsupported file type"}), 400
     
-@chat_bp.route('/forms/info/<string:id>')
+@map_bp.route('/forms/info/<string:id>')
 def get_form_info(id):
     form_entry = next((form for form in FORM_METADATA if form["id"] == id), None)
     if not form_entry:
@@ -212,3 +212,8 @@ def get_form_info(id):
         }), 200
     except Exception as e:
         return jsonify({"error": str(e)}), 500
+
+
+@map_bp.route('/')
+def map():
+    return render_template('map.html')

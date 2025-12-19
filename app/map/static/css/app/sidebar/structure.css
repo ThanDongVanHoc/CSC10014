@@ -1,0 +1,32 @@
+.sidebar {
+  background-color: #ffffff;
+  color: #0b1220;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  max-height: 100%;
+  min-height: 0;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  border-right: 1px solid rgba(0, 0, 0, 0.06);
+  border-radius: 20px;
+  box-shadow: none;
+  min-width: 0;
+  transition: opacity 0.2s ease;
+  overflow: hidden;
+}
+
+.sidebar-header-gpt {
+  padding: 14px 12px 0 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  background-color: transparent;
+}
+
+.top-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 4px;
+  margin-bottom: 4px;
+}
