@@ -1,136 +1,44 @@
-body.auth-page {
-  background-color: #f8f9fa;
-}
-
-.verification-card {
-  width: 380px;
-  padding: 30px 40px;
-  border-radius: 15px;
-  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
-  background-color: #fff;
-  text-align: center;
-}
-
-.verification-card .logo {
-  width: 60px;
-  margin-bottom: 20px;
-  margin-left: auto;
-  margin-right: auto;
-  display: block; /* Ghi đè display flex của common */
-}
-
-.verification-card h2 {
-  font-size: 22px;
-  font-weight: 600;
-  color: var(--dark-text);
-  margin-top: 0;
-  margin-bottom: 20px;
-  text-align: center;
-}
-
-.instruction {
-  color: var(--light-text);
-  font-size: 14px;
-  line-height: 1.5;
-  margin-bottom: 25px;
-}
-
-.visually-hidden {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  padding: 0;
-  margin: -1px;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-  border: 0;
-}
-
-.form-content {
-  margin-bottom: 25px;
-}
-
-.phone-info {
-  font-size: 13px;
-  color: var(--light-text);
-  line-height: 1.3;
-  text-align: left;
-  margin-bottom: 8px;
-  padding-top: 0;
-}
-
-.phone-info strong {
-  font-weight: 600;
-  color: var(--dark-text);
-  font-size: 14px;
-}
-
-.input-field input {
+/* CONTAINER AUTH (Reset, Verify) */
+.auth-card-container {
   width: 100%;
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 6px;
-  font-size: 15px;
-  box-sizing: border-box;
-  transition: 0.2s;
-  margin-bottom: 0;
-}
-
-.input-field input:focus {
-  outline: none;
-  border-color: var(--brand-color);
-  box-shadow: 0 0 4px rgba(0, 179, 126, 0.3);
-}
-
-.error {
-  text-align: left;
-  margin-top: 4px;
-  margin-bottom: 15px;
-}
-
-.link-text {
-  color: #1877f2;
-  text-decoration: none;
-  font-size: 14px;
-}
-
-.link-text:hover {
-  text-decoration: underline;
-}
-
-.buttons {
+  max-width: 400px; /* Đồng bộ kích thước với Sign In */
+  background: var(--bg-card);
+  border-radius: var(--radius-card);
+  padding: 40px 32px;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.1);
+  text-align: center;
   display: flex;
-  gap: 8px;
+  flex-direction: column;
+  align-items: center;
 }
 
-.btn {
-  padding: 0 16px;
-  height: 36px;
-  line-height: 36px;
-  border: none;
-  border-radius: 6px;
-  font-weight: 600;
-  cursor: pointer;
+.auth-logo {
+  width: 60px;
+  margin-bottom: 24px;
+}
+
+.auth-title {
+  font-size: 26px;
+  font-weight: 800;
+  color: var(--text-main);
+  margin: 0 0 12px 0;
+  letter-spacing: -0.5px;
+}
+
+.auth-instruction {
   font-size: 15px;
-  transition: background-color 0.2s, transform 0.2s;
+  color: var(--text-muted);
+  line-height: 1.6;
+  margin-bottom: 30px;
 }
 
-.btn-cancel {
-  background-color: #e4e6eb;
-  color: #4b4f56;
+/* Nút nằm ngang (Cancel + Submit) */
+.buttons-group {
+  display: flex;
+  gap: 12px;
+  margin-top: 24px;
+  width: 100%;
 }
-
-.btn-cancel:hover {
-  background-color: #d8dadf;
-}
-
-.btn-primary {
-  background-color: var(--brand-color);
-  color: #fff;
-}
-
-.btn-primary:hover {
-  background-color: #009966;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  transform: translateY(-1px);
+.buttons-group > * {
+  flex: 1;
 }

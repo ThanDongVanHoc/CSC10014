@@ -3,47 +3,49 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Sign in to VietConnect</title>
+    <title>Sign in - VietConnect</title>
     <link
       rel="icon"
       type="image/png"
       href="{{ url_for('static', filename='images/logo.png') }}"
     />
 
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
+      href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&display=swap"
       rel="stylesheet"
-      href="{{url_for('auth.static',
-    filename='css/common.css')}}"
     />
 
     <link
       rel="stylesheet"
-      href="{{url_for('auth.static',
-    filename='css/pages/sign-in.css')}}"
+      href="{{ url_for('auth.static', filename='css/common.css') }}"
+    />
+
+    <link
+      rel="stylesheet"
+      href="{{ url_for('auth.static', filename='css/pages/sign-in.css') }}"
     />
   </head>
 
   <body>
-    <div class="log-in">
+    <div class="signin-card">
       <img
         src="{{ url_for('static', filename='images/logo.png') }}"
         alt="VietConnect Logo"
-        class="logo"
+        class="signin-logo"
       />
 
-      <h2 style="margin-bottom: 35px; text-align: center">
-        Sign in to VietConnect
-      </h2>
+      <h2 class="signin-title">Sign in to VietConnect</h2>
 
       <form action="{{ url_for('auth.signin_page') }}" method="POST" id="form">
-        <div class="form-group">
-          <label> Email address </label>
+        <div class="field">
+          <label for="email">Email address</label>
           <input
             id="email"
             name="email"
-            class="signin-input {% if errors.email %}is-invalid{% endif %}"
             type="email"
-            placeholder="allmyexhatesme@4fun.com"
+            placeholder="name@example.com"
             required
             value="{{ form_data.email or '' }}"
           />
@@ -52,19 +54,18 @@
           {% endif %}
         </div>
 
-        <div class="form-group">
-          <label>
+        <div class="field">
+          <label for="password">
             Password
-            <a href="{{ url_for('auth.reset_pass') }}" class="forgot"
-              >Forgot password ?</a
+            <a href="{{ url_for('auth.reset_pass') }}" class="forgot-link"
+              >Forgot password?</a
             >
           </label>
           <input
             id="password"
             name="password"
-            class="signin-input {% if errors.password %}is-invalid{% endif %}"
             type="password"
-            placeholder="Your password"
+            placeholder="Enter your password"
             required
           />
           {% if errors.password %}
@@ -72,24 +73,26 @@
           {% endif %}
         </div>
 
-        <button type="submit" class="signin-btn">Sign in</button>
+        <button type="submit" class="btn-submit">Sign in</button>
       </form>
 
-      <div class="divider">or</div>
+      <div class="divider">or continue with</div>
 
       <a href="{{ url_for('auth.google_login') }}" class="oauth-btn">
         <img
           src="https://www.svgrepo.com/show/475656/google-color.svg"
-          width="18"
+          alt="Google"
         />
-        Continue with Google
+        Google
       </a>
 
-      <div class="footer">
+      <div class="footer-text">
         New to VietConnect?
-        <a href="{{url_for('auth.signup_page')}}" style="color: blue"
-          >Create an account</a
-        >
+        <a href="{{url_for('auth.signup_page')}}">Create an account</a>
+      </div>
+
+      <div class="footer-link">
+        <a href="{{url_for('home_page')}}">← Back to Home</a>
       </div>
     </div>
 
