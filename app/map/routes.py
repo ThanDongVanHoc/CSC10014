@@ -1,13 +1,12 @@
 from app.db.models import Place, SearchHistory
 from datetime import datetime
 from . import map_bp
-from flask import redirect, render_template, send_from_directory, url_for, session, request, jsonify
-from sqlalchemy import select, and_, or_
+from flask import render_template, send_from_directory, session, request, jsonify
+from sqlalchemy import select
 from app.db import db
 import os
-from ..chat.utilis import get_user, query_pois_db, check_poi_db
+from ..chat.utils import get_user, query_pois_db, check_poi_db
 import requests
-from ..chat.forms_data import FORM_METADATA
 
 @map_bp.route('/getOnePlace')
 def getOnePlace():
@@ -185,35 +184,6 @@ def proxy_route(mode, coords):
 
     except Exception as e:
         return jsonify({"error": str(e)}), 500
-    
-@map_bp.route('/forms/download/<path:filename>')
-def download_form_file(filename):
-    BASE_DIR = os.path.join(os.getcwd(), 'Dataset/crawler/forms')
-    ext = os.path.splitext(filename)[1].lower()
-    if ext == '.pdf':
-        return send_from_directory(BASE_DIR, filename, as_attachment=False)
-    elif ext == '.docx' :
-        return send_from_directory(BASE_DIR, filename, as_attachment=True)
-    else:
-        return jsonify({"error": "Unsupported file type"}), 400
-    
-@map_bp.route('/forms/info/<string:id>')
-def get_form_info(id):
-    form_entry = next((form for form in FORM_METADATA if form["id"] == id), None)
-    if not form_entry:
-        return jsonify({"error": "Form ID not found"}), 404
-    try:
-        pdf_url = url_for('chat.download_form_file', filename=form_entry.get("pdf_filename"))
-        docx_url = url_for('chat.download_form_file', filename=form_entry.get("docx_filename"))
-        return jsonify({
-            "id": id,
-            "title": form_entry.get("title_vi"),
-            "pdf_url": pdf_url,
-            "docx_url": docx_url
-        }), 200
-    except Exception as e:
-        return jsonify({"error": str(e)}), 500
-
 
 @map_bp.route('/')
 def map():

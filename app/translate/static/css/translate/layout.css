@@ -1,0 +1,127 @@
+/* static/css/app/translate/layout.css */
+
+.tr-translate {
+  display: flex;
+  flex-direction: column;
+  /* Quan trọng: Ép chiều cao bằng đúng container cha, không được hơn */
+  height: 100%;
+  max-height: 100%;
+  width: 100%;
+  gap: 12px; /* Giảm gap xuống một chút (từ 16px -> 12px) để tiết kiệm diện tích */
+  overflow: hidden; /* Chặn mọi sự trôi/tràn ra ngoài */
+  padding-bottom: 2px; /* Fix lỗi viền dưới cùng đôi khi bị che mất 1px */
+  box-sizing: border-box;
+}
+
+/* KHUNG PANEL CHÍNH */
+.tr-panel {
+  flex: 1; /* Mỗi ô chia đều không gian còn lại */
+  display: flex;
+  flex-direction: column;
+  background-color: #ffffff;
+  border-radius: 16px;
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.02);
+
+  /* Quan trọng: Ngăn panel tự phình to theo nội dung */
+  overflow: hidden;
+  min-height: 0;
+
+  transition: all 0.2s ease;
+}
+
+/* Màu nền phân biệt */
+.tr-panel--patient {
+  background: #f0f9ff;
+}
+.tr-panel--doctor {
+  background: #ffffff;
+}
+
+/* Trạng thái Active */
+.tr-panel--active {
+  border-color: #00b37e;
+  /* Shadow nhỏ lại để không bị cảm giác tràn viền */
+  box-shadow: 0 0 0 2px rgba(0, 179, 126, 0.15);
+  background: #ffffff;
+  z-index: 5;
+}
+
+/* HEADER - Cố định chiều cao */
+.tr-panel__header {
+  display: flex;
+  align-items: center;
+  padding: 10px 16px; /* Giảm padding một chút cho gọn */
+  background: rgba(255, 255, 255, 0.95);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+  gap: 12px;
+  flex-shrink: 0; /* Header không được co lại */
+  height: 50px; /* Cố định chiều cao header */
+  box-sizing: border-box;
+}
+
+/* BODY - Phần co giãn */
+.tr-panel__body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden; /* Body con không được tràn ra khỏi panel */
+  position: relative;
+  min-height: 0; /* Quan trọng cho Flexbox cuộn */
+}
+
+.toast-box {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  background: #ffffff;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 12px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+
+  /* Font chữ */
+  font-family: "Segoe UI", sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  color: #334155;
+
+  /* Trạng thái ẩn mặc định */
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(20px);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+
+  z-index: 9999; /* Luôn nổi lên trên */
+}
+
+/* Class kích hoạt hiển thị */
+.toast-box.show {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.toast-icon-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  flex-shrink: 0;
+  background-color: #f0fdf4; /* Nền xanh nhạt cho icon check */
+}
+
+.toast-message {
+  line-height: 1.4;
+}
+
+/* Định vị Toast ở góc dưới bên phải màn hình Translate */
+.toast-translate {
+  position: absolute;
+  right: 20px;
+  bottom: 30px; /* Cách đáy 30px */
+  width: auto;
+  max-width: 300px;
+}

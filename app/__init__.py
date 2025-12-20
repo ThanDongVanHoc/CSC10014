@@ -3,12 +3,14 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import timedelta
 from .auth import auth_bp
 from .chat import chat_bp
+from .translate import translate_bp
 from .db import init_db
 from .map import map_bp 
 import os
 import pathlib
 from .auth.mail import init_mail
-from app.chat.utilis import get_user
+from app.chat.utils import get_user
+
 
 
 #Factory Pattern
@@ -30,6 +32,7 @@ def create_app(test_config = None):
     app.register_blueprint(auth_bp)
     app.register_blueprint(chat_bp)
     app.register_blueprint(map_bp)
+    app.register_blueprint(translate_bp)
     #
     init_db(app)
     init_mail(app)

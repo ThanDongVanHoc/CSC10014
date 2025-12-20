@@ -3,7 +3,7 @@
 from sqlalchemy import select, and_
 from sqlalchemy.sql import func
 from app.db import db
-from app.db.models import User, Conversation, Message, Place
+from app.db.models import User, Chat_Conversation, Chat_Message, Place
 import json
 
 # USER SERVICES
@@ -29,9 +29,9 @@ def list_conversations(email):
         return []
     
     stmt = (
-        select(Conversation)
-        .where(Conversation.user_id == user.id)
-        .order_by(Conversation.updated_at.desc())
+        select(Chat_Conversation)
+        .where(Chat_Conversation.user_id == user.id)
+        .order_by(Chat_Conversation.updated_at.desc())
     )
     
     conversations = db.session.scalars(stmt).all()
@@ -54,7 +54,7 @@ def create_conversation(email, title="New chat"):
     if not user:
         return None
 
-    new_convo = Conversation(title=title, user=user)
+    new_convo = Chat_Conversation(title=title, user=user)
     
     db.session.add(new_convo)
     db.session.commit()
@@ -72,9 +72,9 @@ def rename_conversation(email, convo_id, new_title):
     if not user:
         return False
     
-    stmt = select(Conversation).where(
-        Conversation.id == convo_id,
-        Conversation.user_id == user.id
+    stmt = select(Chat_Conversation).where(
+        Chat_Conversation.id == convo_id,
+        Chat_Conversation.user_id == user.id
     )
     convo = db.session.scalar(stmt)
     
@@ -90,9 +90,9 @@ def delete_conversation(email, convo_id):
     if not user:
         return False
     
-    stmt = select(Conversation).where(
-        Conversation.id == convo_id,
-        Conversation.user_id == user.id
+    stmt = select(Chat_Conversation).where(
+        Chat_Conversation.id == convo_id,
+        Chat_Conversation.user_id == user.id
     )
     convo = db.session.scalar(stmt)
     
@@ -110,16 +110,16 @@ def save_message(email, role, content, conversation_id, guide_data = None):
     if not user:
         return False
     
-    stmt = select(Conversation).where(
-        Conversation.id == conversation_id,
-        Conversation.user_id == user.id
+    stmt = select(Chat_Conversation).where(
+        Chat_Conversation.id == conversation_id,
+        Chat_Conversation.user_id == user.id
     )
     conversation = db.session.scalar(stmt)
     
     if not conversation:
         return False
 
-    new_message = Message(role=role, content=content)
+    new_message = Chat_Message(role=role, content=content)
     new_message.conversation = conversation
 
     if guide_data:
@@ -138,10 +138,10 @@ def get_messages(email, conversation_id):
     user = get_user(email)
     if not user: return []
 
-    stmt_check = select(Conversation).where(Conversation.id == conversation_id, Conversation.user_id == user.id)
+    stmt_check = select(Chat_Conversation).where(Chat_Conversation.id == conversation_id, Chat_Conversation.user_id == user.id)
     if not db.session.scalar(stmt_check): return []
 
-    stmt_msgs = select(Message).where(Message.conversation_id == conversation_id).order_by(Message.created_at.asc())
+    stmt_msgs = select(Chat_Message).where(Chat_Message.conversation_id == conversation_id).order_by(Chat_Message.created_at.asc())
     messages = db.session.scalars(stmt_msgs).all()
 
     results = []
@@ -203,9 +203,9 @@ def update_conversation_context(email, convo_id, context_dict):
     user = get_user(email)
     if not user: return False
     
-    stmt = select(Conversation).where(
-        Conversation.id == convo_id,
-        Conversation.user_id == user.id
+    stmt = select(Chat_Conversation).where(
+        Chat_Conversation.id == convo_id,
+        Chat_Conversation.user_id == user.id
     )
     convo = db.session.scalar(stmt)
     
@@ -224,9 +224,9 @@ def get_conversation_context(email, convo_id):
     user = get_user(email)
     if not user: return {}
     
-    stmt = select(Conversation).where(
-        Conversation.id == convo_id,
-        Conversation.user_id == user.id
+    stmt = select(Chat_Conversation).where(
+        Chat_Conversation.id == convo_id,
+        Chat_Conversation.user_id == user.id
     )
     convo = db.session.scalar(stmt)
     
@@ -243,12 +243,12 @@ def get_latest_bot_reply(email, convo_id):
     if not user: return None
     
     stmt = (
-        select(Message)
+        select(Chat_Message)
         .where(
-            Message.conversation_id == convo_id,
-            Message.role == 'model'
+            Chat_Message.conversation_id == convo_id,
+            Chat_Message.role == 'model'
         )
-        .order_by(Message.created_at.desc())
+        .order_by(Chat_Message.created_at.desc())
         .limit(1)
     )
     msg = db.session.scalar(stmt)
@@ -264,12 +264,12 @@ def get_latest_guide_context(email, convo_id):
     
     # Tìm message có guide_data != None, sắp xếp mới nhất trước
     stmt = (
-        select(Message)
+        select(Chat_Message)
         .where(
-            Message.conversation_id == convo_id,
-            Message.guide_data.is_not(None)
+            Chat_Message.conversation_id == convo_id,
+            Chat_Message.guide_data.is_not(None)
         )
-        .order_by(Message.created_at.desc())
+        .order_by(Chat_Message.created_at.desc())
         .limit(1)
     )
     msg = db.session.scalar(stmt)
