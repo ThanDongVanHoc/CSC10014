@@ -1,0 +1,43 @@
+/* THANH NHẬP LIỆU (COMPOSER) */
+.tr-composer {
+  flex-shrink: 0; /* Không được co lại */
+  margin: 0 20px 20px 20px; /* Cách lề 20px */
+  background: white;
+  padding: 8px;
+  border-radius: 14px;
+  border: 1px solid rgba(15, 23, 42, 0.1);
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.06);
+  transition: all 0.3s ease;
+  z-index: 10;
+}
+
+/* Hiệu ứng khi focus vào ô nhập */
+.tr-composer:focus-within {
+  border-color: #00b37e;
+  box-shadow: 0 5px 25px rgba(0, 179, 126, 0.15);
+  transform: translateY(-2px);
+}
+
+/* Ẩn khi panel không active */
+.tr-composer--hidden {
+  display: none !important;
+}
+
+.tr-inputwrap {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.tr-input {
+  flex: 1;
+  border: none;
+  outline: none;
+  font-size: 15px;
+  color: #0f172a;
+  padding: 4px 8px;
+  font-family: inherit;
+}
+.tr-input::placeholder {
+  color: #94a3b8;
+}

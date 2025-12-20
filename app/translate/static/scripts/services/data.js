@@ -1,9 +1,10 @@
 import { State, GUEST_STORAGE_KEY } from "./core.js";
 
 export const DataManager = {
+  // 1. Check Auth
   async checkAuth() {
     try {
-      const res = await fetch("/chat/auth_status");
+      const res = await fetch("/translate/auth_status");
       const data = await res.json();
       State.isLoggedIn = data.logged_in;
     } catch (e) {
@@ -12,10 +13,11 @@ export const DataManager = {
     }
   },
 
+  // 2. Get All Conversations
   async getConversations() {
     if (State.isLoggedIn) {
       try {
-        const res = await fetch("/chat/messages");
+        const res = await fetch("/translate/conversations");
         const data = await res.json();
         return Array.isArray(data) ? data : [];
       } catch (e) {
@@ -31,70 +33,63 @@ export const DataManager = {
     }
   },
 
+  // 3. Get Messages of a Conversation
   async getMessages(convoId) {
     if (State.isLoggedIn) {
       try {
-        const res = await fetch(`/chat/messages/${convoId}`);
+        const res = await fetch(`/translate/conversations/${convoId}/messages`);
         const data = await res.json();
-        return Array.isArray(data)
-          ? data.map((m) => ({ ...m, guide: m.guide_data }))
-          : [];
+        return Array.isArray(data) ? data : [];
       } catch (e) {
         return [];
       }
     } else {
-      // GUEST
+      // Guest
       const c = State.conversations.find((x) => x.id == convoId);
-      return c
-        ? c.messages.map((m) => ({
-            role: m.role,
-            content: m.text,
-            guide: m.guide,
-          }))
-        : [];
+      return c ? c.messages : [];
     }
   },
 
+  // 4. Create New Conversation
   async create(title) {
     if (State.isLoggedIn) {
       try {
-        const res = await fetch("/chat/messages", {
+        const res = await fetch("/translate/conversations", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ title }),
         });
-        if (!res.ok) {
-          // In lỗi ra Console để bạn biết server đang bị gì (500 hay 404...)
-          console.error("Server Error:", res.status, await res.text());
-          return null;
-        }
+        if (!res.ok) return null;
         return await res.json();
       } catch (e) {
         return null;
       }
     } else {
-      const now = Date.now();
+      // Guest logic
+      const now = new Date().toISOString();
       return {
-        id: "guest-" + now + Math.random().toString(36).substr(2, 5),
+        id: "guest-" + Date.now() + Math.random().toString(36).substr(2, 5),
         title: title,
         messages: [],
-        context: {},
         created_at: now,
         updated_at: now,
       };
     }
   },
 
+  // 5. Delete Conversation
   async delete(id) {
-    if (State.isLoggedIn)
-      await fetch(`/chat/messages/${id}`, { method: "DELETE" });
+    if (State.isLoggedIn) {
+      await fetch(`/translate/conversations/${id}`, { method: "DELETE" });
+    }
     State.conversations = State.conversations.filter((c) => c.id != id);
     this.saveGuestData();
   },
 
+  // 6. Rename Conversation
   async rename(id, newTitle) {
     if (State.isLoggedIn) {
-      await fetch(`/chat/messages/${id}`, {
+      await fetch(`/translate/conversations/${id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ title: newTitle }),
@@ -103,6 +98,26 @@ export const DataManager = {
     const c = State.conversations.find((x) => x.id == id);
     if (c) c.title = newTitle;
     this.saveGuestData();
+  },
+
+  // 7. Send Message (Có thêm speaker_role cho Translate)
+  async sendMessage(convoId, content, speakerRole) {
+    if (State.isLoggedIn) {
+      try {
+        await fetch(`/translate/conversations/${convoId}/messages`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            content,
+            speaker_role: speakerRole,
+            role: "user",
+          }),
+        });
+      } catch (e) {
+        console.error(e);
+      }
+    }
+    // Guest data đã được xử lý ở logic.js trước khi gọi hàm này (nếu cần sync)
   },
 
   saveGuestData() {
@@ -114,17 +129,3 @@ export const DataManager = {
     }
   },
 };
-
-export function getLocationOrDefault() {
-  return new Promise((resolve) => {
-    let fallback = { lat: 10.7769, lng: 106.7009 };
-    if (!navigator.geolocation) return resolve(fallback);
-    navigator.geolocation.getCurrentPosition(
-      (pos) => resolve({ lat: pos.coords.latitude, lng: pos.coords.longitude }),
-      (err) => {
-        console.warn("GPS Error:", err);
-        resolve(fallback);
-      }
-    );
-  });
-}

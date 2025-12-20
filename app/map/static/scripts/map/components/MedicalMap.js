@@ -80,7 +80,7 @@ async function renderMedicalMarkers() {
         address: dbInfo?.location || demoHospital.address || "Đang cập nhật địa chỉ...",
         phone: dbInfo?.phone_number || demoHospital.phone || "---",
         website: dbInfo?.website || "#",
-        image: dbInfo?.img || "https://via.placeholder.com/300x200?text=No+Image", // Ảnh từ DB
+        image: dbInfo?.img || "https://cdn.bookingcare.vn/fo/w828/2019/01/10/162817-benh-vien-tu-du.jpg", // Ảnh từ DB
         intro: dbInfo?.intro || demoHospital.type // Intro từ DB
     };
 
@@ -161,7 +161,7 @@ async function renderMedicalMarkers() {
         // Fix đường dẫn ảnh nếu cần (giống trong POIManager)
         let rawImg = hospital.image;
         if (rawImg && !rawImg.startsWith("http")) {
-             rawImg = `/chat/pois/${rawImg.replace(/\\/g, "/")}`;
+             rawImg = `/map/pois/${rawImg.replace(/\\/g, "/")}`;
         }
 
         const poiData = {

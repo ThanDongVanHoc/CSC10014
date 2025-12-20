@@ -138,7 +138,7 @@ export function pinLocationProK(poi){
     id: currentId,
     latlng: latlng,
     name: name,
-    image: `/chat/pois/${rawImg}`,
+    image: `/map/pois/${rawImg}`,
     intro: poi.intro || "Place",
     location: poi.location || "No address available",
     phone: poi.phone_number || "---",
@@ -179,7 +179,7 @@ function pinLocationPro(poi){
     id: currentId,
     latlng: latlng,
     name: name,
-    image: `/chat/pois/${rawImg}`,
+    image: `/map/pois/${rawImg}`,
     intro: poi.intro || "Place",
     location: poi.location || "No address available",
     phone: poi.phone_number || "---",
@@ -218,9 +218,7 @@ export async function findPlace(name, lat = null, lng = null) {
 
   try {
     const response = await fetch(url); 
-
     if (!response.ok) {
-      // Nếu 404 nghĩa là DB chưa có địa điểm này, ta return null để FE tự xử lý fallback
       if (response.status === 404) return null;
       
       console.error(`HTTP error! Status: ${response.status}`);
@@ -245,7 +243,7 @@ async function fetchPOIsFromServer() {
   const sw = bounds.getSouthWest();
   const ne = bounds.getNorthEast();
   // URL API với tham số tọa độ khung nhìn
-  const url = `/chat/pois?type=${currentPoiType}&south=${sw.lat}&west=${sw.lng}&north=${ne.lat}&east=${ne.lng}`;
+  const url = `/map/pois?type=${currentPoiType}&south=${sw.lat}&west=${sw.lng}&north=${ne.lat}&east=${ne.lng}`;
 
   try {
     const response = await fetch(url);

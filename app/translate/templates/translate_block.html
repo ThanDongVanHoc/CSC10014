@@ -1,0 +1,188 @@
+<aside class="sidebar" aria-label="Translation History">
+  <div class="sidebar-header-gpt">
+    <div class="top-row">
+      <div class="brand-toggle" id="brandToggle" title="Expand Sidebar">
+        <img
+          src="{{ url_for('static', filename='images/logo.png') }}"
+          alt="App Logo"
+          class="sidebar-logo"
+        />
+        <i class="fas fa-columns sidebar-open-icon"></i>
+      </div>
+
+      <button id="hideBtn" class="gpt-btn-icon" title="Close Sidebar">
+        <i class="fas fa-columns"></i>
+      </button>
+    </div>
+
+    <nav class="sidebar-nav">
+      <button id="btnNew" class="nav-item-btn" title="New Translation">
+        <i class="fas fa-pen-to-square"></i>
+        <span>New Translation</span>
+      </button>
+
+      <button id="btnSearchTrigger" class="nav-item-btn" title="Search">
+        <i class="fas fa-magnifying-glass"></i>
+        <span>Search</span>
+      </button>
+    </nav>
+  </div>
+
+  <div
+    class="search-wrapper-hidden"
+    id="searchWrapper"
+    style="padding: 0 12px 12px 12px; display: none"
+  >
+    <input
+      id="searchInput"
+      class="gpt-search-input"
+      placeholder="Search Translations..."
+    />
+  </div>
+
+  <div
+    id="convoHeader"
+    style="
+      padding: 8px 16px;
+      font-size: 12px;
+      font-weight: 600;
+      color: #64748b;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    "
+  >
+    Recent translations
+  </div>
+
+  <div id="convoList" class="convo-list" role="list"></div>
+</aside>
+
+<section class="tr-translate" aria-label="Live Translation">
+  <article
+    class="tr-panel tr-panel--patient tr-panel--active"
+    data-role="patient"
+  >
+    <header class="tr-panel__header">
+      <button class="tr-pick" type="button" aria-pressed="true">
+        <span class="tr-pick__dot"
+          ><i class="fas fa-check tr-pick__tick"></i
+        ></span>
+      </button>
+      <div class="tr-role">
+        <span class="tr-role__pill">PATIENT</span>
+      </div>
+      <div class="tr-langs">
+        <span class="tr-lang">
+          <img
+            class="tr-flag"
+            src="https://flagcdn.com/w40/gb.png"
+            alt="UK"
+            loading="lazy"
+            referrerpolicy="no-referrer"
+          />
+          <span class="tr-code">EN</span>
+        </span>
+
+        <span class="tr-swap"
+          ><i class="fas fa-arrow-right-arrow-left"></i
+        ></span>
+
+        <span class="tr-lang">
+          <img
+            class="tr-flag"
+            src="https://flagcdn.com/w40/vn.png"
+            alt="VN"
+            loading="lazy"
+            referrerpolicy="no-referrer"
+          />
+          <span class="tr-code">VIE</span>
+        </span>
+      </div>
+    </header>
+
+    <div class="tr-panel__body">
+      <div class="tr-messages"></div>
+
+      <div class="tr-composer">
+        <div class="tr-inputwrap">
+          <input
+            class="tr-input"
+            type="text"
+            placeholder="Type here (Patient)..."
+          />
+          <button class="tr-iconbtn"><i class="fas fa-microphone"></i></button>
+          <button class="tr-iconbtn tr-iconbtn--send">
+            <i class="fas fa-paper-plane"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </article>
+
+  <article class="tr-panel tr-panel--doctor" data-role="doctor">
+    <header class="tr-panel__header">
+      <button class="tr-pick" type="button" aria-pressed="false">
+        <span class="tr-pick__dot"
+          ><i class="fas fa-check tr-pick__tick"></i
+        ></span>
+      </button>
+      <div class="tr-role">
+        <span class="tr-role__pill tr-role__pill--muted">DOCTOR</span>
+      </div>
+      <div class="tr-langs">
+        <span class="tr-lang">
+          <img
+            class="tr-flag"
+            src="https://flagcdn.com/w40/vn.png"
+            alt="VN"
+            loading="lazy"
+            referrerpolicy="no-referrer"
+          />
+          <span class="tr-code">VIE</span>
+        </span>
+
+        <span class="tr-swap"
+          ><i class="fas fa-arrow-right-arrow-left"></i
+        ></span>
+
+        <span class="tr-lang">
+          <img
+            class="tr-flag"
+            src="https://flagcdn.com/w40/gb.png"
+            alt="UK"
+            loading="lazy"
+            referrerpolicy="no-referrer"
+          />
+          <span class="tr-code">EN</span>
+        </span>
+      </div>
+    </header>
+
+    <div class="tr-panel__body">
+      <div class="tr-messages"></div>
+
+      <div class="tr-composer tr-composer--hidden">
+        <div class="tr-inputwrap">
+          <input
+            class="tr-input"
+            type="text"
+            placeholder="Type here (Doctor)..."
+          />
+          <button class="tr-iconbtn"><i class="fas fa-microphone"></i></button>
+          <button class="tr-iconbtn tr-iconbtn--send">
+            <i class="fas fa-paper-plane"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </article>
+  <div id="translateToast" class="toast-box toast-translate">
+    <div class="toast-icon-container">
+      <i
+        class="fas fa-check-circle"
+        style="color: #10b981; font-size: 20px"
+      ></i>
+    </div>
+    <div class="toast-message">Notification</div>
+  </div>
+</section>

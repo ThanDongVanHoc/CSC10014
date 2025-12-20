@@ -1,0 +1,78 @@
+/* static/css/app/translate/history.css */
+
+.convo-list {
+  padding: 12px;
+  gap: 2px;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.convo-list::-webkit-scrollbar {
+  display: none;
+}
+
+/* KHUNG NGOÀI: Chịu trách nhiệm về Padding và Màu nền */
+.convo-item {
+  position: relative;
+  background: transparent;
+  border: none;
+  border-radius: 8px;
+  /* CHỈ ĐỂ PADDING Ở ĐÂY (10px 12px) - Giống hệt bên Chat */
+  padding: 10px 12px;
+  cursor: pointer;
+  transition: background 0.2s ease;
+  color: #334155;
+  width: 100%;
+  box-sizing: border-box;
+  display: block;
+}
+
+.convo-item:hover {
+  background: #f1f5f9;
+}
+
+.convo-item.active {
+  background: #e2e8f0;
+  color: #0b1220;
+  font-weight: 500;
+}
+
+.convo-title {
+  font-size: 14px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: inherit;
+}
+
+.convo-sub {
+  font-size: 12px;
+  color: #94a3b8;
+  margin-top: 2px;
+}
+
+/* Ẩn hiện dấu 3 chấm */
+.chat-options {
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+.convo-item:hover .chat-options,
+.convo-item.active .chat-options {
+  opacity: 1;
+}
+
+.dots {
+  font-size: 16px;
+  color: #64748b;
+  padding: 2px 4px;
+  border-radius: 4px;
+}
+.dots:hover {
+  background-color: #cbd5e1;
+}

@@ -1,7 +1,7 @@
 from flask import redirect, render_template, url_for, session, request, jsonify
 from . import chat_bp
 import requests, os, json
-from .utilis import (
+from .utils import (
     get_messages,
     save_message,
     list_conversations,

@@ -1,0 +1,139 @@
+/* Nút icon (Micro, Gửi) */
+.tr-iconbtn {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  border: none;
+  background: #f1f5f9;
+  color: #64748b;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+.tr-iconbtn:hover {
+  background: #e2e8f0;
+  color: #334155;
+}
+
+/* Nút Gửi (Màu xanh) */
+.tr-iconbtn--send {
+  background: linear-gradient(
+    135deg,
+    #00b37e 0%,
+    #009966 100%
+  ); /* Green Gradient */
+  color: white;
+}
+.tr-iconbtn--send:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(0, 123, 255, 0.3);
+}
+
+/* Badges (Patient/Doctor) */
+.tr-role__pill {
+  font-size: 11px;
+  font-weight: 700;
+  padding: 5px 12px;
+  border-radius: 20px;
+  background: #d1fae5; /* Xanh lá nhạt */
+  color: #00b37e; /* Chữ xanh lá */
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+.tr-role__pill--muted {
+  background: #f1f5f9;
+  color: #64748b;
+}
+
+/* Language Switcher */
+.tr-lang {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 10px;
+  border-radius: 999px;
+
+  background: rgba(255, 255, 255, 0.75);
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  box-shadow: 0 6px 18px rgba(15, 23, 42, 0.06);
+
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+}
+
+.tr-flag {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  object-fit: cover;
+
+  border: 2px solid rgba(255, 255, 255, 0.9);
+  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.18), 0 0 0 1px rgba(15, 23, 42, 0.1);
+  display: block;
+}
+
+.tr-langs {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin-left: auto;
+}
+
+.tr-code {
+  font-weight: 700;
+  font-size: 12px;
+  letter-spacing: 0.6px;
+  color: #0f172a;
+}
+
+.tr-swap {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 999px;
+
+  background: rgba(255, 255, 255, 0.55);
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  box-shadow: 0 6px 18px rgba(15, 23, 42, 0.05);
+}
+
+.tr-lang:hover {
+  transform: translateY(-1px);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  box-shadow: 0 10px 26px rgba(15, 23, 42, 0.09);
+}
+
+/* Nút chọn Panel (Hình tròn) */
+.tr-pick {
+  border: none;
+  background: none;
+  cursor: pointer;
+  padding: 0;
+}
+.tr-pick__dot {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  border: 2px solid #cbd5e1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 12px;
+  transition: all 0.2s;
+}
+.tr-panel--active .tr-pick__dot {
+  background: #00b37e;
+  border-color: #00b37e;
+  transform: scale(1.1);
+}
+.tr-pick__tick {
+  display: none;
+}
+.tr-panel--active .tr-pick__tick {
+  display: block;
+}

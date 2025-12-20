@@ -41,4 +41,8 @@ export function initMap() {
   MapGuideUI.init();
   window.updateMapForGuideStep = updateMapForGuideStep;
   window.pinLocationToMap = pinLocationToMap;
+
+  return {
+    map
+  };
 }
