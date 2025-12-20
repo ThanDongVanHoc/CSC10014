@@ -1,0 +1,517 @@
+/* ========================================= */
+/* ===== GLOBAL & SIDEBAR (GIỮ NGUYÊN) ===== */
+/* ========================================= */
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.profile-page-wrapper {
+  display: grid;
+  grid-template-columns: 340px 1fr;
+  gap: 32px;
+  margin-top: 40px;
+  padding-bottom: 80px;
+}
+
+/* --- SIDEBAR CARDS --- */
+.profile-card {
+  background: #ffffff;
+  border-radius: 24px;
+  border: 1px solid #f3f4f6;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.profile-card:hover {
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
+}
+
+.summary-card {
+  padding: 40px 24px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+/* --- AVATAR --- */
+.avatar-wrapper-large {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background-color: #ecfdf5;
+  border: 4px solid #ffffff;
+  box-shadow: 0 0 0 4px #ecfdf5;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.profile-avatar-img {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.edit-avatar-btn {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 36px;
+  height: 36px;
+  background: var(--brand);
+  color: white;
+  border: 3px solid #ffffff;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s;
+  border: none;
+}
+
+.edit-avatar-btn:hover {
+  transform: scale(1.1);
+  background: #009966;
+}
+
+/* --- SIDEBAR TEXT --- */
+.profile-fullname {
+  font-size: 20px;
+  font-weight: 800;
+  color: #111827;
+  margin: 0 0 6px 0;
+}
+
+.profile-email {
+  font-size: 14px;
+  color: #6b7280;
+  margin: 0 0 16px 0;
+}
+
+.profile-badges {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 24px;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 6px 12px;
+  border-radius: 99px;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.badge-verified {
+  background: #ecfdf5;
+  color: var(--brand);
+}
+.badge-id {
+  background: #f3f4f6;
+  color: #4b5563;
+}
+
+.sidebar-divider {
+  width: 100%;
+  height: 1px;
+  background: #f3f4f6;
+  margin-bottom: 24px;
+}
+
+.profile-stats {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  gap: 20px;
+}
+
+.stat-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.stat-value {
+  font-size: 16px;
+  font-weight: 800;
+  color: #111827;
+}
+.stat-label {
+  font-size: 11px;
+  color: #9ca3af;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+.stat-divider {
+  width: 1px;
+  background: #e5e7eb;
+  height: 30px;
+}
+
+/* ========================================= */
+/* ===== MAIN CONTENT (STANDARD SIZE) ====== */
+/* ========================================= */
+
+.main-form-card {
+  padding: 14px;
+  /* Bỏ margin-bottom ở đây vì Grid Gap đã tự tạo khoảng cách với Medical Card rồi */
+  margin-bottom: 0;
+}
+
+.card-header {
+  margin-bottom: 24px;
+  border-bottom: 1px solid #f3f4f6;
+  padding-bottom: 20px;
+}
+
+.card-header h3 {
+  font-size: 22px;
+  font-weight: 800;
+  color: #111827;
+  margin: 0 0 6px 0;
+}
+
+.card-header p {
+  font-size: 14px;
+  color: #6b7280;
+  margin: 0;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px 32px;
+  margin-bottom: 24px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.form-group label {
+  font-size: 13px;
+  font-weight: 700;
+  color: #374151;
+}
+
+/* Input kiểu chuẩn: Cao 48px */
+.input-modern {
+  width: 100%;
+  padding: 0 16px;
+  border-radius: 12px;
+  border: 1px solid #e5e7eb;
+  background: #f9fafb;
+  font-family: "Manrope", sans-serif;
+  font-size: 15px;
+  color: #111827;
+  transition: all 0.2s;
+  box-sizing: border-box;
+  height: 48px;
+  display: flex;
+  align-items: center;
+}
+
+.input-modern:focus {
+  background: #ffffff;
+  border-color: var(--brand);
+  outline: none;
+  box-shadow: 0 0 0 4px #ecfdf5;
+}
+
+.input-modern:disabled {
+  background-color: #f3f4f6;
+  color: #6b7280;
+  cursor: not-allowed;
+  border-color: #e5e7eb;
+}
+
+#email:disabled {
+  background-color: #e5e7eb;
+  color: #9ca3af;
+  font-weight: 600;
+}
+
+/* ========================================= */
+/* ===== MEDIA BOX (STANDARD) ============== */
+/* ========================================= */
+
+.media-display-box {
+  width: 100%;
+  height: 48px;
+  padding: 0 16px;
+  border-radius: 12px;
+  background-color: #f0fdf4;
+  border: 1px solid #bbf7d0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  position: relative;
+  transition: all 0.2s;
+  box-sizing: border-box;
+}
+
+.media-display-box:hover {
+  background-color: #dcfce7;
+  border-color: var(--brand);
+}
+
+.link-content {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  overflow: hidden;
+  width: 100%;
+}
+
+.link-icon {
+  color: var(--brand);
+  flex-shrink: 0;
+}
+
+.link-text {
+  font-size: 14px;
+  color: #166534;
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Tooltip */
+.copy-tooltip {
+  position: absolute;
+  right: 16px;
+  background-color: #111827;
+  color: white;
+  font-size: 11px;
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-weight: 700;
+  opacity: 0;
+  transform: translateY(5px);
+  transition: all 0.2s;
+  pointer-events: none;
+}
+
+.media-display-box:hover .copy-tooltip {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.media-display-box:active {
+  transform: scale(0.98);
+}
+
+/* ========================================= */
+/* ===== BUTTONS (COMPACT & BOLD ICONS) ==== */
+/* ========================================= */
+
+.form-actions {
+  grid-column: 1 / -1;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  padding-top: 24px;
+  border-top: 1px solid #f3f4f6;
+  margin-top: 12px;
+}
+
+#editButtons {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+/* Class chung cho nút */
+.btn-change-mode,
+.btn-save,
+.btn-cancel {
+  font-family: "Manrope", sans-serif;
+  border-radius: 99px;
+  font-weight: 700;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  letter-spacing: 0.3px;
+  border: 1px solid transparent;
+}
+
+.btn-sm {
+  height: 36px;
+  padding: 0 18px;
+  font-size: 13px;
+}
+
+.btn-icon-svg {
+  margin-right: 6px;
+  stroke-width: 2.5px;
+}
+
+/* 1. NÚT EDIT PROFILE (Đen) */
+.btn-change-mode {
+  background-color: #111827;
+  color: white;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.btn-change-mode:hover {
+  background-color: #000000;
+  transform: translateY(-1px);
+}
+
+/* 2. NÚT SAVE (Xanh) */
+.btn-save {
+  background-color: var(--brand);
+  color: white;
+  box-shadow: 0 4px 10px rgba(0, 179, 126, 0.2);
+}
+
+.btn-save:hover {
+  background-color: #009966;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 12px rgba(0, 179, 126, 0.3);
+}
+
+/* 3. NÚT DISCARD (Đỏ nhạt) */
+.btn-cancel {
+  background-color: #fff1f2;
+  color: #e11d48;
+  border: 1px solid #ffe4e6;
+}
+
+.btn-cancel:hover {
+  background-color: #ffe4e6;
+  border-color: #fecdd3;
+  color: #be123c;
+  transform: translateY(-1px);
+}
+
+/* Code mới giúp Medical Card trải dài hết màn hình Grid */
+.medical-section {
+  padding: 32px;
+  border-left: 4px solid var(--brand);
+
+  /* Quan trọng: Dòng này giúp nó chiếm trọn 2 cột (Sidebar + Main) */
+  grid-column: 1 / -1;
+  width: 95%;
+}
+
+.medical-widget {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #ecfdf5;
+  border-radius: 16px;
+  padding: 20px;
+  border: 1px solid rgba(0, 179, 126, 0.1);
+}
+.medical-content {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.medical-icon-large {
+  width: 48px;
+  height: 48px;
+  background: #ffffff;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--brand);
+  box-shadow: 0 4px 12px rgba(0, 179, 126, 0.15);
+}
+.medical-info h4 {
+  margin: 0 0 4px 0;
+  font-size: 16px;
+  font-weight: 800;
+  color: #064e3b;
+}
+.medical-info p {
+  margin: 0;
+  font-size: 13px;
+  color: #065f46;
+}
+
+.btn-action-medical {
+  background: #ffffff;
+  color: var(--brand);
+  border: 1px solid rgba(0, 179, 126, 0.2);
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.btn-action-medical:hover {
+  background: var(--brand);
+  color: #ffffff;
+}
+
+/* --- ANIMATION --- */
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.fade-up {
+  animation: fadeUp 0.6s ease-out forwards;
+}
+
+/* --- RESPONSIVE --- */
+@media (max-width: 900px) {
+  .profile-page-wrapper,
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+  .medical-widget {
+    flex-direction: column;
+    text-align: center;
+    gap: 20px;
+  }
+  .medical-content {
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 768px) {
+  .form-actions {
+    flex-direction: column;
+    gap: 12px;
+    align-items: stretch;
+  }
+
+  .btn-change-mode,
+  #editButtons,
+  .btn-save,
+  .btn-cancel {
+    width: 100%;
+    justify-content: center;
+  }
+
+  #editButtons {
+    justify-content: space-between;
+  }
+}

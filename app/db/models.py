@@ -14,6 +14,7 @@ class User(db.Model):
     password_hash = db.mapped_column(db.String(200), nullable=False)
     avatar_url = db.mapped_column(db.String(255), nullable=True) 
     google_sub = db.mapped_column(db.String(255), nullable=True)
+    media = db.mapped_column(db.Text, nullable=True)
 
     # Định nghĩa ràng buộc và index
     __table_args__ = (
