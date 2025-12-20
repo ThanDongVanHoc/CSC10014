@@ -515,3 +515,143 @@
     justify-content: space-between;
   }
 }
+
+
+/* Medical History Styles */
+.history-list-container {
+    padding: 0 24px 24px 24px;
+    max-height: 500px;
+    overflow-y: auto;
+}
+
+.history-item-card {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 16px;
+    background: #f9fafb;
+    border-radius: 16px;
+    margin-bottom: 12px;
+    border: 1px solid #f3f4f6;
+    transition: all 0.2s;
+}
+
+.history-item-card:hover {
+    background: #ffffff;
+    border-color: var(--brand);
+    box-shadow: 0 4px 12px rgba(0, 179, 126, 0.1);
+}
+
+/* Date Badge */
+.date-badge {
+    width: 60px;
+    height: 60px;
+    background: #ffffff;
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #e5e7eb;
+    flex-shrink: 0;
+}
+
+.date-badge .month {
+    font-size: 11px;
+    font-weight: 800;
+    text-transform: uppercase;
+    color: var(--brand);
+}
+
+.date-badge .day {
+    font-size: 20px;
+    font-weight: 800;
+    color: #111827;
+}
+
+/* Info Section */
+.history-main-info {
+    flex-grow: 1;
+}
+
+.diagnosis-title {
+    font-size: 16px;
+    font-weight: 700;
+    color: #111827;
+    margin: 0 0 4px 0;
+}
+
+.hospital-meta {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    color: #6b7280;
+}
+
+/* Status & Button */
+.history-status {
+    text-align: right;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.record-id {
+    font-size: 11px;
+    font-weight: 600;
+    color: #9ca3af;
+}
+
+.btn-view-detail {
+    background: #ecfdf5;
+    color: var(--brand);
+    border: none;
+    padding: 6px 12px;
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.history-footer {
+    padding: 24px;
+    border-top: 1px solid #f3f4f6;
+    display: flex;
+    justify-content: center;
+}
+
+.btn-add-ocr {
+    background: #111827;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 99px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+}
+
+.draft-section {
+    border: 2px solid var(--brand);
+    background: #f0fdf4; /* Màu xanh nhạt để phân biệt với các thẻ khác */
+    margin-bottom: 32px;
+    padding: 24px;
+}
+
+.draft-form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 20px;
+}
+
+.draft-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    border-top: 1px solid #d1fae5;
+    padding-top: 16px;
+}

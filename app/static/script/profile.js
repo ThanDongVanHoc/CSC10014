@@ -200,3 +200,103 @@ document.addEventListener("DOMContentLoaded", function () {
       });
   });
 });
+
+// 1. Hàm xử lý khi user chọn ảnh
+async function handleOCRUpload(input) {
+    const file = input.files[0];
+    if (!file) return;
+
+    // In thông báo bắt đầu ra Console trình duyệt
+    console.log("--- [BẮT ĐẦU] Đang gửi ảnh lên AI Server ---");
+    console.log("File chọn:", file.name);
+
+    const formData = new FormData();
+    formData.append("file", file);
+
+    try {
+        // Gọi đến FastAPI (Port 8000)
+        const response = await fetch("http://127.0.0.1:8000/extract-medical-data", {
+            method: "POST",
+            body: formData
+        });
+
+        if (!response.ok) {
+            console.error("--- [LỖI] Server trả về mã:", response.status);
+            alert("Lỗi server AI (Mã " + response.status + ")");
+            return;
+        }
+
+        const result = await response.json();
+
+        // IN KẾT QUẢ RA CONSOLE TRÌNH DUYỆT ĐỂ KIỂM TRA
+        console.log("--- [THÀNH CÔNG] Dữ liệu từ Model: ---");
+        console.log("Dữ liệu thô:", result);
+        
+        // In dạng bảng cho các thông tin chính
+        if(result.draft_data) {
+            console.table(result.draft_data);
+            console.log("Danh sách thuốc:", result.draft_data.medications);
+            alert("Đã nhận dữ liệu AI thành công! Hãy kiểm tra Console (F12)");
+        }
+
+    } catch (error) {
+        console.error("--- [LỖI KẾT NỐI] ---", error);
+        alert("Không thể kết nối đến AI Server. Hãy chắc chắn FastAPI đang chạy ở cổng 8000.");
+    }
+}
+
+// 2. Hàm hiển thị dữ liệu lên Form nháp
+function showDraftForm(data) {
+    document.getElementById('ocr-draft-container').style.display = 'block';
+    document.getElementById('draft-hospital').value = data.hospitalName || '';
+    document.getElementById('draft-date').value = data.visitDate || '';
+    document.getElementById('draft-diagnosis').value = data.diagnosis || '';
+    document.getElementById('draft-doctor').value = data.doctorName || '';
+    
+    // Lưu lại danh sách thuốc ngầm (vì thuốc thường phức tạp để sửa nhanh)
+    window.currentMedications = data.medications || [];
+    
+    // Cuộn tới form nháp
+    document.getElementById('ocr-draft-container').scrollIntoView({ behavior: 'smooth' });
+}
+
+// 3. Hàm Save cuối cùng vào Database (Flask Server)
+document.getElementById('btn-save-medical-db')?.addEventListener('click', async function() {
+    const btn = this;
+    btn.innerText = "Saving...";
+    btn.disabled = true;
+
+    const finalData = {
+        draft_data: {
+            hospitalName: document.getElementById('draft-hospital').value,
+            visitDate: document.getElementById('draft-date').value,
+            diagnosis: document.getElementById('draft-diagnosis').value,
+            doctorName: document.getElementById('draft-doctor').value,
+            medications: window.currentMedications
+        }
+    };
+
+    try {
+        const response = await fetch("/api/confirm-medical-record", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(finalData)
+        });
+
+        if (response.ok) {
+            showToastMessage("Record saved to your history!", true);
+            setTimeout(() => location.reload(), 1500); // Reload để hiện record mới
+        } else {
+            showToastMessage("Failed to save to database.", false);
+        }
+    } catch (error) {
+        showToastMessage("Network error.", false);
+    } finally {
+        btn.innerText = "Confirm & Save to History";
+        btn.disabled = false;
+    }
+});
+
+function cancelDraft() {
+    document.getElementById('ocr-draft-container').style.display = 'none';
+}
