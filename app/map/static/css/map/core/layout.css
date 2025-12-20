@@ -1,6 +1,6 @@
 #map {
   position: relative;
-  height: calc(100vh - 120px);
+  height: calc(100vh - 80px);
   border-radius: 16px;
   box-shadow: 0 4px 24px rgba(15, 23, 42, 0.08);
   overflow: hidden;
@@ -62,5 +62,3 @@
     max-width: none;
   }
 }
-
-
