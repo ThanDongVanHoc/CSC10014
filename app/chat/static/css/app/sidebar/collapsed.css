@@ -1,6 +1,8 @@
+/* css/app/sidebar/collapsed.css */
 .app.sidebar-hidden .chatContainer {
-  grid-template-columns: 56px 420px;
-  gap: 0;
+  /* THAY ĐỔI: 56px và phần còn lại tự giãn (1fr) */
+  grid-template-columns: 56px 1fr;
+  gap: 20px; /* Giữ gap 20px cho đồng bộ */
 }
 
 .app.sidebar-hidden .sidebar {

@@ -1,8 +1,11 @@
-// js/chat/components/message_ui.js
 import { State, DOM } from "../services/core.js";
 import { DataManager } from "../services/data.js";
+
+// [MAP LOGIC] - Import Map & Guide (Đã comment)
+/*
 import { findPlace } from "../../../../../map/static/scripts/map/components/POIManager.js"
 import { startGuideFlow } from "../../../../../map/static/scripts/guide_manager/guide_manager.js"
+*/
 
 // Helper
 export function hideSearchWrapper() {
@@ -30,16 +33,18 @@ export function appendMessageToUI(role, text, guideData = null) {
   const doc = document.createElement("div");
   doc.className = "msg " + (role === "user" ? "user" : "bot");
 
-  // Tạo container riêng cho text để tách biệt với thẻ location (tùy chọn, giúp CSS đẹp hơn)
   const textContent = document.createElement("div");
   textContent.innerHTML = text.replace(/\n/g, "<br>");
   doc.appendChild(textContent);
 
   DOM.chatMessages.appendChild(doc);
 
+  // [MAP LOGIC] - Hiển thị thẻ địa điểm (Đã comment)
+  /*
   if (role === "model" && guideData) {
     appendLocationCardsToUI(guideData.locations, guideData, doc);
   }
+  */
 
   DOM.chatMessages.scrollTop = DOM.chatMessages.scrollHeight;
 }
@@ -56,7 +61,7 @@ export async function loadSelectedChatToUI() {
 
   const current = State.conversations.find((c) => c.id == State.selectedId);
   const rawTitle = current ? current.title || "Conversation" : "Loading...";
-  const maxLength = 20;
+  const maxLength = 30;
   DOM.convTitle.textContent =
     rawTitle.length > maxLength
       ? rawTitle.slice(0, maxLength) + "..."
@@ -72,51 +77,43 @@ export async function loadSelectedChatToUI() {
     });
   }
 }
-window.handleStartGuideFromAdmin = function(locationName) {
-    console.log("🚀 Starting guide from Admin Page for:", locationName);
-    
-    // 1. Close the Admin Helper Modal/Iframe if it exists
-    const adminModal = document.getElementById('admin-helper-modal'); 
-    if (adminModal) {
-        adminModal.remove(); // Or adminModal.style.display = 'none';
-    }
 
-    // 2. Start the Guide Flow
-    if (locationName) {
-        startGuideFlow(locationName);
-    }
+// [MAP LOGIC] - Các hàm xử lý Admin Helper và Map (Đã comment toàn bộ)
+/*
+window.handleStartGuideFromAdmin = function (locationName) {
+  console.log("🚀 Starting guide from Admin Page for:", locationName);
+  const adminModal = document.getElementById("admin-helper-modal");
+  if (adminModal) {
+    adminModal.remove(); 
+  }
+  if (locationName) {
+    startGuideFlow(locationName);
+  }
 };
 
-// Open Administrative Helper Page
 function openAdminHelperPage(locationName, locationAddress, placeDetails, guideData) {
   const params = new URLSearchParams({
     name: locationName,
     address: locationAddress,
-    lat: placeDetails.lat || '',
-    lng: placeDetails.lng || '',
-    type: detectLocationType(locationName)
-
+    lat: placeDetails.lat || "",
+    lng: placeDetails.lng || "",
+    type: detectLocationType(locationName),
   });
-  
-  // Open in new tab
   const url = `/chat/admin_helper?${params.toString()}`;
-  window.open(url, '_blank');
-  
+  window.open(url, "_blank");
 }
 
-// Detect location type for better data loading
 function detectLocationType(name) {
   const n = name.toLowerCase();
-  if (n.includes('công chứng') || n.includes('notary')) return 'notary';
-  if (n.includes('cmnd') || n.includes('cccd') || n.includes('id card')) return 'id_card';
-  if (n.includes('hộ chiếu') || n.includes('passport')) return 'passport';
-  if (n.includes('hộ khẩu') || n.includes('residence')) return 'residence';
-  if (n.includes('khai sinh') || n.includes('birth')) return 'birth';
-  if (n.includes('kết hôn') || n.includes('marriage')) return 'marriage';
-  return 'default';
+  if (n.includes("công chứng") || n.includes("notary")) return "notary";
+  if (n.includes("cmnd") || n.includes("cccd") || n.includes("id card")) return "id_card";
+  if (n.includes("hộ chiếu") || n.includes("passport")) return "passport";
+  if (n.includes("hộ khẩu") || n.includes("residence")) return "residence";
+  if (n.includes("khai sinh") || n.includes("birth")) return "birth";
+  if (n.includes("kết hôn") || n.includes("marriage")) return "marriage";
+  return "default";
 }
 
-// Append Location Cards
 export async function appendLocationCardsToUI(locations, guideData, parentElement = null) {
   if (!locations || locations.length === 0) return;
 
@@ -126,7 +123,7 @@ export async function appendLocationCardsToUI(locations, guideData, parentElemen
         const currentPlace = await findPlace(loc.Ten);
         return currentPlace ? { ...loc, placeDetails: currentPlace } : null;
       } catch (error) {
-        console.error('Error finding place:', error);
+        console.error("Error finding place:", error);
         return null;
       }
     })
@@ -140,7 +137,7 @@ export async function appendLocationCardsToUI(locations, guideData, parentElemen
   const fragment = document.createDocumentFragment();
 
   validLocations.forEach((data) => {
-    const { placeDetails } = data; // data location in databse
+    const { placeDetails } = data; 
     const card = document.createElement("div");
     card.className = "location-card";
     card.style.cursor = "pointer";
@@ -148,7 +145,7 @@ export async function appendLocationCardsToUI(locations, guideData, parentElemen
     const phoneLink = placeDetails.phone_number
       ? `<a href="tel:${placeDetails.phone_number}">${placeDetails.phone_number}</a>`
       : "Not available";
-    
+
     let webLink = "";
     if (placeDetails.website) {
       const url = placeDetails.website.startsWith("http")
@@ -170,43 +167,23 @@ export async function appendLocationCardsToUI(locations, guideData, parentElemen
       </div>
     `;
 
-    // View on Map
     card.querySelector(".map-link").addEventListener("click", (e) => {
       e.preventDefault();
       e.stopPropagation();
       if (State.pinLocationToMapFn)
-        State.pinLocationToMapFn(
-          placeDetails.lat,
-          placeDetails.lng,
-          data.Ten,
-          placeDetails
-        );
+        State.pinLocationToMapFn(placeDetails.lat, placeDetails.lng, data.Ten, placeDetails);
     });
 
-    // Admin Helper Button - Opens dedicated page
     card.querySelector(".btn-guide-trigger").addEventListener("click", (e) => {
       e.preventDefault();
       e.stopPropagation();
-      
-      openAdminHelperPage(
-        data.Ten,
-        placeDetails.location,
-        placeDetails
-      );
-
+      openAdminHelperPage(data.Ten, placeDetails.location, placeDetails);
     });
 
-    // Card click - show on map
     card.addEventListener("click", (e) => {
-      if (e.target.tagName === "A" || e.target.closest(".btn-guide-trigger"))
-        return;
+      if (e.target.tagName === "A" || e.target.closest(".btn-guide-trigger")) return;
       if (State.pinLocationToMapFn)
-        State.pinLocationToMapFn(
-          placeDetails.lat,
-          placeDetails.lng,
-          data.Ten,
-          placeDetails
-        );
+        State.pinLocationToMapFn(placeDetails.lat, placeDetails.lng, data.Ten, placeDetails);
     });
 
     fragment.appendChild(card);
@@ -217,9 +194,7 @@ export async function appendLocationCardsToUI(locations, guideData, parentElemen
     parentElement.appendChild(container);
   } else {
     DOM.chatMessages.appendChild(container);
-    DOM.chatMessages.scrollTo({
-      top: DOM.chatMessages.scrollHeight,
-      behavior: "smooth",
-    });
+    DOM.chatMessages.scrollTo({ top: DOM.chatMessages.scrollHeight, behavior: "smooth" });
   }
 }
+*/

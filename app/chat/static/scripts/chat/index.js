@@ -1,8 +1,9 @@
 import {
   State,
   DOM,
-  setMapReference as setMapRefState,
-} from "./services/core.js"; 
+  // [MAP LOGIC] - Commented
+  // setMapReference as setMapRefState,
+} from "./services/core.js";
 import { DataManager } from "./services/data.js";
 import {
   renderEmptyState,
@@ -12,10 +13,12 @@ import {
 import { renderSidebar } from "./components/sidebar_ui.js";
 import { sendMessage } from "./logic.js";
 
-// Export API
+// [MAP LOGIC] - Export API Map (Đã comment)
+/*
 export function setMapReference(fn) {
   setMapRefState(fn);
 }
+*/
 export { hideSearchWrapper };
 
 export async function initChat() {

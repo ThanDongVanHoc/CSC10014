@@ -82,6 +82,9 @@ def chat():
 
     if intent == "greeting":
         # Trả lời ngay lập tức, không gọi API analyze
+        bot_reply = "Hello! How can I help you regarding administrative, healthcare, or security issues?"
+        if user_email and convo_id:
+            save_message(user_email, "model", bot_reply, convo_id)
         return jsonify({
             "reply": "Hello! How can I help you regarding administrative, healthcare, or security issues?", 
             "locations": [], 
@@ -115,6 +118,9 @@ def chat():
             })
         
         elif intent == "greeting":
+             bot_reply = "Hello! How can I help you?"
+             if user_email and convo_id:
+                    save_message(user_email, "model", bot_reply, convo_id)
              return jsonify({"reply": "Hello! How can I help you?", "locations": [], "context": current_info})
         else:
             # New Topic -> Reset Context

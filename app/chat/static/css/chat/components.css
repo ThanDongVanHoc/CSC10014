@@ -66,3 +66,61 @@
     min-width: auto;
   }
 }
+
+.toast-box {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  background: #ffffff;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 12px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+
+  /* Font chữ */
+  font-family: "Segoe UI", sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  color: #334155;
+
+  /* Trạng thái ẩn mặc định */
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(20px); /* Dịch xuống dưới 1 chút */
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* 2. Class '.show' được JS thêm vào để hiện thông báo */
+.toast-box.show {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0); /* Trượt lên vị trí gốc */
+}
+
+/* 3. Định dạng icon bên trong */
+.toast-icon-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  flex-shrink: 0; /* Không bị co lại */
+}
+
+/* 4. Định dạng text */
+.toast-message {
+  line-height: 1.4;
+}
+
+/* Giữ nguyên phần định vị .toast-chat cũ của bạn */
+.toast-chat {
+  position: absolute;
+  right: 20px;
+  bottom: 100px; /* Cao hơn input chat một chút */
+  left: auto;
+  top: auto;
+  z-index: 9999; /* Đảm bảo nổi lên trên cùng */
+  width: auto;
+  max-width: 300px;
+}
