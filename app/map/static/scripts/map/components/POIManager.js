@@ -203,26 +203,31 @@ function pinLocationPro(poi){
   });
 }
 
-export async function findPlace(name) {
-  if (!name) {
-    console.error("Place name is required.");
+export async function findPlace(name, lat = null, lng = null) {
+  if (!name && (!lat || !lng)) {
+    console.error("Place name or coordinates are required.");
     return null;
   }
 
-  const url = `/chat/getOnePlace?name=${encodeURIComponent(name)}`;
+  // Xây dựng URL với các tham số có sẵn
+  let url = `/map/getOnePlace?name=${encodeURIComponent(name || "")}`;
+  
+  if (lat !== null && lng !== null) {
+      url += `&lat=${lat}&lng=${lng}`;
+  }
 
   try {
     const response = await fetch(url); 
 
     if (!response.ok) {
+      // Nếu 404 nghĩa là DB chưa có địa điểm này, ta return null để FE tự xử lý fallback
+      if (response.status === 404) return null;
+      
       console.error(`HTTP error! Status: ${response.status}`);
-      const errorBody = await response.json().catch(() => ({ message: 'Unknown error' }));
-      console.error("Server message:", errorBody.message);
       return null;
     }
 
     const placeData = await response.json(); 
-
     return placeData;
 
   } catch (error) {

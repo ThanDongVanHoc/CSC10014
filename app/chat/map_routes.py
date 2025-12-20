@@ -19,6 +19,9 @@ def getOnePlace():
     stmt = select(Place).where(Place.name == name).limit(1)
     place = db.session.scalar(stmt)
 
+    if not place.img :
+        place.img = "https://bookingcare.vn/files/blog/2019/01/10/162817-benh-vien-tu-du.jpg" 
+        # Default image if none available
     
     if place:
         return jsonify(place.to_dict()), 200

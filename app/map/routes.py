@@ -11,21 +11,53 @@ from ..chat.forms_data import FORM_METADATA
 
 @map_bp.route('/getOnePlace')
 def getOnePlace():
-    name = request.args.get('name') 
+    name = request.args.get('name')
+    lat = request.args.get('lat')
+    lng = request.args.get('lng')
 
-    if not name:
-        return jsonify({"error": "Missing required parameter: name"}), 400
+    if not name and (not lat or not lng):
+        return jsonify({"error": "Missing required parameters: name OR (lat and lng)"}), 400
 
-    stmt = select(Place).where(Place.name == name).limit(1)
-    place = db.session.scalar(stmt)
+    stmt = None
 
+    # Ưu tiên 1: Tìm theo tọa độ chính xác (trong khoảng sai số nhỏ ~50m)
+    if lat and lng:
+        try:
+            lat_val = float(lat)
+            lng_val = float(lng)
+            delta = 0.0005 # Khoảng 50m
+            
+            stmt = select(Place).where(
+                and_(
+                    Place.lat.between(lat_val - delta, lat_val + delta),
+                    Place.lng.between(lng_val - delta, lng_val + delta)
+                )
+            ).limit(1)
+        except ValueError:
+            pass
+
+    # Ưu tiên 2: Nếu chưa có stmt (không gửi lat/lng hoặc lỗi), tìm theo tên
+    if stmt is None and name:
+        stmt = select(Place).where(Place.name == name).limit(1)
     
+    # Thực thi query
+    # Nếu nãy tìm theo tọa độ mà không ra, thì fallback tìm theo tên
+    place = None
+    if stmt is not None:
+        place = db.session.scalar(stmt)
+    
+    if not place and name and lat and lng:
+        # Fallback cuối cùng: Tìm chính xác theo tên nếu tìm tọa độ thất bại
+        place = db.session.scalar(select(Place).where(Place.name == name).limit(1))
+
     if place:
+        # Xử lý ảnh default
+        if not place.img:
+             place.img = "https://bookingcare.vn/files/blog/2019/01/10/162817-benh-vien-tu-du.jpg"
         return jsonify(place.to_dict()), 200
     else:
-        return jsonify({"message": f"Place with name '{name}' not found"}), 404
-
-
+        return jsonify({"message": "Place not found"}), 404
+    
 @map_bp.route('/pois')
 def pois():
     query_kw = request.args.get("type")
@@ -218,3 +250,7 @@ def get_form_info(id):
 @map_bp.route('/')
 def map():
     return render_template('map.html')
+
+
+
+    
