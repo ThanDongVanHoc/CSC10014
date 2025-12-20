@@ -139,6 +139,7 @@ def get_search_history():
     histories = SearchHistory.query.filter_by(user_id=user.id)\
         .order_by(SearchHistory.created_at.desc()).all()
     history_list = [h.to_dict() for h in histories]
+
     return jsonify(history_list)
 
 @map_bp.route('/proxy_route/<mode>/<coords>')
