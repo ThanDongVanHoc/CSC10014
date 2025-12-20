@@ -1,3 +1,4 @@
+/* css/app/core/layout.css */
 html,
 body {
   margin: 0;
@@ -9,11 +10,13 @@ body {
 }
 
 .app {
-  display: grid;
-  grid-template-columns: auto 1fr;
-  gap: 20px;
+  display: block; /* Đổi thành block để tránh xung đột grid lồng nhau */
   width: 100%;
+
+  /* GIỮ NGUYÊN CHIỀU CAO CŨ CỦA BẠN */
   height: calc(100vh - 80px);
+
+  /* Giữ nguyên padding cũ */
   padding: 20px;
   box-sizing: border-box;
   overflow: hidden;
@@ -21,7 +24,13 @@ body {
 
 .chatContainer {
   display: grid;
-  grid-template-columns: 240px 420px;
+
+  /* THAY ĐỔI DUY NHẤT: 
+     - Cũ: 240px 420px (gây lỗi đè nhau và nút không bấm được)
+     - Mới: 300px 1fr (Sidebar 300px, Chat chiếm hết phần còn lại) 
+  */
+  grid-template-columns: 300px 1fr;
+
   gap: 20px;
   height: 100%;
   max-height: 100%;

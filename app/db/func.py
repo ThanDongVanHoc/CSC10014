@@ -1,8 +1,11 @@
 import pandas as pd # Bắt buộc phải import pandas để check NaN
 from .models import Place
+from deep_translator import GoogleTranslator
 
 def poi_csv_to_db(record):
+    translator = GoogleTranslator(source='auto', target='en')
     query_kw = "other" 
+
     # Lấy dữ liệu
     name = record.get("Ten")
     location = record.get("Dia chi")
@@ -19,6 +22,18 @@ def poi_csv_to_db(record):
        pd.isna(intro):
         
         return None
+    
+    if pd.isna(phone_number) or str(phone_number).strip().lower() in ["không có", "nan", ""]:
+        phone_number = None
+    
+    try:
+        if location:
+            location = translator.translate(str(location))
+        if intro:
+            intro = translator.translate(str(intro))
+            
+    except Exception as e:
+        print(f"Lỗi dịch thuật tại {name}: {e}")
         
     # Logic gán query_kw
     if "Phòng công chứng" in original_kw:

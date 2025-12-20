@@ -54,12 +54,13 @@ def load_place_data_command():
     valid_data_to_insert = []
 
     try:
-        for record in data_to_dict:
+        total_rows = len(data_to_dict)
+        for index, record in enumerate(data_to_dict):
+            print(f"Đang xử lý dòng {index + 1}/{total_rows}...", end='\r')
+            
             place_obj = poi_csv_to_db(record)
             
-            # Nếu place_obj không phải là None thì mới thêm vào danh sách
             if place_obj is not None:
-                # Chuyển object thành dict để dùng bulk_insert_mappings
                 valid_data_to_insert.append(place_obj.to_dict())
                 
     except Exception as e:

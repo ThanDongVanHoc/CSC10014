@@ -96,7 +96,7 @@ export async function sendMessage(text) {
         if (conv.title === "New chat" || !conv.title) {
           const newTitle = text.slice(0, 40);
           await DataManager.rename(State.selectedId, newTitle);
-          DOM.convTitle.textContent = newTitle.slice(0, 20) + "...";
+          DOM.convTitle.textContent = newTitle.slice(0, 30) + "...";
         }
         renderSidebar(DOM.searchInput.value);
       }
