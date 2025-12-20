@@ -4,9 +4,12 @@ from datetime import timedelta
 from .auth import auth_bp
 from .chat import chat_bp
 from .db import init_db
+from .map import map_bp 
 import os
 import pathlib
 from .auth.mail import init_mail
+from app.chat.utilis import get_user
+
 
 #Factory Pattern
 def create_app(test_config = None):
@@ -26,6 +29,7 @@ def create_app(test_config = None):
     #Register
     app.register_blueprint(auth_bp)
     app.register_blueprint(chat_bp)
+    app.register_blueprint(map_bp)
     #
     init_db(app)
     init_mail(app)
@@ -33,10 +37,21 @@ def create_app(test_config = None):
     @app.route('/')
     def home_page():
         return render_template('index.html')
+    
     @app.route('/about-us')
     def about_us():
         return render_template('about.html')
+    
     @app.route('/achievements_and_events')
     def achievements_and_events():
         return render_template('achievements_and_events.html')
+    @app.route('/services')
+    def services():
+        return render_template('services.html')
+    @app.route('/profile')
+    def profile():
+        if "user_email" not in session:
+            return redirect(url_for('auth.signin'))
+        user = get_user(session["user_email"])
+        return render_template('profile.html', user=user)
     return app

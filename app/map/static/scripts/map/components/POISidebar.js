@@ -33,6 +33,8 @@ export class PoiSidebar {
 
     const { id, image, name, intro, location, phone, website } = poiData;
 
+    const displayPhone = phone ? phone : "Not available";
+
     // Nếu đang mở đúng POI này rồi thì không render lại
     if (this.activePoiId === id && this.sidebar.classList.contains("active")) {
       return;
@@ -68,14 +70,14 @@ export class PoiSidebar {
                     <div class="info-icon">
                         <span class="material-symbols-rounded">call</span>
                     </div>
-                    <div class="info-text">${phone}</div>
+                    <div class="info-text">${displayPhone}</div>
                 </div>
                 <div class="info-row">
                     <div class="info-icon">
                         <span class="material-symbols-rounded">public</span>
                     </div>
                     <div class="info-text">
-                        <a href="${website}" target="_blank" class="info-link">Truy cập Website</a>
+                        <a href="${website}" target="_blank" class="info-link">Access Website</a>
                     </div>
                 </div>
             </div>

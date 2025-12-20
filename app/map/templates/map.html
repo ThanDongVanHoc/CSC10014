@@ -1,0 +1,126 @@
+{% extends "layout.html" %} {% block css %}
+<link
+  rel="icon"
+  href="{{ url_for('static', filename='images/logo.png') }}"
+  type="image/x-icon"
+/>
+
+<link
+  rel="stylesheet"
+  href="{{ url_for('map.static', filename='css/guide_manager/guide_map.css') }}"
+/>
+<link
+  rel="stylesheet"
+  href="{{ url_for('map.static', filename='css/guide_manager/guide_ui.css') }}"
+/>
+<link
+  rel="stylesheet"
+  href="{{ url_for('map.static', filename='css/guide_manager/guide_troubleshoot.css') }}"
+/>
+<link
+  rel="stylesheet"
+  href="{{ url_for('map.static', filename='css/map/core/layout.css') }}"
+/>
+<link
+  rel="stylesheet"
+  href="{{ url_for('map.static', filename='css/map/core/controls.css') }}"
+/>
+<link
+  rel="stylesheet"
+  href="{{ url_for('map.static', filename='css/map/core/markers.css') }}"
+/>
+<link
+  rel="stylesheet"
+  href="{{ url_for('map.static', filename='css/map/core/location-cards.css') }}"
+/>
+<link
+  rel="stylesheet"
+  href="{{ url_for('map.static', filename='css/map/core/search.css') }}"
+/>
+<link
+  rel="stylesheet"
+  href="{{ url_for('map.static', filename='css/map/core/animations.css') }}"
+/>
+
+<link
+  rel="stylesheet"
+  href="{{ url_for('map.static', filename='css/map/core/transport.css') }}"
+/>
+
+<link
+  rel="stylesheet"
+  href="{{ url_for('map.static', filename='css/map/poi/filter.css') }}"
+/>
+<link
+  rel="stylesheet"
+  href="{{ url_for('map.static', filename='css/map/poi/sidebar.css') }}"
+/>
+<link
+  href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+  rel="stylesheet"
+/>
+<link
+  rel="stylesheet"
+  href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+/>
+<link
+  rel="stylesheet"
+  href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css"
+/>
+<link
+  rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+/>
+<link
+  rel="stylesheet"
+  href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,1,0"
+/>
+    <link rel="stylesheet" href="css/enhanced-admin-styles.css">
+    
+{% endblock %} {% block content %}
+
+  <!-- MAP -->
+  <div id="map">
+    <div class="transport-panel">
+      <div class="transport-modes">
+        <button data-travel="driving" class="t-btn active" title="Driving">
+          <i class="fas fa-car"></i>
+        </button>
+        <button data-travel="Motorcycling" class="t-btn" title="Motorcycling">
+          <i class="fas fa-motorcycle"></i>
+        </button>
+        <button data-travel="walking" class="t-btn" title="Walking">
+          <i class="fas fa-walking"></i>
+        </button>
+      </div>
+
+      <div id="routeInfoDisplay" class="route-info">
+        <div class="divider"></div>
+        <div class="info-item">
+          <span class="info-label">Time</span>
+          <span id="infoDuration" class="info-value">-- min</span>
+        </div>
+        <div class="info-item">
+          <span class="info-label">Distance</span>
+          <span id="infoDistance" class="info-value">-- km</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Fullscreen & controls -->
+    <div class="map-controls">
+      <button id="mapFullscreenBtn" title="Toggle fullscreen" class="map-btn">
+        <i id="fullscreenIcon" class="fas fa-expand"></i>
+      </button>
+    </div>
+
+    <div id="poi-sidebar" class="poi-sidebar"></div>
+  </div>
+{% endblock %} {% block script %}
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
+<script
+  type="module"
+  src="{{ url_for('map.static', filename='scripts/logic.js') }}"
+></script>
+{% endblock %}

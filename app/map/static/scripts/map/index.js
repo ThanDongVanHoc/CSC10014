@@ -21,7 +21,6 @@ export function initMap() {
 
   setMapInstance(map);
 
-  // 2. Initialize UI/Features
   initPoiFeature();
   initMapOverlay(map);
   initSearchService(map);

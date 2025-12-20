@@ -28,6 +28,8 @@ export const DOM = {
 };
 
 // 4. CORE FUNCTIONS
+/*
 export function setMapReference(fn) {
   State.pinLocationToMapFn = fn;
 }
+*/

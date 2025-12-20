@@ -1,4 +1,4 @@
-from flask import redirect, render_template, url_for, session, request, abort, flash
+from flask import redirect, render_template, url_for, session, request, abort, flash, jsonify
 from . import auth_bp
 from . import oauth  
 import os
@@ -382,3 +382,21 @@ def resendcode_resetpass():
     else:
         flash("Failed to send email. Please try again later.", "danger")
     return redirect(url_for('.handle_reset_pass'))
+
+@auth_bp.route('/update_user_setting', methods=['POST'])
+@login_is_required
+def update_user_setting():
+    data = request.get_json()
+    
+    if not data:
+        return jsonify({"message": "No data provided"}), 400
+
+    user = get_user_by_email(session["user_email"])
+    user.fullname = data.get('name') 
+    user.phone = data.get('phone')
+    user.media = data.get('media') 
+
+    db.session.commit()
+
+    session["fullname"] = user.fullname
+    return jsonify({"message": "Updated successfully"}), 200

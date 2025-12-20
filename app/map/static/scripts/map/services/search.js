@@ -28,10 +28,11 @@ export function clearSuggestionMarkers() {
 
 // Xử lý kết quả sau khi tìm kiếm thành công
 export async function handleSearchResult(geocodeData, map) {
+  
   const { name, center } = geocodeData;
 
   // Ghi log lịch sử tìm kiếm vào server
-  fetch("/chat/log_search_history", {
+  fetch("/map/log_search_history", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ keyword: name }),
@@ -89,9 +90,21 @@ export function initSearchService(map) {
     errorMessage: "No results found",
     suggestMinLength: 3,
   })
-    .on("startgeocode", () => toggleSearchLoading(true))
-    .on("finishgeocode", () => toggleSearchLoading(false))
+    .on("startgeocode", () => {
+      toggleSearchLoading(true);
+      console.log("Đang bắt đầu tìm kiếm..."); // Check xem nó có bắt đầu tìm không
+    })
+    .on("finishgeocode", (e) => {
+      if (e.results && e.results.length > 0) {
+          console.log("Tìm thấy " + e.results.length + " địa điểm");
+          const firstResult = e.results[0];
+          handleSearchResult(firstResult, map);
+        }
+      toggleSearchLoading(false);
+      console.log("Kết thúc tìm kiếm."); // Check xem nó có kết thúc tìm không
+    })
     .on("markgeocode", function (e) {
+      alert(`Found: ${e.geocode.name}`);
       handleSearchResult(e.geocode, map);
     })
     .addTo(map);
@@ -140,7 +153,7 @@ function setupHistorySearch(control) {
       }
 
       try {
-        const res = await fetch("/chat/get_search_history");
+        const res = await fetch("/map/get_search_history");
         if (!res.ok) return;
         const data = await res.json();
 

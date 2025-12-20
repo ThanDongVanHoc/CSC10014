@@ -1,0 +1,258 @@
+/* ========================================= */
+/* ===== SERVICES PAGE (REFINED) =========== */
+/* ========================================= */
+
+.os-page {
+  margin: 0;
+  font-family: "Manrope", sans-serif;
+  background-color: #ffffff;
+  color: #111827;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* --- TOP BAR --- */
+.os-topbar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  padding: 30px 40px;
+  display: flex;
+  align-items: center;
+  z-index: 100;
+}
+
+.os-logo {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.os-logo-img {
+  width: 48px;
+  height: 48px;
+  border-right: 1px solid #e5e7eb;
+  padding-right: 16px;
+}
+
+.os-logo-text {
+  font-family: "Manrope", sans-serif;
+  font-size: 16px;
+  font-weight: 800;
+  color: var(--brand);
+  line-height: 1.1;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.os-logo-subtext {
+  font-size: 11px;
+  color: #6b7280;
+  font-weight: 600;
+  display: block;
+}
+
+/* --- MAIN CONTAINER --- */
+.os-main {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 120px 20px 60px 20px;
+}
+
+.os-container {
+  width: 100%;
+  max-width: 1000px;
+  text-align: center;
+}
+
+/* --- HEADER SECTION --- */
+.os-header-section {
+  margin-bottom: 60px;
+}
+
+.os-label {
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: #9ca3af;
+  margin-bottom: 16px;
+}
+
+/* Tiêu đề phóng to, font Stencil */
+.os-title {
+  font-family: "Big Shoulders Stencil Text", cursive;
+  font-weight: 300;
+  font-size: 72px; /* Phóng to theo yêu cầu */
+  line-height: 1;
+  color: var(--brand); /* Màu xanh */
+  margin: 0 0 24px 0;
+  text-transform: lowercase; /* Giữ style giống index */
+  letter-spacing: 1px;
+}
+
+/* Đường kẻ tinh tế */
+.os-divider {
+  width: 60px;
+  height: 4px;
+  background-color: var(--brand); /* Màu xanh */
+  border-radius: 2px;
+  margin: 0 auto 24px auto; /* Canh giữa */
+  opacity: 0.8;
+}
+
+.os-description {
+  font-size: 17px;
+  color: #4b5563;
+  line-height: 1.6;
+  max-width: 580px;
+  margin: 0 auto;
+}
+
+/* --- GRID CARDS --- */
+.os-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 30px;
+  margin-bottom: 60px;
+  max-width: 860px; /* Rộng hơn chút cho thoáng */
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* --- CARD STYLE --- */
+.os-card {
+  background: #ffffff;
+  border: 1px solid #f3f4f6;
+  border-radius: 32px; /* Bo góc tròn hơn */
+  padding: 40px 30px;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.05); /* Bóng mờ sang trọng */
+}
+
+.os-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 25px 50px -12px rgba(0, 179, 126, 0.15); /* Bóng màu xanh nhẹ khi hover */
+  border-color: #ecfdf5;
+}
+
+/* Vùng chứa ảnh */
+.os-image-wrapper {
+  width: 100%;
+  height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 24px;
+}
+
+.os-card-img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  transition: transform 0.5s ease;
+}
+
+.os-card:hover .os-card-img {
+  transform: scale(1.08);
+}
+
+/* Nội dung text */
+.os-card-title {
+  font-size: 22px;
+  font-weight: 800;
+  color: #111827;
+  margin: 0 0 10px 0;
+}
+
+.os-card-desc {
+  font-size: 15px;
+  color: #6b7280;
+  line-height: 1.5;
+}
+
+/* Icon Check */
+.os-check-icon {
+  position: absolute;
+  top: 24px;
+  right: 24px;
+  width: 32px;
+  height: 32px;
+  background: var(--brand);
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transform: scale(0.8);
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 10px rgba(0, 179, 126, 0.4);
+}
+
+.os-card:hover .os-check-icon {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* --- FOOTER (Back Button Style) --- */
+.os-footer {
+  display: flex;
+  justify-content: center;
+  padding-top: 20px;
+}
+
+/* Nút Home Tròn, Nổi, Đẹp */
+.os-home-btn {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background-color: #ffffff;
+  color: #6b7280;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.os-home-btn:hover {
+  background-color: var(--brand); /* Màu xanh */
+  color: #ffffff;
+  border-color: var(--brand);
+  transform: translateY(-3px) scale(1.1);
+  box-shadow: 0 12px 24px rgba(0, 179, 126, 0.3);
+}
+
+.os-home-btn svg {
+  width: 28px;
+  height: 28px;
+}
+
+/* --- RESPONSIVE --- */
+@media (max-width: 768px) {
+  .os-title {
+    font-size: 48px; /* Giảm size trên mobile */
+  }
+
+  .os-grid {
+    grid-template-columns: 1fr;
+    max-width: 400px;
+  }
+
+  .os-topbar {
+    padding: 20px;
+  }
+}

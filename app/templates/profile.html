@@ -1,0 +1,258 @@
+{% extends "layout.html" %} {% block title %}My Profile - VietConnect{% endblock
+%} {% block css %}
+<link
+  rel="stylesheet"
+  href="{{ url_for('static', filename='css/profile.css') }}"
+/>
+{% endblock %} {% block content %}
+<div class="container profile-page-wrapper">
+  <aside class="profile-sidebar fade-up">
+    <div class="profile-card summary-card">
+      <div class="profile-avatar-container">
+        <div class="avatar-wrapper-large">
+          <img
+            src="{{ (user.avatar_url if user and user.avatar_url else (session.avatar if session.avatar else 'https://api.dicebear.com/9.x/notionists/svg?seed=VietConnect')) }}"
+            alt="User Avatar"
+            class="profile-avatar-img"
+          />
+          <button class="edit-avatar-btn" title="Change Avatar">
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <path d="M12 20h9"></path>
+              <path
+                d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"
+              ></path>
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <h2 class="profile-fullname">
+        {{ (user.fullname if user and user.fullname else (session.fullname if
+        session.fullname else "Resident")) }}
+      </h2>
+      <p class="profile-email">
+        {{ (user.email if user and user.email else (session.email if
+        session.email else "resident@vietconnect.com")) }}
+      </p>
+
+      <div class="profile-badges">
+        <span class="badge badge-verified">Verified Resident</span>
+        <span class="badge badge-id"
+          >ID: #{{ user.id if user and user.id else session.user_id }}</span
+        >
+      </div>
+
+      <div class="sidebar-divider"></div>
+
+      <div class="profile-stats">
+        <div class="stat-item">
+          <span class="stat-value">Active</span>
+          <span class="stat-label">Status</span>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat-item">
+          <span class="stat-value">HCMC</span>
+          <span class="stat-label">Location</span>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <main class="profile-main fade-up" style="animation-delay: 0.1s">
+    <div class="profile-card main-form-card">
+      <div class="card-header">
+        <h3>Account Settings</h3>
+        <p>Update your personal information and contact details.</p>
+      </div>
+
+      <form class="profile-form" id="settingsForm">
+        <div class="form-grid">
+          <div class="form-group">
+            <label for="name">Full Name</label>
+            <input
+              id="name"
+              name="name"
+              type="text"
+              class="input-modern"
+              value="{{ user.fullname if user and user.fullname else '' }}"
+              placeholder="Enter your full name"
+              disabled
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="email">Email Address</label>
+            <input
+              id="email"
+              name="email"
+              type="email"
+              class="input-modern"
+              value="{{ user.email if user and user.email else '' }}"
+              disabled
+              readonly
+            />
+            <small style="color: #9ca3af; font-size: 11px; margin-top: 4px"
+              >Email cannot be changed.</small
+            >
+          </div>
+
+          <div class="form-group">
+            <label for="phone">Phone Number</label>
+            <input
+              id="phone"
+              name="phone"
+              type="tel"
+              class="input-modern"
+              value="{{ user.phone if user and user.phone else '' }}"
+              placeholder="+84..."
+              disabled
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="media">Media / Social Link</label>
+            <input
+              id="media"
+              name="media"
+              type="text"
+              class="input-modern"
+              value="{{ user.media if user and user.media else '' }}"
+              placeholder="Facebook, Zalo link..."
+              disabled
+            />
+            <div
+              id="media-display"
+              class="media-display-box"
+              style="display: none"
+            >
+              <div class="link-content">
+                <svg
+                  width="18"
+                  height="18"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  class="link-icon"
+                >
+                  <path
+                    d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"
+                  ></path>
+                  <path
+                    d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"
+                  ></path>
+                </svg>
+                <span id="media-text-content" class="link-text"></span>
+              </div>
+              <span class="copy-tooltip">Click to copy</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-actions">
+          <button type="button" id="btnChange" class="btn-change-mode btn-sm">
+            <svg
+              width="14"
+              height="14"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              class="btn-icon-svg"
+            >
+              <path
+                d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"
+              ></path>
+              <path
+                d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"
+              ></path>
+            </svg>
+            Edit Profile
+          </button>
+
+          <div id="editButtons" style="display: none">
+            <button type="button" id="btnDiscard" class="btn-cancel btn-sm">
+              <svg
+                width="14"
+                height="14"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                class="btn-icon-svg"
+              >
+                <circle cx="12" cy="12" r="10"></circle>
+                <line x1="15" y1="9" x2="9" y2="15"></line>
+                <line x1="9" y1="9" x2="15" y2="15"></line>
+              </svg>
+              Discard
+            </button>
+            <button type="button" id="btnSave" class="btn-save btn-sm">
+              <svg
+                width="14"
+                height="14"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                class="btn-icon-svg"
+              >
+                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                <polyline points="22 4 12 14.01 9 11.01"></polyline>
+              </svg>
+              Save Changes
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </main>
+
+  <div
+    class="profile-card medical-section fade-up"
+    style="animation-delay: 0.2s"
+  >
+    <div class="card-header">
+      <h3>Emergency Medical Card</h3>
+      <p>This digital card helps first responders identify you.</p>
+    </div>
+
+    <div class="medical-widget">
+      <div class="medical-content">
+        <div class="medical-icon-large">
+          <svg
+            width="32"
+            height="32"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <path d="M22 12h-4l-3 9L9 3l-3 9H2" />
+          </svg>
+        </div>
+        <div class="medical-info">
+          <h4>Medical ID Incomplete</h4>
+          <p>
+            Add blood type, allergies, and emergency contacts to activate your
+            card.
+          </p>
+        </div>
+      </div>
+      <button class="btn-action-medical">Update Medical ID</button>
+    </div>
+  </div>
+</div>
+{% endblock %} {% block script %}
+<script src="{{ url_for('static', filename='script/profile.js') }}"></script>
+{% endblock %}
