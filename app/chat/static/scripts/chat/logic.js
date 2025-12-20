@@ -3,7 +3,6 @@ import { DataManager, getLocationOrDefault } from "./services/data.js";
 import {
   hideSearchWrapper,
   appendMessageToUI,
-  appendLocationCardsToUI,
 } from "./components/message_ui.js";
 import { renderSidebar } from "./components/sidebar_ui.js";
 

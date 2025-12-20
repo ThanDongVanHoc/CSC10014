@@ -1,8 +1,8 @@
 // js/chat/components/message_ui.js
 import { State, DOM } from "../services/core.js";
 import { DataManager } from "../services/data.js";
-import { findPlace } from "../../map/components/POIManager.js";
-import { startGuideFlow } from "../../guide_manager/guide_manager.js"
+import { findPlace } from "../../../../../map/static/scripts/map/components/POIManager.js"
+import { startGuideFlow } from "../../../../../map/static/scripts/guide_manager/guide_manager.js"
 
 // Helper
 export function hideSearchWrapper() {
