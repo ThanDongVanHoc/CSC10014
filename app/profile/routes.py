@@ -35,6 +35,7 @@ def save_medical_record():
             record.doctor_name = data.get('doctorName')
             record.medications = json.dumps(data.get('medications', []))
             record.symptoms = data.get('symptoms')
+            record.notes = data.get('notes')
             
             msg = "Đã cập nhật bản ghi thành công!"
         else:
@@ -46,7 +47,8 @@ def save_medical_record():
                 diagnosis=data.get('diagnosis'),
                 doctor_name=data.get('doctorName'),
                 medications=json.dumps(data.get('medications', [])),
-                symptoms = data.get('symptoms')
+                symptoms = data.get('symptoms'),
+                notes=data.get('notes')
             )
             db.session.add(new_record)
             msg = "Đã lưu bản ghi mới thành công!"
@@ -79,6 +81,7 @@ def get_medical_history():
                 "diagnosis": rec.diagnosis,
                 "doctorName": rec.doctor_name,
                 "symptoms": rec.symptoms,
+                "notes": rec.notes if hasattr(rec, 'notes') else "",
                 "medications": json.loads(rec.medications) if rec.medications else []
             })
             print (history_data[len(history_data) - 1])

@@ -18,7 +18,7 @@ app.add_middleware(
 )
 
 # Cấu hình Gemini
-genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
+genai.configure(api_key=os.getenv("GEMINI_API_KEY_4"))
 model = genai.GenerativeModel('gemini-2.5-flash-lite')
 
 @app.post("/extract-medical-data")
@@ -43,6 +43,7 @@ async def extract_data(file: UploadFile = File(...)):
             "doctorName": "string",
             "diagnosis": "English string",
             "symptoms": "English string"
+            "notes": "English string"
             "medications": [
               { "name": "English string", "dosage": "English string", "quantity": "English string" }
             ]

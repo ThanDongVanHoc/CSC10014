@@ -1,34 +1,4 @@
-document.addEventListener("DOMContentLoaded", function () {
-  // 1. Lấy các phần tử DOM
-  const btnChange = document.getElementById("btnChange");
-  const btnDiscard = document.getElementById("btnDiscard");
-  const btnSave = document.getElementById("btnSave");
-  const editButtons = document.getElementById("editButtons");
-
-  // Input & Display box của Media
-  const mediaInput = document.getElementById("media");
-  const mediaDisplay = document.getElementById("media-display");
-  const mediaTextContent = document.getElementById("media-text-content");
-
-  // Lấy các input cần edit (TRỪ EMAIL vì email không được sửa)
-  const inputsToEdit = document.querySelectorAll(
-    ".profile-form input:not(#email)"
-  );
-
-  let originalValues = {};
-
-  // ==========================================
-  // HÀM HỖ TRỢ: HIỆN THÔNG BÁO (TOAST)
-  // ==========================================
-
-  function toggleLoading(show) {
-    const overlay = document.getElementById('loading-overlay');
-    if (overlay) {
-        overlay.style.display = show ? 'flex' : 'none';
-    }
-}
-
-  function showToastMessage(message, isSuccess = true) {
+function showToastMessage(message, isSuccess = true) {
     const toast = document.getElementById("toast-box");
     // Nếu chưa có toast trong HTML thì thôi (tránh lỗi)
     if (!toast) return;
@@ -61,7 +31,38 @@ document.addEventListener("DOMContentLoaded", function () {
     setTimeout(() => {
       toast.classList.remove("show");
     }, 3000);
-  }
+}
+
+document.addEventListener("DOMContentLoaded", function () {
+  // 1. Lấy các phần tử DOM
+  const btnChange = document.getElementById("btnChange");
+  const btnDiscard = document.getElementById("btnDiscard");
+  const btnSave = document.getElementById("btnSave");
+  const editButtons = document.getElementById("editButtons");
+
+  // Input & Display box của Media
+  const mediaInput = document.getElementById("media");
+  const mediaDisplay = document.getElementById("media-display");
+  const mediaTextContent = document.getElementById("media-text-content");
+
+  // Lấy các input cần edit (TRỪ EMAIL vì email không được sửa)
+  const inputsToEdit = document.querySelectorAll(
+    ".profile-form input:not(#email)"
+  );
+
+  let originalValues = {};
+
+  // ==========================================
+  // HÀM HỖ TRỢ: HIỆN THÔNG BÁO (TOAST)
+  // ==========================================
+
+  function toggleLoading(show) {
+    const overlay = document.getElementById('loading-overlay');
+    if (overlay) {
+        overlay.style.display = show ? 'flex' : 'none';
+    }
+}
+
 
   // ==========================================
   // HÀM HỖ TRỢ: CẬP NHẬT GIAO DIỆN MEDIA
@@ -240,6 +241,7 @@ async function handleOCRUpload(input) {
             document.getElementById('draft-diagnosis').value = result.draft_data.diagnosis || "";
             document.getElementById('draft-doctor').value = result.draft_data.doctorName || "";
             document.getElementById('draft-symptoms').value = result.draft_data.symptoms || "";
+            document.getElementById('draft-notes').value = result.draft_data.notes || "";
 
             // 3. Render danh sách thuốc từ AI
             renderMedicationsDraft(result.draft_data.medications || []);
@@ -266,6 +268,8 @@ function showDraftForm(data) {
     document.getElementById('draft-date').value = data.visitDate || '';
     document.getElementById('draft-diagnosis').value = data.diagnosis || '';
     document.getElementById('draft-doctor').value = data.doctorName || '';
+    document.getElementById('draft-symptoms').value = data.symptoms || '';
+    document.getElementById('draft-notes').value = data.notes || '';
     
     // Lưu lại danh sách thuốc ngầm (vì thuốc thường phức tạp để sửa nhanh)
     window.currentMedications = data.medications || [];
@@ -379,6 +383,7 @@ function viewRecordDetail(id) {
     document.getElementById('draft-diagnosis').value = record.diagnosis || "";
     document.getElementById('draft-doctor').value = record.doctorName || "";
     document.getElementById('draft-symptoms').value = record.symptoms || "";
+    document.getElementById('draft-notes').value = record.notes || "";
 
     // 4. Render danh sách thuốc của bản ghi này
     renderMedicationsDraft(record.medications || []);
@@ -412,6 +417,7 @@ document.getElementById('btn-save-medical-db')?.addEventListener('click', async 
             diagnosis: document.getElementById('draft-diagnosis').value,
             doctorName: document.getElementById('draft-doctor').value,
             symptoms: document.getElementById('draft-symptoms').value,
+            notes: document.getElementById('draft-notes').value,
             medications: medications // Gửi list thuốc mới thu thập
         }
     };
@@ -424,6 +430,7 @@ document.getElementById('btn-save-medical-db')?.addEventListener('click', async 
 
         if (response.ok) {
             setTimeout(() => {
+                  showToastMessage("Save successfully", true);
                   window.location.href = "/profile"; 
               }, 1500);
         } else {

@@ -773,3 +773,17 @@
     margin-bottom: -100px; /* Thu hẹp khoảng cách để thẻ dưới trượt lên mượt mà */
     pointer-events: none;
 }
+
+#draft-notes {
+    font-family: "Manrope", sans-serif;
+    line-height: 1.5;
+    border: 1px solid #e5e7eb;
+    background: #f9fafb;
+    transition: all 0.2s;
+}
+
+#draft-notes:focus {
+    background: #ffffff;
+    border-color: var(--brand);
+    box-shadow: 0 0 0 4px #ecfdf5;
+}
