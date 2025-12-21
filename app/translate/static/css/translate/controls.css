@@ -1,34 +1,63 @@
-/* Nút icon (Micro, Gửi) */
-.tr-iconbtn {
+.tr-composer .tr-iconbtn {
   width: 40px;
   height: 40px;
-  border-radius: 10px;
+  border-radius: 999px !important;
+
+  /* giữ mic màu xám y như code cũ */
+  background: #f1f5f9 !important;
+  color: #64748b !important;
   border: none;
-  background: #f1f5f9;
-  color: #64748b;
-  cursor: pointer;
-  display: flex;
+
+  /* tinh tế hơn một chút */
+  box-shadow: 0 10px 22px rgba(15, 23, 42, 0.1),
+    0 1px 0 rgba(255, 255, 255, 0.65) inset;
+
+  display: inline-flex;
   align-items: center;
   justify-content: center;
-  transition: all 0.2s;
-}
-.tr-iconbtn:hover {
-  background: #e2e8f0;
-  color: #334155;
+
+  transition: transform 0.16s ease, box-shadow 0.16s ease, background 0.16s ease,
+    color 0.16s ease, filter 0.16s ease;
 }
 
-/* Nút Gửi (Màu xanh) */
-.tr-iconbtn--send {
-  background: linear-gradient(
-    135deg,
-    #00b37e 0%,
-    #009966 100%
-  ); /* Green Gradient */
-  color: white;
+.tr-composer .tr-iconbtn:hover {
+  background: #e2e8f0 !important; /* giữ hover xám cũ */
+  color: #334155 !important;
+  transform: translateY(-1px);
+  box-shadow: 0 14px 30px rgba(15, 23, 42, 0.14),
+    0 1px 0 rgba(255, 255, 255, 0.7) inset;
 }
-.tr-iconbtn--send:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 10px rgba(0, 123, 255, 0.3);
+
+.tr-composer .tr-iconbtn:active {
+  transform: translateY(0) scale(0.96);
+}
+
+/* icon cân hơn */
+.tr-composer .tr-iconbtn i {
+  font-size: 16px;
+  line-height: 1;
+  transform: translateY(0.5px);
+}
+
+/* SEND: vẫn xanh nhưng tinh tế hơn (tròn + shadow nhẹ, hover ít lố) */
+.tr-composer .tr-iconbtn--send {
+  background: linear-gradient(135deg, #00b37e 0%, #009966 100%) !important;
+  color: #ffffff !important;
+
+  box-shadow: 0 10px 22px rgba(16, 185, 129, 0.18),
+    0 10px 22px rgba(15, 23, 42, 0.1), 0 1px 0 rgba(255, 255, 255, 0.25) inset;
+}
+
+.tr-composer .tr-iconbtn--send:hover {
+  transform: translateY(-1px);
+  filter: brightness(1.03);
+  box-shadow: 0 14px 32px rgba(16, 185, 129, 0.22),
+    0 14px 32px rgba(15, 23, 42, 0.14), 0 1px 0 rgba(255, 255, 255, 0.3) inset;
+}
+
+.tr-composer .tr-mic:hover {
+  background: linear-gradient(135deg, #00b37e 0%, #009966 100%) !important;
+  color: #fff !important;
 }
 
 /* Badges (Patient/Doctor) */

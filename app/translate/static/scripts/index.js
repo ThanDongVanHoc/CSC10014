@@ -4,6 +4,7 @@ import { State, DOM } from "./services/core.js";
 import { DataManager } from "./services/data.js";
 import { renderSidebar } from "./components/sidebar_ui.js";
 import { renderEmptyState, setActivePanel } from "./components/box_ui.js";
+import { initMicrophoneFeature } from "./services/micro.js";
 import {
   handleSendMessage,
   loadSelectedChatToUI,
@@ -117,6 +118,8 @@ export async function initTranslate() {
       };
     }
   });
+
+  initMicrophoneFeature();
 
   console.log("✅ Translate App Started!");
 }

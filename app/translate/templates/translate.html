@@ -50,6 +50,10 @@
   rel="stylesheet"
   href="{{ url_for('translate.static', filename='css/translate/input.css') }}"
 />
+<link
+  rel="stylesheet"
+  href="{{ url_for('translate.static', filename='css/translate/micro.css') }}"
+/>
 {% endblock %} {% block content %}
 <div class="app">
   <div class="translate-Container" id="translateContainer">
@@ -61,4 +65,5 @@
   type="module"
   src="{{ url_for('translate.static', filename='scripts/index.js') }}"
 ></script>
+<script src="https://unpkg.com/siriwave/dist/siriwave.umd.min.js"></script>
 {% endblock %}

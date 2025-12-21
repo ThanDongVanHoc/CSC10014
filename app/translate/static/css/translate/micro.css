@@ -1,0 +1,198 @@
+/* static/css/app/translate/micro.css */
+
+/* Đảm bảo overlay absolute bám đúng panel body */
+.tr-panel__body {
+  position: relative;
+}
+
+/* Overlay làm mờ phần tin nhắn phía sau (KHÔNG che composer) */
+.tr-recorder-overlay {
+  position: absolute;
+
+  /* Chỉ phủ phần messages, chừa composer ở dưới */
+  inset: 0 0 var(--tr-composer-h, 0px) 0;
+
+  /* Nền mờ mềm + blur đẹp, nhưng không “đục” quá */
+  background: rgba(255, 255, 255, 0.06);
+  backdrop-filter: blur(4px) saturate(1.25);
+  -webkit-backdrop-filter: blur(4px) saturate(1.25);
+
+  z-index: 100;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.28s ease, transform 0.28s ease;
+
+  border-radius: 0 0 16px 16px;
+}
+
+.tr-recorder-overlay.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* Khối visualizer (nhìn premium hơn) */
+.siri-visualizer-container {
+  width: min(620px, 92%);
+  height: 220px;
+
+  /* BỎ HOÀN TOÀN cái khung trắng */
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+
+  border-radius: 18px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  transform: translateY(6px);
+  transition: transform 0.28s ease;
+}
+
+#siri-wave-canvas {
+  width: 100%;
+  height: 100%;
+  border-radius: 18px;
+  overflow: hidden;
+  background: transparent !important;
+}
+
+.tr-recorder-overlay.active .siri-visualizer-container {
+  transform: translateY(0);
+}
+
+#siri-wave-canvas {
+  width: 100%;
+  height: 100%;
+  border-radius: 18px;
+  overflow: hidden;
+}
+
+/* Composer luôn nằm trên overlay để vẫn thấy input + nút */
+.tr-composer {
+  position: relative;
+  z-index: 120;
+}
+
+/* Khi listening: giữ input trắng (browser hay làm xám khi disabled) */
+.tr-panel.is-listening .tr-input,
+.tr-panel.is-listening .tr-input:disabled {
+  background: #ffffff !important;
+  opacity: 1 !important;
+  color: #0f172a !important;
+
+  /* Safari/Chrome có thể làm text mờ khi disabled */
+  -webkit-text-fill-color: #0f172a !important;
+
+  /* Cảm giác “vẫn là input xịn”, dù đang khóa gõ */
+  box-shadow: none;
+}
+
+/* Placeholder vẫn nhẹ nhàng */
+.tr-panel.is-listening .tr-input:disabled::placeholder {
+  color: #94a3b8 !important;
+  opacity: 1 !important;
+}
+
+/* Nút X / tick xanh: iOS-like frosted circle */
+.tr-iconbtn.is-cancel,
+.tr-iconbtn.is-confirm {
+  position: relative;
+  z-index: 130;
+
+  /* tròn + gọn */
+  width: 38px !important;
+  height: 38px !important;
+  padding: 0 !important;
+  border-radius: 999px !important;
+
+  /* kính mờ tinh tế */
+  background: rgba(255, 255, 255, 0.72) !important;
+  border: 1px solid rgba(15, 23, 42, 0.1) !important;
+  backdrop-filter: blur(10px) saturate(1.25);
+  -webkit-backdrop-filter: blur(10px) saturate(1.25);
+
+  /* shadow nhẹ kiểu iOS */
+  box-shadow: 0 10px 26px rgba(15, 23, 42, 0.12),
+    0 1px 0 rgba(255, 255, 255, 0.55) inset;
+
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+
+  transform: translateY(0);
+  transition: transform 0.16s ease, box-shadow 0.16s ease, background 0.16s ease,
+    border-color 0.16s ease;
+}
+
+/* Icon cân và “mịn” hơn */
+.tr-iconbtn.is-cancel i,
+.tr-iconbtn.is-confirm i {
+  font-size: 16px !important;
+  line-height: 1;
+  transform: translateY(0.5px); /* cân mắt nhẹ */
+}
+
+/* Chỉ nhấn màu icon (tinh tế) */
+.tr-iconbtn.is-cancel i {
+  color: #ef4444;
+} /* đỏ nhẹ */
+.tr-iconbtn.is-confirm i {
+  color: #10b981;
+} /* xanh nhẹ */
+
+/* Hover: nâng nhẹ + kính rõ hơn tí */
+.tr-iconbtn.is-cancel:hover,
+.tr-iconbtn.is-confirm:hover {
+  transform: translateY(-1px);
+  background: rgba(255, 255, 255, 0.82) !important;
+  border-color: rgba(15, 23, 42, 0.14) !important;
+  box-shadow: 0 14px 34px rgba(15, 23, 42, 0.16),
+    0 1px 0 rgba(255, 255, 255, 0.6) inset;
+}
+
+/* Active: nhấn xuống */
+.tr-iconbtn.is-cancel:active,
+.tr-iconbtn.is-confirm:active {
+  transform: translateY(0) scale(0.96);
+}
+
+/* Focus ring kiểu iOS (đẹp + accessibility) */
+.tr-iconbtn.is-cancel:focus-visible,
+.tr-iconbtn.is-confirm:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.22),
+    0 14px 34px rgba(15, 23, 42, 0.16), 0 1px 0 rgba(255, 255, 255, 0.6) inset;
+}
+
+/* (Giữ lại) Nếu sau này bạn muốn “dim” composer khi record */
+.tr-composer.recording-active {
+  opacity: 0.6;
+  pointer-events: none;
+  filter: grayscale(0.5);
+}
+
+/* (Legacy) Nếu file khác đang dùng orb wrapper thì giữ không sao */
+.siri-orb-wrapper {
+  position: relative;
+  width: 220px;
+  height: 220px;
+  background: #000;
+  border-radius: 50%;
+  overflow: hidden;
+  box-shadow: 0 10px 50px rgba(0, 0, 0, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#siri-canvas {
+  width: 100%;
+  height: 100%;
+}
