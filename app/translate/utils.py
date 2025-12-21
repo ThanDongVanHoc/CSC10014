@@ -2,6 +2,7 @@ from sqlalchemy import select, desc
 from sqlalchemy.sql import func
 from app.db import db
 from app.db.models import User, Translate_Conversation, Translate_Message
+from .storage_utils import delete_file_from_cloudinary
 
 def get_user(email):
     """
@@ -88,13 +89,17 @@ def delete_translate_conversation(email, convo_id):
     convo = db.session.scalar(stmt)
     
     if convo:
+        for msg in convo.messages:
+            if msg.audio_url:
+                # Gọi hàm phụ trợ để xóa từng file
+                delete_file_from_cloudinary(msg.audio_url)
         db.session.delete(convo)
         db.session.commit()
         return True
     return False
 
 
-def save_translate_message(email, conversation_id, speaker_role, content, role='user'):
+def save_translate_message(email, conversation_id, speaker_role, content, role='user', audio_url=None, duration_seconds=None):
     """
     Lưu tin nhắn dịch.
     Params:
@@ -120,7 +125,9 @@ def save_translate_message(email, conversation_id, speaker_role, content, role='
         conversation_id=conversation_id,
         speaker_role=speaker_role,
         role=role,
-        content=content
+        content=content,
+        audio_url=audio_url,
+        duration_seconds=duration_seconds
     )
     
     # Update thời gian cho conversation để nó nổi lên đầu list
@@ -159,3 +166,35 @@ def get_translate_messages(email, conversation_id):
 
     # Convert sang dict
     return [msg.to_dict() for msg in messages]
+
+def get_context_for_api(email, conversation_id, limit=2):
+    user = get_user(email)
+    if not user: return []
+
+    subquery = (
+        select(Translate_Message)
+        .where(Translate_Message.conversation_id == conversation_id)
+        .order_by(Translate_Message.created_at.desc())
+        .limit(limit)
+    )
+    
+    # Thực thi và đảo ngược lại để đúng thứ tự thời gian (Cũ -> Mới) cho AI đọc
+    messages = db.session.scalars(subquery).all()
+    messages = reversed(messages) 
+    
+    context_list = []
+    for m in messages:
+        context_list.append(f"{m.role} ({m.speaker_role}): {m.content}")
+    return context_list
+
+def determine_languages(speaker_role):
+    """
+    Hàm xác định hướng dịch dựa trên vai trò người nói.
+    - Patient: Anh -> Việt
+    - Doctor:  Việt -> Anh
+    """
+    if speaker_role == "doctor":
+        return "vi", "en-US"
+    else:
+        return "en-US", "vi"
+    

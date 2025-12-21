@@ -12,8 +12,6 @@ import pathlib
 from .auth.mail import init_mail
 from app.chat.utils import get_user
 
-
-
 #Factory Pattern
 def create_app(test_config = None):
     app = Flask(__name__, instance_relative_config=True)

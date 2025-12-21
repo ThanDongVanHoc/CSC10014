@@ -3,7 +3,13 @@
 import { State, DOM } from "./services/core.js";
 import { DataManager } from "./services/data.js";
 import { renderSidebar } from "./components/sidebar_ui.js";
-import { renderEmptyState, appendMessageToBox } from "./components/box_ui.js";
+import {
+  renderEmptyState,
+  appendMessageToBox,
+  showLoadingBubble,
+  removeLoadingBubble,
+} from "./components/box_ui.js";
+import { AudioController } from "./components/audio_ui.js";
 
 // Helper UI
 export function hideSearchWrapper() {
@@ -13,15 +19,35 @@ export function hideSearchWrapper() {
 
 // 1. Load Chat Cũ
 export async function loadSelectedChatToUI() {
-  renderEmptyState(); // Xóa màn hình
+  renderEmptyState();
   if (!State.selectedId) return;
 
   const msgs = await DataManager.getMessages(State.selectedId);
   msgs.forEach((m) => {
-    // role: 'user' (left), 'model' (right)
     const type = m.role === "user" ? "left" : "right";
-    appendMessageToBox(m.content, type, m.speaker_role);
+
+    // KIỂM TRA: Nếu tin nhắn có audio -> Vẽ Voice Bubble
+    if (m.audio_url) {
+      const voiceHTML = AudioController.generateHTML(
+        m.audio_url,
+        m.duration_seconds
+      );
+      appendMessageToBox(voiceHTML, type, m.speaker_role, true);
+    } else {
+      // Nếu không -> Vẽ text bình thường
+      appendMessageToBox(m.content, type, m.speaker_role, false);
+    }
   });
+}
+
+function getLocalContext(limit = 2) {
+  if (!State.selectedId) return [];
+  const currentChat = State.conversations.find((c) => c.id == State.selectedId);
+  if (!currentChat || !currentChat.messages) return [];
+
+  // Lấy n tin nhắn gần nhất
+  const recent = currentChat.messages.slice(-limit);
+  return recent.map((m) => `${m.role} (${m.speaker_role}): ${m.content}`);
 }
 
 // 2. Xử lý Gửi Tin Nhắn (Logic chính)
@@ -58,6 +84,8 @@ export async function handleSendMessage(panel, inputElement) {
       role: "user",
       content: text,
       speaker_role: speakerRole,
+      audio_url: null,
+      duration_seconds: null,
       created_at: now,
     });
     currentChat.updated_at = now;
@@ -70,37 +98,57 @@ export async function handleSendMessage(panel, inputElement) {
   }
 
   // D. User Logic (Gửi server)
-  if (State.isLoggedIn) {
-    // Gửi tin nhắn user lên server
-    await DataManager.sendMessage(State.selectedId, text, speakerRole);
+  const contextData = getLocalContext(2);
+  const loader = showLoadingBubble("right", speakerRole);
 
-    // Auto Rename nếu tên đang là default
-    const conv = State.conversations.find((c) => c.id == State.selectedId);
-    if (conv && (conv.title === "New Translation" || !conv.title)) {
-      const newTitle = text.slice(0, 40);
-      await DataManager.rename(State.selectedId, newTitle);
-      renderSidebar();
-    }
-  }
-
-  // E. Mock Response (Giả lập phản hồi dịch - Đợi Backend thật)
-  setTimeout(() => {
-    const translatedText = `(Dịch) ${text}`;
-
-    // Lưu Bot Msg cho Guest
-    if (!State.isLoggedIn && currentChat) {
-      currentChat.messages.push({
-        role: "model",
-        content: translatedText,
+  // 4. Gọi API
+  try {
+    const response = await fetch("/translate/api/text", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        text: text,
+        conversation_id: State.selectedId,
         speaker_role: speakerRole,
-        created_at: new Date().toISOString(),
-      });
-      DataManager.saveGuestData();
-    }
+        context: contextData,
+      }),
+    });
 
-    // Hiện Bot Msg lên UI
-    appendMessageToBox(translatedText, "right", speakerRole);
-  }, 600);
+    const data = await response.json();
+    removeLoadingBubble(loader);
+
+    if (data.status === "success") {
+      appendMessageToBox(data.translated_text, "right", speakerRole);
+
+      // Nếu là Guest, phải tự lưu response của Model vào local
+      if (!State.isLoggedIn) {
+        let currentChat = State.conversations.find(
+          (c) => c.id == State.selectedId
+        );
+        if (currentChat) {
+          currentChat.messages.push({
+            role: "model",
+            content: data.translated_text,
+            speaker_role: speakerRole,
+            created_at: new Date().toISOString(),
+          });
+          DataManager.saveGuestData();
+        }
+      } else {
+        renderSidebar(); // User thì refresh sidebar
+      }
+    } else {
+      console.error(data);
+      appendMessageToBox(
+        "Error: " + (data.message || "Unknown"),
+        "right",
+        speakerRole
+      );
+    }
+  } catch (err) {
+    console.error(err);
+    appendMessageToBox("Error: Connection failed.", "right", speakerRole);
+  }
 }
 
 // 3. Reset về phiên mới

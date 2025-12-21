@@ -1,0 +1,11 @@
+fastapi==0.126.0
+uvicorn==0.38.0
+SpeechRecognition==3.14.4
+googletrans==4.0.0rc1
+gTTS==2.5.4
+python-multipart==0.0.21
+pydub==0.25.1
+legacy-cgi==2.6.4
+httpx==0.13.3
+google-generativeai
+edge-tts

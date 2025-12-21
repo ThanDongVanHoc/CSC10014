@@ -1,13 +1,18 @@
 from flask import render_template, request, jsonify, session
 from . import translate_bp
+import requests
 from .utils import (
     list_translate_conversations,
     create_translate_conversation,
     rename_translate_conversation,
     delete_translate_conversation,
     save_translate_message,
-    get_translate_messages
+    get_translate_messages,
+    get_context_for_api,
+    determine_languages
 )
+
+AI_SERVICE_URL = "http://localhost:8004"
 
 @translate_bp.route('/')
 def translate_page():
@@ -79,35 +84,110 @@ def get_messages(id):
     msgs = get_translate_messages(user_email, id)
     return jsonify(msgs)
 
-@translate_bp.route('/conversations/<int:id>/messages', methods=['POST'])
-def save_message(id):
-    """
-    Lưu tin nhắn mới vào database.
-    Frontend cần gửi JSON:
-    {
-        "speaker_role": "patient" | "doctor",
-        "content": "Nội dung tin nhắn",
-        "role": "user" (mặc định) | "model"
-    }
-    """
+@translate_bp.route('/api/text', methods=['POST'])
+def text_translation_proxy():
     user_email = session.get("user_email")
-    if not user_email:
-        return jsonify({"error": "not_logged_in"}), 401
     
     data = request.get_json() or {}
+    text = data.get("text")
+    conversation_id = data.get("conversation_id")
+    speaker_role = data.get("speaker_role")
     
-    speaker_role = data.get("speaker_role") 
-    content = data.get("content")
-    role = data.get("role", "user")
+    # Lấy context từ Client gửi lên (Dành cho Guest)
+    client_context = data.get("context", [])
 
-    if not speaker_role or not content:
-        return jsonify({"error": "Missing speaker_role or content"}), 400
-        
-    success = save_translate_message(user_email, id, speaker_role, content, role)
+    if not text or not speaker_role:
+        return jsonify({"error": "Missing text or speaker_role"}), 400
+
+    source_lang, target_lang = determine_languages(speaker_role)
+
+    # 1. Xác định Context
+    if user_email and conversation_id:
+        final_context = get_context_for_api(user_email, conversation_id)
+    else:
+        final_context = client_context
+
+    payload = {
+        "text": text,
+        "source_lang": source_lang,
+        "target_lang": target_lang,
+        "context": final_context
+    }
+
+    try:
+        resp = requests.post(f"{AI_SERVICE_URL}/api/translation/text-to-text", data=payload)
+        resp_data = resp.json()
+
+        if resp.status_code != 200 or resp_data.get("status") == "error":
+            return jsonify(resp_data), 500
+
+        translated_text = resp_data.get("translated_text")
+
+        if user_email and conversation_id:
+            save_translate_message(user_email, conversation_id, speaker_role, text, role='user')
+            save_translate_message(user_email, conversation_id, speaker_role, translated_text, role='model')
+
+        return jsonify({
+            "status": "success",
+            "original_text": text,
+            "translated_text": translated_text
+        })
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+@translate_bp.route('/api/speech', methods=['POST'])
+def speech_translation_proxy():
+    user_email = session.get("user_email")
+
+    if 'audio_file' not in request.files:
+        return jsonify({"error": "No audio"}), 400
+
+    audio_file = request.files['audio_file']
+    conversation_id = request.form.get("conversation_id")
+    speaker_role = request.form.get("speaker_role")
     
-    if success:
-        return jsonify({"status": "success"}), 201
-    return jsonify({"error": "Failed to save message"}), 500
+    # Lấy context list từ form (cách lấy list trong form data)
+    client_context = request.form.getlist("context") 
+
+    if not speaker_role:
+        return jsonify({"error": "Missing speaker_role"}), 400
+
+    source_lang, target_lang = determine_languages(speaker_role)
+    
+    # 1. Xác định Context
+    if user_email and conversation_id:
+        final_context = get_context_for_api(user_email, conversation_id)
+    else:
+        final_context = client_context
+
+    files = {'audio_file': (audio_file.filename, audio_file.read(), audio_file.content_type)}
+    is_guest_str = "false" if user_email else "true"
+    
+    # Requests library xử lý list params hơi đặc thù, ta truyền thẳng list vào
+    data_payload = {
+        'source_lang': source_lang,
+        'target_lang': target_lang,
+        'context': final_context,
+        'is_guest': is_guest_str
+    }
+
+    try:
+        resp = requests.post(f"{AI_SERVICE_URL}/api/translation/speech-to-speech", files=files, data=data_payload)
+        resp_data = resp.json()
+
+        if resp.status_code != 200 or resp_data.get("status") == "error":
+            return jsonify(resp_data), 500
+        
+        in_dur = resp_data.get("input_audio_duration")
+        out_dur = resp_data.get("output_audio_duration")
+
+        if user_email and conversation_id:
+            save_translate_message(user_email, int(conversation_id), speaker_role, resp_data.get("original_text"), role='user', audio_url=resp_data.get("input_audio_url"), duration_seconds=in_dur)
+            save_translate_message(user_email, int(conversation_id), speaker_role, resp_data.get("translated_text"), role='model', audio_url=resp_data.get("output_audio_url"), duration_seconds=out_dur)
+
+        return jsonify(resp_data)
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
 @translate_bp.route('/auth_status')
 def auth_status():

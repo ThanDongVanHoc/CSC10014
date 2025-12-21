@@ -196,3 +196,108 @@
   width: 100%;
   height: 100%;
 }
+
+/* --- MESSENGER STYLE AUDIO PLAYER --- */
+
+/* 1. Container bong bóng */
+.tr-voice-msg {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 14px;
+  border-radius: 20px;
+
+  /* Tự động co giãn chiều rộng */
+  width: fit-content;
+  min-width: 140px;
+  max-width: 100%;
+
+  /* Chặn user bôi đen text */
+  user-select: none;
+  transition: background-color 0.2s;
+}
+
+/* 2. Nút Play/Pause */
+.tr-voice-btn {
+  width: 32px;
+  height: 32px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  flex-shrink: 0;
+  border-radius: 50%;
+  transition: background 0.1s;
+}
+
+.tr-voice-btn:active {
+  background: rgba(0, 0, 0, 0.1);
+}
+
+.tr-voice-btn i {
+  font-size: 18px;
+  /* Chỉnh nhẹ để icon tam giác nằm giữa thị giác */
+  margin-left: 2px;
+}
+.tr-voice-btn.playing i {
+  margin-left: 0;
+}
+
+/* 3. Khu vực Sóng âm (Waveform Wrapper) */
+.tr-voice-wave {
+  display: flex;
+  align-items: center; /* Căn giữa theo chiều dọc */
+  justify-content: flex-start; /* Căn trái */
+  gap: 3px; /* Khoảng cách giữa các thanh */
+  height: 24px;
+  flex: 1; /* Chiếm hết khoảng trống còn lại */
+}
+
+/* 4. Các thanh sóng (Bars) */
+.tr-voice-bar {
+  width: 3px;
+  border-radius: 99px;
+  background-color: currentColor; /* Ăn theo màu chữ của cha */
+  opacity: 0.4; /* Trạng thái chưa chạy tới: Mờ */
+  transition: opacity 0.1s linear, height 0.2s ease;
+}
+
+/* Trạng thái đã chạy qua: Sáng rõ */
+.tr-voice-bar.active {
+  opacity: 1;
+}
+
+/* 5. Thời gian */
+.tr-voice-time {
+  font-size: 12px;
+  font-weight: 500;
+  min-width: 35px;
+  text-align: right;
+  font-variant-numeric: tabular-nums; /* Giữ số không bị nhảy */
+}
+
+/* --- THEME MÀU SẮC --- */
+
+/* A. Tin nhắn CỦA MÌNH (Bên Phải - User) */
+/* Nền xanh (thường set ở .tr-msg.right), text trắng */
+.tr-msg.right .tr-voice-msg {
+  color: #ffffff;
+}
+.tr-msg.right .tr-voice-btn i {
+  color: #ffffff;
+}
+.tr-msg.right .tr-voice-btn:active {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+/* B. Tin nhắn CỦA HỌ (Bên Trái - Doctor/AI) */
+/* Nền xám (thường set ở .tr-msg.left), text đen */
+.tr-msg.left .tr-voice-msg {
+  color: #0f172a;
+}
+.tr-msg.left .tr-voice-btn i {
+  color: #2563eb; /* Icon Play màu xanh đặc trưng */
+}

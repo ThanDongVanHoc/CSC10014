@@ -174,6 +174,8 @@ class Translate_Message(db.Model):
     
     role = db.mapped_column(db.Text, nullable=False)
     content = db.mapped_column(db.Text, nullable=False)
+    audio_url = db.mapped_column(db.Text, nullable=True)
+    duration_seconds = db.mapped_column(db.Float, nullable=True)
     
     created_at = db.mapped_column(db.DateTime, server_default=func.now())
 
@@ -185,5 +187,7 @@ class Translate_Message(db.Model):
             "speaker_role": self.speaker_role, 
             "role": self.role,
             "content": self.content,
+            "audio_url": self.audio_url,
+            "duration_seconds": self.duration_seconds,
             "created_at": self.created_at.isoformat() if self.created_at else None
         }

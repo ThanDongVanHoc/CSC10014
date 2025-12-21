@@ -88,3 +88,67 @@
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.04);
   border-radius: 14px 14px 4px 14px;
 }
+
+.tr-bubble--loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px 24px; /* Padding rộng hơn chút để chấm nhảy không bị chạm viền */
+  min-width: 60px;
+  min-height: 24px; /* Giữ chiều cao cố định để bong bóng không bị co giật */
+  background: #ffffff;
+  border-radius: 14px 14px 4px 14px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+  border: 1px solid rgba(15, 23, 42, 0.05);
+}
+
+/* Loader bên trái (User/Audio Uploading) */
+.tr-msg--left .tr-bubble--loading {
+  background: #e2e8f0;
+  border-radius: 14px 14px 14px 4px;
+}
+
+/* 2. Container chứa 3 chấm */
+.tr-loader {
+  display: flex;
+  align-items: center;
+  gap: 6px; /* Khoảng cách giữa các chấm */
+  height: 10px; /* Cố định chiều cao container */
+}
+
+/* 3. Các chấm tròn */
+.tr-dot {
+  width: 7px;
+  height: 7px;
+  background-color: #64748b; /* Màu xám Slate */
+  border-radius: 50%;
+
+  /* Animation giống hệt chat_message.css */
+  animation: tr-wave 1.4s infinite ease-in-out both;
+}
+
+/* Chỉnh delay để tạo hiệu ứng lượn sóng */
+.tr-dot:nth-child(1) {
+  animation-delay: -0.32s;
+}
+.tr-dot:nth-child(2) {
+  animation-delay: -0.16s;
+}
+.tr-dot:nth-child(3) {
+  animation-delay: 0s;
+}
+
+/* 4. Keyframes: Nhảy lên xuống (TranslateY) */
+@keyframes tr-wave {
+  0%,
+  80%,
+  100% {
+    opacity: 0.5;
+    transform: scale(0.9) translateY(0); /* Đứng yên */
+  }
+  40% {
+    opacity: 1;
+    transform: scale(1) translateY(-7px); /* Nhảy lên 7px */
+    background-color: #3b82f6; /* (Optional) Đổi màu xanh khi nhảy lên cho đẹp */
+  }
+}
