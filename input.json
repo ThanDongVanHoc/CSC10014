@@ -1,0 +1,14 @@
+{
+    "identity": {
+        "userId": "P001",
+        "full_name": "Nguyễn Văn A",
+        "nationality": "Vietnam",
+        "age": 45,
+        "gender": "Male",
+        "date_of_birth": "1980-05-20"
+    },
+    "medical_critical": {
+        "current_symptoms": "đau ngực, khó thở",
+        "blood_type": "O+"
+    }
+}

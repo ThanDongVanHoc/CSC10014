@@ -1,0 +1,29 @@
+{
+  "patient": {
+    "name": "Nguyễn Văn A",
+    "age": 45,
+    "gender": "Male",
+    "nationality": "Vietnam",
+    "blood_type": "O+",
+    "emergency_contact": {
+      "name": null,
+      "phone": null
+    }
+  },
+  "triage": {
+    "level": "3",
+    "color": "yellow",
+    "name_en": "Urgent / Moderate",
+    "name_vi": "Khẩn cấp / Trung bình",
+    "response_time": "< 30 phút"
+  },
+  "chief_complaint": {
+    "original": "da bị ngứa và nổi",
+    "en": "da bị ngứa và nổi",
+    "vi": "da bị ngứa và nổi"
+  },
+  "allergies": [],
+  "medications": [],
+  "medical_history": [],
+  "surgical_history": []
+}
