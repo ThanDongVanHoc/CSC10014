@@ -165,6 +165,7 @@ class MedicalRecord(db.Model):
     hospital_name = db.mapped_column(db.String(255), nullable=True)
     doctor_name = db.mapped_column(db.String(255), nullable=True)
     diagnosis = db.mapped_column(db.Text, nullable=True)
+    symptoms = db.Column(db.Text)
     
     # Lưu danh sách thuốc dưới dạng JSON string
     # VD: [{"name": "Augmentin", "dosage": "1g", "quantity": "14"}]

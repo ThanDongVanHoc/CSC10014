@@ -3,6 +3,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import timedelta
 from .auth import auth_bp
 from .chat import chat_bp
+from .profile import profile_bp
 from .db import init_db
 from .map import map_bp 
 import os
@@ -30,6 +31,7 @@ def create_app(test_config = None):
     app.register_blueprint(auth_bp)
     app.register_blueprint(chat_bp)
     app.register_blueprint(map_bp)
+    app.register_blueprint(profile_bp)
     #
     init_db(app)
     init_mail(app)

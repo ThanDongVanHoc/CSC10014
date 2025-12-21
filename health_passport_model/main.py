@@ -33,6 +33,7 @@ async def extract_data(file: UploadFile = File(...)):
         prompt = """
         You are a medical data expert. Analyze this medical record image and extract information into JSON format.
         Translate all values to English. Correct any spelling errors.
+        The response must be in English.
         
         JSON Structure:
         {
@@ -40,9 +41,10 @@ async def extract_data(file: UploadFile = File(...)):
             "hospitalName": "string",
             "visitDate": "YYYY-MM-DD",
             "doctorName": "string",
-            "diagnosis": "string",
+            "diagnosis": "English string",
+            "symptoms": "English string"
             "medications": [
-              { "name": "string", "dosage": "string", "quantity": "string" }
+              { "name": "English string", "dosage": "English string", "quantity": "English string" }
             ]
           }
         }
