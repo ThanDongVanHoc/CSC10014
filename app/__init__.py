@@ -6,8 +6,7 @@ from .chat import chat_bp
 from .translate import translate_bp
 from .db import init_db
 from .map import map_bp 
-from .backend_request import backend_request_bp
-from .frontend_request import frontend_request_bp
+
 import os
 import pathlib
 from .auth.mail import init_mail
@@ -35,8 +34,7 @@ def create_app(test_config = None):
     app.register_blueprint(chat_bp)
     app.register_blueprint(map_bp)
     app.register_blueprint(translate_bp)
-    app.register_blueprint(backend_request_bp)
-    app.register_blueprint(frontend_request_bp)
+
     #
     init_db(app)
     init_mail(app)
