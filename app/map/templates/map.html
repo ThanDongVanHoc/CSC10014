@@ -116,7 +116,17 @@
 
     <div id="poi-sidebar" class="poi-sidebar"></div>
   </div>
-{% endblock %} {% block script %}
+{% endblock %} 
+
+{% block script %}
+
+<script id="medical-results-data" type="application/json">
+    {
+        "hospitals": {{ hospitals | tojson }},
+        "district": "{{ location }}"
+    }
+</script>
+
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
 <script

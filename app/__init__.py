@@ -4,8 +4,10 @@ from datetime import timedelta
 from .auth import auth_bp
 from .chat import chat_bp
 from .translate import translate_bp
+from .medical_form import medical_form_bp
 from .db import init_db
 from .map import map_bp 
+from .api import api_bp
 
 import os
 import pathlib
@@ -32,6 +34,8 @@ def create_app(test_config = None):
     app.register_blueprint(chat_bp)
     app.register_blueprint(map_bp)
     app.register_blueprint(translate_bp)
+    app.register_blueprint(medical_form_bp)
+    app.register_blueprint(api_bp)
 
     #
     init_db(app)

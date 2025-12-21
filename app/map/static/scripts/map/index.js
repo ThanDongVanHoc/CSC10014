@@ -9,7 +9,7 @@ import { initSearchService } from "./services/search.js";
 import { initGPSControl } from "./components/GPSControl.js";
 import { initMapEvents } from "./services/mapEvents.js";
 // --- NEW IMPORT ---
-import { initMedicalHeatmap } from "./components/MedicalMap.js"; 
+import { initMedicalHeatmap, toggleMedicalMode} from "./components/MedicalMap.js"; 
 
 
 export function initMap() {
@@ -32,6 +32,21 @@ export function initMap() {
   
   // --- NEW: Initialize Medical Heatmap ---
   initMedicalHeatmap();
+  
+  const medicalDataRaw = document.getElementById('medical-results-data');
+  if (medicalDataRaw) {
+      const hospitals = JSON.parse(medicalDataRaw.textContent);
+
+      if (hospitals && hospitals.hospitals.length > 0) {
+
+        console.log("Detecting AI results, auto-activating Medical Mode...");
+        toggleMedicalMode(); // Gọi hàm này để nó tự chạy render và đổi icon nút
+
+        if (hospitals.hospitals[0]) {
+            map.flyTo([hospitals.hospitals[0].lat, hospitals.hospitals[0].lng], 14);
+        }
+      }
+  }
 
   // 3. Initialize transport panel
   initTransportPanel();

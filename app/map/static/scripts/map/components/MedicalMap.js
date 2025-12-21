@@ -36,7 +36,7 @@ export function initMedicalHeatmap() {
   controlsContainer.insertBefore(toggleBtn, controlsContainer.firstChild);
 }
 
-async function toggleMedicalMode() {
+export async function toggleMedicalMode() {
   isMedicalMode = !isMedicalMode;
   const { map } = state;
 
@@ -65,8 +65,25 @@ async function toggleMedicalMode() {
 async function renderMedicalMarkers() {
   if (!medicalLayer) return;
   medicalLayer.clearLayers();
+  
+  const dataElement = document.getElementById('medical-results-data');
+  let hospitalsToRender = HOSPITALS;
+  
+  if (dataElement) {
+    try {
+      const sessionData = JSON.parse(dataElement.textContent);
+      // Nếu có kết quả từ AI Form, ưu tiên hiển thị kết quả đó
+      if (sessionData.hospitals && sessionData.hospitals.length > 0) {
+        hospitalsToRender = sessionData.hospitals;
+      }
+    } catch (e) {
+      console.warn("Could not parse session medical data, using demo.");
+    }
+  }else{
+      console.log("No session medical data found, using demo.");
+  }
 
-  for (const demoHospital of HOSPITALS) {
+  for (const demoHospital of hospitalsToRender) {
     // CHẠY SONG SONG 3 REQUEST ĐỂ TỐI ƯU TỐC ĐỘ
     const [prices, stats, dbInfo] = await Promise.all([
         MedicalService.getHospitalPrices(demoHospital.id).catch(() => ({ items: [] })),
@@ -86,7 +103,6 @@ async function renderMedicalMarkers() {
 
     const color = stats.colorCode;
 
-    // 1. Heatmap Zone
     L.circle([hospital.lat, hospital.lng], {
       color: color,
       fillColor: color,

@@ -221,10 +221,14 @@ def proxy_route(mode, coords):
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
-@map_bp.route('/')
+
+
+
+
+@map_bp.route('/map')
 def map():
-    return render_template('map.html')
-
-
-
+    # Lấy dữ liệu từ session ra
+    hospitals = session.get('ai_results', [])
+    location = session.get('user_location', 'HCMC')
     
+    return render_template('map.html', hospitals=hospitals, location=location)

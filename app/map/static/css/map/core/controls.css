@@ -299,25 +299,32 @@
 }
 
 
+/* CSS cho vòng tròn Heatmap y tế */
 .med-pulse-anim {
+  /* Giúp tâm của hiệu ứng nằm đúng tâm của vòng tròn SVG */
   transform-origin: center;
-  animation: pulse-ring 3s infinite ease-in-out;
-  transform-box: fill-box; /* Quan trọng để xoay/zoom đúng tâm SVG */
+  transform-box: fill-box; 
+  
+  /* Sử dụng animation pulse-ring đã hợp nhất */
+  animation: medical-pulse-ring 3s infinite ease-in-out;
 }
 
-@keyframes pulse-ring {
+@keyframes medical-pulse-ring {
   0% {
-    opacity: 0.4;
+    transform: scale(0.98);
+    opacity: 0.5;
     stroke-width: 1;
     fill-opacity: 0.2;
   }
   50% {
+    transform: scale(1.05); /* Giãn nhẹ vòng tròn */
     opacity: 0.8;
-    stroke-width: 4; /* Viền dày lên */
-    fill-opacity: 0.4; /* Màu đậm lên */
+    stroke-width: 3;        /* Viền dày lên tạo cảm giác lan tỏa */
+    fill-opacity: 0.35;     /* Màu đậm lên một chút */
   }
   100% {
-    opacity: 0.4;
+    transform: scale(0.98);
+    opacity: 0.5;
     stroke-width: 1;
     fill-opacity: 0.2;
   }
