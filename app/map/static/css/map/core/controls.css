@@ -1,8 +1,10 @@
+/* ... Giữ nguyên các phần cũ của .map-controls ... */
+
 .map-controls {
   position: absolute;
   bottom: 22px;
   right: 12px;
-  z-index: 2200; /* Cao hơn overlay */
+  z-index: 2200;
   display: flex;
   flex-direction: column;
   gap: 8px;
@@ -22,21 +24,268 @@
   padding: 0;
 }
 
-/* --- [NEW] Loading State cho GPS Button --- */
-.map-btn-gps.loading img,
-.map-btn-gps.loading svg {
-  display: none; /* Ẩn icon gốc khi đang load */
+.map-btn {
+  background: rgba(255, 255, 255, 0.95);
+  border: 0;
+  padding: 8px 10px;
+  border-radius: 10px;
+  box-shadow: 0 6px 18px rgba(2, 6, 23, 0.08);
+  cursor: pointer;
+  transition: all 0.2s ease;
 }
 
-.map-btn-gps.loading::after {
-  content: "";
-  display: block;
-  width: 20px;
-  height: 20px;
-  border: 2px solid #e5e5e5;
-  border-top: 2px solid #007aff;
+/* ========================================= */
+/* ===== MEDICAL HEATMAP UI (UPGRADED) ===== */
+/* ========================================= */
+
+.map-btn-medical {
+  color: #ef4444;
+  position: relative;
+}
+.map-btn-medical:hover {
+  background-color: #fef2f2;
+  transform: translateY(-2px);
+}
+.map-btn-medical.active {
+  background: #ef4444;
+  color: white;
+  box-shadow: 0 8px 20px rgba(239, 68, 68, 0.3);
+}
+
+.btn-tooltip {
+  position: absolute;
+  right: 120%;
+  background: #1f2937;
+  color: white;
+  padding: 6px 10px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 500;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s;
+  white-space: nowrap;
+  top: 50%;
+  transform: translateY(-50%);
+}
+.map-btn:hover .btn-tooltip { opacity: 1; }
+
+/* --- Markers --- */
+.med-marker-container { background: transparent !important; border: none !important; }
+.med-marker-wrapper { display: flex; flex-direction: column; align-items: center; }
+
+.med-pin {
+  width: 40px;
+  height: 36px;
   border-radius: 50%;
-  animation: spin 0.8s linear infinite;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 3px solid white;
+  transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+  z-index: 10;
+}
+.med-marker-container:hover .med-pin { transform: scale(1.15); }
+
+.med-badge-time {
+  margin-top: -8px;
+  background: white;
+  padding: 2px 8px;
+  border-radius: 12px;
+  font-weight: 700;
+  font-size: 11px;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.08);
+  border: 1px solid;
+  z-index: 11;
+}
+
+/* --- HORIZONTAL POPUP STYLES --- */
+.med-custom-popup .leaflet-popup-content-wrapper {
+  padding: 0;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+}
+
+.med-custom-popup .leaflet-popup-content {
+  margin: 0 !important;
+  width: 480px !important; /* Mở rộng chiều ngang */
+}
+
+.med-popup-card {
+  display: flex; /* Flex row layout */
+  background: #fff;
+  font-family: 'Inter', sans-serif;
+}
+
+/* Cột Trái: Thông tin chung + Ảnh/Icon lớn */
+.med-popup-left {
+  width: 40%;
+  background: #f8fafc;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  border-right: 1px solid #e2e8f0;
+}
+
+.med-hospital-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  color: white;
+  margin-bottom: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.med-info h3 {
+  margin: 0 0 4px 0;
+  font-size: 16px;
+  font-weight: 700;
+  color: #0f172a;
+  line-height: 1.3;
+}
+
+.med-type {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  color: #64748b;
+  letter-spacing: 0.5px;
+}
+
+.med-rating {
+  margin-top: 8px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #f59e0b; /* Amber */
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.med-status {
+  margin-top: auto;
+  font-size: 12px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.med-status.open { color: #10b981; }
+.med-status.closed { color: #ef4444; }
+
+/* Cột Phải: Stats & Actions */
+.med-popup-right {
+  width: 60%;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Grid thống kê (Wait time, Distance) */
+.med-stats-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+.med-stat-box {
+  background: #f1f5f9;
+  border-radius: 8px;
+  padding: 8px 12px;
+  text-align: center;
+}
+.med-stat-label { font-size: 10px; color: #64748b; text-transform: uppercase; font-weight: 600; }
+.med-stat-value { font-size: 14px; font-weight: 700; color: #1e293b; display: block; margin-top: 2px;}
+
+/* Bảng giá */
+.med-prices {
+  flex-grow: 1;
+  margin-bottom: 16px;
+}
+.med-price-item {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+  padding: 6px 0;
+  border-bottom: 1px dashed #e2e8f0;
+  color: #334155;
+}
+.med-price-item:last-child { border-bottom: none; }
+.med-price-val { font-weight: 600; color: #0f172a; }
+
+/* Nút bấm (Actions) */
+.med-actions {
+  display: grid;
+  grid-template-columns: 1fr 1.5fr; /* Route nhỏ hơn Book */
+  gap: 10px;
+}
+
+.med-btn {
+  border: none;
+  border-radius: 8px;
+  padding: 10px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  font-family: 'Inter', sans-serif;
+}
+
+.med-btn-route {
+  background: white;
+  border: 1px solid #cbd5e1;
+  color: #475569;
+}
+.med-btn-route:hover {
+  background: #f8fafc;
+  border-color: #94a3b8;
+  color: #1e293b;
+}
+
+.med-btn-book {
+  color: white;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+.med-btn-book:hover { opacity: 0.9; transform: translateY(-1px); }
+
+
+
+/* ... Giữ nguyên các phần cũ của .map-controls ... */
+
+.map-controls {
+  position: absolute;
+  bottom: 22px;
+  right: 12px;
+  z-index: 2200;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* ... Giữ nguyên style nút bấm ... */
+.map-btn-gps {
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.95);
+  border: 0;
+  border-radius: 10px;
+  box-shadow: 0 6px 18px rgba(2, 6, 23, 0.08);
+  cursor: pointer;
+  padding: 0;
 }
 
 .map-btn {
@@ -46,4 +295,30 @@
   border-radius: 10px;
   box-shadow: 0 6px 18px rgba(2, 6, 23, 0.08);
   cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+
+.med-pulse-anim {
+  transform-origin: center;
+  animation: pulse-ring 3s infinite ease-in-out;
+  transform-box: fill-box; /* Quan trọng để xoay/zoom đúng tâm SVG */
+}
+
+@keyframes pulse-ring {
+  0% {
+    opacity: 0.4;
+    stroke-width: 1;
+    fill-opacity: 0.2;
+  }
+  50% {
+    opacity: 0.8;
+    stroke-width: 4; /* Viền dày lên */
+    fill-opacity: 0.4; /* Màu đậm lên */
+  }
+  100% {
+    opacity: 0.4;
+    stroke-width: 1;
+    fill-opacity: 0.2;
+  }
 }

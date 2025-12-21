@@ -138,7 +138,7 @@ export function pinLocationProK(poi){
     id: currentId,
     latlng: latlng,
     name: name,
-    image: `/chat/pois/${rawImg}`,
+    image: `/map/pois/${rawImg}`,
     intro: poi.intro || "Place",
     location: poi.location || "No address available",
     phone: poi.phone_number || "---",
@@ -179,7 +179,7 @@ function pinLocationPro(poi){
     id: currentId,
     latlng: latlng,
     name: name,
-    image: `/chat/pois/${rawImg}`,
+    image: `/map/pois/${rawImg}`,
     intro: poi.intro || "Place",
     location: poi.location || "No address available",
     phone: poi.phone_number || "---",
@@ -203,26 +203,29 @@ function pinLocationPro(poi){
   });
 }
 
-export async function findPlace(name) {
-  if (!name) {
-    console.error("Place name is required.");
+export async function findPlace(name, lat = null, lng = null) {
+  if (!name && (!lat || !lng)) {
+    console.error("Place name or coordinates are required.");
     return null;
   }
 
-  const url = `/chat/getOnePlace?name=${encodeURIComponent(name)}`;
+  // Xây dựng URL với các tham số có sẵn
+  let url = `/map/getOnePlace?name=${encodeURIComponent(name || "")}`;
+  
+  if (lat !== null && lng !== null) {
+      url += `&lat=${lat}&lng=${lng}`;
+  }
 
   try {
     const response = await fetch(url); 
-
     if (!response.ok) {
+      if (response.status === 404) return null;
+      
       console.error(`HTTP error! Status: ${response.status}`);
-      const errorBody = await response.json().catch(() => ({ message: 'Unknown error' }));
-      console.error("Server message:", errorBody.message);
       return null;
     }
 
     const placeData = await response.json(); 
-
     return placeData;
 
   } catch (error) {
@@ -240,7 +243,7 @@ async function fetchPOIsFromServer() {
   const sw = bounds.getSouthWest();
   const ne = bounds.getNorthEast();
   // URL API với tham số tọa độ khung nhìn
-  const url = `/chat/pois?type=${currentPoiType}&south=${sw.lat}&west=${sw.lng}&north=${ne.lat}&east=${ne.lng}`;
+  const url = `/map/pois?type=${currentPoiType}&south=${sw.lat}&west=${sw.lng}&north=${ne.lat}&east=${ne.lng}`;
 
   try {
     const response = await fetch(url);
