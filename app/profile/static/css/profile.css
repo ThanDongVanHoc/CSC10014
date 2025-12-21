@@ -515,3 +515,275 @@
     justify-content: space-between;
   }
 }
+
+
+/* Medical History Styles */
+/* Tùy chỉnh Container của Medical History */
+.history-list-container {
+    padding: 0 24px 24px 24px;
+    max-height: 500px;
+    overflow-y: auto;
+    
+    /* Đồng bộ kiểu thanh cuộn cho Firefox */
+    scrollbar-width: thin;
+    scrollbar-color: #e5e7eb transparent;
+}
+
+/* Tùy chỉnh Thanh cuộn cho Chrome, Safari, và Edge */
+.history-list-container::-webkit-scrollbar {
+    width: 6px; /* Độ rộng thanh cuộn (nhỏ gọn) */
+}
+
+.history-list-container::-webkit-scrollbar-track {
+    background: transparent; /* Nền của thanh cuộn */
+}
+
+.history-list-container::-webkit-scrollbar-thumb {
+    background-color: #e5e7eb; /* Màu của tay kéo (xám nhạt giống Profile) */
+    border-radius: 20px; /* Bo tròn đầu thanh */
+    border: 2px solid transparent; /* Tạo khoảng trống nếu cần */
+}
+
+.history-list-container::-webkit-scrollbar-thumb:hover {
+    background-color: #d1d5db; /* Đậm hơn một chút khi di chuột vào */
+}
+
+.history-item-card {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 16px;
+    margin-right: 4px;
+    background: #ecfdf5;
+    border-radius: 16px;
+    margin-bottom: 12px;
+    border: 1px solid #f3f4f6;
+    transition: all 0.2s;
+}
+
+
+/* Date Badge */
+.date-badge {
+    width: 60px;
+    height: 60px;
+    background: #ffffff;
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #e5e7eb;
+    flex-shrink: 0;
+}
+
+.date-badge .month {
+    font-size: 11px;
+    font-weight: 800;
+    text-transform: uppercase;
+    color: var(--brand);
+}
+
+.date-badge .day {
+    font-size: 20px;
+    font-weight: 800;
+    color: #111827;
+}
+
+/* Info Section */
+.history-main-info {
+    flex-grow: 1;
+}
+
+.diagnosis-title {
+    font-size: 16px;
+    font-weight: 700;
+    color: #111827;
+    margin: 0 0 4px 0;
+}
+
+.hospital-meta {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    color: #6b7280;
+}
+
+/* Status & Button */
+.history-status {
+    text-align: right;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.record-id {
+    font-size: 11px;
+    font-weight: 600;
+    color: #9ca3af;
+}
+
+.btn-view-detail {
+    background: #ffffff; /* Nền trắng */
+    color: var(--brand); /* Màu xanh thương hiệu */
+    border: 1px solid #dcfce7; /* Viền xanh nhạt */
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-view-detail:hover {
+    background: #ecfdf5; /* Nền xanh cực nhạt khi hover */
+    border-color: var(--brand);
+    transform: scale(1.05);
+}
+
+.btn-view-detail:active {
+    transform: scale(0.95);
+}
+
+/* Căn chỉnh lại container chứa 2 nút */
+.history-actions {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.history-footer {
+    padding: 24px;
+    border-top: 1px solid #f3f4f6;
+    display: flex;
+    justify-content: center;
+}
+
+.btn-add-ocr {
+    background: #111827;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 99px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+}
+
+.draft-section {
+    /* Đảm bảo chiếm trọn chiều rộng grid giống Medical Card */
+    grid-column: 1 / -1; 
+    width: 100%; /* Khớp với chiều rộng bạn đã đặt cho medical-section */
+    margin: 0 auto 32px auto;
+    
+    background: #ffffff;
+    border-radius: 24px; /* Bo góc lớn đồng bộ với profile-card */
+    border: 1px solid #f3f4f6;
+    border-left: 4px solid var(--brand); /* Thanh màu xanh đặc trưng bên trái */
+    padding: 32px; /* Padding rộng rãi giống các thẻ trên */
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+    box-sizing: border-box;
+}
+
+.draft-form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 20px;
+}
+
+.draft-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    border-top: 1px solid #d1fae5;
+    padding-top: 16px;
+}
+
+.loading-overlay {
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(255, 255, 255, 0.8);
+    display: flex; flex-direction: column;
+    justify-content: center; align-items: center;
+    z-index: 9999;
+}
+
+.spinner {
+    width: 50px; height: 50px;
+    border: 5px solid #f3f3f3;
+    border-top: 5px solid #3498db; /* Màu chính của bạn */
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Nút xóa trong danh sách thẻ */
+.btn-delete-record {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+    border: 1px solid transparent;
+}
+
+.btn-delete-record:hover {
+    background-color: #ef4444 !important; /* Màu đỏ đậm hơn khi hover */
+    color: white !important;
+    transform: scale(1.05);
+}
+
+.btn-delete-record:active {
+    transform: scale(0.95);
+}
+
+/* Nút xóa bên trong Modal/Draft Form */
+.btn-danger-outline {
+    background: transparent;
+    border: 1px solid #ef4444;
+    color: #ef4444;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.btn-danger-outline:hover {
+    background: #fef2f2;
+    box-shadow: 0 2px 4px rgba(239, 68, 68, 0.1);
+}
+
+/* Hiệu ứng khi thẻ bị xóa */
+.history-item-card {
+    transition: transform 0.4s ease, opacity 0.4s ease, margin-bottom 0.4s ease;
+}
+
+.card-removing {
+    transform: translateX(100px); /* Đẩy thẻ sang phải */
+    opacity: 0;
+    margin-bottom: -100px; /* Thu hẹp khoảng cách để thẻ dưới trượt lên mượt mà */
+    pointer-events: none;
+}
+
+#draft-notes {
+    font-family: "Manrope", sans-serif;
+    line-height: 1.5;
+    border: 1px solid #e5e7eb;
+    background: #f9fafb;
+    transition: all 0.2s;
+}
+
+#draft-notes:focus {
+    background: #ffffff;
+    border-color: var(--brand);
+    box-shadow: 0 0 0 4px #ecfdf5;
+}

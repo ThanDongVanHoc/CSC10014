@@ -16,6 +16,9 @@ class User(db.Model):
     avatar_url = db.mapped_column(db.Text, nullable=True) 
     google_sub = db.mapped_column(db.Text, nullable=True)
     media = db.mapped_column(db.Text, nullable=True)
+    blood_type = db.mapped_column(db.String(5), nullable=True) # VD: A+, O-
+    allergies = db.mapped_column(db.Text, nullable=True) # Lưu JSON string
+    chronic_conditions = db.mapped_column(db.Text, nullable=True) # Lưu JSON string
 
     __table_args__ = (
         db.UniqueConstraint('email', name='uq_user_email'),
@@ -27,6 +30,13 @@ class User(db.Model):
     # --- Quan hệ Chat AI ---
     conversations: Mapped[List["Chat_Conversation"]] = relationship(
         "Chat_Conversation", 
+        back_populates="user", 
+        cascade="all, delete-orphan"
+    )
+    
+    # Quan hệ 1-Nhiều với MedicalRecord
+    medical_records: Mapped[List["MedicalRecord"]] = relationship(
+        "MedicalRecord", 
         back_populates="user", 
         cascade="all, delete-orphan"
     )
@@ -189,5 +199,50 @@ class Translate_Message(db.Model):
             "content": self.content,
             "audio_url": self.audio_url,
             "duration_seconds": self.duration_seconds,
+            "created_at": self.created_at.isoformat() if self.created_at else None
+        }
+        
+        
+class MedicalRecord(db.Model):
+    __tablename__ = 'medical_record' # Tên bảng trong DB
+
+    id = db.mapped_column(db.Integer, primary_key=True)
+    
+    # Foreign Key liên kết với User
+    user_id = db.mapped_column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    
+    # Thông tin từ ảnh OCR
+    visit_date = db.mapped_column(db.Date, nullable=True)
+    hospital_name = db.mapped_column(db.String(255), nullable=True)
+    doctor_name = db.mapped_column(db.String(255), nullable=True)
+    diagnosis = db.mapped_column(db.Text, nullable=True)
+    symptoms = db.Column(db.Text)
+    notes = db.Column(db.Text, nullable=True)
+    
+    # Lưu danh sách thuốc dưới dạng JSON string
+    # VD: [{"name": "Augmentin", "dosage": "1g", "quantity": "14"}]
+    medications = db.mapped_column(db.Text, nullable=True) 
+    
+    # URL ảnh minh chứng (lưu trên S3/Cloudinary hoặc local path)
+    image_url = db.mapped_column(db.String(500), nullable=True)
+    
+    # Timestamp
+    created_at = db.mapped_column(db.DateTime, server_default=func.now())
+
+    # Relationship ngược về User
+    user: Mapped["User"] = relationship('User', back_populates='medical_records')
+
+    def to_dict(self):
+        import json
+        return {
+            "id": self.id,
+            "visit_date": self.visit_date.isoformat() if self.visit_date else None,
+            "hospital_name": self.hospital_name,
+            "doctor_name": self.doctor_name,
+            "diagnosis": self.diagnosis,
+            "symptoms": self.symptoms,
+            "notes": self.notes,
+            "medications": json.loads(self.medications) if self.medications else [],
+            "image_url": self.image_url,
             "created_at": self.created_at.isoformat() if self.created_at else None
         }

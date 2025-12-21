@@ -5,6 +5,7 @@ from .auth import auth_bp
 from .chat import chat_bp
 from .translate import translate_bp
 from .medical_form import medical_form_bp
+from .profile import profile_bp
 from .db import init_db
 from .map import map_bp 
 from .api import api_bp
@@ -37,6 +38,7 @@ def create_app(test_config = None):
     app.register_blueprint(medical_form_bp)
     app.register_blueprint(api_bp)
 
+    app.register_blueprint(profile_bp)
     #
     init_db(app)
     init_mail(app)
