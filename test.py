@@ -27,7 +27,7 @@ def test_generate_compact_card():
             "emergency_contact_phone": "+1 234 567 8900"
         },
         "medical_critical": {
-            "current_symptoms": "tôi bị sốt với hôn mê",
+            "current_symptoms": "I have had a headache and dizziness since this morning",
             "blood_type": "A+",
             "allergies": ["Penicillin", "Aspirin"],
             "Medications": ["Metformin", "Warfarin"],

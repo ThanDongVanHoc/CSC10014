@@ -17,6 +17,7 @@ TRIAGE_LEVELS = {
         "name_en": "Resuscitation / Life Threatening",
         "name_vi": "Cấp cứu tối khẩn / Nguy kịch",
         "response_time": "Ngay lập tức (Immediate)",
+        "response_minutes": 0,
         "examples": [
             "ngừng tim", "ngừng thở", "đa chấn thương nặng", "hôn mê sâu",
             "sốc phản vệ", "cardiac arrest", "respiratory arrest"
@@ -28,6 +29,7 @@ TRIAGE_LEVELS = {
         "name_en": "Emergency / Severe",
         "name_vi": "Cấp cứu / Nặng",
         "response_time": "< 10 phút",
+        "response_minutes": 10,
         "examples": [
             "đau ngực cấp", "nhồi máu cơ tim", "khó thở dữ dội", "sốc",
             "acute chest pain", "myocardial infarction", "severe dyspnea"
@@ -35,10 +37,11 @@ TRIAGE_LEVELS = {
     },
     TriageLevel.LEVEL_3_YELLOW: {
         "color": "yellow",
-        "color_hex": "#CA8A04",
+        "color_hex": "#FFD700",
         "name_en": "Urgent / Moderate", 
         "name_vi": "Khẩn cấp / Trung bình",
         "response_time": "< 30 phút",
+        "response_minutes": 30,
         "examples": [
             "đau bụng cấp", "sốt cao", "gãy xương kín", "khó thở nhẹ",
             "acute abdominal pain", "high fever", "closed fracture"
@@ -50,6 +53,7 @@ TRIAGE_LEVELS = {
         "name_en": "Less Urgent / Semi-Urgent",
         "name_vi": "Ít khẩn cấp / Nhẹ",
         "response_time": "< 60 phút",
+        "response_minutes": 60,
         "examples": [
             "chấn thương phần mềm", "đau nhẹ", "rối loạn tiêu hóa",
             "soft tissue injury", "mild pain", "GI disturbance"
@@ -61,6 +65,7 @@ TRIAGE_LEVELS = {
         "name_en": "Non-Urgent",
         "name_vi": "Không khẩn cấp",
         "response_time": "< 120 phút",
+        "response_minutes": 120,
         "examples": [
             "khám bệnh thông thường", "thay băng", "lấy thuốc định kỳ",
             "routine exam", "dressing change", "medication refill"
@@ -75,6 +80,7 @@ TRIAGE_LEVELS = {
 SYMPTOM_DICTIONARY: Dict[str, Dict] = {
     # === TIM MẠCH (Cardiovascular) ===
     "chest pain": {
+        "en": "Chest Pain",
         "vi": "Đau ngực",
         "category": MedicalCategory.CARDIOVASCULAR,
         "triage_hint": TriageLevel.LEVEL_2_ORANGE,
@@ -88,6 +94,7 @@ SYMPTOM_DICTIONARY: Dict[str, Dict] = {
         "clinical_note": "Nghi ngờ Hội chứng vành cấp"
     },
     "angina": {
+        "en": "Angina",
         "vi": "Đau thắt ngực",
         "vi_detail": "Cảm giác bóp nghẹt / Đè nặng",
         "category": MedicalCategory.CARDIOVASCULAR,
@@ -101,12 +108,14 @@ SYMPTOM_DICTIONARY: Dict[str, Dict] = {
         "triage_hint": TriageLevel.LEVEL_2_ORANGE
     },
     "palpitations": {
+        "en": "Palpitations",
         "vi": "Hồi hộp / Đánh trống ngực",
         "category": MedicalCategory.CARDIOVASCULAR,
         "triage_hint": TriageLevel.LEVEL_3_YELLOW,
         "clinical_note": "Dấu hiệu rối loạn nhịp tim"
     },
     "cardiac arrest": {
+        "en": "Cardiac Arrest",
         "vi": "Ngừng tuần hoàn / Ngừng tim",
         "category": MedicalCategory.CARDIOVASCULAR,
         "triage_hint": TriageLevel.LEVEL_1_RED,
@@ -119,12 +128,14 @@ SYMPTOM_DICTIONARY: Dict[str, Dict] = {
         "triage_hint": TriageLevel.LEVEL_1_RED
     },
     "syncope": {
+        "en": "Syncope",
         "vi": "Ngất / Cơn ngất xỉu",
         "category": MedicalCategory.CARDIOVASCULAR,
         "triage_hint": TriageLevel.LEVEL_3_YELLOW,
         "clinical_note": "Mất ý thức thoáng qua do giảm tưới máu não"
     },
     "shortness of breath": {
+        "en": "Shortness of Breath / Dyspnea",
         "vi": "Khó thở / Hụt hơi",
         "category": MedicalCategory.RESPIRATORY,
         "triage_hint": TriageLevel.LEVEL_2_ORANGE
@@ -136,6 +147,7 @@ SYMPTOM_DICTIONARY: Dict[str, Dict] = {
         "triage_hint": TriageLevel.LEVEL_2_ORANGE
     },
     "hypertensive urgency": {
+        "en": "Hypertensive Urgency",
         "vi": "Cơn tăng huyết áp khẩn cấp",
         "category": MedicalCategory.CARDIOVASCULAR,
         "triage_hint": TriageLevel.LEVEL_2_ORANGE,
@@ -144,6 +156,7 @@ SYMPTOM_DICTIONARY: Dict[str, Dict] = {
     
     # === THẦN KINH (Neurological) ===
     "thunderclap headache": {
+        "en": "Thunderclap Headache",
         "vi": "Đau đầu sét đánh",
         "category": MedicalCategory.NEUROLOGICAL,
         "triage_hint": TriageLevel.LEVEL_1_RED,
@@ -157,6 +170,7 @@ SYMPTOM_DICTIONARY: Dict[str, Dict] = {
         "clinical_note": "Cảnh báo xuất huyết dưới nhện"
     },
     "severe headache": {
+        "en": "Severe Headache",
         "vi": "Đau đầu dữ dội",
         "category": MedicalCategory.NEUROLOGICAL,
         "triage_hint": TriageLevel.LEVEL_2_ORANGE
@@ -167,7 +181,14 @@ SYMPTOM_DICTIONARY: Dict[str, Dict] = {
         "category": MedicalCategory.NEUROLOGICAL,
         "triage_hint": TriageLevel.LEVEL_3_YELLOW
     },
+    "headache": {
+        "en": "Headache",
+        "vi": "Đau đầu",
+        "category": MedicalCategory.NEUROLOGICAL,
+        "triage_hint": TriageLevel.LEVEL_3_YELLOW
+    },
     "stroke": {
+        "en": "Stroke",
         "vi": "Đột quỵ / Tai biến mạch máu não",
         "category": MedicalCategory.NEUROLOGICAL,
         "triage_hint": TriageLevel.LEVEL_1_RED,
@@ -180,6 +201,7 @@ SYMPTOM_DICTIONARY: Dict[str, Dict] = {
         "triage_hint": TriageLevel.LEVEL_1_RED
     },
     "seizure": {
+        "en": "Seizure / Convulsion",
         "vi": "Co giật / Cơn động kinh",
         "category": MedicalCategory.NEUROLOGICAL,
         "triage_hint": TriageLevel.LEVEL_2_ORANGE
@@ -191,6 +213,7 @@ SYMPTOM_DICTIONARY: Dict[str, Dict] = {
         "triage_hint": TriageLevel.LEVEL_2_ORANGE
     },
     "loss of consciousness": {
+        "en": "Loss of Consciousness / Coma",
         "vi": "Mất ý thức / Hôn mê",
         "category": MedicalCategory.NEUROLOGICAL,
         "triage_hint": TriageLevel.LEVEL_1_RED,
@@ -203,11 +226,13 @@ SYMPTOM_DICTIONARY: Dict[str, Dict] = {
         "triage_hint": TriageLevel.LEVEL_1_RED
     },
     "numbness": {
+        "en": "Numbness / Paresthesia",
         "vi": "Tê bì / Dị cảm",
         "category": MedicalCategory.NEUROLOGICAL,
         "triage_hint": TriageLevel.LEVEL_3_YELLOW
     },
     "vertigo": {
+        "en": "Vertigo",
         "vi": "Chóng mặt xoay tròn",
         "category": MedicalCategory.NEUROLOGICAL,
         "triage_hint": TriageLevel.LEVEL_3_YELLOW,
@@ -215,6 +240,12 @@ SYMPTOM_DICTIONARY: Dict[str, Dict] = {
     },
     "chóng mặt": {
         "en": "Vertigo / Dizziness",
+        "vi": "Chóng mặt",
+        "category": MedicalCategory.NEUROLOGICAL,
+        "triage_hint": TriageLevel.LEVEL_3_YELLOW
+    },
+    "dizziness": {
+        "en": "Dizziness",
         "vi": "Chóng mặt",
         "category": MedicalCategory.NEUROLOGICAL,
         "triage_hint": TriageLevel.LEVEL_3_YELLOW
@@ -247,6 +278,7 @@ SYMPTOM_DICTIONARY: Dict[str, Dict] = {
     
     # === DỊ ỨNG (Allergic) ===
     "anaphylaxis": {
+        "en": "Anaphylaxis",
         "vi": "Sốc phản vệ",
         "category": MedicalCategory.ALLERGIC,
         "triage_hint": TriageLevel.LEVEL_1_RED,
@@ -260,6 +292,7 @@ SYMPTOM_DICTIONARY: Dict[str, Dict] = {
         "clinical_note": "CẤP CỨU TỐI KHẨN - Tiêm Adrenaline 0.5mg IM"
     },
     "allergic reaction": {
+        "en": "Allergic Reaction",
         "vi": "Phản ứng dị ứng",
         "category": MedicalCategory.ALLERGIC,
         "triage_hint": TriageLevel.LEVEL_2_ORANGE
@@ -271,6 +304,7 @@ SYMPTOM_DICTIONARY: Dict[str, Dict] = {
         "triage_hint": TriageLevel.LEVEL_3_YELLOW
     },
     "urticaria": {
+        "en": "Urticaria / Hives",
         "vi": "Nổi mề đay",
         "category": MedicalCategory.ALLERGIC,
         "triage_hint": TriageLevel.LEVEL_3_YELLOW
@@ -282,6 +316,7 @@ SYMPTOM_DICTIONARY: Dict[str, Dict] = {
         "triage_hint": TriageLevel.LEVEL_3_YELLOW
     },
     "angioedema": {
+        "en": "Angioedema",
         "vi": "Phù mạch",
         "category": MedicalCategory.ALLERGIC,
         "triage_hint": TriageLevel.LEVEL_2_ORANGE,
@@ -294,6 +329,7 @@ SYMPTOM_DICTIONARY: Dict[str, Dict] = {
         "triage_hint": TriageLevel.LEVEL_2_ORANGE
     },
     "wheezing": {
+        "en": "Wheezing",
         "vi": "Khò khè",
         "category": MedicalCategory.RESPIRATORY,
         "triage_hint": TriageLevel.LEVEL_2_ORANGE,
@@ -302,6 +338,7 @@ SYMPTOM_DICTIONARY: Dict[str, Dict] = {
     
     # === TIÊU HÓA (Gastrointestinal) ===
     "abdominal pain": {
+        "en": "Abdominal Pain",
         "vi": "Đau bụng",
         "category": MedicalCategory.GASTROINTESTINAL,
         "triage_hint": TriageLevel.LEVEL_3_YELLOW,
@@ -314,6 +351,7 @@ SYMPTOM_DICTIONARY: Dict[str, Dict] = {
         "triage_hint": TriageLevel.LEVEL_3_YELLOW
     },
     "vomiting blood": {
+        "en": "Hematemesis / Vomiting Blood",
         "vi": "Nôn ra máu",
         "category": MedicalCategory.GASTROINTESTINAL,
         "triage_hint": TriageLevel.LEVEL_2_ORANGE,
@@ -326,12 +364,14 @@ SYMPTOM_DICTIONARY: Dict[str, Dict] = {
         "triage_hint": TriageLevel.LEVEL_2_ORANGE
     },
     "melena": {
+        "en": "Melena",
         "vi": "Phân đen",
         "category": MedicalCategory.GASTROINTESTINAL,
         "triage_hint": TriageLevel.LEVEL_2_ORANGE,
         "clinical_note": "Xuất huyết tiêu hóa"
     },
     "bloody stool": {
+        "en": "Bloody Stool / Hematochezia",
         "vi": "Đi cầu ra máu",
         "category": MedicalCategory.GASTROINTESTINAL,
         "triage_hint": TriageLevel.LEVEL_2_ORANGE
@@ -362,6 +402,7 @@ SYMPTOM_DICTIONARY: Dict[str, Dict] = {
         "triage_hint": TriageLevel.LEVEL_4_BLUE
     },
     "food poisoning": {
+        "en": "Food Poisoning",
         "vi": "Ngộ độc thực phẩm",
         "category": MedicalCategory.GASTROINTESTINAL,
         "triage_hint": TriageLevel.LEVEL_3_YELLOW
@@ -376,6 +417,7 @@ SYMPTOM_DICTIONARY: Dict[str, Dict] = {
     
     # === CHẤN THƯƠNG (Trauma) ===
     "trauma": {
+        "en": "Trauma / Injury",
         "vi": "Chấn thương",
         "category": MedicalCategory.TRAUMA,
         "triage_hint": TriageLevel.LEVEL_2_ORANGE
@@ -387,6 +429,7 @@ SYMPTOM_DICTIONARY: Dict[str, Dict] = {
         "triage_hint": TriageLevel.LEVEL_2_ORANGE
     },
     "fracture": {
+        "en": "Bone Fracture",
         "vi": "Gãy xương",
         "category": MedicalCategory.TRAUMA,
         "triage_hint": TriageLevel.LEVEL_3_YELLOW
@@ -398,6 +441,7 @@ SYMPTOM_DICTIONARY: Dict[str, Dict] = {
         "triage_hint": TriageLevel.LEVEL_3_YELLOW
     },
     "bleeding": {
+        "en": "Bleeding / Hemorrhage",
         "vi": "Chảy máu / Xuất huyết",
         "category": MedicalCategory.TRAUMA,
         "triage_hint": TriageLevel.LEVEL_2_ORANGE
@@ -411,6 +455,7 @@ SYMPTOM_DICTIONARY: Dict[str, Dict] = {
     
     # === CHUYỂN HÓA (Metabolic) ===
     "hypoglycemia": {
+        "en": "Hypoglycemia",
         "vi": "Hạ đường huyết",
         "category": MedicalCategory.METABOLIC,
         "triage_hint": TriageLevel.LEVEL_2_ORANGE,
@@ -423,11 +468,13 @@ SYMPTOM_DICTIONARY: Dict[str, Dict] = {
         "triage_hint": TriageLevel.LEVEL_2_ORANGE
     },
     "diabetic ketoacidosis": {
+        "en": "Diabetic Ketoacidosis (DKA)",
         "vi": "Nhiễm toan ceton do đái tháo đường",
         "category": MedicalCategory.METABOLIC,
         "triage_hint": TriageLevel.LEVEL_2_ORANGE
     },
     "high fever": {
+        "en": "High Fever",
         "vi": "Sốt cao",
         "category": MedicalCategory.INFECTIOUS,
         "triage_hint": TriageLevel.LEVEL_3_YELLOW
@@ -452,6 +499,7 @@ SYMPTOM_DICTIONARY: Dict[str, Dict] = {
     },
     # === BỔ SUNG: TIẾT NIỆU (Urology) ===
     "hematuria": {
+        "en": "Hematuria",
         "vi": "Tiểu ra máu",
         "category": MedicalCategory.UROLOGY, # Cần thêm category này vào models
         "triage_hint": TriageLevel.LEVEL_3_YELLOW
@@ -463,6 +511,7 @@ SYMPTOM_DICTIONARY: Dict[str, Dict] = {
         "triage_hint": TriageLevel.LEVEL_3_YELLOW
     },
     "dysuria": {
+        "en": "Dysuria / Painful Urination",
         "vi": "Tiểu buốt / Tiểu rắt",
         "category": MedicalCategory.UROLOGY,
         "triage_hint": TriageLevel.LEVEL_4_BLUE,
@@ -475,6 +524,7 @@ SYMPTOM_DICTIONARY: Dict[str, Dict] = {
         "triage_hint": TriageLevel.LEVEL_4_BLUE
     },
     "flank pain": {
+        "en": "Flank Pain",
         "vi": "Đau hông lưng",
         "category": MedicalCategory.UROLOGY,
         "triage_hint": TriageLevel.LEVEL_3_YELLOW,
@@ -1251,9 +1301,9 @@ SURGICAL_HISTORY_DICTIONARY: Dict[str, Dict] = {
 COUNTRY_DATA: Dict[str, Dict] = {
     "germany": {"flag": "🇩🇪", "code": "DE", "name_vi": "Đức"},
     "de": {"flag": "🇩🇪", "code": "DE", "name_vi": "Đức"},
-    "united states": {"flag": "🇺🇸", "code": "US", "name_vi": "Hoa Kỳ"},
-    "us": {"flag": "🇺🇸", "code": "US", "name_vi": "Hoa Kỳ"},
-    "usa": {"flag": "🇺🇸", "code": "US", "name_vi": "Hoa Kỳ"},
+    "united states": {"flag": "🇺🇸", "code": "US", "name_vi": "Mỹ"},
+    "us": {"flag": "🇺🇸", "code": "US", "name_vi": "Mỹ"},
+    "usa": {"flag": "🇺🇸", "code": "US", "name_vi": "Mỹ"},
     "united kingdom": {"flag": "🇬🇧", "code": "GB", "name_vi": "Anh Quốc"},
     "uk": {"flag": "🇬🇧", "code": "GB", "name_vi": "Anh Quốc"},
     "gb": {"flag": "🇬🇧", "code": "GB", "name_vi": "Anh Quốc"},

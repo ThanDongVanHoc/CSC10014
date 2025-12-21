@@ -3,7 +3,7 @@ Medical Translation Card - Data Models
 Data classes for input/output
 """
 
-from typing import Optional, List
+from typing import Optional, List, Dict
 from enum import Enum
 from datetime import datetime
 from dataclasses import dataclass, field
@@ -171,28 +171,15 @@ class EmergencyCardOutput:
 class CompactCardOutput:
     """
     Output model tối ưu cho Medical Translation Card
-    Chỉ chứa thông tin cần thiết nhất để hiển thị trên card
+    Chỉ chứa thông tin thiết yếu theo định dạng JSON yêu cầu
     """
-    # Thông tin bệnh nhân (cơ bản)
-    patient: dict  # name, age, gender, nationality, blood_type, emergency_contact
-    
-    # Phân loại cấp cứu
-    triage: dict  # level, color, name_en, name_vi, response_time
-    
-    # Lý do vào viện
-    chief_complaint: dict  # original, en, vi
-    
-    # Dị ứng (danh sách đơn giản)
-    allergies: List[str]  # Chỉ tên dị ứng
-    
-    # Thuốc đang dùng (danh sách đơn giản)
-    medications: List[str]  # Chỉ tên thuốc
-    
-    # Tiền sử bệnh (danh sách đơn giản)
-    medical_history: List[str]  # Chỉ tên bệnh
-    
-    # Tiền sử phẫu thuật (danh sách đơn giản)
-    surgical_history: List[str]  # Chỉ tên phẫu thuật
+    patient: Dict[str, object]
+    triage: Dict[str, object]
+    chief_complaint: Dict[str, object]
+    allergies: List[Dict[str, str]]
+    medications: List[Dict[str, str]]
+    medical_history: List[Dict[str, str]]
+    surgical_history: List[Dict[str, str]]
 
 
 @dataclass

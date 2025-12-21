@@ -13,7 +13,7 @@ Khi người dùng nhập triệu chứng, hệ thống sẽ:
 
 ## 🚀 Cài đặt
 
-### 1. Tạo môi trường ảo
+### 1. Tạo môi trường ảo(Optional)
 
 ```bash
 python -m venv venv
@@ -31,23 +31,15 @@ source venv/bin/activate
 pip install -r requirements.txt
 ```
 
-### 3. Cấu hình môi trường (Optional)
+### 3. Cấu hình môi trường
 
 ```bash
-# Copy file mẫu
-cp .env.example .env
-
-# Thêm OpenAI API key nếu muốn dùng AI enhancement
-# OPENAI_API_KEY=your_key_here
+GEMINI_API_KEY=YOUR_KEY
 ```
 
 ### 4. Chạy server
 
 ```bash
-# Development mode
-uvicorn main:app --reload --host 0.0.0.0 --port 8000
-
-# Hoặc
 python main.py
 ```
 
@@ -58,57 +50,115 @@ python main.py
 
 ## 📋 API Endpoints
 
-### POST /api/v1/medical-card/generate
+### POST /api/v1/medical-card/generate-compact
 
 Tạo Medical Translation Card
 
-**Request Body:**
+**Request:**
 
 ```json
 {
   "identity": {
-    "userId": "user_123",
-    "full_name": "Alex Mueller",
-    "nationality": "Germany (DE)",
-    "age": 24,
+    "userId": "P001",
+    "full_name": "John Smith",
+    "nationality": "USA",
+    "age": 35,
     "gender": "Male",
-    "date_of_birth": "15/03/2001",
-    "passport_number": "C01X00T47",
-    "emergency_contact": "Maria Mueller",
-    "emergency_contact_phone": "+49 170 1234567"
+    "date_of_birth": "1990-01-15",
+    "emergency_contact": "Jane Smith",
+    "emergency_contact_phone": "+1 234 567 8900"
   },
   "medical_critical": {
+    "current_symptoms": "I have had a headache and dizziness since this morning",
     "blood_type": "A+",
-    "allergies": ["Aspirin", "Penicillin"],
-    "current_symptoms": "Sốc phản vệ",
-    "Medications": ["Metoprolol", "Atorvastatin"],
-    "Medical_history": ["Hypertension", "Coronary Stent"],
+    "allergies": ["Penicillin", "Aspirin"],
+    "Medications": ["Metformin", "Warfarin"],
+    "Medical_history": ["Tiểu đường", "Cao huyết áp"],
     "surgical_history": ["Appendectomy"]
   }
 }
 ```
 
-**Response:** Xem chi tiết tại `/api/v1/example`
+**Response:**
 
-### POST /api/v1/symptoms/standardize
-
-Chuẩn hóa một triệu chứng
-
-### POST /api/v1/symptoms/standardize-ai
-
-Chuẩn hóa triệu chứng bằng AI (cần OPENAI_API_KEY)
-
-### GET /api/v1/triage/levels
-
-Lấy danh sách cấp độ phân loại cấp cứu
-
-### GET /api/v1/categories
-
-Lấy danh sách phân loại bệnh lý
-
-### GET /api/v1/terminology/search
-
-Tìm kiếm thuật ngữ y khoa
+```json
+{
+  "patient": {
+    "name": "John Smith",
+    "age": 35,
+    "gender": {
+      "en": "Male",
+      "vi": "Nam"
+    },
+    "nationality": {
+      "code": "US",
+      "name_en": "USA",
+      "name_vi": "Mỹ"
+    },
+    "blood_type": "A+",
+    "emergency_contact": {
+      "name": "Jane Smith",
+      "phone": "+1 234 567 8900"
+    }
+  },
+  "triage": {
+    "level": 3,
+    "color_code": "#FFD700",
+    "display_text": {
+      "en": "Urgent / Moderate",
+      "vi": "Khẩn cấp / Trung bình"
+    },
+    "response_time_minutes": 30
+  },
+  "chief_complaint": {
+    "original": "I have had a headache and dizziness since this morning",
+    "symptoms": [
+      {
+        "en": "Headache",
+        "vi": "Đau đầu"
+      },
+      {
+        "en": "Dizziness",
+        "vi": "Chóng mặt"
+      }
+    ]
+  },
+  "allergies": [
+    {
+      "name_en": "Penicillin",
+      "name_vi": "Penicillin"
+    },
+    {
+      "name_en": "Aspirin",
+      "name_vi": "Aspirin"
+    }
+  ],
+  "medications": [
+    {
+      "name": "Metformin"
+    },
+    {
+      "name": "Warfarin"
+    }
+  ],
+  "medical_history": [
+    {
+      "en": "Diabetes Mellitus",
+      "vi": "Đái tháo đường / Tiểu đường"
+    },
+    {
+      "en": "Hypertension",
+      "vi": "Tăng huyết áp / Cao huyết áp"
+    }
+  ],
+  "surgical_history": [
+    {
+      "en": "Appendectomy",
+      "vi": "Phẫu thuật cắt ruột thừa"
+    }
+  ]
+}
+```
 
 ## 🎯 Cấu trúc Output
 
@@ -183,7 +233,7 @@ Chỉnh sửa file `medical_terminology.py`:
 
 ### Tích hợp AI
 
-Đặt `OPENAI_API_KEY` trong `.env` để sử dụng tính năng chuẩn hóa bằng AI cho các triệu chứng phức tạp không có trong database.
+Đặt `GEMINI_API_KEY` trong `.env` để sử dụng tính năng chuẩn hóa bằng AI cho các triệu chứng phức tạp không có trong database.
 
 ## 📚 Tài liệu tham khảo
 

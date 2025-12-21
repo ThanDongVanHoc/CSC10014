@@ -494,60 +494,58 @@ class MedicalCardGenerator:
         )
         triage_data = ts.get_triage_info(triage_level)
         
-        # Build compact lists
-        compact_allergies = self._build_compact_list(
-            medical.allergies, ts.standardize_allergy
-        )
-        compact_medications = self._build_compact_medications(medical.Medications)
-        compact_history = self._build_compact_list(
-            medical.Medical_history, ts.standardize_medical_history
-        )
-        compact_surgical = self._build_compact_list(
-            medical.surgical_history or [], ts.standardize_surgical_history
-        )
-        
         gender_data = GENDER_DICTIONARY.get(
             identity.gender, {"en": "Unknown", "vi": "Không xác định"}
         )
-        
-        # Xây dựng chief_complaint với nhiều triệu chứng
-        chief_complaint_terms = []
-        for symptom_data in symptoms_data:
-            en_term = symptom_data.get("en") or symptom_data.get("original", "")
-            vi_term = symptom_data.get("vi") or symptom_data.get("original", "")
-            chief_complaint_terms.append({
-                "original": symptom_data.get("original", ""),
-                "en": en_term,
-                "vi": vi_term
-            })
-        
-        return CompactCardOutput(
-            patient={
-                "name": identity.full_name,
-                "age": identity.age,
-                "gender": f"{gender_data['vi']} ({gender_data['en']})",
-                "nationality": f"{country_info.get('flag', '🏳️')} {identity.nationality}",
-                "blood_type": medical.blood_type,
-                "emergency_contact": {
+
+        patient_payload = {
+            "name": identity.full_name,
+            "age": identity.age,
+            "gender": {
+                "en": gender_data["en"],
+                "vi": gender_data["vi"]
+            },
+            "nationality": {
+                "code": country_info.get("code", "??"),
+                "name_en": identity.nationality,
+                "name_vi": country_info.get("name_vi", identity.nationality)
+            },
+            "blood_type": medical.blood_type,
+            "emergency_contact": (
+                {
                     "name": identity.emergency_contact,
                     "phone": identity.emergency_contact_phone
                 } if identity.emergency_contact else None
+            )
+        }
+
+        triage_payload = {
+            "level": int(triage_level.value),
+            "color_code": triage_data.get("color_hex"),
+            "display_text": {
+                "en": triage_data.get("name_en"),
+                "vi": triage_data.get("name_vi")
             },
-            triage={
-                "level": triage_level.value,
-                "color": triage_data["color"],
-                "name_en": triage_data["name_en"],
-                "name_vi": triage_data["name_vi"],
-                "response_time": triage_data["response_time"]
-            },
-            chief_complaint={
-                "original": medical.current_symptoms,
-                "symptoms": chief_complaint_terms  # Danh sách các triệu chứng
-            },
-            allergies=compact_allergies,
-            medications=compact_medications,
-            medical_history=compact_history,
-            surgical_history=compact_surgical
+            "response_time_minutes": triage_data.get("response_minutes")
+        }
+
+        chief_complaint_payload = {
+            "original": medical.current_symptoms,
+            "symptoms": self._build_compact_symptoms(symptoms_data)
+        }
+
+        return CompactCardOutput(
+            patient=patient_payload,
+            triage=triage_payload,
+            chief_complaint=chief_complaint_payload,
+            allergies=self._build_compact_allergies(medical.allergies),
+            medications=self._build_compact_medications_structured(medical.Medications),
+            medical_history=self._build_compact_bilingual_list(
+                medical.Medical_history, ts.standardize_medical_history
+            ),
+            surgical_history=self._build_compact_bilingual_list(
+                medical.surgical_history or [], ts.standardize_surgical_history
+            )
         )
     
     # ==================== PRIVATE HELPER METHODS ====================
@@ -736,24 +734,48 @@ class MedicalCardGenerator:
             "label": {"en": "Emergency Contact", "vi": "Người liên hệ khẩn cấp"}
         }
     
-    def _build_compact_list(self, items: List[str], standardize_func) -> List[str]:
-        """Tạo danh sách compact song ngữ"""
+    def _build_compact_symptoms(self, symptoms_data: List[Dict]) -> List[Dict[str, str]]:
+        """Chuẩn hóa danh sách triệu chứng song ngữ cho compact card"""
+        compact = []
+        for symptom in symptoms_data or []:
+            en_term = symptom.get("en") or symptom.get("original") or ""
+            vi_term = symptom.get("vi") or symptom.get("original") or en_term
+            if not en_term and vi_term:
+                en_term = vi_term
+            if not vi_term and en_term:
+                vi_term = en_term
+            compact.append({"en": en_term, "vi": vi_term})
+        return compact
+    
+    def _build_compact_allergies(self, allergies: List[str]) -> List[Dict[str, str]]:
+        """Tạo danh sách dị ứng gồm tên tiếng Anh và tiếng Việt"""
         result = []
-        for item in items:
-            data = standardize_func(item)
-            if data["vi"] != data["en"]:
-                result.append(f"{data['vi']} ({data['en']})")
-            else:
-                result.append(data["vi"])
+        for allergy in allergies:
+            data = self.terminology_service.standardize_allergy(allergy)
+            en_name = data.get("en") or data.get("original") or allergy
+            vi_name = data.get("vi") or data.get("original") or en_name
+            result.append({"name_en": en_name, "name_vi": vi_name})
         return result
     
-    def _build_compact_medications(self, medications: List[str]) -> List[str]:
-        """Tạo danh sách thuốc compact với cảnh báo"""
+    def _build_compact_medications_structured(self, medications: List[str]) -> List[Dict[str, str]]:
+        """Tạo danh sách thuốc theo cấu trúc mới"""
         result = []
         for med in medications:
             data = self.terminology_service.standardize_medication(med)
-            prefix = "⚠️ " if data.get("high_risk") else ""
-            result.append(f"{prefix}{data['vi']}")
+            name = data.get("en") or data.get("vi") or med
+            result.append({"name": name})
+        return result
+    
+    def _build_compact_bilingual_list(self, items: List[str], standardize_func) -> List[Dict[str, str]]:
+        """Tạo danh sách phần tử song ngữ dạng {en, vi}"""
+        if not items:
+            return []
+        result = []
+        for item in items:
+            data = standardize_func(item)
+            en_value = data.get("en") or data.get("original") or item
+            vi_value = data.get("vi") or data.get("original") or en_value
+            result.append({"en": en_value, "vi": vi_value})
         return result
     
     def _translate_allergy_type(self, allergy_type: str) -> str:

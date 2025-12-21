@@ -1,29 +1,76 @@
 {
   "patient": {
-    "name": "Nguyễn Văn A",
-    "age": 45,
-    "gender": "Male",
-    "nationality": "Vietnam",
-    "blood_type": "O+",
+    "name": "John Smith",
+    "age": 35,
+    "gender": {
+      "en": "Male",
+      "vi": "Nam"
+    },
+    "nationality": {
+      "code": "US",
+      "name_en": "USA",
+      "name_vi": "Mỹ"
+    },
+    "blood_type": "A+",
     "emergency_contact": {
-      "name": null,
-      "phone": null
+      "name": "Jane Smith",
+      "phone": "+1 234 567 8900"
     }
   },
   "triage": {
-    "level": "3",
-    "color": "yellow",
-    "name_en": "Urgent / Moderate",
-    "name_vi": "Khẩn cấp / Trung bình",
-    "response_time": "< 30 phút"
+    "level": 3,
+    "color_code": "#FFD700",
+    "display_text": {
+      "en": "Urgent / Moderate",
+      "vi": "Khẩn cấp / Trung bình"
+    },
+    "response_time_minutes": 30
   },
   "chief_complaint": {
-    "original": "da bị ngứa và nổi",
-    "en": "da bị ngứa và nổi",
-    "vi": "da bị ngứa và nổi"
+    "original": "I have had a headache and dizziness since this morning",
+    "symptoms": [
+      {
+        "en": "Headache",
+        "vi": "Đau đầu"
+      },
+      {
+        "en": "Dizziness",
+        "vi": "Chóng mặt"
+      }
+    ]
   },
-  "allergies": [],
-  "medications": [],
-  "medical_history": [],
-  "surgical_history": []
+  "allergies": [
+    {
+      "name_en": "Penicillin",
+      "name_vi": "Penicillin"
+    },
+    {
+      "name_en": "Aspirin",
+      "name_vi": "Aspirin"
+    }
+  ],
+  "medications": [
+    {
+      "name": "Metformin"
+    },
+    {
+      "name": "Warfarin"
+    }
+  ],
+  "medical_history": [
+    {
+      "en": "Diabetes Mellitus",
+      "vi": "Đái tháo đường / Tiểu đường"
+    },
+    {
+      "en": "Hypertension",
+      "vi": "Tăng huyết áp / Cao huyết áp"
+    }
+  ],
+  "surgical_history": [
+    {
+      "en": "Appendectomy",
+      "vi": "Phẫu thuật cắt ruột thừa"
+    }
+  ]
 }
