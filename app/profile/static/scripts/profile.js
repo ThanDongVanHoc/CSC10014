@@ -363,15 +363,31 @@ async function loadMedicalHistory() {
 
 // Hàm bổ trợ để xem chi tiết (bạn có thể phát triển thêm modal ở đây)
 function viewRecordDetail(id) {
-    // 1. Tìm bản ghi trong mảng đã load (dùng == vì id có thể là string/number)
-    currentViewingRecordId = id;
-    const btnDelete = document.getElementById('btn-delete-draft');
-    if (btnDelete) btnDelete.style.display = 'inline-block';
-    const record = allMedicalRecords.find(r => r.id == id);
-    if (!record) {
-        alert("Record not found");
+    const container = document.getElementById('ocr-draft-container');
+    const btnView = event.currentTarget;
+    
+    // Nếu đang bấm vào đúng thẻ đang mở -> Đóng lại (giống Discard)
+    if (currentViewingRecordId === id && container.style.display === 'block') {
+        cancelDraft(); // Gọi hàm đóng có sẵn của bạn
         return;
     }
+
+    // Nếu không, thực hiện hiển thị như bình thường
+    currentViewingRecordId = id;
+    
+    // Đổi tất cả các icon khác về trạng thái "mắt mở" trước khi đổi icon hiện tại
+    document.querySelectorAll('.btn-view-detail').forEach(btn => {
+        btn.classList.remove('viewing');
+        btn.innerHTML = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>`;
+    });
+
+    // Đổi icon của nút vừa bấm sang "mắt gạch chéo"
+    btnView.classList.add('viewing');
+    btnView.innerHTML = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path><line x1="1" y1="1" x2="23" y2="23"></line></svg>`;
+
+    // Đổ dữ liệu vào form (Giữ nguyên logic cũ của bạn)
+    const record = allMedicalRecords.find(r => r.id == id);
+    if (!record) return;
 
     // 2. Cập nhật tiêu đề cho chế độ "Xem chi tiết"
     document.getElementById('draft-title').innerText = "Medical Record Detail";
@@ -389,7 +405,6 @@ function viewRecordDetail(id) {
     renderMedicationsDraft(record.medications || []);
 
     // 5. Hiện Form và cuộn trang
-    const container = document.getElementById('ocr-draft-container');
     container.style.display = 'block';
     container.scrollIntoView({ behavior: 'smooth' });
 }
@@ -446,8 +461,12 @@ document.getElementById('btn-save-medical-db')?.addEventListener('click', async 
 
 function cancelDraft() {
     currentViewingRecordId = null; 
+    document.querySelectorAll('.btn-view-detail').forEach(btn => {
+        btn.classList.remove('viewing'); // Xóa class nhận diện
+        // Trả lại icon con mắt mở bình thường
+        btn.innerHTML = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>`;
+    });
     document.getElementById('ocr-draft-container').style.display = 'none';
-    window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
 function createMedRowHTML(med = {}) {
@@ -509,3 +528,111 @@ async function deleteMedicalRecord(id) {
         showToastMessage("Could not connect to server", false);
     }
 }
+
+
+// 1. Mở và Đóng Modal
+function openEmergencyModal() {
+    document.getElementById('emergency-modal').style.display = 'flex';
+    // Ngăn scroll trang web khi đang mở modal
+    document.body.style.overflow = 'hidden';
+}
+
+function closeEmergencyModal() {
+    document.getElementById('emergency-modal').style.display = 'none';
+    document.body.style.overflow = 'auto';
+}
+
+// 2. Thêm input mới khi bấm nút "+"
+function addEmergencyField(containerId, value = "") {
+    const container = document.getElementById(containerId);
+    const row = document.createElement('div');
+    row.className = 'dynamic-field-row';
+    
+    row.innerHTML = `
+        <input type="text" class="input-modern" value="${value}" placeholder="Enter information..." style="flex: 1; margin-bottom: 0;">
+        <button type="button" class="btn-remove-field" onclick="this.parentElement.remove()">×</button>
+    `;
+    
+    container.appendChild(row);
+}
+
+// 3. Xử lý Save dữ liệu
+document.getElementById('btn-save-emergency')?.addEventListener('click', async function() {
+    const btn = this;
+    
+    // Thu thập dữ liệu
+    const bloodGroup = document.getElementById('emergency-blood').value;
+    const allergies = Array.from(document.querySelectorAll('#allergy-list input'))
+                           .map(i => i.value.trim()).filter(v => v !== "");
+    const medicalHistory = Array.from(document.querySelectorAll('#history-list input'))
+                                .map(i => i.value.trim()).filter(v => v !== "");
+
+    const payload = {
+        blood_group: bloodGroup,
+        allergies: allergies,
+        medical_history: medicalHistory
+    };
+
+    btn.innerText = "Saving...";
+    btn.disabled = true;
+
+    try {
+        const response = await fetch('/profile/api/update-emergency-card', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+        });
+
+        if (response.ok) {
+            showToastMessage("Emergency ID updated successfully!", true);
+            // Bạn có thể reload hoặc cập nhật UI tại đây
+            setTimeout(() => location.reload(), 1500);
+        } else {
+            showToastMessage("Failed to update.", false);
+        }
+    } catch (error) {
+        showToastMessage("Network error.", false);
+    } finally {
+        btn.innerText = "Save Changes";
+        btn.disabled = false;
+    }
+});
+
+// Hàm rút gọn chuỗi
+function truncateString(str, limit = 30) {
+    if (!str || str.length <= limit) return str || "None";
+    return str.substring(0, limit) + "...";
+}
+
+// 1. Hàm load dữ liệu lên Card và Modal khi vào trang
+async function initEmergencyCard() {
+    try {
+        const response = await fetch('profile/api/get-emergency-card');
+        const result = await response.json();
+
+        if (result.status === "success" && result.data) {
+            const d = result.data;
+
+            // 1. Hiển thị lên Card (áp dụng cắt chuỗi 30 ký tự)
+            document.getElementById('display-blood-type').innerText = `Blood Type: ${d.blood_group}`;
+            document.getElementById('display-allergies').innerText = truncateString(d.allergies_str, 30);
+            document.getElementById('display-history').innerText = truncateString(d.history_str, 30);
+
+            // 2. Điền dữ liệu vào Modal khi người dùng nhấn Update
+            document.getElementById('emergency-blood').value = d.blood_group !== "N/A" ? d.blood_group : "";
+            
+            const allergyList = document.getElementById('allergy-list');
+            allergyList.innerHTML = '';
+            d.allergies_raw.forEach(val => addEmergencyField('allergy-list', val));
+
+            const historyList = document.getElementById('history-list');
+            historyList.innerHTML = '';
+            d.history_raw.forEach(val => addEmergencyField('history-list', val));
+        }
+    } catch (error) {
+        console.error("Load error:", error);
+    }
+}
+
+// Gọi hàm load ngay khi tải trang
+document.addEventListener('DOMContentLoaded', initEmergencyCard);
