@@ -44,6 +44,10 @@
   rel="stylesheet"
   href="{{ url_for('chat.static', filename='css/chat/components.css') }}"
 />
+<link
+  rel="stylesheet"
+  href="{{ url_for('chat.static', filename='css/chat/card.css') }}"
+/>
 
 <link
   href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
@@ -77,4 +81,6 @@
   type="module"
   src="{{ url_for('chat.static', filename='scripts/logic.js') }}"
 ></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 {% endblock %}

@@ -27,9 +27,6 @@ export async function sendMessage(text) {
     }
   }
 
-  // GUEST logic: Lưu User msg
-  let contextToSend = {};
-  let lastBotReply = null;
   let currentChat = State.conversations.find((c) => c.id == State.selectedId);
   if (!State.isLoggedIn && currentChat) {
     const now = Date.now();
@@ -37,11 +34,6 @@ export async function sendMessage(text) {
     currentChat.updated_at = now;
     if (currentChat.messages.length === 1)
       currentChat.title = text.slice(0, 40);
-    contextToSend = currentChat.context || {};
-    const lastBotMsg = [...currentChat.messages]
-      .reverse()
-      .find((m) => m.role === "model");
-    if (lastBotMsg) lastBotReply = lastBotMsg.text;
     DataManager.saveGuestData();
     renderSidebar();
   }
@@ -58,35 +50,10 @@ export async function sendMessage(text) {
 
     let data;
     if (window.USE_MOCK_CHAT_RESPONSE) {
-      const resp = await fetch("/chat/static/mock_responses/guide.json");
+      const resp = await fetch("/chat/static/mock_responses/patientData.json");
       data = await resp.json();
-    } else {
-      const res = await fetch("/chat/", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          message: text,
-          convo_id: State.selectedId,
-          user_lat: lat,
-          user_lng: lng,
-          context: contextToSend,
-          last_bot_reply: lastBotReply,
-        }),
-      });
-      data = await res.json();
     }
-
     loadingDiv.remove();
-
-    const reply = data.reply || "No response from server.";
-  
-    const guideData = data.guide || (data.guides || data.steps ? data : null);
-
-    if (data.convo_id && data.convo_id != State.selectedId) {
-      State.selectedId = data.convo_id;
-      if (State.isLoggedIn)
-        State.conversations = await DataManager.getConversations();
-    }
 
     // USER logic: Rename & Update
     if (State.isLoggedIn) {
@@ -102,26 +69,26 @@ export async function sendMessage(text) {
       }
     }
 
-    appendMessageToUI("model", reply, guideData);
+    const textToSend = "I have created a patient record based on your input.";
+    appendMessageToUI("model", textToSend, data);
 
     // GUEST logic: Lưu Bot msg
     currentChat = State.conversations.find((c) => c.id == State.selectedId);
     if (!State.isLoggedIn && currentChat) {
       const now = Date.now();
 
-      if (data.context) {
+      if (data && data.context) {
         currentChat.context = data.context;
       }
 
       const botMsg = {
         role: "model",
-        text: reply,
+        text: textToSend,
         created_at: now,
       };
 
-      // LƯU GUIDE VÀO TIN NHẮN
-      if (guideData) {
-        botMsg.guide = guideData;
+      if (data) {
+        botMsg.data = data;
       }
 
       currentChat.messages.push(botMsg);
