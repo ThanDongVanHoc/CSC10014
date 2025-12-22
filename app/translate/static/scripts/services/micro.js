@@ -212,13 +212,13 @@ async function stopRecording(panel, shouldProcess) {
 
     if (shouldProcess) {
       // 1. Bên trái: Đang upload/transcribe giọng User
-      const userLoader = showLoadingBubble("left", speakerRole);
-      // 2. Bên phải: Bot đang dịch
-      const botLoader = showLoadingBubble("right", speakerRole);
       const blob = new Blob(state.chunks, { type: "audio/webm" });
       const file = new File([blob], "recording.webm", { type: "audio/webm" });
       const isDoctor = panel.dataset.role === "doctor";
       const speakerRole = isDoctor ? "doctor" : "patient";
+      const userLoader = showLoadingBubble("left", speakerRole);
+
+      const botLoader = showLoadingBubble("right", speakerRole);
 
       // Tạo chat mới nếu cần
       if (!State.selectedId) {
