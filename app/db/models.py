@@ -11,9 +11,11 @@ class User(db.Model):
     fullname = db.mapped_column(db.Text, nullable=False)
     email = db.mapped_column(db.Text, nullable=False)
     phone = db.mapped_column(db.Text, nullable=True)
+    gender = db.mapped_column(db.Text, nullable=True)
     lang = db.mapped_column(db.Text, nullable=True)
     password_hash = db.mapped_column(db.Text, nullable=False)
     avatar_url = db.mapped_column(db.Text, nullable=True) 
+    dob = db.Column(db.Date, nullable=True)
     google_sub = db.mapped_column(db.Text, nullable=True)
     media = db.mapped_column(db.Text, nullable=True)
     blood_type = db.mapped_column(db.String(5), nullable=True) # VD: A+, O-
