@@ -111,7 +111,69 @@ def delete_medical_record(record_id):
         db.session.rollback()
         return jsonify({"status": "error", "message": str(e)}), 500
 
+import json
+from flask import request, jsonify, session
+from app.db import db
+from app.db.models import EmergencyCard, User
 
+# --- ROUTE LẤY DỮ LIỆU ---
+@profile_bp.route('/api/get-emergency-card', methods=['GET'])
+def get_emergency_card():
+    user_id = session.get('user_id')
+    # ... kiểm tra login ...
+    try:
+        card = EmergencyCard.query.filter_by(user_id=user_id).first()
+        if not card:
+            return jsonify({"status": "success", "data": None}), 200
+
+        # Giải mã JSON từ DB
+        allergies_list = json.loads(card.allergies) if card.allergies else []
+        history_list = json.loads(card.medical_history) if card.medical_history else []
+
+        return jsonify({
+            "status": "success",
+            "data": {
+                "blood_group": card.blood_group or "N/A",
+                # Dồn hết mảng thành 1 string, ngăn cách bởi dấu phẩy
+                "allergies_str": ", ".join(allergies_list),
+                "history_str": ", ".join(history_list),
+                # Giữ nguyên bản gốc để đổ vào Modal khi sửa
+                "allergies_raw": allergies_list,
+                "history_raw": history_list
+            }
+        }), 200
+    except Exception as e:
+        return jsonify({"status": "error", "message": str(e)}), 500
+
+
+# --- ROUTE CẬP NHẬT DỮ LIỆU ---
+@profile_bp.route('/api/update-emergency-card', methods=['POST'])
+def update_emergency_card():
+    user_id = session.get('user_id')
+    if not user_id:
+        return jsonify({"status": "error", "message": "Vui lòng đăng nhập"}), 401
+
+    data = request.json
+    try:
+        # Kiểm tra xem đã có bản ghi chưa
+        card = EmergencyCard.query.filter_by(user_id=user_id).first()
+
+        if not card:
+            # Nếu chưa có thì tạo mới
+            card = EmergencyCard(user_id=user_id)
+            db.session.add(card)
+
+        # Cập nhật thông tin
+        card.blood_group = data.get('blood_group')
+        # Chuyển mảng từ JS thành chuỗi JSON để lưu vào cột TEXT
+        card.allergies = json.dumps(data.get('allergies', []))
+        card.medical_history = json.dumps(data.get('medical_history', []))
+
+        db.session.commit()
+        return jsonify({"status": "success", "message": "Cập nhật thành công!"}), 200
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({"status": "error", "message": str(e)}), 500
 
 @profile_bp.route('/')
 def profile():

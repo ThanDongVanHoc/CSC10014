@@ -246,3 +246,20 @@ class MedicalRecord(db.Model):
             "image_url": self.image_url,
             "created_at": self.created_at.isoformat() if self.created_at else None
         }
+        
+class EmergencyCard(db.Model):
+    __tablename__ = 'emergency_cards'
+
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), unique=True, nullable=False)
+
+    blood_group = db.Column(db.String(5))
+    # Chúng ta sẽ lưu list dưới dạng JSON string (ví dụ: '["Peanuts", "Dust"]')
+    allergies = db.Column(db.Text, default='[]') 
+    medical_history = db.Column(db.Text, default='[]')
+
+    # Quan hệ với bảng User
+    user = db.relationship('User', backref=db.backref('emergency_card', uselist=False))
+
+    def __repr__(self):
+        return f'<EmergencyCard for User {self.user_id}>'

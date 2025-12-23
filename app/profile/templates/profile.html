@@ -218,40 +218,89 @@
     </div>
   </main>
 
-  <div
-    class="profile-card medical-section fade-up"
-    style="animation-delay: 0.2s"
-  >
-    <div class="card-header">
-      <h3>Emergency Medical Card</h3>
-      <p>This digital card helps first responders identify you.</p>
-    </div>
 
-    <div class="medical-widget">
-      <div class="medical-content">
-        <div class="medical-icon-large">
-          <svg
-            width="32"
-            height="32"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-          >
-            <path d="M22 12h-4l-3 9L9 3l-3 9H2" />
-          </svg>
-        </div>
-        <div class="medical-info">
-          <h4>Medical ID Incomplete</h4>
-          <p>
-            Add blood type, allergies, and emergency contacts to activate your
-            card.
-          </p>
-        </div>
+  <!-- Phần thêm nhóm máu, tiền sử bệnh-->
+
+  <div class="profile-card medical-section fade-up" style="animation-delay: 0.2s">
+      <div class="card-header">
+          <h3>Emergency Medical Card</h3>
+          <p>This digital card helps first responders identify you.</p>
       </div>
-      <button class="btn-action-medical">Update Medical ID</button>
-    </div>
+
+      <div class="medical-widget">
+          <div class="medical-content">
+              <div class="medical-icon-large">
+                  <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <path d="M22 12h-4l-3 9L9 3l-3 9H2" />
+                  </svg>
+              </div>
+              <div class="medical-info">
+                  <h4 id="display-blood-type">Blood Type: --</h4>
+                  <div class="emergency-detail-row">
+                      <strong>Allergies:</strong> 
+                      <span id="display-allergies">None</span>
+                  </div>
+                  <div class="emergency-detail-row">
+                      <strong>History:</strong> 
+                      <span id="display-history">None</span>
+                  </div>
+              </div>
+          </div>
+          <button class="btn-action-medical" onclick="openEmergencyModal()">Update Medical ID</button>
+      </div>
   </div>
+
+  <div id="emergency-modal" class="modal-overlay" style="display: none;">
+      <div class="modal-content fade-up">
+          <div class="modal-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+              <h3 style="margin: 0;">Update Emergency Card</h3>
+              <button class="close-modal" onclick="closeEmergencyModal()" style="background:none; border:none; font-size: 24px; cursor:pointer;">&times;</button>
+          </div>
+          
+          <div class="modal-body">
+              <div class="form-group" style="margin-bottom: 20px;">
+                  <label style="display: block; font-weight: 600; margin-bottom: 8px;">Blood Group</label>
+                  <select id="emergency-blood" class="input-modern" style="width: 100%;">
+                      <option value="">Select Blood Group</option>
+                      <option value="A+">A+</option>
+                      <option value="A-">A-</option>
+                      <option value="B+">B+</option>
+                      <option value="B-">B-</option>
+                      <option value="AB+">AB+</option>
+                      <option value="AB-">AB-</option>
+                      <option value="O+">O+</option>
+                      <option value="O-">O-</option>
+                  </select>
+              </div>
+
+              <div class="form-group" style="margin-bottom: 20px;">
+                  <label style="display: flex; justify-content: space-between; font-weight: 600; margin-bottom: 8px;">
+                      Allergies 
+                      <button type="button" onclick="addEmergencyField('allergy-list')" style="background:none; border:none; color:var(--brand); cursor:pointer; font-size: 13px;">+ Add Allergy</button>
+                  </label>
+                  <div id="allergy-list">
+                      </div>
+              </div>
+
+              <div class="form-group" style="margin-bottom: 20px;">
+                  <label style="display: flex; justify-content: space-between; font-weight: 600; margin-bottom: 8px;">
+                      Medical History 
+                      <button type="button" onclick="addEmergencyField('history-list')" style="background:none; border:none; color:var(--brand); cursor:pointer; font-size: 13px;">+ Add History</button>
+                  </label>
+                  <div id="history-list">
+                      </div>
+              </div>
+          </div>
+
+          <div class="modal-footer" style="display: flex; gap: 12px; justify-content: flex-end; margin-top: 24px;">
+              <button class="btn-discard" onclick="closeEmergencyModal()" style="padding: 10px 20px; border-radius: 12px; border: 1px solid #e5e7eb; background: white; cursor: pointer;">Cancel</button>
+              <button class="btn-save" id="btn-save-emergency" style="padding: 10px 24px; border-radius: 12px; background: var(--brand); color: white; border: none; cursor: pointer; font-weight: 600;">Save Changes</button>
+          </div>
+      </div>
+  </div>
+
+
+  <!-- Phần lưu lịch sử khám bệnh-->
   <div class="profile-card medical-section fade-up" style="animation-delay: 0.2s">
       <div class="card-header">
           <h3>Medical History</h3>

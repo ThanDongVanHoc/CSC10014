@@ -36,6 +36,37 @@ export async function initChat() {
   DOM.brandToggle = document.getElementById("brandToggle");
   DOM.btnSearchTrigger = document.getElementById("btnSearchTrigger");
 
+  DOM.btnOpenForm = document.getElementById("btnOpenForm");
+  
+  
+  const openFormPage = () => {
+    // Option 1: Open in new tab
+    window.open("/medical_form", "_blank");
+    
+    // Option 2: Open in same window
+    // window.location.href = "/your-form-url";
+    
+    //  Option 3: Open with specific dimensions
+      // const width = 800;
+      // const height = 900;
+
+      // // Tính toán vị trí chính giữa màn hình
+      // const left = (window.screen.width / 2) - (width / 2);
+      // const top = (window.screen.height / 2) - (height / 2);
+
+      // window.open(
+      //   "/medical_form",
+      //   "PatientForm",
+      //   `width=${width},height=${height},top=${top},left=${left},scrollbars=yes,resizable=yes`
+      // );
+  };
+
+ // Header button click
+  if (DOM.btnOpenForm) {
+    DOM.btnOpenForm.onclick = openFormPage;
+  }
+
+
   // 2. Data
   await DataManager.checkAuth();
   console.log("Chat Mode:", State.isLoggedIn ? "USER" : "GUEST");

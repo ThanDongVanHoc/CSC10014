@@ -3,11 +3,11 @@ from datetime import datetime
 from . import map_bp
 from flask import render_template, send_from_directory, session, request, jsonify
 from sqlalchemy import select
+from sqlalchemy import and_
 from app.db import db
 import os
 from ..chat.utils import get_user, query_pois_db, check_poi_db
 import requests
-from sqlalchemy import and_
 
 @map_bp.route('/getOnePlace')
 def getOnePlace():
@@ -228,7 +228,7 @@ def proxy_route(mode, coords):
 @map_bp.route('/map')
 def map():
     # Lấy dữ liệu từ session ra
-    hospitals = session.get('ai_results', [])
+    hospitals = session.get('ai_hospitals_results', [])
     location = session.get('user_location', 'HCMC')
     
     return render_template('map.html', hospitals=hospitals, location=location)

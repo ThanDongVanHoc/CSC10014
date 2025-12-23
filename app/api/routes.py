@@ -2,10 +2,12 @@ from . import api_bp
 from flask import jsonify, request, redirect, url_for, render_template
 import random
 from flask import session
+from app.services.med_service import HospitalService
+from app.services.user_service import UserService
+
 
 @api_bp.route('/patient-history', methods=['GET'])
 def get_patient_history():
-
     print("Fetching patient history data...")
 
     data_from_db = [
@@ -14,8 +16,35 @@ def get_patient_history():
         { "name": "Dengue Fever", "date": "Aug 2023", "status": "Recovered" }
     ]
 
-
     return jsonify(data_from_db)
+
+@api_bp.route('/get-all-patient-data', methods=['GET'])
+def get_all_patient_data():
+    
+    # Try to read JSON sent by the frontend. If none provided, fall back to a local mock.
+    data = UserService.get_patient_data(user_id=session.get('user_id', None))
+
+    # Lấy lớp identity ra, nếu không có thì mặc định là dict trống {}
+    identity = data.get('identity', {})
+    # Kiểm tra nationality trong lớp identity đó
+    if identity.get('nationality') is None:
+        data = None
+
+
+    if not data:
+        import json, os
+        mock_path = os.path.normpath(
+            os.path.join(os.path.dirname(__file__), '..', 'chat', 'static', 'mock_responses', 'patientData.json')
+        )
+        try:
+            with open(mock_path, 'r', encoding='utf-8') as f:
+                data = json.load(f)
+        except Exception:
+            data = {}
+
+    return data
+
+
 
 @api_bp.route('/find-hospitals', methods=['POST'])
 def find_hospital_action():
@@ -26,32 +55,33 @@ def find_hospital_action():
 
 
     location = data.get('location')
-    symptoms = data.get('symptoms')
-    pain_level = data.get('painLevel')
-    duration = data.get('duration')
-
-    lat = data.get('lat')
-    lng = data.get('lng')
-
-
+    
     # 2. Giả lập xử lý AI & Tìm kiếm bệnh viện
     found_hospitals = []
-    base_lat, base_lng = 10.7626, 106.6601 # Tọa độ trung tâm HCMC
-    
+
+    # found_hospitals = HospitalService.find_best_hospitals(
+    #     user_id=session.get('user_id', None), frontend_data = data)
+
+
+    # Giả lập dữ liệu bệnh viện tìm thấy
+
     for i in range(1, 6):
         found_hospitals.append({
             "id": f"hosp_{i}",
             "name": f"Hospital {location} - Rank {i}",
-            "lat": base_lat + random.uniform(-0.02, 0.02),
-            "lng": base_lng + random.uniform(-0.02, 0.02),
-            "distanceKm": round(random.uniform(1.0, 5.0), 1),
-            "match": "95%"
+            "final_score": round(random.uniform(8.0, 9.9), 2),
+            "description": "A leading hospital specializing in various treatments.",
+            "ui_context": {
+                "heatmap_color": random.choice(["Green", "Yellow", "Red"]),
+                "distance_display": f"{round(random.uniform(0.5, 5.0), 1)} km",
+                "wait_time_display": f"~{random.randint(30, 180)} mins",
+                "urgency_tag": random.choice(["LOW", "MEDIUM", "HIGH"])
+            }
         })
 
     # 3. Lưu vào Session để trang Map có thể lấy ra dùng
-    session['ai_results'] = found_hospitals
+    session['ai_hospitals_results'] = found_hospitals
     session['user_location'] = location
-
 
     # 4. Trả về URL để JS thực hiện điều hướng
     return jsonify({

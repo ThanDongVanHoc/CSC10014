@@ -50,9 +50,17 @@ export async function sendMessage(text) {
 
     let data;
     if (window.USE_MOCK_CHAT_RESPONSE) {
-      const resp = await fetch("/chat/static/mock_responses/patientData.json");
-      data = await resp.json();
+      // const response = await fetch("/chat/static/mock_responses/patientData.json");
+      const response = await fetch("/api/get-all-patient-data");
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      data = await response.json();
+      console.log("Using mock chat response:", data);
     }
+
     loadingDiv.remove();
 
     // USER logic: Rename & Update

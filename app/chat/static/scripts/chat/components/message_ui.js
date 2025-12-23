@@ -23,9 +23,22 @@ export function renderEmptyState() {
           <span class="ai-icon">✨</span>
           <h2>Hello there</h2>
       </div>
-      <p>Where should we start?</p>
+      <p>Start a conversation or create a new patient form</p>
+      <button class="empty-state-form-btn" id="emptyStateFormBtn">
+          <i class="fas fa-file-medical"></i>
+          <span>Create New Patient Form</span>
+      </button>
   `;
   DOM.chatMessages.appendChild(container);
+
+  // Add click handler for empty state button
+  const emptyBtn = document.getElementById("emptyStateFormBtn");
+  if (emptyBtn) {
+    emptyBtn.onclick = () => {
+      // Change this URL to your actual form page
+      window.open("/medical_form", "_blank");
+    };
+  }
 }
 
 // Append Message
