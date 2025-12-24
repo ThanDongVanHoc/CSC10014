@@ -4,42 +4,52 @@ import random
 from flask import session
 from app.services.med_service import HospitalService
 from app.services.user_service import UserService
+import requests
+from app.profile.routes import get_medical_history 
+
 
 
 @api_bp.route('/patient-history', methods=['GET'])
 def get_patient_history():
-    print("Fetching patient history data...")
+    user_id = session.get('user_id')
+    if not user_id: 
+        return jsonify({"error": "Unauthorized"}), 401
 
-    data_from_db = [
-        { "name": "Acute Bronchitis", "date": "Oct 2024", "status": "Recovered" },
-        { "name": "Allergic Rhinitis", "date": "Ongoing", "status": "Ongoing" },
-        { "name": "Dengue Fever", "date": "Aug 2023", "status": "Recovered" }
-    ]
+    # 1. Gọi hàm và nhận về Response object
+    response_data = get_medical_history() 
+    
+    # 2. Kiểm tra nếu nó là tuple (Response, Status Code)
+    if isinstance(response_data, tuple):
+        actual_response = response_data[0] # Lấy phần Response object
+    else:
+        actual_response = response_data
 
-    return jsonify(data_from_db)
+    # 3. Dùng .get_json() để biến Response thành Dictionary
+    source_data = actual_response.get_json()
+    
+    if not source_data or "data" not in source_data:
+        return jsonify({"error": "Data not found"}), 404
+
+    # 4. Truy cập vào history_summary (Lưu ý: source_data["data"] lúc này là list history_data)
+    # Tùy thuộc vào format JSON bạn trả về ở hàm get_medical_history
+    history_list = source_data.get("data", [])
+    
+    formatted_data = []
+    for item in history_list:
+        formatted_data.append({
+            "name": item.get("diagnosis"),
+            "date": item.get("visitDate"), # Phải khớp với key 'visitDate' ở hàm cũ của bạn
+            "status": "Recovered",
+            "location": item.get("hospitalName") # Khớp với 'hospitalName'
+        })
+
+    return jsonify(formatted_data)
+
 
 @api_bp.route('/get-all-patient-data', methods=['GET'])
 def get_all_patient_data():
     # Try to read JSON sent by the frontend. If none provided, fall back to a local mock.
     data = UserService.get_patient_data(user_id=session.get('user_id', None))
-
-    # Lấy lớp identity ra, nếu không có thì mặc định là dict trống {}
-    identity = data.get('identity', {})
-    # Kiểm tra nationality trong lớp identity đó
-    if identity.get('nationality') is None:
-        data = None
-
-
-    if not data:
-        import json, os
-        mock_path = os.path.normpath(
-            os.path.join(os.path.dirname(__file__), '..', 'chat', 'static', 'mock_responses', 'patientData.json')
-        )
-        try:
-            with open(mock_path, 'r', encoding='utf-8') as f:
-                data = json.load(f)
-        except Exception:
-            data = {}
 
     return data
 
