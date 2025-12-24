@@ -124,6 +124,8 @@ document.addEventListener("DOMContentLoaded", function () {
       originalValues[input.id] = input.value;
       input.disabled = false; // Mở khóa input
     });
+    document.getElementById('gender').disabled = false;
+    document.getElementById('dob').disabled = false;
 
     // Ẩn nút Edit, Hiện cặp nút Save/Discard
     btnChange.style.display = "none";
@@ -152,6 +154,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Chuyển Media sang chế độ xem
     updateMediaView(false);
+    document.getElementById('gender').disabled = true;
+    document.getElementById('dob').disabled = true;
   });
 
   // ==========================================
@@ -168,6 +172,8 @@ document.addEventListener("DOMContentLoaded", function () {
       name: document.getElementById("name").value,
       phone: document.getElementById("phone").value,
       media: document.getElementById("media").value,
+      gender: document.getElementById("gender").value,
+      dob: document.getElementById("dob").value,
     };
 
     // Gửi request POST
@@ -190,6 +196,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
           // Cập nhật view Media mới nhất
           updateMediaView(false);
+          document.getElementById('gender').disabled = true;
+          document.getElementById('dob').disabled = true;
 
           // HIỆN TOAST THÔNG BÁO THÀNH CÔNG
           showToastMessage("Updated successfully!", true);

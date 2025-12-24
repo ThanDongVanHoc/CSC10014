@@ -11,9 +11,11 @@ class User(db.Model):
     fullname = db.mapped_column(db.Text, nullable=False)
     email = db.mapped_column(db.Text, nullable=False)
     phone = db.mapped_column(db.Text, nullable=True)
+    gender = db.mapped_column(db.Text, nullable=True)
     lang = db.mapped_column(db.Text, nullable=True)
     password_hash = db.mapped_column(db.Text, nullable=False)
     avatar_url = db.mapped_column(db.Text, nullable=True) 
+    dob = db.Column(db.Date, nullable=True)
     google_sub = db.mapped_column(db.Text, nullable=True)
     media = db.mapped_column(db.Text, nullable=True)
     blood_type = db.mapped_column(db.String(5), nullable=True) # VD: A+, O-
@@ -263,3 +265,27 @@ class EmergencyCard(db.Model):
 
     def __repr__(self):
         return f'<EmergencyCard for User {self.user_id}>'
+    
+
+
+class Hospital(db.Model):
+    __tablename__ = 'hospitals'
+
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(255), nullable=False)
+    address = db.Column(db.String(500), nullable=False)
+    phone_number = db.Column(db.String(50), nullable=True)
+    website = db.Column(db.String(255), nullable=True)
+    lat = db.Column(db.Float, nullable=True)
+    lng = db.Column(db.Float, nullable=True)
+
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "name": self.name,
+            "address": self.address,
+            "phone_number": self.phone_number,
+            "website": self.website,
+            "lat": self.lat,
+            "lng": self.lng
+        }
