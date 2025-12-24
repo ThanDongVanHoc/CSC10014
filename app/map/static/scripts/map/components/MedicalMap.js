@@ -1,24 +1,25 @@
 /**
  * js/map/components/MedicalMap.js
- * FINAL VERSION: Dual UI (Popup + Sidebar) + DB Integration
+ * FINAL VERSION: Dual UI (Popup + Sidebar) + DB Integration + Backend Enriched Data
  */
 import { state } from "../state.js";
 import { MedicalService } from "../services/medicalService.js";
 import { poiSidebarUI } from "./POISidebar.js"; 
-import { findPlace } from "./POIManager.js"; // Import hàm vừa nâng cấp
 
 let medicalLayer = null;
 let isMedicalMode = false;
 let toggleBtn = null;
 
-// Demo Data (Dùng làm mốc tọa độ và fallback nếu DB chưa có dữ liệu)
-const HOSPITALS = [
-  { id: "loc_1", name: "Bệnh viện Chợ Rẫy", lat: 10.755, lng: 106.665, type: "General Hospital" },
-  { id: "loc_2", name: "Đại học Y Dược", lat: 10.752, lng: 106.660, type: "University Hospital" },
-  { id: "loc_3", name: "Bệnh viện Từ Dũ", lat: 10.768, lng: 106.678, type: "Maternity Hospital" },
-  { id: "loc_4", name: "Nhi Đồng 1", lat: 10.770, lng: 106.668, type: "Children's Hospital" },
-  { id: "loc_5", name: "Phòng khám Quốc tế", lat: 10.760, lng: 106.690, type: "Private Clinic" },
-];
+// Helper: Map màu từ Backend (Text) sang Frontend (Hex)
+const getColorHex = (colorName) => {
+  const mapping = {
+    'Red': '#ef4444',    // Đỏ - Khẩn cấp
+    'Orange': '#f59e0b', // Cam - Trung bình
+    'Green': '#10b981',  // Xanh - Ổn định
+    'Yellow': '#eab308'  // Vàng
+  };
+  return mapping[colorName] || '#3b82f6'; // Mặc định xanh dương
+};
 
 export function initMedicalHeatmap() {
   const controlsContainer = document.querySelector(".map-controls");
@@ -67,60 +68,79 @@ async function renderMedicalMarkers() {
   medicalLayer.clearLayers();
   
   const dataElement = document.getElementById('medical-results-data');
-  let hospitalsToRender = HOSPITALS;
+  let hospitalsToRender = [];
   
+  // 1. ĐỌC DỮ LIỆU TỪ BACKEND (Đã có sẵn lat, lng, address...)
   if (dataElement) {
     try {
       const sessionData = JSON.parse(dataElement.textContent);
-      // Nếu có kết quả từ AI Form, ưu tiên hiển thị kết quả đó
       if (sessionData.hospitals && sessionData.hospitals.length > 0) {
         hospitalsToRender = sessionData.hospitals;
+        console.log(`Loaded ${hospitalsToRender.length} hospitals from AI Session.`);
       }
     } catch (e) {
-      console.warn("Could not parse session medical data, using demo.");
+      console.warn("Could not parse session medical data.");
     }
-  }else{
-      console.log("No session medical data found, using demo.");
   }
 
-  for (const demoHospital of hospitalsToRender) {
-    // CHẠY SONG SONG 3 REQUEST ĐỂ TỐI ƯU TỐC ĐỘ
-    const [prices, stats, dbInfo] = await Promise.all([
-        MedicalService.getHospitalPrices(demoHospital.id).catch(() => ({ items: [] })),
-        MedicalService.getRealTimeStats(demoHospital.id),
-        findPlace(demoHospital.name, demoHospital.lat, demoHospital.lng) // Tìm trong DB bằng tọa độ
-    ]);
+  if (hospitalsToRender.length === 0) {
+      console.log("No hospitals found.");
+      return;
+  }
 
-    // GỘP DỮ LIỆU: Ưu tiên dữ liệu từ DB, nếu không có thì dùng demo
-    const hospital = {
-        ...demoHospital, // Dữ liệu cơ bản
-        address: dbInfo?.location || demoHospital.address || "Đang cập nhật địa chỉ...",
-        phone: dbInfo?.phone_number || demoHospital.phone || "---",
-        website: dbInfo?.website || "#",
-        image: dbInfo?.img || "https://cdn.bookingcare.vn/fo/w828/2019/01/10/162817-benh-vien-tu-du.jpg", // Ảnh từ DB
-        intro: dbInfo?.intro || demoHospital.type // Intro từ DB
+  // 2. DUYỆT VÀ VẼ (Đã tối ưu: Không tìm tọa độ nữa)
+  for (const h of hospitalsToRender) {
+    // Nếu dữ liệu thiếu tọa độ thì bỏ qua (An toàn)
+    if (!h.lat || !h.lng) continue;
+
+    // A. Lấy giá dịch vụ (Vẫn cần gọi mock service hoặc API riêng cho giá)
+    // Dùng catch để dù lỗi lấy giá cũng không chặn việc vẽ map
+    const prices = await MedicalService.getHospitalPrices(h.id).catch(() => ({ items: [] }));
+
+    // B. Chuẩn bị dữ liệu hiển thị (Mapping từ UI Context của Backend)
+    const ui = h.ui_context || {};
+    
+    // Logic màu sắc
+    const color = getColorHex(ui.heatmap_color);
+    
+    // Logic Stats (Dùng dữ liệu Backend trả về)
+    const stats = {
+        waitTimeDisplay: ui.wait_time_display || "N/A",
+        distanceDisplay: ui.distance_display || "N/A",
+        urgency: ui.urgency_tag || "Normal",
+        rating: h.final_score || 0, // Điểm AI chấm
+        isOpen: true // Giả định
     };
 
-    const color = stats.colorCode;
+    // Logic Thông tin (Dùng dữ liệu DB đã Enrich)
+    const hospitalInfo = {
+        ...h,
+        image: h.image || "https://cdn.bookingcare.vn/fo/w828/2019/01/10/162817-benh-vien-tu-du.jpg",
+        address: h.address || h.location || "On update ...",
+        intro: (h.description || h.intro || "No description available.").toLowerCase()
+    };
 
-    L.circle([hospital.lat, hospital.lng], {
+    // C. VẼ VÒNG TRÒN (Heatmap Circle)
+    // Bán kính dựa trên thời gian chờ (ví dụ: chờ càng lâu vòng càng to)
+    const waitNum = parseInt(stats.waitTimeDisplay) || 30;
+    L.circle([h.lat, h.lng], {
       color: color,
       fillColor: color,
-      fillOpacity: 0.25,
-      opacity: 0.6,
-      radius: 150 + (stats.waitTimeMinutes * 2),
-      weight: 2,
+      fillOpacity: 0.15,
+      opacity: 0.5,
+      radius: 100 + (waitNum * 1.5), 
+      weight: 1,
       className: 'med-pulse-anim'
     }).addTo(medicalLayer);
 
-    // 2. Custom Marker Icon
+    // D. CUSTOM MARKER ICON
     const iconHtml = `
       <div class="med-marker-wrapper">
-        <div class="med-pin" style="background-color: ${color}; border-color: ${stats.demand === 'High Demand' ? '#fee2e2' : '#fff'}">
+        <div class="med-pin" style="background-color: ${color}; border-color: ${stats.urgency === 'HIGH' ? '#fee2e2' : '#fff'}">
           <i class="fas fa-hospital-user" style="color: white; font-size: 18px;"></i>
         </div>
         <div class="med-badge-time" style="color: ${color}; border-color: ${color}">
-          ${stats.waitTimeMinutes}m
+          ${stats.rating}
         </div>
       </div>
     `;
@@ -130,16 +150,16 @@ async function renderMedicalMarkers() {
       className: "med-marker-container",
       iconSize: [46, 56],
       iconAnchor: [23, 56],
-      popupAnchor: [0, -60] // Đẩy popup lên cao để không che marker
+      popupAnchor: [0, -60]
     });
 
-    const marker = L.marker([hospital.lat, hospital.lng], { icon: customIcon }).addTo(medicalLayer);
+    const marker = L.marker([h.lat, h.lng], { icon: customIcon }).addTo(medicalLayer);
 
-    // 3. POPUP (Hiển thị Giá & Stats)
-    const popupContent = buildHorizontalPopup(hospital, stats, prices, color);
+    // E. POPUP (Hiển thị Giá & Stats)
+    const popupContent = buildHorizontalPopup(hospitalInfo, stats, prices, color);
     
     marker.bindPopup(popupContent, { 
-      maxWidth: 500, 
+      maxWidth: 450, 
       className: "med-custom-popup",
       closeButton: false,
       autoPan: true
@@ -147,65 +167,61 @@ async function renderMedicalMarkers() {
 
     // Event listeners cho nút trong Popup
     marker.on('popupopen', () => {
-      const routeBtn = document.getElementById(`btn-route-${hospital.id}`);
-      const bookBtn = document.getElementById(`btn-book-${hospital.id}`);
+      const routeBtn = document.getElementById(`btn-route-${h.id}`);
+      const bookBtn = document.getElementById(`btn-book-${h.id}`);
 
       if (routeBtn) {
         routeBtn.addEventListener('click', () => {
-          handleRouteClick(hospital);
+          handleRouteClick(h);
         });
       }
       if (bookBtn) {
         bookBtn.addEventListener('click', () => {
-          alert(`Booking appointment at ${hospital.name}...`);
+          alert(`Booking appointment at ${h.name}...`);
         });
       }
     });
 
-    // 4. SIDEBAR (Hiển thị Info chi tiết từ DB)
+    // F. SIDEBAR (Hiển thị chi tiết khi Click Marker)
     marker.on('click', (e) => {
-        // Không stopPropagation để Popup vẫn mở
         const { map } = state;
+        
+        // FlyTo nhẹ nhàng
+        map.flyTo([h.lat + 0.002, h.lng], 16, { animate: true, duration: 1.2 });
 
-        // A. FlyTo
-        map.flyTo([hospital.lat + 0.003, hospital.lng], 16, {
-            animate: true,
-            duration: 1.5
-        });
-
-        // B. Chuẩn bị data cho Sidebar (Ưu tiên dùng data từ DB đã gộp ở trên)
-        // Fix đường dẫn ảnh nếu cần (giống trong POIManager)
-        let rawImg = hospital.image;
-        if (rawImg && !rawImg.startsWith("http")) {
+        // Chuẩn bị data cho Sidebar
+        // Fix đường dẫn ảnh nếu cần
+        let rawImg = hospitalInfo.image;
+        if (rawImg && !rawImg.startsWith("http") && !rawImg.startsWith("/")) {
              rawImg = `/map/pois/${rawImg.replace(/\\/g, "/")}`;
         }
 
         const poiData = {
-            id: hospital.id, // ID logic
-            name: hospital.name,
-            intro: hospital.intro,
+            id: h.id,
+            name: h.name,
+            intro: hospitalInfo.intro,
             image: rawImg,
-            location: hospital.address,
-            phone: hospital.phone,
-            website: hospital.website,
-            latlng: L.latLng(hospital.lat, hospital.lng)
+            location: hospitalInfo.address,
+            phone: hospitalInfo.phone || "---",
+            website: hospitalInfo.website || "#",
+            latlng: L.latLng(h.lat, h.lng)
         };
 
-        // C. Mở Sidebar
-        // Truyền null vào tham số thứ 2 để Sidebar KHÔNG tự động ẩn/quản lý marker này
+        // Mở Sidebar
         poiSidebarUI.open(poiData, null);
     });
   }
 }
 
-// --- UTILS (Giữ nguyên logic render UI) ---
+// --- UTILS UI BUILDER ---
 
 function buildHorizontalPopup(hospital, stats, prices, color) {
-  const emergencyPrice = prices.items.find(i => i.service === "Cấp cứu")?.price || 0;
-  const xrayPrice = prices.items.find(i => i.service === "X-Quang")?.price || 0;
+  // Lấy giá mẫu để hiển thị
+  const emergencyPrice = prices.items?.find(i => i.service.includes("Cấp cứu"))?.price || 500000;
+  const xrayPrice = prices.items?.find(i => i.service.includes("X-Quang"))?.price || 200000;
   
-  const statusHtml = stats.isOpen !== false // Giả định true nếu không có data
-    ? `<span class="med-status open"><i class="fas fa-clock"></i> Open Now</span>`
+  const statusHtml = stats.isOpen 
+    ? `<span class="med-status open"><i class="fas fa-clock"></i> 24/7 Service</span>`
     : `<span class="med-status closed"><i class="fas fa-door-closed"></i> Closed</span>`;
 
   return `
@@ -216,11 +232,11 @@ function buildHorizontalPopup(hospital, stats, prices, color) {
             <i class="fas fa-hospital-alt"></i>
           </div>
           <div class="med-info">
-            <div class="med-type">${hospital.type}</div>
+            <div class="med-type" style="color:${color}">${stats.urgency} PRIORITY</div>
             <h3>${hospital.name}</h3>
             <div class="med-rating">
-              ${renderStars(stats.rating || 4.5)} 
-              <span style="color:#64748b; font-weight:400; margin-left:4px">(${stats.rating || 4.5})</span>
+              ${renderStars(Math.min(stats.rating / 2, 5))} 
+              <span style="color:#64748b; font-weight:400; margin-left:4px">(${stats.rating})</span>
             </div>
           </div>
         </div>
@@ -230,12 +246,12 @@ function buildHorizontalPopup(hospital, stats, prices, color) {
       <div class="med-popup-right">
         <div class="med-stats-row">
           <div class="med-stat-box">
-             <span class="med-stat-label">Avg Wait</span>
-             <span class="med-stat-value" style="color:${color}">${stats.waitTimeMinutes} min</span>
+             <span class="med-stat-label">Wait Time</span>
+             <span class="med-stat-value" style="color:${color}">${stats.waitTimeDisplay}</span>
           </div>
           <div class="med-stat-box">
              <span class="med-stat-label">Distance</span>
-             <span class="med-stat-value">${stats.distanceKm} km</span>
+             <span class="med-stat-value">${stats.distanceDisplay}</span>
           </div>
         </div>
 
@@ -248,15 +264,11 @@ function buildHorizontalPopup(hospital, stats, prices, color) {
             <span>🩻 X-Ray Scan</span>
             <span class="med-price-val">${xrayPrice.toLocaleString()} ₫</span>
           </div>
-          <div class="med-price-item">
-            <span>🩺 Consultation</span>
-            <span class="med-price-val">150.000 ₫</span>
-          </div>
         </div>
 
         <div class="med-actions">
           <button id="btn-route-${hospital.id}" class="med-btn med-btn-route">
-            <i class="fas fa-directions"></i> Route
+            <i class="fas fa-directions"></i>
           </button>
           <button id="btn-book-${hospital.id}" class="med-btn med-btn-book" style="background:${color}">
             Book Now
@@ -269,9 +281,11 @@ function buildHorizontalPopup(hospital, stats, prices, color) {
 
 function renderStars(rating) {
   let stars = '';
+  // Convert thang điểm 10 về 5 sao
+  const r = Math.round(rating * 2) / 2; 
   for (let i = 1; i <= 5; i++) {
-    if (i <= rating) stars += '<i class="fas fa-star"></i>';
-    else if (i - 0.5 === rating) stars += '<i class="fas fa-star-half-alt"></i>';
+    if (i <= r) stars += '<i class="fas fa-star"></i>';
+    else if (i - 0.5 === r) stars += '<i class="fas fa-star-half-alt"></i>';
     else stars += '<i class="far fa-star" style="color:#cbd5e1"></i>';
   }
   return stars;
@@ -294,7 +308,8 @@ function handleRouteClick(destination) {
                 routeWhileDragging: true,
                 lineOptions: {
                     styles: [{color: '#3b82f6', opacity: 0.8, weight: 6}]
-                }
+                },
+                createMarker: function() { return null; } // Ẩn marker mặc định của routing
             }).addTo(map);
         } else {
            const url = `https://www.google.com/maps/dir/?api=1&origin=${userLat},${userLng}&destination=${destination.lat},${destination.lng}&travelmode=driving`;
@@ -302,10 +317,10 @@ function handleRouteClick(destination) {
         }
       },
       (error) => {
-        alert("Unable to retrieve your location.");
+        alert("Không thể lấy vị trí hiện tại của bạn.");
       }
     );
   } else {
-    alert("Geolocation is not supported.");
+    alert("Trình duyệt không hỗ trợ Geolocation.");
   }
 }

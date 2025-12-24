@@ -485,5 +485,45 @@ function capitalizeFirst(str) {
   return str.charAt(0).toUpperCase() + str.slice(1).replace('_', ' ');
 }
 
+
+export async function getHospitalData(source_id, name, lat, lng) {
+  // 1. Kiểm tra xem có ít nhất 1 thông tin để tìm kiếm không
+  if (!source_id && !name && (!lat || !lng)) {
+    console.warn("Cần ít nhất: source_id, tên, hoặc tọa độ để tìm bệnh viện.");
+    return null;
+  }
+
+  // 2. Tạo URL Query Params tự động
+  const params = new URLSearchParams();
+  
+  if (source_id) params.append('source_id', source_id);
+  if (name) params.append('name', name);
+  if (lat) params.append('lat', lat);
+  if (lng) params.append('lng', lng);
+
+  // Giả sử API backend của bạn nằm ở đường dẫn /map/getHospital
+  const url = `/map/getHospital?${params.toString()}`;
+
+  try {
+    const response = await fetch(url);
+
+    if (!response.ok) {
+      if (response.status === 404) {
+        // console.log("Không tìm thấy bệnh viện nào khớp.");
+        return null;
+      }
+      console.error(`Lỗi API: ${response.status}`);
+      return null;
+    }
+
+    const data = await response.json();
+    return data; // Trả về object hospital
+
+  } catch (error) {
+    console.error("Lỗi kết nối khi tìm bệnh viện:", error);
+    return null;
+  }
+}
+
 // Export để sử dụng từ các module khác
 export { initSuggestionLayer, suggestionIcon };

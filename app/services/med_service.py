@@ -1,14 +1,16 @@
 # services/hospital_service.py
+from datetime import datetime
+from requests import session
 from app.gateways.med_map_gateway import HospitalGateway
 from app.db import db
 from app.db.models import User
 import json
 from sqlalchemy import select
 from sqlalchemy import and_
-
+from flask import session  # Đảm bảo có dòng này
 class HospitalService:
     @staticmethod
-    async def find_best_hospitals(user_id, frontend_data):
+    def find_best_hospitals(user_id, frontend_data):
         
         # 1. Lấy thêm dữ liệu từ Database hoặc nguồn khác
         lat = frontend_data.get('lat', None)
@@ -21,6 +23,8 @@ class HospitalService:
             user = db.session.scalar(stmt)
         except Exception:
             user = None
+
+        dob_value = getattr(user, 'dob', None) or session.get('dob')    
 
         if user:
             try:
@@ -43,8 +47,8 @@ class HospitalService:
                 "allergies": allergies,
                 "avatar_url": user.avatar_url,
 
-                "age": 0,
-                "gender": "All"
+                "age": (datetime.now().year - dob_value.year) if dob_value and hasattr(dob_value, 'year') else 0,
+                "gender": getattr(user, 'gender', None) or session.get('gender') or "All",
             }
         else:
             user_profile = {
@@ -55,6 +59,7 @@ class HospitalService:
             }
 
         # 2. Kết hợp dữ liệu từ frontend và backend
+        
         full_context = {
             "user_context": {
                 "age": user_profile.get("age", 0),
@@ -70,7 +75,8 @@ class HospitalService:
             }
         }
 
+        hospitalGw = HospitalGateway()
         # 3. Chuyển cho Gateway để gọi API Backend thực sự
-        results =  HospitalGateway.search_hospitals(full_context)
+        results =  hospitalGw.search_hospitals(full_context)
 
-        return results
+        return results.get('data')

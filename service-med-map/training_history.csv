@@ -1,3 +1,11 @@
 timestamp,query,urgency,reasoning
 2025-12-22T23:33:26.717748,Age: 32. Symptoms: My child has high fever (39.5C) and convulsions. History: .,HIGH,
 2025-12-23T08:09:03.414346,Age: 32. Symptoms: My child has high fever (39.5C) and convulsions. History: .,HIGH,
+2025-12-24T09:13:58.832174,Age: 32. Symptoms: My child has high fever (39.5C) and convulsions. History: .,HIGH,
+2025-12-24T10:56:56.388345,Age: 0. Symptoms: . History: .,LOW,
+2025-12-24T10:57:32.120886,Age: 0. Symptoms: . History: .,HIGH,
+2025-12-24T10:59:39.396163,Age: 0. Symptoms: . History: .,HIGH,
+2025-12-24T11:00:27.280539,"Age: 0. Symptoms: Headache, Cough, Fever. History: .",HIGH,
+2025-12-24T11:02:39.612902,Age: 0. Symptoms: . History: .,HIGH,
+2025-12-24T11:27:22.468884,"Age: 0. Symptoms: Fever, Cough. History: .",HIGH,
+2025-12-24T11:32:33.947241,Age: 19. Symptoms: eye checkup. History: .,LOW,

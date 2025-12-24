@@ -59,25 +59,12 @@ def find_hospital_action():
     # 2. Giả lập xử lý AI & Tìm kiếm bệnh viện
     found_hospitals = []
 
-    # found_hospitals = HospitalService.find_best_hospitals(
-    #     user_id=session.get('user_id', None), frontend_data = data)
+    found_hospitals = HospitalService.find_best_hospitals(
+                     user_id=session.get('user_id', None), 
+                     frontend_data = data)
+    
+    
 
-
-    # Giả lập dữ liệu bệnh viện tìm thấy
-
-    for i in range(1, 6):
-        found_hospitals.append({
-            "id": f"hosp_{i}",
-            "name": f"Hospital {location} - Rank {i}",
-            "final_score": round(random.uniform(8.0, 9.9), 2),
-            "description": "A leading hospital specializing in various treatments.",
-            "ui_context": {
-                "heatmap_color": random.choice(["Green", "Yellow", "Red"]),
-                "distance_display": f"{round(random.uniform(0.5, 5.0), 1)} km",
-                "wait_time_display": f"~{random.randint(30, 180)} mins",
-                "urgency_tag": random.choice(["LOW", "MEDIUM", "HIGH"])
-            }
-        })
 
     # 3. Lưu vào Session để trang Map có thể lấy ra dùng
     session['ai_hospitals_results'] = found_hospitals

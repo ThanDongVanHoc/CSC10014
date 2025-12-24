@@ -4,6 +4,7 @@ from sqlalchemy import select
 from app.db import db
 from app.db.models import User, MedicalRecord
 from app.gateways.card_gateway import CardGateway
+from datetime import datetime
 
 
 def _parse_json_field(value):
@@ -74,14 +75,15 @@ class UserService:
             except Exception:
                 medications = []
 
+        dob_value = getattr(user, 'dob', None) or session.get('dob')
         payload = {
             "identity": {
                 "userId": (f"P{user.id:03d}" if user and getattr(user, 'id', None) else (user_id or "P001")),
                 "full_name": getattr(user, 'fullname', None) or session.get('fullname') or "John Smith",
                 "nationality": session.get('user_nationality') or None,
-                "age": None,
-                "gender": None,
-                "date_of_birth": None,
+                "age": (datetime.now().year - dob_value.year) if dob_value and hasattr(dob_value, 'year') else None,
+                "gender": getattr(user, 'gender', None) or session.get('gender') or None,
+                "date_of_birth": dob_value.strftime('%Y-%m-%d') if dob_value and hasattr(dob_value, 'strftime') else None,
                 "emergency_contact": None,
                 "emergency_contact_phone": getattr(user, 'phone', None)
             },
