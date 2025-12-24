@@ -84,7 +84,7 @@ class UserService:
                 "age": (datetime.now().year - dob_value.year) if dob_value and hasattr(dob_value, 'year') else None,
                 "gender": getattr(user, 'gender', None) or session.get('gender') or None,
                 "date_of_birth": dob_value.strftime('%Y-%m-%d') if dob_value and hasattr(dob_value, 'strftime') else None,
-                "emergency_contact": None,
+                "emergency_contact": getattr(user, 'name', 'Name'),
                 "emergency_contact_phone": getattr(user, 'phone', None)
             },
             "medical_critical": {
@@ -100,8 +100,11 @@ class UserService:
             }
         }
 
+        print(payload)
+
         try:
-            response = CardGateway.get_card_info(payload)
+            Cardgw = CardGateway()
+            response = Cardgw.get_card_info(payload)
         except Exception as e:
             print(f"CardGateway error: {e}")
             return payload

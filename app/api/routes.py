@@ -20,7 +20,6 @@ def get_patient_history():
 
 @api_bp.route('/get-all-patient-data', methods=['GET'])
 def get_all_patient_data():
-    
     # Try to read JSON sent by the frontend. If none provided, fall back to a local mock.
     data = UserService.get_patient_data(user_id=session.get('user_id', None))
 
