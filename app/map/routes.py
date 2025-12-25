@@ -1,4 +1,4 @@
-from app.db.models import Place, SearchHistory
+from app.db.models import Place, SearchHistory, Hospital
 from datetime import datetime
 from . import map_bp
 from flask import render_template, send_from_directory, session, request, jsonify
@@ -8,6 +8,43 @@ from app.db import db
 import os
 from ..chat.utils import get_user, query_pois_db, check_poi_db
 import requests
+from app.db.models import Hospital
+
+
+@map_bp.route('/getHospital', methods = ['GET'])
+def get_hospital():
+    # Lấy tham số từ URL
+    source_id = request.args.get('source_id')
+    name = request.args.get('name')
+    lat = request.args.get('lat', type=float)
+    lng = request.args.get('lng', type=float)
+
+    hospital = None
+
+    # Ưu tiên 1: Tìm chính xác theo source_id (ID từ Excel)
+    if source_id:
+        hospital = Hospital.query.filter_by(source_id=source_id).first()
+
+    # Ưu tiên 2: Nếu không có ID, tìm theo Tọa độ (trong bán kính nhỏ ~50m)
+    # Để tránh sai số tọa độ nhỏ giữa Excel và Google Map
+    if not hospital and lat and lng:
+        margin = 0.0005 # Khoảng sai số cho phép (khoảng 50m)
+        hospital = Hospital.query.filter(
+            Hospital.lat.between(lat - margin, lat + margin),
+            Hospital.lng.between(lng - margin, lng + margin)
+        ).first()
+
+    # Ưu tiên 3: Tìm theo Tên (Tìm tương đối - ILIKE)
+    if not hospital and name:
+        # Dùng ilike để tìm không phân biệt hoa thường
+        hospital = Hospital.query.filter(Hospital.name.ilike(f"%{name}%")).first()
+
+    # Trả về kết quả
+    if hospital:
+        return jsonify(hospital.to_dict()), 200
+    else:
+        return jsonify({"message": "Not found"}), 404
+    
 
 @map_bp.route('/getOnePlace')
 def getOnePlace():
@@ -227,8 +264,49 @@ def proxy_route(mode, coords):
 
 @map_bp.route('/map')
 def map():
-    # Lấy dữ liệu từ session ra
-    hospitals = session.get('ai_hospitals_results', [])
-    location = session.get('user_location', 'HCMC')
+    # 1. Lấy dữ liệu thô từ AI (chỉ có ID, tên, score, chưa có lat/lng)
+    ai_results = session.get('ai_hospitals_results', [])
+    user_location = session.get('user_location', 'HCMC')
+
+    print('this is from map_bp debug')
+    print(ai_results)
+
+    enriched_hospitals = []
     
-    return render_template('map.html', hospitals=hospitals, location=location)
+    # 2. ENRICH DATA: Bổ sung tọa độ từ Database
+    if ai_results:
+        # Lấy danh sách tất cả ID cần tìm
+        ids = [item.get('id') for item in ai_results if item.get('id')]
+        
+        # BATCH QUERY: Gọi DB 1 lần duy nhất lấy tất cả bệnh viện này
+        # SELECT * FROM hospitals WHERE source_id IN ('1913...', 'da81...')
+        hospitals_db = Hospital.query.filter(Hospital.source_id.in_(ids)).all()
+        
+        # Tạo Dictionary để tra cứu nhanh: {'1913...': <HospitalObj>, ...}
+        db_map = {h.source_id: h for h in hospitals_db}
+
+        for item in ai_results:
+            # Tra cứu trong RAM (siêu nhanh)
+            h_db = db_map.get(item.get('id'))
+            
+            if h_db and h_db.lat and h_db.lng:
+                # Tạo object mới, copy dữ liệu từ AI
+                new_item = item.copy()
+                
+                # Bơm dữ liệu từ DB vào
+                new_item['lat'] = h_db.lat
+                new_item['lng'] = h_db.lng
+                new_item['address'] = h_db.address
+                new_item['phone'] = h_db.phone_number
+                new_item['image'] = h_db.image_url
+                new_item['intro'] = str(h_db.description or "").lower()
+
+                
+                enriched_hospitals.append(new_item)
+
+    # # 3. Trả về template danh sách đã có đầy đủ Tọa độ + AI Score
+    return render_template(
+        'map.html', 
+        hospitals=enriched_hospitals, 
+        location=user_location
+    )

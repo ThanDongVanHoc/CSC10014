@@ -88,7 +88,7 @@ async function loadPatientHistory() {
         });
     } catch (error) {
         console.error("Lỗi:", error);
-        listContainer.innerHTML = '<p class="small-text" style="color:red;">Lỗi tải dữ liệu.</p>';
+        listContainer.innerHTML = '<p class="small-text" style="color:red;">Failed to load data</p>';
     }
 }
 

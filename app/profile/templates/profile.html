@@ -154,6 +154,28 @@
               <span class="copy-tooltip">Click to copy</span>
             </div>
           </div>
+
+          <div class="form-group">
+              <label for="gender">Gender</label>
+              <select id="gender" name="gender" class="input-modern" disabled>
+                  <option value="" disabled {{ 'selected' if not user or not user.gender }}>Select Gender</option>
+                  <option value="Male" {{ 'selected' if user and user.gender == 'Male' }}>Male</option>
+                  <option value="Female" {{ 'selected' if user and user.gender == 'Female' }}>Female</option>
+                  <option value="Other" {{ 'selected' if user and user.gender == 'Other' }}>Other</option>
+              </select>
+          </div>
+
+          <div class="form-group">
+              <label for="dob">Date of Birth</label>
+              <input 
+                id="dob" 
+                name="dob" 
+                type="date" 
+                class="input-modern" 
+                value="{{ user.dob if user and user.dob else '' }}"
+                disabled
+              />
+          </div>
         </div>
 
         <div class="form-actions">

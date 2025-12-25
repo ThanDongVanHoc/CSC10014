@@ -11,9 +11,11 @@ class User(db.Model):
     fullname = db.mapped_column(db.Text, nullable=False)
     email = db.mapped_column(db.Text, nullable=False)
     phone = db.mapped_column(db.Text, nullable=True)
+    gender = db.mapped_column(db.Text, nullable=True)
     lang = db.mapped_column(db.Text, nullable=True)
     password_hash = db.mapped_column(db.Text, nullable=False)
     avatar_url = db.mapped_column(db.Text, nullable=True) 
+    dob = db.Column(db.Date, nullable=True)
     google_sub = db.mapped_column(db.Text, nullable=True)
     media = db.mapped_column(db.Text, nullable=True)
     blood_type = db.mapped_column(db.String(5), nullable=True) # VD: A+, O-
@@ -263,3 +265,68 @@ class EmergencyCard(db.Model):
 
     def __repr__(self):
         return f'<EmergencyCard for User {self.user_id}>'
+    
+
+
+
+
+class Hospital(db.Model):
+    __tablename__ = 'hospitals'
+
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)    
+    source_id = db.Column(db.String(50), unique=True, nullable=True) 
+
+    name = db.Column(db.String(255), nullable=False) # Cột 'Ten'
+    address = db.Column(db.String(500), nullable=False) # Cột 'Dia chi'
+    
+    # Cột 'Loai'. Nếu dùng MySQL/Postgres nên đổi thành db.JSON để dễ query
+    categories = db.Column(db.Text, nullable=True) 
+    
+    phone_number = db.Column(db.String(50), nullable=True) # Cột 'So dien thoai'
+    website = db.Column(db.String(255), nullable=True) # Cột 'Website'
+    
+    lat = db.Column(db.Float, nullable=True)
+    lng = db.Column(db.Float, nullable=True)
+    
+    image_url = db.Column(db.String(500), nullable=True) # Cột 'Link Anh'
+    description = db.Column(db.Text, nullable=True) # Cột 'Gioi thieu'
+    
+    query_kw = db.Column(db.String(100), nullable=True) # Từ khóa đã xử lý
+    original_keyword = db.Column(db.String(255), nullable=True) # Cột 'Tu khoa goc'
+
+    # Đánh Index:
+    # 1. lat, lng: Tìm kiếm bán kính (Nearby search)
+    # 2. name: Tìm kiếm theo tên
+    # 3. categories: Lọc theo loại (nếu cần)
+    __table_args__ = (
+        Index('ix_hospital_lat_lng', 'lat', 'lng'),
+        Index('ix_hospital_query_kw', 'query_kw'),
+        Index('ix_hospital_name', 'name'), 
+    )
+
+    def to_dict(self):
+        # Xử lý categories từ chuỗi string sang list nếu cần thiết
+        import ast
+        cats = []
+        if self.categories:
+            try:
+                # Chuyển string "['a', 'b']" thành list thực python ['a', 'b']
+                cats = ast.literal_eval(self.categories) 
+            except:
+                cats = self.categories
+
+        return {
+            "id": self.id,
+            "source_id": self.source_id,
+            "name": self.name,
+            "address": self.address,
+            "categories": cats, 
+            "phone_number": self.phone_number,
+            "website": self.website,
+            "lat": self.lat,
+            "lng": self.lng,
+            "image_url": self.image_url,
+            "description": self.description,
+            "query_kw": self.query_kw,
+            "original_keyword": self.original_keyword
+        }

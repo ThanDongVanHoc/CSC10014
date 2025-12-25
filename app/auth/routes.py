@@ -7,6 +7,7 @@ import time
 from app.db import db
 from werkzeug.security import generate_password_hash
 from .mail import send_verification_mail
+from datetime import datetime
 from .utils import (
     login_is_required,
     signup_info_required,
@@ -395,6 +396,17 @@ def update_user_setting():
     user.fullname = data.get('name') 
     user.phone = data.get('phone')
     user.media = data.get('media') 
+    user.gender = data.get('gender')
+    dob_raw = data.get('dob') # Đây là chuỗi '2025-07-14'
+    if dob_raw:
+        try:
+            # Chuyển chuỗi thành đối tượng date của Python
+            user.dob = datetime.strptime(dob_raw, '%Y-%m-%d').date()
+        except ValueError:
+            # Nếu chuỗi gửi lên sai định dạng
+            return jsonify({"status": "error", "message": "Invalid date format"}), 400
+    else:
+        user.dob = None
 
     db.session.commit()
 
