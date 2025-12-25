@@ -1,6 +1,6 @@
 /**
  * js/map/components/MedicalMap.js
- * FINAL VERSION: Dual UI (Popup + Sidebar) + DB Integration + Backend Enriched Data
+ * (modified: Book button now pushes medical payload to localStorage and opens /chat)
  */
 import { state } from "../state.js";
 import { MedicalService } from "../services/medicalService.js";
@@ -121,7 +121,6 @@ async function renderMedicalMarkers() {
     };
 
     // C. VẼ VÒNG TRÒN (Heatmap Circle)
-    // Bán kính dựa trên thời gian chờ (ví dụ: chờ càng lâu vòng càng to)
     const waitNum = parseInt(stats.waitTimeDisplay) || 30;
     L.circle([h.lat, h.lng], {
       color: color,
@@ -176,8 +175,48 @@ async function renderMedicalMarkers() {
         });
       }
       if (bookBtn) {
-        bookBtn.addEventListener('click', () => {
-          alert(`Booking appointment at ${h.name}...`);
+        // REPLACED: previously alert. Now create payload & send to chat (via localStorage + open /chat)
+        bookBtn.addEventListener('click', (ev) => {
+          ev.stopPropagation();
+          // Build a minimal medical payload compatible with appendMedicalCardToUI
+          const payload = {
+            patient: {
+              name: h.name || "Hospital Booking",
+              age: h.example_patient_age || "—",
+              gender: h.example_patient_gender || "—",
+              blood_type: h.example_blood_type || ""
+            },
+            triage: {
+              level: 2,
+              display_text: "Booking"
+            },
+            medications: [],
+            medical_history: [],
+            allergies: [],
+            chief_complaint: {
+              original: `Booking appointment at ${h.name}`
+            },
+            // include hospital reference inside payload
+            hospital: {
+              id: h.id,
+              name: h.name,
+              address: hospitalInfo.address,
+              lat: h.lat,
+              lng: h.lng
+            }
+          };
+
+          try {
+            // Put payload into localStorage for the chat tab to pick up
+            localStorage.setItem("pending_medical_message", JSON.stringify(payload));
+            // If user wants an immediate open: open /chat in new tab
+            // If chat is already open in another tab, that tab will receive a storage event.
+            const chatUrl = "/chat";
+            window.open(chatUrl, "_blank");
+          } catch (err) {
+            console.error("Failed to send booking to chat:", err);
+            alert("Could not open chat. Please open chat manually and try again.");
+          }
         });
       }
     });
@@ -190,7 +229,6 @@ async function renderMedicalMarkers() {
         map.flyTo([h.lat + 0.002, h.lng], 16, { animate: true, duration: 1.2 });
 
         // Chuẩn bị data cho Sidebar
-        // Fix đường dẫn ảnh nếu cần
         let rawImg = hospitalInfo.image;
         if (rawImg && !rawImg.startsWith("http") && !rawImg.startsWith("/")) {
              rawImg = `/map/pois/${rawImg.replace(/\\/g, "/")}`;
@@ -213,10 +251,8 @@ async function renderMedicalMarkers() {
   }
 }
 
-// --- UTILS UI BUILDER ---
-
+// --- UTILS UI BUILDER --- (unchanged from your original file)
 function buildHorizontalPopup(hospital, stats, prices, color) {
-  // Lấy giá mẫu để hiển thị
   const emergencyPrice = prices.items?.find(i => i.service.includes("Cấp cứu"))?.price || 500000;
   const xrayPrice = prices.items?.find(i => i.service.includes("X-Quang"))?.price || 200000;
   
@@ -281,7 +317,6 @@ function buildHorizontalPopup(hospital, stats, prices, color) {
 
 function renderStars(rating) {
   let stars = '';
-  // Convert thang điểm 10 về 5 sao
   const r = Math.round(rating * 2) / 2; 
   for (let i = 1; i <= 5; i++) {
     if (i <= r) stars += '<i class="fas fa-star"></i>';

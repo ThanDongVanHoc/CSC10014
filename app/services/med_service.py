@@ -15,6 +15,9 @@ class HospitalService:
         # 1. Lấy thêm dữ liệu từ Database hoặc nguồn khác
         lat = frontend_data.get('lat', None)
         lng = frontend_data.get('lng', None)
+
+        lat = 10.76268
+        lng = 106.68168
         symptoms = frontend_data.get('symptoms', None)
 
 
@@ -75,8 +78,13 @@ class HospitalService:
             }
         }
 
+        print(full_context)
+
+        print()
+
         hospitalGw = HospitalGateway()
         # 3. Chuyển cho Gateway để gọi API Backend thực sự
         results =  hospitalGw.search_hospitals(full_context)
+        print(results)
 
         return results.get('data')

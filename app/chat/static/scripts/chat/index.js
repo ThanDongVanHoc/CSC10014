@@ -9,16 +9,11 @@ import {
   renderEmptyState,
   loadSelectedChatToUI,
   hideSearchWrapper,
+  appendMessageToUI, // <-- ADDED: so chat page can directly render incoming payloads
 } from "./components/message_ui.js";
 import { renderSidebar } from "./components/sidebar_ui.js";
 import { sendMessage } from "./logic.js";
 
-// [MAP LOGIC] - Export API Map (Đã comment)
-/*
-export function setMapReference(fn) {
-  setMapRefState(fn);
-}
-*/
 export { hideSearchWrapper };
 
 export async function initChat() {
@@ -38,34 +33,14 @@ export async function initChat() {
 
   DOM.btnOpenForm = document.getElementById("btnOpenForm");
   
-  
   const openFormPage = () => {
-    // Option 1: Open in new tab
     window.open("/medical_form", "_blank");
-    
-    // Option 2: Open in same window
-    // window.location.href = "/your-form-url";
-    
-    //  Option 3: Open with specific dimensions
-      // const width = 800;
-      // const height = 900;
-
-      // // Tính toán vị trí chính giữa màn hình
-      // const left = (window.screen.width / 2) - (width / 2);
-      // const top = (window.screen.height / 2) - (height / 2);
-
-      // window.open(
-      //   "/medical_form",
-      //   "PatientForm",
-      //   `width=${width},height=${height},top=${top},left=${left},scrollbars=yes,resizable=yes`
-      // );
   };
 
  // Header button click
   if (DOM.btnOpenForm) {
     DOM.btnOpenForm.onclick = openFormPage;
   }
-
 
   // 2. Data
   await DataManager.checkAuth();
@@ -79,6 +54,78 @@ export async function initChat() {
     renderEmptyState();
   }
   renderSidebar();
+
+  // --- NEW: process pending medical payloads from localStorage (from the map)
+  async function processPendingMedical() {
+    const key = "pending_medical_message";
+    const raw = localStorage.getItem(key);
+    if (!raw) return;
+    try {
+      const payload = JSON.parse(raw);
+      let data;
+      // const response = await fetch("/chat/static/mock_responses/patientData.json");
+      const response = await fetch("/api/get-all-patient-data");
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      data = await response.json();
+      // A friendly text to display above the card
+      const textToSend = `Medical booking / pass received from Map: ${payload.patient?.name || "Booking"}`;
+
+      // Ensure a conversation exists
+      if (!State.selectedId) {
+        try {
+          const newChat = await DataManager.create("New chat");
+          if (newChat) {
+            State.conversations.unshift(newChat);
+            State.selectedId = newChat.id;
+            DataManager.saveGuestData();
+            renderSidebar();
+          }
+        } catch (err) {
+          console.warn("Could not create chat to receive pending medical message:", err);
+        }
+      }
+
+      // Append UI message (bot/model) with payload
+      appendMessageToUI("model", textToSend, data);
+
+      // Save into guest conversations (mirror logic.js storage behavior)
+      const currentChat = State.conversations.find((c) => c.id == State.selectedId);
+      if (!State.isLoggedIn && currentChat) {
+        const now = Date.now();
+        currentChat.messages = currentChat.messages || [];
+        const botMsg = {
+          role: "model",
+          text: textToSend,
+          created_at: now,
+          data: data,
+        };
+        currentChat.messages.push(botMsg);
+        currentChat.updated_at = now;
+        DataManager.saveGuestData();
+        renderSidebar();
+      }
+
+    } catch (err) {
+      console.error("Failed to process pending medical message:", err);
+    } finally {
+      // remove so it's not processed twice
+      try { localStorage.removeItem(key); } catch (e) {}
+    }
+  }
+
+  // Immediately check on load (if map opened chat in new tab)
+  processPendingMedical();
+
+  // Also listen for storage events (map may set the key from another tab)
+  window.addEventListener("storage", (e) => {
+    if (e.key === "pending_medical_message") {
+      processPendingMedical();
+    }
+  });
 
   // 3. Sidebar Events
   const expand = () => DOM.app.classList.remove("sidebar-hidden");
