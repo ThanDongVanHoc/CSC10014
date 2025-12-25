@@ -136,13 +136,14 @@ async function handleFormSubmit(e) {
 
     const durationVal = document.getElementById('durationValue').value;
     const durationUnit = document.getElementById('durationUnit').value;
+    const symptomsValue = document.getElementById('symptomsInput').value.trim();
 
     const formData = {
-        symptoms: document.getElementById('symptomsInput').value,
+        // Nếu symptoms rỗng thì gán chuỗi cảnh báo, ngược lại lấy giá trị nhập vào
+        symptoms: symptomsValue === "" ? "nguy cấp người dùng chưa kịp ghi gì" : symptomsValue,
         painLevel: document.getElementById('painLevel').value,
         duration: `${durationVal} ${durationUnit}`,
         location: document.getElementById('locationInput').value,
-        // Dữ liệu tọa độ thật từ GPS
         lng: userLocation ? userLocation.lng : null,
         lat: userLocation ? userLocation.lat : null
     };

@@ -4,7 +4,7 @@ import os
 class HospitalGateway:
     def __init__(self):
         # Chạy local nên không cần API Key
-        self.base_url = "http://localhost:8000"
+        self.base_url = "http://localhost:8001"
         self.timeout = 30.0 
 
     def search_hospitals(self, payload: dict):

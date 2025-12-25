@@ -80,4 +80,4 @@ async def find_hospitals(payload: SearchPayload):
 # --- 4. HÀM CHẠY SERVER (Dùng cho Debug) ---
 if __name__ == "__main__":
     # Chạy server tại localhost port 8000
-    uvicorn.run("main:app", host="0.0.0.0", port=8000, reload=True)
+    uvicorn.run("main:app", host="0.0.0.0", port=8001, reload=True)

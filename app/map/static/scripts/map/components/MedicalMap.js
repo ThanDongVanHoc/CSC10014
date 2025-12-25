@@ -1,6 +1,8 @@
 /**
  * js/map/components/MedicalMap.js
  * FINAL VERSION: Dual UI (Popup + Sidebar) + DB Integration + Backend Enriched Data
+ *
+ * Added: openChatWithPayload(payload) — posts payload to existing chat tab or opens a new chat tab
  */
 import { state } from "../state.js";
 import { MedicalService } from "../services/medicalService.js";
@@ -20,6 +22,48 @@ const getColorHex = (colorName) => {
   };
   return mapping[colorName] || '#3b82f6'; // Mặc định xanh dương
 };
+
+// ----------------- NEW: Cross-tab helper -----------------
+/**
+ * Try to append payload to an already-open chat tab:
+ *  - If a window named 'medical_chat' exists, postMessage(payload) to it and focus
+ *  - Otherwise, store payload in localStorage.pending_medical_message and open /chat in a window named 'medical_chat'
+ *
+ * payload should be JSON-serializable (patient booking object, hospital info, etc.)
+ */
+export function openChatWithPayload(payload) {
+  try {
+    // Ensure payload is serializable
+    const safePayload = JSON.parse(JSON.stringify(payload || {}));
+
+    // Try to get existing named window (this returns a Window object if an existing window/tab used the same name)
+    const existing = window.open("", "medical_chat");
+
+    if (existing && !existing.closed) {
+      // Focus it
+      try { existing.focus(); } catch (e) {}
+      // Use postMessage (same-origin) so chat can process immediately
+      try {
+        existing.postMessage({ type: "medical_payload", payload: safePayload }, window.location.origin);
+      } catch (err) {
+        // If postMessage fails, fallback to localStorage + storage event
+        localStorage.setItem("pending_medical_message", JSON.stringify(safePayload));
+        // inform the existing window by focusing it (it will also check localStorage on focus/load)
+        try { existing.focus(); } catch (e) {}
+      }
+    } else {
+      // No existing chat window — write to localStorage and open a new named tab so the new tab will pick it up
+      try { localStorage.setItem("pending_medical_message", JSON.stringify(safePayload)); } catch (e) {}
+      // Open the chat page in a named window so later calls can reuse it
+      window.open("/chat", "medical_chat");
+    }
+  } catch (err) {
+    console.error("openChatWithPayload failed:", err);
+    // last fallback: open chat and let user know
+    window.open("/chat", "medical_chat");
+  }
+}
+// ----------------- END new helper -----------------
 
 export function initMedicalHeatmap() {
   const controlsContainer = document.querySelector(".map-controls");
@@ -121,7 +165,6 @@ async function renderMedicalMarkers() {
     };
 
     // C. VẼ VÒNG TRÒN (Heatmap Circle)
-    // Bán kính dựa trên thời gian chờ (ví dụ: chờ càng lâu vòng càng to)
     const waitNum = parseInt(stats.waitTimeDisplay) || 30;
     L.circle([h.lat, h.lng], {
       color: color,
@@ -176,8 +219,35 @@ async function renderMedicalMarkers() {
         });
       }
       if (bookBtn) {
-        bookBtn.addEventListener('click', () => {
-          alert(`Booking appointment at ${h.name}...`);
+        // Replace the old booking behavior with opening/appending to chat
+        bookBtn.addEventListener('click', async () => {
+            // 1. Lưu lại nội dung cũ của nút để khôi phục sau này
+            const originalContent = bookBtn.innerHTML;
+            
+            try {
+                bookBtn.disabled = true;
+                bookBtn.innerHTML = `<span class="spinner"></span> Loading...`; // Bạn có thể thêm CSS cho class .spinner
+                bookBtn.style.cursor = 'not-allowed';
+
+                const response = await fetch("/api/get-all-patient-data");
+
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+
+                const data = await response.json();
+
+                // 3. Mở chat với dữ liệu lấy được
+                openChatWithPayload(data);
+
+            } catch (error) {
+                console.error("Booking error:", error);
+                alert("Error ");
+            } finally {
+                bookBtn.disabled = false;
+                bookBtn.innerHTML = originalContent;
+                bookBtn.style.cursor = 'pointer';
+            }
         });
       }
     });
@@ -190,7 +260,6 @@ async function renderMedicalMarkers() {
         map.flyTo([h.lat + 0.002, h.lng], 16, { animate: true, duration: 1.2 });
 
         // Chuẩn bị data cho Sidebar
-        // Fix đường dẫn ảnh nếu cần
         let rawImg = hospitalInfo.image;
         if (rawImg && !rawImg.startsWith("http") && !rawImg.startsWith("/")) {
              rawImg = `/map/pois/${rawImg.replace(/\\/g, "/")}`;
@@ -214,7 +283,6 @@ async function renderMedicalMarkers() {
 }
 
 // --- UTILS UI BUILDER ---
-
 function buildHorizontalPopup(hospital, stats, prices, color) {
   // Lấy giá mẫu để hiển thị
   const emergencyPrice = prices.items?.find(i => i.service.includes("Cấp cứu"))?.price || 500000;

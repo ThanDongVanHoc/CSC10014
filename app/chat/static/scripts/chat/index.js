@@ -1,3 +1,4 @@
+// js/chat/index.js
 import {
   State,
   DOM,
@@ -9,19 +10,21 @@ import {
   renderEmptyState,
   loadSelectedChatToUI,
   hideSearchWrapper,
+  appendMessageToUI, // <-- ADDED: so chat page can directly render incoming payloads
 } from "./components/message_ui.js";
 import { renderSidebar } from "./components/sidebar_ui.js";
 import { sendMessage } from "./logic.js";
 
-// [MAP LOGIC] - Export API Map (Đã comment)
-/*
-export function setMapReference(fn) {
-  setMapRefState(fn);
-}
-*/
 export { hideSearchWrapper };
 
 export async function initChat() {
+  // Mark this tab/window so other tabs can target it by name
+  try {
+    window.name = "medical_chat";
+  } catch (e) {
+    // ignore
+  }
+
   // 1. Map DOM
   DOM.convoListEl = document.getElementById("convoList");
   DOM.searchInput = document.getElementById("searchInput");
@@ -38,34 +41,14 @@ export async function initChat() {
 
   DOM.btnOpenForm = document.getElementById("btnOpenForm");
   
-  
   const openFormPage = () => {
-    // Option 1: Open in new tab
     window.open("/medical_form", "_blank");
-    
-    // Option 2: Open in same window
-    // window.location.href = "/your-form-url";
-    
-    //  Option 3: Open with specific dimensions
-      // const width = 800;
-      // const height = 900;
-
-      // // Tính toán vị trí chính giữa màn hình
-      // const left = (window.screen.width / 2) - (width / 2);
-      // const top = (window.screen.height / 2) - (height / 2);
-
-      // window.open(
-      //   "/medical_form",
-      //   "PatientForm",
-      //   `width=${width},height=${height},top=${top},left=${left},scrollbars=yes,resizable=yes`
-      // );
   };
 
- // Header button click
+  // Header button click
   if (DOM.btnOpenForm) {
     DOM.btnOpenForm.onclick = openFormPage;
   }
-
 
   // 2. Data
   await DataManager.checkAuth();
@@ -79,6 +62,114 @@ export async function initChat() {
     renderEmptyState();
   }
   renderSidebar();
+
+  // --- NEW: process pending medical payloads from localStorage (from the map)
+  // Accept an optional payload param (when delivered via postMessage).
+  async function processPendingMedical(incomingPayload = null) {
+    try {
+      let payload = null;
+      // If payload provided via postMessage, use it directly
+      if (incomingPayload) {
+        payload = incomingPayload;
+      } else {
+        const key = "pending_medical_message";
+        const raw = localStorage.getItem(key);
+        if (!raw) return;
+        payload = JSON.parse(raw);
+      }
+
+      if (!payload) return;
+
+      // If you still want to fetch enriched data from backend, keep this block.
+      // Otherwise, you can use the payload as-is.
+      let data = payload;
+      try {
+        // Optionally enrich from server. If you don't need it, comment this fetch out.
+        const response = await fetch("/api/get-all-patient-data");
+        if (response.ok) {
+          const enriched = await response.json();
+          // merge or replace depending on your logic — here we prefer payload but attach enriched as `data.enriched`
+          data = Object.assign({}, payload, { enriched });
+        }
+      } catch (err) {
+        // ignore enrichment errors; proceed with payload
+        console.warn("Could not enrich payload, continuing with original payload", err);
+      }
+
+      // A friendly text to display above the card
+      const textToSend = `Medical booking / pass received from Map: ${payload.patient?.name || "Booking"}`;
+
+      // Ensure a conversation exists
+      if (!State.selectedId) {
+        try {
+          const newChat = await DataManager.create("New chat");
+          if (newChat) {
+            State.conversations.unshift(newChat);
+            State.selectedId = newChat.id;
+            DataManager.saveGuestData();
+            renderSidebar();
+          }
+        } catch (err) {
+          console.warn("Could not create chat to receive pending medical message:", err);
+        }
+      }
+
+      // Append UI message (bot/model) with payload
+      appendMessageToUI("model", textToSend, data);
+
+      // Save into guest conversations (mirror logic.js storage behavior)
+      const currentChat = State.conversations.find((c) => c.id == State.selectedId);
+      if (!State.isLoggedIn && currentChat) {
+        const now = Date.now();
+        currentChat.messages = currentChat.messages || [];
+        const botMsg = {
+          role: "model",
+          text: textToSend,
+          created_at: now,
+          data: data,
+        };
+        currentChat.messages.push(botMsg);
+        currentChat.updated_at = now;
+        DataManager.saveGuestData();
+        renderSidebar();
+      }
+    } catch (err) {
+      console.error("Failed to process pending medical message:", err);
+    } finally {
+      // remove so it's not processed twice when using localStorage method
+      try { localStorage.removeItem("pending_medical_message"); } catch (e) {}
+    }
+  }
+
+  // Expose for cross-window calls (so other windows can call it directly if they have a reference)
+  window.processPendingMedical = processPendingMedical;
+
+  // Immediately check on load (if map opened chat in new tab)
+  processPendingMedical();
+
+  // Also listen for storage events (map may set the key from another tab)
+  window.addEventListener("storage", (e) => {
+    if (e.key === "pending_medical_message") {
+      processPendingMedical();
+    }
+  });
+
+  // Listen for postMessage events from other windows/tabs
+  window.addEventListener("message", (e) => {
+    // Security: accept only same-origin messages
+    try {
+      if (e.origin !== window.location.origin) return;
+    } catch (err) {
+      // some browsers may throw; be conservative
+      return;
+    }
+
+    if (e.data && e.data.type === "medical_payload") {
+      // e.data.payload may be included
+      processPendingMedical(e.data.payload || null);
+      // optionally bring chat UI to front or show a visual highlight
+    }
+  });
 
   // 3. Sidebar Events
   const expand = () => DOM.app.classList.remove("sidebar-hidden");
