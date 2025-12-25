@@ -34,7 +34,7 @@ from fastapi import FastAPI, UploadFile, File, Form, BackgroundTasks, Header, HT
 import google.generativeai as genai
 import edge_tts
 
-app = FastAPI(title="Medical AI Speech Translation Service (No-FFmpeg Version)")
+app = FastAPI(title="Medical AI Speech Translation Service")
 
 # Cấu hình Gemini
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY3") 
