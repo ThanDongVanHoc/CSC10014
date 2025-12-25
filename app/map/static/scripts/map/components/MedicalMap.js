@@ -1,6 +1,8 @@
 /**
  * js/map/components/MedicalMap.js
- * (modified: Book button now pushes medical payload to localStorage and opens /chat)
+ * FINAL VERSION: Dual UI (Popup + Sidebar) + DB Integration + Backend Enriched Data
+ *
+ * Added: openChatWithPayload(payload) — posts payload to existing chat tab or opens a new chat tab
  */
 import { state } from "../state.js";
 import { MedicalService } from "../services/medicalService.js";
@@ -20,6 +22,48 @@ const getColorHex = (colorName) => {
   };
   return mapping[colorName] || '#3b82f6'; // Mặc định xanh dương
 };
+
+// ----------------- NEW: Cross-tab helper -----------------
+/**
+ * Try to append payload to an already-open chat tab:
+ *  - If a window named 'medical_chat' exists, postMessage(payload) to it and focus
+ *  - Otherwise, store payload in localStorage.pending_medical_message and open /chat in a window named 'medical_chat'
+ *
+ * payload should be JSON-serializable (patient booking object, hospital info, etc.)
+ */
+export function openChatWithPayload(payload) {
+  try {
+    // Ensure payload is serializable
+    const safePayload = JSON.parse(JSON.stringify(payload || {}));
+
+    // Try to get existing named window (this returns a Window object if an existing window/tab used the same name)
+    const existing = window.open("", "medical_chat");
+
+    if (existing && !existing.closed) {
+      // Focus it
+      try { existing.focus(); } catch (e) {}
+      // Use postMessage (same-origin) so chat can process immediately
+      try {
+        existing.postMessage({ type: "medical_payload", payload: safePayload }, window.location.origin);
+      } catch (err) {
+        // If postMessage fails, fallback to localStorage + storage event
+        localStorage.setItem("pending_medical_message", JSON.stringify(safePayload));
+        // inform the existing window by focusing it (it will also check localStorage on focus/load)
+        try { existing.focus(); } catch (e) {}
+      }
+    } else {
+      // No existing chat window — write to localStorage and open a new named tab so the new tab will pick it up
+      try { localStorage.setItem("pending_medical_message", JSON.stringify(safePayload)); } catch (e) {}
+      // Open the chat page in a named window so later calls can reuse it
+      window.open("/chat", "medical_chat");
+    }
+  } catch (err) {
+    console.error("openChatWithPayload failed:", err);
+    // last fallback: open chat and let user know
+    window.open("/chat", "medical_chat");
+  }
+}
+// ----------------- END new helper -----------------
 
 export function initMedicalHeatmap() {
   const controlsContainer = document.querySelector(".map-controls");
@@ -175,48 +219,35 @@ async function renderMedicalMarkers() {
         });
       }
       if (bookBtn) {
-        // REPLACED: previously alert. Now create payload & send to chat (via localStorage + open /chat)
-        bookBtn.addEventListener('click', (ev) => {
-          ev.stopPropagation();
-          // Build a minimal medical payload compatible with appendMedicalCardToUI
-          const payload = {
-            patient: {
-              name: h.name || "Hospital Booking",
-              age: h.example_patient_age || "—",
-              gender: h.example_patient_gender || "—",
-              blood_type: h.example_blood_type || ""
-            },
-            triage: {
-              level: 2,
-              display_text: "Booking"
-            },
-            medications: [],
-            medical_history: [],
-            allergies: [],
-            chief_complaint: {
-              original: `Booking appointment at ${h.name}`
-            },
-            // include hospital reference inside payload
-            hospital: {
-              id: h.id,
-              name: h.name,
-              address: hospitalInfo.address,
-              lat: h.lat,
-              lng: h.lng
-            }
-          };
+        // Replace the old booking behavior with opening/appending to chat
+        bookBtn.addEventListener('click', async () => {
+            // 1. Lưu lại nội dung cũ của nút để khôi phục sau này
+            const originalContent = bookBtn.innerHTML;
+            
+            try {
+                bookBtn.disabled = true;
+                bookBtn.innerHTML = `<span class="spinner"></span> Loading...`; // Bạn có thể thêm CSS cho class .spinner
+                bookBtn.style.cursor = 'not-allowed';
 
-          try {
-            // Put payload into localStorage for the chat tab to pick up
-            localStorage.setItem("pending_medical_message", JSON.stringify(payload));
-            // If user wants an immediate open: open /chat in new tab
-            // If chat is already open in another tab, that tab will receive a storage event.
-            const chatUrl = "/chat";
-            window.open(chatUrl, "_blank");
-          } catch (err) {
-            console.error("Failed to send booking to chat:", err);
-            alert("Could not open chat. Please open chat manually and try again.");
-          }
+                const response = await fetch("/api/get-all-patient-data");
+
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+
+                const data = await response.json();
+
+                // 3. Mở chat với dữ liệu lấy được
+                openChatWithPayload(data);
+
+            } catch (error) {
+                console.error("Booking error:", error);
+                alert("Error ");
+            } finally {
+                bookBtn.disabled = false;
+                bookBtn.innerHTML = originalContent;
+                bookBtn.style.cursor = 'pointer';
+            }
         });
       }
     });
@@ -251,8 +282,9 @@ async function renderMedicalMarkers() {
   }
 }
 
-// --- UTILS UI BUILDER --- (unchanged from your original file)
+// --- UTILS UI BUILDER ---
 function buildHorizontalPopup(hospital, stats, prices, color) {
+  // Lấy giá mẫu để hiển thị
   const emergencyPrice = prices.items?.find(i => i.service.includes("Cấp cứu"))?.price || 500000;
   const xrayPrice = prices.items?.find(i => i.service.includes("X-Quang"))?.price || 200000;
   
@@ -317,6 +349,7 @@ function buildHorizontalPopup(hospital, stats, prices, color) {
 
 function renderStars(rating) {
   let stars = '';
+  // Convert thang điểm 10 về 5 sao
   const r = Math.round(rating * 2) / 2; 
   for (let i = 1; i <= 5; i++) {
     if (i <= r) stars += '<i class="fas fa-star"></i>';

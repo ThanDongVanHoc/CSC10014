@@ -1,3 +1,4 @@
+// js/chat/index.js
 import {
   State,
   DOM,
@@ -17,6 +18,13 @@ import { sendMessage } from "./logic.js";
 export { hideSearchWrapper };
 
 export async function initChat() {
+  // Mark this tab/window so other tabs can target it by name
+  try {
+    window.name = "medical_chat";
+  } catch (e) {
+    // ignore
+  }
+
   // 1. Map DOM
   DOM.convoListEl = document.getElementById("convoList");
   DOM.searchInput = document.getElementById("searchInput");
@@ -37,7 +45,7 @@ export async function initChat() {
     window.open("/medical_form", "_blank");
   };
 
- // Header button click
+  // Header button click
   if (DOM.btnOpenForm) {
     DOM.btnOpenForm.onclick = openFormPage;
   }
@@ -56,21 +64,38 @@ export async function initChat() {
   renderSidebar();
 
   // --- NEW: process pending medical payloads from localStorage (from the map)
-  async function processPendingMedical() {
-    const key = "pending_medical_message";
-    const raw = localStorage.getItem(key);
-    if (!raw) return;
+  // Accept an optional payload param (when delivered via postMessage).
+  async function processPendingMedical(incomingPayload = null) {
     try {
-      const payload = JSON.parse(raw);
-      let data;
-      // const response = await fetch("/chat/static/mock_responses/patientData.json");
-      const response = await fetch("/api/get-all-patient-data");
-
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
+      let payload = null;
+      // If payload provided via postMessage, use it directly
+      if (incomingPayload) {
+        payload = incomingPayload;
+      } else {
+        const key = "pending_medical_message";
+        const raw = localStorage.getItem(key);
+        if (!raw) return;
+        payload = JSON.parse(raw);
       }
 
-      data = await response.json();
+      if (!payload) return;
+
+      // If you still want to fetch enriched data from backend, keep this block.
+      // Otherwise, you can use the payload as-is.
+      let data = payload;
+      try {
+        // Optionally enrich from server. If you don't need it, comment this fetch out.
+        const response = await fetch("/api/get-all-patient-data");
+        if (response.ok) {
+          const enriched = await response.json();
+          // merge or replace depending on your logic — here we prefer payload but attach enriched as `data.enriched`
+          data = Object.assign({}, payload, { enriched });
+        }
+      } catch (err) {
+        // ignore enrichment errors; proceed with payload
+        console.warn("Could not enrich payload, continuing with original payload", err);
+      }
+
       // A friendly text to display above the card
       const textToSend = `Medical booking / pass received from Map: ${payload.patient?.name || "Booking"}`;
 
@@ -108,14 +133,16 @@ export async function initChat() {
         DataManager.saveGuestData();
         renderSidebar();
       }
-
     } catch (err) {
       console.error("Failed to process pending medical message:", err);
     } finally {
-      // remove so it's not processed twice
-      try { localStorage.removeItem(key); } catch (e) {}
+      // remove so it's not processed twice when using localStorage method
+      try { localStorage.removeItem("pending_medical_message"); } catch (e) {}
     }
   }
+
+  // Expose for cross-window calls (so other windows can call it directly if they have a reference)
+  window.processPendingMedical = processPendingMedical;
 
   // Immediately check on load (if map opened chat in new tab)
   processPendingMedical();
@@ -124,6 +151,23 @@ export async function initChat() {
   window.addEventListener("storage", (e) => {
     if (e.key === "pending_medical_message") {
       processPendingMedical();
+    }
+  });
+
+  // Listen for postMessage events from other windows/tabs
+  window.addEventListener("message", (e) => {
+    // Security: accept only same-origin messages
+    try {
+      if (e.origin !== window.location.origin) return;
+    } catch (err) {
+      // some browsers may throw; be conservative
+      return;
+    }
+
+    if (e.data && e.data.type === "medical_payload") {
+      // e.data.payload may be included
+      processPendingMedical(e.data.payload || null);
+      // optionally bring chat UI to front or show a visual highlight
     }
   });
 
