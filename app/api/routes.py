@@ -84,3 +84,87 @@ def find_hospital_action():
         "status": "success",
         "redirect_url": url_for('map.map') # Tên blueprint.tên_hàm
     })
+
+
+@api_bp.route('/get-hospital-prices', methods=['GET'])
+def get_hospital_prices():
+    hospital_name = request.args.get('hospital_name', default=None, type=str)
+    
+    if not hospital_name:
+        return jsonify({"error": "Thiếu tham số 'name'"}), 400
+
+    CORE_DATA_API = "http://127.0.0.1:8000/services"
+
+    # --- 1. DANH SÁCH TỪ KHÓA PHỔ BIẾN (Hardcoded) ---
+    # Chỉ những dịch vụ chứa các từ này mới được hiển thị
+    POPULAR_KEYWORDS = [
+        "khám", "cấp cứu",      # Nhóm khám
+        "siêu âm", "x-quang", "x quang", "chụp", "mri", "ct scanner", "nội soi", # Hình ảnh
+        "xét nghiệm", "máu",    # Xét nghiệm
+        "giường"                # Giá phòng
+    ]
+
+    try:
+        # --- 2. GỌI SANG BACKEND DATA ---
+        # Mẹo: Lấy limit lớn (vd: 500) để lấy về "cả rổ" dữ liệu thô trước
+        payload = {
+            "hospital_name": hospital_name,
+            "limit": 100 
+        }
+        
+        response = requests.get(CORE_DATA_API, json=payload, timeout=20)
+        response.raise_for_status()
+        external_data = response.json() 
+
+        print(response)
+
+        # --- 3. XỬ LÝ & LỌC (FILTERING LOGIC) ---
+        raw_list = external_data.get("data", [])
+        h_id = raw_list[0]['hospital_id'] if raw_list else None
+        
+        formatted_items = []
+        
+        for item in raw_list:
+            s_name = item['service_name']
+            s_price = item['price']
+            
+            if item.get('hospital_name') != hospital_name:
+                continue
+
+            # --- LOGIC LỌC TẠI ĐÂY ---
+            # Chuyển tên về chữ thường để so sánh cho chuẩn
+            name_lower = s_name.lower()
+            
+            # Kiểm tra: Nếu tên dịch vụ chứa BẤT KỲ từ khóa nào trong danh sách
+            if any(keyword in name_lower for keyword in POPULAR_KEYWORDS):
+                
+                if s_price < 20000: 
+                    continue
+
+                formatted_items.append({
+                    "service": s_name,
+                    "price": s_price
+                })
+                
+                # Giới hạn hiển thị khoảng 10-15 dịch vụ tiêu biểu thôi cho đẹp giao diện
+                if len(formatted_items) >= 15:
+                    break
+
+        # Nếu lọc xong mà không có gì (do danh sách keyword quá chặt), 
+        # có thể fallback lấy 5 cái đầu tiên của danh sách gốc.
+        if not formatted_items and raw_list:
+             for item in raw_list[:5]:
+                formatted_items.append({
+                    "service": item['service_name'],
+                    "price": item['price']
+                })
+
+        return jsonify({
+            "hospitalId": h_id,
+            "currency": "VND",
+            "items": formatted_items
+        })
+
+    except requests.exceptions.RequestException as e:
+        print(f"Lỗi kết nối Backend Data: {e}")
+        return jsonify({"items": [], "error": "Lỗi server dữ liệu"}), 500

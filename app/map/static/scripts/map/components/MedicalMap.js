@@ -139,7 +139,7 @@ async function renderMedicalMarkers() {
 
     // A. Lấy giá dịch vụ (Vẫn cần gọi mock service hoặc API riêng cho giá)
     // Dùng catch để dù lỗi lấy giá cũng không chặn việc vẽ map
-    const prices = await MedicalService.getHospitalPrices(h.id).catch(() => ({ items: [] }));
+    const prices = await MedicalService.getHospitalPrices(h.name).catch(() => ({ items: [] }));
 
     // B. Chuẩn bị dữ liệu hiển thị (Mapping từ UI Context của Backend)
     const ui = h.ui_context || {};

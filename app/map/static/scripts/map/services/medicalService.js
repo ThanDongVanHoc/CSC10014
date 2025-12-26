@@ -7,20 +7,19 @@
 export const MedicalService = {
   // Mock fetching hospital prices based on your API specs
   // GET /service-price/api/hospitals/{hospitalId}/prices
-  getHospitalPrices: async (hospitalId) => {
-    // Simulate network latency
-    await new Promise((resolve) => setTimeout(resolve, 300));
+  getHospitalPrices: async (hospitalName) => {
+      // 1. Tạo URL chứa tham số ?name=...
 
-    // Mock Response
-    return {
-      hospitalId: hospitalId,
-      currency: "VND",
-      items: [
-        { service: "Cấp cứu", price: 800000 + Math.floor(Math.random() * 50000) },
-        { service: "X-Quang", price: 250000 },
-        { service: "Khám tổng quát", price: 150000 },
-      ],
-    };
+      // 2. Gọi API
+      const response = await fetch(`/api/get-hospital-prices?hospital_name=${encodeURIComponent(hospitalName)}`);
+
+      if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      // 3. Backend đã trả về JSON chuẩn, chỉ cần lấy ra dùng
+      const data = await response.json();
+      return data.items; 
   },
 
   // Mock fetching Real-time Stats (Wait Time + Demand)
