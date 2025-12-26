@@ -1,0 +1,175 @@
+{% extends "layout.html" %} 
+
+{% block css %}
+<link rel="icon" href="{{ url_for('static', filename='images/logo.png') }}" type="image/x-icon" />
+<link rel="stylesheet" href="{{ url_for('map.static', filename='css/guide_manager/guide_map.css') }}" />
+<link rel="stylesheet" href="{{ url_for('map.static', filename='css/guide_manager/guide_ui.css') }}" />
+<link rel="stylesheet" href="{{ url_for('map.static', filename='css/map/core/layout.css') }}" />
+<link rel="stylesheet" href="{{ url_for('map.static', filename='css/map/core/controls.css') }}" />
+<link rel="stylesheet" href="{{ url_for('map.static', filename='css/map/core/markers.css') }}" />
+<link rel="stylesheet" href="{{ url_for('map.static', filename='css/map/core/location-cards.css') }}" />
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<link rel="stylesheet" href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+
+<script id="tailwind-config">
+    tailwind.config = {
+        darkMode: "class",
+        theme: {
+            extend: {
+                colors: {
+                    "primary": "#2b9dee",
+                    "primary-glow": "rgba(43, 157, 238, 0.4)",
+                    "glass-border": "rgba(255, 255, 255, 0.4)",
+                    "text-main": "#111518",
+                    "text-secondary": "#617989",
+                },
+                fontFamily: {
+                    "display": ["Space Grotesk", "sans-serif"],
+                    "body": ["Inter", "sans-serif"],
+                },
+                backgroundImage: {
+                    'gemstone': 'linear-gradient(135deg, #2b9dee 0%, #1a7bbd 100%)',
+                },
+                boxShadow: {
+                    'glass': '0 8px 32px 0 rgba(31, 38, 135, 0.07)',
+                    'gemstone': '0 10px 20px -5px rgba(43, 157, 238, 0.5), inset 0 2px 4px rgba(255,255,255,0.4)',
+                }
+            },
+        },
+    }
+</script>
+
+<style>
+    body {
+        font-family: 'Inter', sans-serif;
+        background: #f0f4f8;
+        background-image: 
+            radial-gradient(circle at 10% 20%, rgba(255, 255, 255, 0.8) 0%, rgba(240, 244, 248, 0) 50%),
+            radial-gradient(circle at 90% 80%, rgba(43, 157, 238, 0.08) 0%, rgba(240, 244, 248, 0) 50%);
+        background-attachment: fixed;
+    }
+
+    /* Glassmorphism Utility */
+    .glass-panel {
+        background: rgba(255, 255, 255, 0.65);
+        backdrop-filter: blur(24px);
+        -webkit-backdrop-filter: blur(24px);
+        border: 1px solid rgba(255, 255, 255, 0.6);
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02), inset 0 1px 1px rgba(255, 255, 255, 0.9);
+    }
+    
+    .floating-nav {
+        background: rgba(255, 255, 255, 0.7);
+        backdrop-filter: blur(30px);
+        border: 1px solid rgba(255, 255, 255, 0.5);
+    }
+
+    /* Overriding specific Map defaults to fit the design */
+    #map {
+        width: 100%;
+        height: 100%;
+        border-radius: 1.5rem;
+        z-index: 10;
+        isolation: isolate;
+    }
+
+    .elastic-transition { transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+    
+    /* Custom Scrollbar for Sidebar */
+    .poi-sidebar::-webkit-scrollbar { width: 4px; }
+    .poi-sidebar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+</style>
+{% endblock %} 
+
+{% block content %}
+
+<div class="fixed top-20 right-[-10%] w-[600px] h-[600px] bg-blue-400/10 rounded-full blur-[100px] pointer-events-none z-0"></div>
+<div class="fixed bottom-[-10%] left-[-10%] w-[500px] h-[500px] bg-teal-400/10 rounded-full blur-[80px] pointer-events-none z-0"></div>
+
+<nav class="fixed top-6 left-1/2 transform -translate-x-1/2 z-50 w-full max-w-3xl">
+    <div class="floating-nav rounded-full px-2 py-2 flex items-center justify-between mx-4 md:mx-0 shadow-lg">
+        <div class="flex items-center gap-3 pl-4 pr-6 border-r border-slate-200/50">
+            <div class="size-8 bg-gradient-to-br from-primary to-blue-600 rounded-xl flex items-center justify-center text-white shadow-lg shadow-blue-500/30">
+                <span class="material-symbols-outlined text-[20px]">local_hospital</span>
+            </div>
+            <span class="font-display font-bold text-lg tracking-tight text-text-main">Vinmec Map</span>
+        </div>
+        <div class="hidden md:flex items-center gap-1">
+            <a class="px-4 py-2 rounded-full text-sm font-medium text-text-main hover:bg-white/50 transition-colors" href="#">Find Hospital</a>
+            <a class="px-4 py-2 rounded-full text-sm font-medium text-text-main hover:bg-white/50 transition-colors" href="#">Pharmacies</a>
+            <a class="px-4 py-2 rounded-full text-sm font-medium text-text-main hover:bg-white/50 transition-colors" href="#">Emergency</a>
+        </div>
+        <div class="flex items-center gap-2 pl-2">
+            <button class="bg-gemstone text-white px-5 py-2.5 rounded-full text-sm font-bold shadow-gemstone hover:brightness-110 active:scale-95 transition-all elastic-transition flex items-center gap-2">
+                <span class="material-symbols-outlined text-[18px]">near_me</span>
+                <span>Directions</span>
+            </button>
+        </div>
+    </div>
+</nav>
+
+<main class="relative pt-28 pb-6 px-4 md:px-6 h-screen w-full flex flex-col overflow-hidden">
+    
+    <div class="relative w-full h-full glass-panel rounded-[2rem] p-2 shadow-glass overflow-hidden">
+        
+        <div id="map" class="relative">
+            
+            <div class="absolute top-4 left-4 z-[500] flex flex-col gap-3">
+                <div class="transport-modes glass-panel p-2 rounded-xl flex gap-2">
+                    <button data-travel="driving" class="t-btn active size-10 rounded-lg flex items-center justify-center hover:bg-blue-50 text-text-secondary hover:text-primary transition-colors" title="Driving">
+                        <i class="fas fa-car text-lg"></i>
+                    </button>
+                    <button data-travel="Motorcycling" class="t-btn size-10 rounded-lg flex items-center justify-center hover:bg-blue-50 text-text-secondary hover:text-primary transition-colors" title="Motorcycling">
+                        <i class="fas fa-motorcycle text-lg"></i>
+                    </button>
+                    <button data-travel="walking" class="t-btn size-10 rounded-lg flex items-center justify-center hover:bg-blue-50 text-text-secondary hover:text-primary transition-colors" title="Walking">
+                        <i class="fas fa-walking text-lg"></i>
+                    </button>
+                </div>
+
+                <div id="routeInfoDisplay" class="route-info glass-panel p-4 rounded-xl hidden">
+                    <div class="flex items-center gap-4">
+                        <div class="text-center">
+                            <span class="block text-xs text-text-secondary uppercase font-bold">Time</span>
+                            <span id="infoDuration" class="block text-lg font-display font-bold text-primary">-- min</span>
+                        </div>
+                        <div class="w-px h-8 bg-slate-200"></div>
+                        <div class="text-center">
+                            <span class="block text-xs text-text-secondary uppercase font-bold">Distance</span>
+                            <span id="infoDistance" class="block text-lg font-display font-bold text-primary">-- km</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="map-controls absolute top-4 right-4 z-[500]">
+                <button id="mapFullscreenBtn" title="Toggle fullscreen" class="bg-white/80 backdrop-blur size-10 rounded-xl shadow-sm flex items-center justify-center text-text-main hover:bg-white transition-all">
+                    <i id="fullscreenIcon" class="fas fa-expand"></i>
+                </button>
+            </div>
+
+            <div id="poi-sidebar" class="poi-sidebar absolute top-20 left-4 z-[499] max-h-[70vh] w-80 overflow-y-auto rounded-2xl hidden">
+                </div>
+        </div>
+    </div>
+</main>
+
+{% endblock %} 
+
+{% block script %}
+<script id="medical-results-data" type="application/json">
+    {
+        "hospitals": {{ hospitals | tojson }},
+        "district": "{{ location }}"
+    }
+</script>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
+<script type="module" src="{{ url_for('map.static', filename='scripts/logic.js') }}"></script>
+{% endblock %}

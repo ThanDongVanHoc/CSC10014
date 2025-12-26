@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Security Verification - Healthcare Portal</title>
+    
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#2b9dee",
+                        "primary-glow": "rgba(43, 157, 238, 0.4)",
+                        "text-main": "#111518",
+                        "text-secondary": "#617989",
+                    },
+                    fontFamily: {
+                        "display": ["Space Grotesk", "sans-serif"],
+                        "body": ["Inter", "sans-serif"],
+                    },
+                    backgroundImage: {
+                        'gemstone': 'linear-gradient(135deg, #2b9dee 0%, #1a7bbd 100%)',
+                    },
+                    boxShadow: {
+                        'glass': '0 8px 32px 0 rgba(31, 38, 135, 0.07)',
+                        'gemstone': '0 10px 20px -5px rgba(43, 157, 238, 0.5), inset 0 2px 4px rgba(255,255,255,0.4), inset 0 -2px 4px rgba(0,0,0,0.1)',
+                    }
+                },
+            },
+        }
+    </script>
+
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #f0f4f8;
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(255, 255, 255, 0.8) 0%, rgba(240, 244, 248, 0) 50%),
+                radial-gradient(circle at 90% 80%, rgba(43, 157, 238, 0.08) 0%, rgba(240, 244, 248, 0) 50%);
+            background-attachment: fixed;
+            min-height: 100vh;
+        }
+
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            box-shadow: 
+                0 20px 40px -10px rgba(0,0,0,0.1),
+                inset 0 1px 1px rgba(255, 255, 255, 0.9);
+        }
+
+        .elastic-transition {
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+    </style>
+</head>
+
+<body class="text-text-main flex items-center justify-center p-4 relative overflow-hidden">
+    
+    <div class="fixed top-[-10%] right-[-10%] w-[600px] h-[600px] bg-blue-400/10 rounded-full blur-[100px] pointer-events-none z-0"></div>
+    <div class="fixed bottom-[-10%] left-[-10%] w-[500px] h-[500px] bg-teal-400/10 rounded-full blur-[80px] pointer-events-none z-0"></div>
+
+    <div class="glass-panel w-full max-w-md rounded-[2.5rem] p-8 md:p-10 relative z-10 animate-fade-in-up">
+        
+        <div class="flex flex-col items-center mb-8">
+            <div class="size-14 bg-gradient-to-br from-primary to-blue-600 rounded-2xl flex items-center justify-center text-white shadow-lg shadow-blue-500/30 mb-4">
+                <span class="material-symbols-outlined text-[32px]">local_hospital</span>
+            </div>
+            <h1 class="font-display font-bold text-2xl text-text-main">Health Portal</h1>
+            <p class="text-sm text-text-secondary mt-1">Secure Verification</p>
+        </div>
+
+        <div class="text-center mb-8">
+            <h2 class="font-display font-bold text-xl mb-2">Enter Security Code</h2>
+            <p class="text-text-secondary text-sm leading-relaxed">
+                Please check your mail for a code we sent to<br />
+                <strong class="text-primary">{{ email }}</strong>
+            </p>
+        </div>
+
+        <form action="{{ action_url }}" method="POST" class="space-y-6">
+            <div class="field group">
+                <label for="code" class="sr-only">Enter code</label>
+                <div class="relative">
+                    <input
+                        type="text"
+                        id="code"
+                        name="code"
+                        placeholder="000000"
+                        maxlength="6"
+                        required
+                        class="w-full bg-white/50 backdrop-blur-sm border border-white/60 focus:border-primary/50 focus:ring-4 focus:ring-primary/10 rounded-[1.2rem] text-center text-2xl font-display font-bold tracking-[8px] placeholder-slate-300 h-16 transition-all outline-none text-text-main shadow-inner"
+                    />
+                    {% if errors.code %}
+                    <div class="absolute -bottom-6 left-0 w-full text-center text-red-500 text-xs font-medium flex items-center justify-center gap-1">
+                        <span class="material-symbols-outlined text-[14px]">error</span>
+                        {{ errors.code }}
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="text-center pt-2">
+                <a href="{{ resend_url }}" class="text-sm font-medium text-text-secondary hover:text-primary transition-colors inline-flex items-center gap-1 group">
+                    <span class="material-symbols-outlined text-[16px] group-hover:rotate-180 transition-transform duration-500">refresh</span>
+                    Didn't get a code? Resend
+                </a>
+            </div>
+
+            <div class="grid grid-cols-2 gap-4 mt-8">
+                <a href="{{ previous_url }}" class="flex items-center justify-center h-12 rounded-[1rem] text-text-secondary font-semibold border border-white/60 hover:bg-white/60 hover:text-text-main backdrop-blur-md shadow-sm active:scale-95 elastic-transition text-sm">
+                    Cancel
+                </a>
+                <button type="submit" class="bg-gemstone h-12 rounded-[1rem] text-white font-bold text-sm shadow-gemstone hover:brightness-110 active:scale-95 elastic-transition flex items-center justify-center gap-2">
+                    <span>Verify</span>
+                    <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+                </button>
+            </div>
+        </form>
+    </div>
+    
+    <div class="absolute bottom-6 text-xs text-text-secondary/60 font-medium">
+        Secured by Vinmec Systems
+    </div>
+
+</body>
+</html>

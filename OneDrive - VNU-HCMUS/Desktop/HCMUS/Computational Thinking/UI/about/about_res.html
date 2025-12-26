@@ -1,0 +1,193 @@
+{% extends "layout.html" %} 
+
+{% block title %}About Us - VietConnect{% endblock %} 
+
+{% block css %}
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+
+<script id="tailwind-config">
+    tailwind.config = {
+        darkMode: "class",
+        theme: {
+            extend: {
+                colors: {
+                    "primary": "#2b9dee",
+                    "text-main": "#111518",
+                    "text-secondary": "#617989",
+                },
+                fontFamily: {
+                    "display": ["Space Grotesk", "sans-serif"],
+                    "body": ["Inter", "sans-serif"],
+                },
+                backgroundImage: {
+                    'gemstone': 'linear-gradient(135deg, #2b9dee 0%, #1a7bbd 100%)',
+                },
+                boxShadow: {
+                    'glass': '0 8px 32px 0 rgba(31, 38, 135, 0.07)',
+                    'gemstone': '0 10px 20px -5px rgba(43, 157, 238, 0.5), inset 0 2px 4px rgba(255,255,255,0.4), inset 0 -2px 4px rgba(0,0,0,0.1)',
+                },
+            },
+        },
+    }
+</script>
+
+<style>
+    /* Global Background Override để giống sample.html */
+    body {
+        font-family: 'Inter', sans-serif;
+        background: #f0f4f8;
+        background-image: 
+            radial-gradient(circle at 10% 20%, rgba(255, 255, 255, 0.8) 0%, rgba(240, 244, 248, 0) 50%),
+            radial-gradient(circle at 90% 80%, rgba(43, 157, 238, 0.08) 0%, rgba(240, 244, 248, 0) 50%);
+        background-attachment: fixed;
+    }
+
+    /* Glass Panel Utility */
+    .glass-panel {
+        background: rgba(255, 255, 255, 0.6);
+        backdrop-filter: blur(24px);
+        -webkit-backdrop-filter: blur(24px);
+        border: 1px solid rgba(255, 255, 255, 0.6);
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02), inset 0 1px 1px rgba(255, 255, 255, 0.9);
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    .glass-panel:hover {
+        background: rgba(255, 255, 255, 0.75);
+        transform: translateY(-8px);
+        box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.05), inset 0 1px 1px rgba(255, 255, 255, 0.9);
+    }
+
+    .text-gradient {
+        background: linear-gradient(135deg, #111518 0%, #3e4c59 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+</style>
+{% endblock %} 
+
+{% block content %}
+<main class="relative pt-24 pb-20 px-4 md:px-8 lg:px-16 max-w-[1600px] mx-auto min-h-screen overflow-hidden">
+    
+    <div class="fixed top-20 right-[-10%] w-[600px] h-[600px] bg-blue-400/10 rounded-full blur-[100px] pointer-events-none z-0"></div>
+    <div class="fixed bottom-[-10%] left-[-10%] w-[500px] h-[500px] bg-teal-400/10 rounded-full blur-[80px] pointer-events-none z-0"></div>
+
+    <section class="relative z-10 text-center mb-16 space-y-6">
+        <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/40 border border-white/60 backdrop-blur-sm shadow-sm w-fit mx-auto">
+            <div class="size-2 rounded-full bg-primary animate-pulse"></div>
+            <span class="text-xs font-semibold text-text-secondary uppercase tracking-wider">Since 2025 • APCS Class • Free5 Team</span>
+        </div>
+
+        <h1 class="text-5xl md:text-7xl font-display font-bold leading-tight tracking-tight text-gradient">
+            Meet the <br/>
+            <span class="text-transparent bg-clip-text bg-gradient-to-r from-primary to-blue-400">Creators</span>
+        </h1>
+
+        <p class="text-lg md:text-xl text-text-secondary max-w-2xl mx-auto leading-relaxed font-body font-light">
+            The minds (and survival instincts) behind VietConnect.
+            <br />Five sophomores, one mission: <span class="font-medium text-primary">Survive the course project.</span>
+        </p>
+    </section>
+
+    <section class="relative z-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 auto-rows-fr">
+        
+        <div class="glass-panel rounded-[2rem] p-6 flex flex-col items-center text-center group">
+            <div class="size-32 rounded-full mb-6 relative overflow-hidden shadow-inner border-4 border-white/50" style="background-color: #ecfdf5;">
+                <img src="https://api.dicebear.com/9.x/notionists/svg?seed=Felix&beardProbability=0&glassesProbability=0&brows=variant12&lips=variant30&skinColor=fadcbc" alt="Nam" class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500" />
+            </div>
+            <h3 class="text-2xl font-bold font-display text-text-main mb-1">Hữu Nam</h3>
+            <div class="inline-block px-3 py-1 rounded-lg bg-blue-50 text-primary text-xs font-bold uppercase tracking-wide mb-4">Leader / Backend</div>
+            <p class="text-text-secondary text-sm leading-relaxed mb-6 flex-grow">
+                The mastermind behind the server-side architecture. Ensuring the system is scalable, robust, and crash-proof (hopefully).
+            </p>
+            
+            <div class="flex gap-3 mt-auto">
+                <a href="https://www.facebook.com/pham.huu.nam.AmnOO" target="_blank" class="size-10 rounded-full bg-white/50 border border-white/60 flex items-center justify-center hover:bg-white hover:text-[#1877F2] hover:scale-110 transition-all text-text-secondary">
+                    <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path></svg>
+                </a>
+                <a href="https://www.instagram.com/nam___fam/" target="_blank" class="size-10 rounded-full bg-white/50 border border-white/60 flex items-center justify-center hover:bg-white hover:text-[#E4405F] hover:scale-110 transition-all text-text-secondary">
+                    <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M7.8,2H16.2C19.4,2 22,4.6 22,7.8V16.2A5.8,5.8 0 0,1 16.2,22H7.8C4.6,22 2,19.4 2,16.2V7.8A5.8,5.8 0 0,1 7.8,2M7.6,4A3.6,3.6 0 0,0 4,7.6V16.4C4,18.39 5.61,20 7.6,20H16.4A3.6,3.6 0 0,0 20,16.4V7.6C20,5.61 18.39,4 16.4,4H7.6M12,7A5,5 0 0,1 17,12A5,5 0 0,1 12,17A5,5 0 0,1 7,12A5,5 0 0,1 12,7M12,9A3,3 0 0,0 9,12A3,3 0 0,0 12,15A3,3 0 0,0 15,12A3,3 0 0,0 12,9M18,5A1,1 0 0,1 19,6A1,1 0 0,1 18,7A1,1 0 0,1 17,6A1,1 0 0,1 18,5Z"/></svg>
+                </a>
+            </div>
+        </div>
+
+        <div class="glass-panel rounded-[2rem] p-6 flex flex-col items-center text-center group">
+            <div class="size-32 rounded-full mb-6 relative overflow-hidden shadow-inner border-4 border-white/50" style="background-color: #e0f2fe;">
+                <img src="https://api.dicebear.com/9.x/notionists/svg?seed=Nolan&beardProbability=0&glassesProbability=0&brows=variant07&lips=variant30&skinColor=fadcbc" alt="Lĩnh" class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500" />
+            </div>
+            <h3 class="text-2xl font-bold font-display text-text-main mb-1">Tuấn Lĩnh</h3>
+            <div class="inline-block px-3 py-1 rounded-lg bg-cyan-50 text-cyan-600 text-xs font-bold uppercase tracking-wide mb-4">Frontend Developer</div>
+            <p class="text-text-secondary text-sm leading-relaxed mb-6 flex-grow">
+                Crafting the user interface with precision. Turning complex designs into smooth, interactive web experiences.
+            </p>
+            <div class="flex gap-3 mt-auto">
+                <a href="https://www.facebook.com/tuan.linh.768076" target="_blank" class="size-10 rounded-full bg-white/50 border border-white/60 flex items-center justify-center hover:bg-white hover:text-[#1877F2] hover:scale-110 transition-all text-text-secondary">
+                    <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path></svg>
+                </a>
+                <a href="https://www.instagram.com/thandong.vanhoc/" target="_blank" class="size-10 rounded-full bg-white/50 border border-white/60 flex items-center justify-center hover:bg-white hover:text-[#E4405F] hover:scale-110 transition-all text-text-secondary">
+                    <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M7.8,2H16.2C19.4,2 22,4.6 22,7.8V16.2A5.8,5.8 0 0,1 16.2,22H7.8C4.6,22 2,19.4 2,16.2V7.8A5.8,5.8 0 0,1 7.8,2M7.6,4A3.6,3.6 0 0,0 4,7.6V16.4C4,18.39 5.61,20 7.6,20H16.4A3.6,3.6 0 0,0 20,16.4V7.6C20,5.61 18.39,4 16.4,4H7.6M12,7A5,5 0 0,1 17,12A5,5 0 0,1 12,17A5,5 0 0,1 7,12A5,5 0 0,1 12,7M12,9A3,3 0 0,0 9,12A3,3 0 0,0 12,15A3,3 0 0,0 15,12A3,3 0 0,0 12,9M18,5A1,1 0 0,1 19,6A1,1 0 0,1 18,7A1,1 0 0,1 17,6A1,1 0 0,1 18,5Z"/></svg>
+                </a>
+            </div>
+        </div>
+
+        <div class="glass-panel rounded-[2rem] p-6 flex flex-col items-center text-center group">
+            <div class="size-32 rounded-full mb-6 relative overflow-hidden shadow-inner border-4 border-white/50" style="background-color: #ffedd5;">
+                <img src="https://api.dicebear.com/9.x/notionists/svg?seed=Leo&beardProbability=0&glassesProbability=0&brows=variant10&lips=variant30&skinColor=fadcbc" alt="Khương" class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500" />
+            </div>
+            <h3 class="text-2xl font-bold font-display text-text-main mb-1">Gia Khương</h3>
+            <div class="inline-block px-3 py-1 rounded-lg bg-orange-50 text-orange-600 text-xs font-bold uppercase tracking-wide mb-4">Dataset & AI</div>
+            <p class="text-text-secondary text-sm leading-relaxed mb-6 flex-grow">
+                Curating high-quality datasets and building the interactive logic that makes the AI feel alive and responsive.
+            </p>
+            <div class="flex gap-3 mt-auto">
+                <a href="https://www.facebook.com/khuong.duong.2411" target="_blank" class="size-10 rounded-full bg-white/50 border border-white/60 flex items-center justify-center hover:bg-white hover:text-[#1877F2] hover:scale-110 transition-all text-text-secondary">
+                    <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path></svg>
+                </a>
+                <a href="https://www.instagram.com/khuong_sensei2411/" target="_blank" class="size-10 rounded-full bg-white/50 border border-white/60 flex items-center justify-center hover:bg-white hover:text-[#E4405F] hover:scale-110 transition-all text-text-secondary">
+                    <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M7.8,2H16.2C19.4,2 22,4.6 22,7.8V16.2A5.8,5.8 0 0,1 16.2,22H7.8C4.6,22 2,19.4 2,16.2V7.8A5.8,5.8 0 0,1 7.8,2M7.6,4A3.6,3.6 0 0,0 4,7.6V16.4C4,18.39 5.61,20 7.6,20H16.4A3.6,3.6 0 0,0 20,16.4V7.6C20,5.61 18.39,4 16.4,4H7.6M12,7A5,5 0 0,1 17,12A5,5 0 0,1 12,17A5,5 0 0,1 7,12A5,5 0 0,1 12,7M12,9A3,3 0 0,0 9,12A3,3 0 0,0 12,15A3,3 0 0,0 15,12A3,3 0 0,0 12,9M18,5A1,1 0 0,1 19,6A1,1 0 0,1 18,7A1,1 0 0,1 17,6A1,1 0 0,1 18,5Z"/></svg>
+                </a>
+            </div>
+        </div>
+
+        <div class="glass-panel rounded-[2rem] p-6 flex flex-col items-center text-center group">
+            <div class="size-32 rounded-full mb-6 relative overflow-hidden shadow-inner border-4 border-white/50" style="background-color: #fee2e2;">
+                <img src="https://api.dicebear.com/9.x/notionists/svg?seed=Jack&beardProbability=0&glassesProbability=0&brows=variant12&lips=variant30&skinColor=fadcbc" alt="Thắng" class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500" />
+            </div>
+            <h3 class="text-2xl font-bold font-display text-text-main mb-1">Quốc Thắng</h3>
+            <div class="inline-block px-3 py-1 rounded-lg bg-red-50 text-red-600 text-xs font-bold uppercase tracking-wide mb-4">Backend Developer</div>
+            <p class="text-text-secondary text-sm leading-relaxed mb-6 flex-grow">
+                Building the engine under the hood. Handling APIs and data flow to deliver the perfect response every time.
+            </p>
+            <div class="flex gap-3 mt-auto">
+                <a href="https://www.facebook.com/tran.inh.quoc.thang.2024" target="_blank" class="size-10 rounded-full bg-white/50 border border-white/60 flex items-center justify-center hover:bg-white hover:text-[#1877F2] hover:scale-110 transition-all text-text-secondary">
+                    <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path></svg>
+                </a>
+                <a href="https://www.instagram.com/thangdoyle_78/" target="_blank" class="size-10 rounded-full bg-white/50 border border-white/60 flex items-center justify-center hover:bg-white hover:text-[#E4405F] hover:scale-110 transition-all text-text-secondary">
+                    <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M7.8,2H16.2C19.4,2 22,4.6 22,7.8V16.2A5.8,5.8 0 0,1 16.2,22H7.8C4.6,22 2,19.4 2,16.2V7.8A5.8,5.8 0 0,1 7.8,2M7.6,4A3.6,3.6 0 0,0 4,7.6V16.4C4,18.39 5.61,20 7.6,20H16.4A3.6,3.6 0 0,0 20,16.4V7.6C20,5.61 18.39,4 16.4,4H7.6M12,7A5,5 0 0,1 17,12A5,5 0 0,1 12,17A5,5 0 0,1 7,12A5,5 0 0,1 12,7M12,9A3,3 0 0,0 9,12A3,3 0 0,0 12,15A3,3 0 0,0 15,12A3,3 0 0,0 12,9M18,5A1,1 0 0,1 19,6A1,1 0 0,1 18,7A1,1 0 0,1 17,6A1,1 0 0,1 18,5Z"/></svg>
+                </a>
+            </div>
+        </div>
+
+        <div class="glass-panel rounded-[2rem] p-6 flex flex-col items-center text-center group md:col-span-2 lg:col-span-1">
+            <div class="size-32 rounded-full mb-6 relative overflow-hidden shadow-inner border-4 border-white/50" style="background-color: #f3e8ff;">
+                <img src="https://api.dicebear.com/9.x/notionists/svg?seed=Robert&beardProbability=0&glassesProbability=0&brows=variant10&lips=variant30&skinColor=fadcbc" alt="Tính" class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500" />
+            </div>
+            <h3 class="text-2xl font-bold font-display text-text-main mb-1">Chí Tính</h3>
+            <div class="inline-block px-3 py-1 rounded-lg bg-purple-50 text-purple-600 text-xs font-bold uppercase tracking-wide mb-4">AI & Model Inference</div>
+            <p class="text-text-secondary text-sm leading-relaxed mb-6 flex-grow">
+                The brain behind the AI. Optimizing models and inference pipelines to ensure intelligence meets speed.
+            </p>
+            <div class="flex gap-3 mt-auto">
+                <a href="https://www.facebook.com/tinh.nguyenchi.9231" target="_blank" class="size-10 rounded-full bg-white/50 border border-white/60 flex items-center justify-center hover:bg-white hover:text-[#1877F2] hover:scale-110 transition-all text-text-secondary">
+                    <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path></svg>
+                </a>
+                <a href="https://www.instagram.com/tobi.nw4/" target="_blank" class="size-10 rounded-full bg-white/50 border border-white/60 flex items-center justify-center hover:bg-white hover:text-[#E4405F] hover:scale-110 transition-all text-text-secondary">
+                    <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M7.8,2H16.2C19.4,2 22,4.6 22,7.8V16.2A5.8,5.8 0 0,1 16.2,22H7.8C4.6,22 2,19.4 2,16.2V7.8A5.8,5.8 0 0,1 7.8,2M7.6,4A3.6,3.6 0 0,0 4,7.6V16.4C4,18.39 5.61,20 7.6,20H16.4A3.6,3.6 0 0,0 20,16.4V7.6C20,5.61 18.39,4 16.4,4H7.6M12,7A5,5 0 0,1 17,12A5,5 0 0,1 12,17A5,5 0 0,1 7,12A5,5 0 0,1 12,7M12,9A3,3 0 0,0 9,12A3,3 0 0,0 12,15A3,3 0 0,0 15,12A3,3 0 0,0 12,9M18,5A1,1 0 0,1 19,6A1,1 0 0,1 18,7A1,1 0 0,1 17,6A1,1 0 0,1 18,5Z"/></svg>
+                </a>
+            </div>
+        </div>
+    </section>
+</main>
+{% endblock %}

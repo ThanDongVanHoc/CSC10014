@@ -1,0 +1,244 @@
+{% extends "layout.html" %} 
+{% block title %}VietConnect - AI Health Check{% endblock %} 
+
+{% block css %}
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+
+<script>
+    tailwind.config = {
+        darkMode: "class",
+        theme: {
+            extend: {
+                colors: {
+                    "primary": "#2b9dee",
+                    "primary-glow": "rgba(43, 157, 238, 0.4)",
+                    "glass-border": "rgba(255, 255, 255, 0.4)",
+                    "text-main": "#111518",
+                    "text-secondary": "#617989",
+                },
+                fontFamily: {
+                    "display": ["Space Grotesk", "sans-serif"],
+                    "body": ["Inter", "sans-serif"],
+                },
+                backgroundImage: {
+                    'gemstone': 'linear-gradient(135deg, #2b9dee 0%, #1a7bbd 100%)',
+                },
+                boxShadow: {
+                    'glass': '0 8px 32px 0 rgba(31, 38, 135, 0.07)',
+                    'gemstone': '0 10px 20px -5px rgba(43, 157, 238, 0.5), inset 0 2px 4px rgba(255,255,255,0.4), inset 0 -2px 4px rgba(0,0,0,0.1)',
+                }
+            },
+        },
+    }
+</script>
+
+<style>
+    /* Global Background Overrides */
+    body {
+        font-family: 'Inter', sans-serif;
+        background: #f0f4f8;
+        background-image: 
+            radial-gradient(circle at 10% 20%, rgba(255, 255, 255, 0.8) 0%, rgba(240, 244, 248, 0) 50%),
+            radial-gradient(circle at 90% 80%, rgba(43, 157, 238, 0.08) 0%, rgba(240, 244, 248, 0) 50%);
+        background-attachment: fixed;
+    }
+
+    /* Glassmorphism Utility */
+    .glass-panel {
+        background: rgba(255, 255, 255, 0.65);
+        backdrop-filter: blur(24px);
+        -webkit-backdrop-filter: blur(24px);
+        border: 1px solid rgba(255, 255, 255, 0.6);
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02), inset 0 1px 1px rgba(255, 255, 255, 0.9);
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    .glass-input {
+        background: rgba(255, 255, 255, 0.5);
+        border: 1px solid rgba(255, 255, 255, 0.8);
+        backdrop-filter: blur(10px);
+    }
+    .glass-input:focus {
+        background: rgba(255, 255, 255, 0.9);
+        border-color: #2b9dee;
+        box-shadow: 0 0 0 2px rgba(43, 157, 238, 0.2);
+    }
+
+    /* Logic Hiding */
+    .hidden { display: none; }
+</style>
+{% endblock %} 
+
+{% block content %}
+<main class="relative pt-10 pb-20 px-4 md:px-8 lg:px-16 max-w-[1600px] mx-auto min-h-screen">
+    
+    <div class="fixed top-20 right-[-10%] w-[600px] h-[600px] bg-blue-400/10 rounded-full blur-[100px] pointer-events-none z-0"></div>
+    <div class="fixed bottom-[-10%] left-[-10%] w-[500px] h-[500px] bg-teal-400/10 rounded-full blur-[80px] pointer-events-none z-0"></div>
+
+    <div class="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-8">
+        
+        <div class="lg:col-span-12 mb-4">
+            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/40 border border-white/60 backdrop-blur-sm shadow-sm w-fit mb-4">
+                <div class="size-2 rounded-full bg-primary animate-pulse"></div>
+                <span class="text-xs font-semibold text-text-secondary uppercase tracking-wider">AI Powered</span>
+            </div>
+            <h1 class="text-4xl md:text-5xl lg:text-6xl font-display font-bold tracking-tight text-text-main">
+                Symptom <span class="text-transparent bg-clip-text bg-gradient-to-r from-primary to-blue-400">Checker</span>
+            </h1>
+            <p class="text-lg text-text-secondary max-w-2xl mt-4 font-body font-light">
+                Describe your condition to receive an AI-based preliminary assessment using our spatial health system.
+            </p>
+        </div>
+
+        <div class="lg:col-span-8">
+            <div class="glass-panel rounded-[2rem] p-8">
+                <form id="aiDiagnosticForm" class="space-y-8">
+                    
+                    <div class="space-y-4">
+                        <div class="flex items-center gap-2 text-primary mb-2">
+                            <span class="material-symbols-outlined">stethoscope</span>
+                            <h4 class="font-display font-bold text-xl text-text-main">Symptoms & Pain</h4>
+                        </div>
+
+                        <div class="flex flex-wrap gap-2" id="quickTags">
+                            <span class="px-4 py-2 rounded-full bg-white/50 border border-white/60 text-sm font-medium text-text-secondary hover:bg-primary/10 hover:text-primary hover:border-primary/30 cursor-pointer transition-all active:scale-95 select-none" onclick="addTag('Fever')">+ Fever</span>
+                            <span class="px-4 py-2 rounded-full bg-white/50 border border-white/60 text-sm font-medium text-text-secondary hover:bg-primary/10 hover:text-primary hover:border-primary/30 cursor-pointer transition-all active:scale-95 select-none" onclick="addTag('Cough')">+ Cough</span>
+                            <span class="px-4 py-2 rounded-full bg-white/50 border border-white/60 text-sm font-medium text-text-secondary hover:bg-primary/10 hover:text-primary hover:border-primary/30 cursor-pointer transition-all active:scale-95 select-none" onclick="addTag('Headache')">+ Headache</span>
+                            <span class="px-4 py-2 rounded-full bg-white/50 border border-white/60 text-sm font-medium text-text-secondary hover:bg-primary/10 hover:text-primary hover:border-primary/30 cursor-pointer transition-all active:scale-95 select-none" onclick="addTag('Fatigue')">+ Fatigue</span>
+                            <span class="px-4 py-2 rounded-full bg-white/50 border border-white/60 text-sm font-medium text-text-secondary hover:bg-primary/10 hover:text-primary hover:border-primary/30 cursor-pointer transition-all active:scale-95 select-none" onclick="addTag('Nausea')">+ Nausea</span>
+                        </div>
+
+                        <div class="relative group">
+                            <textarea 
+                                id="symptomsInput" 
+                                class="w-full glass-input rounded-2xl p-4 text-text-main placeholder-slate-400 focus:ring-0 resize-none h-32 transition-all font-body text-lg" 
+                                placeholder="Type here or click tags above (e.g. sharp pain in chest)..." 
+                            ></textarea>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="space-y-2">
+                            <label class="text-sm font-medium text-text-secondary ml-1">Pain Level (1-10)</label>
+                            <div class="relative">
+                                <select id="painLevel" class="w-full glass-input rounded-xl p-3 pr-10 text-text-main focus:ring-0 cursor-pointer appearance-none">
+                                    <option value="1">1 - Very Mild</option>
+                                    <option value="2">2 - Mild</option>
+                                    <option value="3">3 - Uncomfortable</option>
+                                    <option value="4">4 - Moderate</option>
+                                    <option value="5" selected>5 - Distracting</option>
+                                    <option value="6">6 - Distressing</option>
+                                    <option value="7">7 - Unmanageable</option>
+                                    <option value="8">8 - Intense</option>
+                                    <option value="9">9 - Severe</option>
+                                    <option value="10">10 - Worst Possible</option>
+                                </select>
+                                <span class="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-text-secondary pointer-events-none">expand_more</span>
+                            </div>
+                        </div>
+
+                        <div class="space-y-2">
+                            <label class="text-sm font-medium text-text-secondary ml-1">How long have you had this?</label>
+                            <div class="flex gap-2">
+                                <input type="number" id="durationValue" class="w-24 glass-input rounded-xl p-3 text-text-main focus:ring-0" placeholder="e.g. 3" min="1" value="1">
+                                <div class="relative flex-1">
+                                    <select id="durationUnit" class="w-full glass-input rounded-xl p-3 pr-10 text-text-main focus:ring-0 cursor-pointer appearance-none">
+                                        <option value="hours">Hours</option>
+                                        <option value="days" selected>Days</option>
+                                        <option value="weeks">Weeks</option>
+                                        <option value="months">Months</option>
+                                        <option value="years">Years</option>
+                                    </select>
+                                    <span class="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-text-secondary pointer-events-none">expand_more</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="space-y-2 pt-2">
+                        <div class="flex items-center gap-2 text-primary">
+                            <span class="material-symbols-outlined">location_on</span>
+                            <h4 class="font-display font-bold text-lg text-text-main">Location Context</h4>
+                        </div>
+                        <p class="text-sm text-text-secondary ml-1">Helps identify local outbreaks (e.g., Dengue) in HCMC.</p>
+                        <div class="relative">
+                            <select id="locationInput" class="w-full glass-input rounded-xl p-3 pr-10 text-text-main focus:ring-0 cursor-pointer appearance-none" required>
+                                <option value="" disabled selected>Select District...</option>
+                                </select>
+                            <span class="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-text-secondary pointer-events-none">expand_more</span>
+                        </div>
+                    </div>
+
+                    <button type="submit" id="analyzeBtn" class="w-full mt-4 bg-gemstone h-14 rounded-[1.2rem] text-white font-bold text-lg shadow-gemstone hover:brightness-110 active:scale-95 transition-all flex items-center justify-center gap-2">
+                        <span>Run AI Analysis</span>
+                        <span class="material-symbols-outlined">arrow_forward</span>
+                    </button>
+                </form>
+
+                <div id="aiResults" class="hidden mt-8 pt-8 border-t border-glass-border animate-fade-in-up">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="flex items-center gap-2 text-emerald-600">
+                            <span class="material-symbols-outlined">psychology</span>
+                            <h4 class="font-display font-bold text-xl text-text-main">AI Prediction</h4>
+                        </div>
+                        <span class="px-2 py-1 bg-blue-100 text-blue-600 rounded text-xs font-bold uppercase">Top-K Analysis</span>
+                    </div>
+                    
+                    <div id="predictionList" class="space-y-3 prediction-list">
+                        </div>
+
+                    <button class="mt-6 w-full py-3 rounded-xl border border-glass-border text-text-secondary font-medium hover:bg-white/50 transition-colors" onclick="resetForm()">
+                        Start Over
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="lg:col-span-4 space-y-6">
+            
+            <div class="glass-panel rounded-[2rem] p-6 relative overflow-hidden group">
+                <div class="absolute inset-0 bg-gradient-to-br from-primary/10 to-transparent"></div>
+                <div class="relative z-10">
+                    <div class="flex items-center justify-between mb-4">
+                        <span class="material-symbols-outlined text-primary text-3xl">history</span>
+                        <div class="size-2 rounded-full bg-green-500 shadow-[0_0_10px_rgba(34,197,94,0.5)]"></div>
+                    </div>
+                    <h3 class="text-xl font-bold font-display text-text-main">Medical Record</h3>
+                    <p class="text-sm text-text-secondary mb-6">Linked to your VietConnect ID</p>
+                    
+                    <div class="history-list space-y-3" id="historyList">
+                        <div class="h-12 w-full bg-white/40 rounded-xl animate-pulse"></div>
+                        <div class="h-12 w-full bg-white/40 rounded-xl animate-pulse delay-75"></div>
+                        <div class="h-12 w-full bg-white/40 rounded-xl animate-pulse delay-150"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="glass-panel rounded-2xl p-4 flex items-center gap-3">
+                <div class="size-10 rounded-full bg-slate-100 flex items-center justify-center text-slate-500">
+                    <span class="material-symbols-outlined text-sm">lock</span>
+                </div>
+                <p class="text-xs text-text-secondary leading-tight">
+                    Your data is encrypted and used only for diagnostic accuracy.
+                </p>
+            </div>
+
+            <div class="glass-panel rounded-[2rem] p-6 flex flex-col items-center justify-center text-center gap-3 aspect-square group cursor-pointer hover:-translate-y-1 transition-transform">
+                <div class="size-16 rounded-2xl bg-teal-50 flex items-center justify-center text-teal-600 shadow-inner mb-2 group-hover:scale-110 transition-transform">
+                    <span class="material-symbols-outlined text-[36px]">local_hospital</span>
+                </div>
+                <h4 class="font-bold text-text-main">Find Hospitals</h4>
+                <p class="text-xs text-text-secondary leading-tight">Locate nearest care centers based on your diagnosis.</p>
+            </div>
+
+        </div>
+
+    </div>
+</main>
+{% endblock %} 
+
+{% block script %}
+<script type="module" src="{{ url_for('medical_form.static', filename='scripts/index.js') }}"></script>
+{% endblock %}

@@ -1,0 +1,339 @@
+{% extends "layout.html" %} {% block css %}
+<link
+  rel="stylesheet"
+  href="{{ url_for('static', filename='css/index.css') }}"
+/>
+{% endblock %} {% block content %}
+
+<section class="hero-section-estonia">
+  <div class="container hero-grid-estonia">
+    <div class="hero-content-estonia">
+      <h1 class="stencil-title">
+        your residency<br />
+        your safety<br />
+        your community
+      </h1>
+
+      <p class="hero-subtitle-estonia">
+        Security, healthcare and administrative assistance for foreign residents
+        in Ho Chi Minh City — powered by AI & people.
+      </p>
+
+      <div class="hero-actions-estonia">
+        <a href="{{ url_for('services') }}" class="btn-get-started-green">
+          Get Started
+          <svg
+            width="20"
+            height="20"
+            viewBox="0 0 24 24"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M5 12H19"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+            <path
+              d="M12 5L19 12L12 19"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+          </svg>
+        </a>
+      </div>
+
+      <p class="backed-by-large">Backed by the Free5 Team</p>
+    </div>
+
+    <div class="hero-image-container-estonia">
+      <img
+        src="{{ url_for('static', filename='images/logo.png') }}"
+        alt="VietConnect Logo"
+        class="hero-logo-huge"
+      />
+    </div>
+  </div>
+</section>
+
+<div
+  class="container"
+  id="how-it-works"
+  style="margin-top: 60px; background-color: #fff"
+>
+  <section class="features-fanned-deck">
+    <div class="card card-vertical">
+      <div class="icon">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+        </svg>
+      </div>
+      <div class="card-content">
+        <h3>Security & Emergency</h3>
+        <p>
+          Alert system, emergency call, and help communicating with local
+          authorities in your language.
+        </p>
+      </div>
+    </div>
+
+    <div class="card card-vertical">
+      <div class="icon">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <path d="M22 12h-4l-3 9L9 3l-3 9H2" />
+        </svg>
+      </div>
+      <div class="card-content">
+        <h3>Healthcare Assistance</h3>
+        <p>
+          Appointment booking, medical translation, first-aid guidance and
+          connections to trusted clinics.
+        </p>
+      </div>
+    </div>
+
+    <div class="card card-vertical">
+      <div class="icon">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <path
+            d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"
+          ></path>
+          <polyline points="14 2 14 8 20 8"></polyline>
+          <line x1="16" y1="13" x2="8" y2="13"></line>
+          <line x1="16" y1="17" x2="8" y2="17"></line>
+          <polyline points="10 9 9 9 8 9"></polyline>
+        </svg>
+      </div>
+      <div class="card-content">
+        <h3>Administrative Help</h3>
+        <p>
+          Support for residency registration, documentation, and checklists.
+        </p>
+      </div>
+    </div>
+
+    <div class="card card-vertical">
+      <div class="icon">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+          <circle cx="9" cy="7" r="4"></circle>
+          <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+          <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+        </svg>
+      </div>
+      <div class="card-content">
+        <h3>Regulation Updates</h3>
+        <p>
+          Stay informed with the latest changes in visa policies, residency
+          rules, and administrative fees.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="what-is-section">
+    <div class="what-is-content">
+      <h2 class="what-is-title">What is VietConnect?</h2>
+
+      <p class="what-is-desc">
+        VietConnect combines an AI chatbot, multilingual agents and local
+        resources to help foreign residents access medical care, safety services
+        and administrative processes quickly and clearly.
+      </p>
+
+      <p class="what-is-desc">
+        We bridge the gap between local services and international residents,
+        ensuring you have the support you need, when you need it.
+      </p>
+    </div>
+
+    <div class="what-is-image-wrapper">
+      <img
+        src="{{ url_for('static', filename='images/illustrate.jpg') }}"
+        alt="VietConnect Introduction"
+        class="what-is-img"
+      />
+    </div>
+  </section>
+
+  <section class="how-it-works-section">
+    <div class="container">
+      <h2 class="section-title">How it works</h2>
+
+      <div class="hiw-grid">
+        <div class="hiw-card fade-up">
+          <div class="hiw-image-area">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="64"
+              height="64"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="#00b37e"
+              stroke-width="1.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path
+                d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"
+              />
+            </svg>
+          </div>
+          <div class="hiw-content">
+            <h3>Chat & AI Triage</h3>
+            <span class="hiw-badge">Step 1</span>
+            <p>
+              Instant support. Our AI analyzes your request, provides quick
+              answers, or classifies the emergency level immediately.
+            </p>
+          </div>
+        </div>
+
+        <div class="hiw-card fade-up" style="transition-delay: 0.2s">
+          <div class="hiw-image-area">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="64"
+              height="64"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="#00b37e"
+              stroke-width="1.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+              <circle cx="9" cy="7" r="4"></circle>
+              <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+              <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+            </svg>
+          </div>
+          <div class="hiw-content">
+            <h3>Agent Handoff</h3>
+            <span class="hiw-badge">On Demand</span>
+            <p>
+              Seamless escalation to multilingual human agents for complex
+              issues, translation, or sensitive advice.
+            </p>
+          </div>
+        </div>
+
+        <div class="hiw-card fade-up" style="transition-delay: 0.4s">
+          <div class="hiw-image-area">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="64"
+              height="64"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="#00b37e"
+              stroke-width="1.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <polygon
+                points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"
+              ></polygon>
+              <line x1="8" y1="2" x2="8" y2="18"></line>
+              <line x1="16" y1="6" x2="16" y2="22"></line>
+            </svg>
+          </div>
+          <div class="hiw-content">
+            <h3>Local Network</h3>
+            <span class="hiw-badge">Verified</span>
+            <p>
+              Direct connections to hospitals, police stations, and
+              administrative offices with guided navigation.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer
+    style="
+      margin-top: 48px;
+      padding: 32px;
+      border-radius: 14px;
+      color: var(--muted);
+      font-size: 14px;
+      border-top: 1px solid #e5e7eb;
+    "
+  >
+    <div
+      style="
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 12px;
+        flex-wrap: wrap;
+      "
+    >
+      <div>
+        <strong style="color: var(--text-main); font-size: 16px"
+          >VietConnect</strong
+        >
+        <div style="margin-top: 8px">
+          © 2025 VietConnect • Designed for foreign residents in HCMC
+        </div>
+      </div>
+      <div style="font-size: 15px">
+        Need help?
+        <a
+          href="https://www.facebook.com/pham.huu.nam.AmnOO"
+          target="_blank"
+          style="color: var(--brand); text-decoration: none; font-weight: 600"
+          >Contact support</a
+        >
+      </div>
+    </div>
+  </footer>
+</div>
+{% endblock %} {% block script %}
+<script src="{{ url_for('static', filename='script/index.js') }}"></script>
+{% endblock %}

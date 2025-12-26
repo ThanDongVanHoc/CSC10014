@@ -1,0 +1,512 @@
+{% extends "layout.html" %}
+{% block title %}My Profile - VietConnect{% endblock %}
+{% block css %}
+  <link rel="stylesheet"
+        href="{{ url_for('profile.static', filename='css/profile.css') }}" />
+{% endblock %}
+{% block content %}
+  <div class="container profile-page-wrapper">
+    <aside class="profile-sidebar fade-up">
+      <div class="profile-card summary-card">
+        <div class="profile-left-wrapper">
+          <div class="profile-avatar-container">
+            <div class="avatar-wrapper-large">
+              <img src="{{ (user.avatar_url if user and user.avatar_url else (session.avatar if session.avatar else 'https://api.dicebear.com/9.x/notionists/svg?seed=VietConnect')) }}"
+                   alt="User Avatar"
+                   class="profile-avatar-img" />
+              <button class="edit-avatar-btn" title="Change Avatar">
+                <svg width="16"
+                     height="16"
+                     viewBox="0 0 24 24"
+                     fill="none"
+                     stroke="currentColor"
+                     stroke-width="2">
+                  <path d="M12 20h9"></path>
+                  <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path>
+                </svg>
+              </button>
+            </div>
+          </div>
+          <div class="profile-info-text">
+            <h2 class="profile-fullname">
+              {{ (user.fullname if user and user.fullname else (session.fullname if session.fullname else "Resident")) }}
+            </h2>
+            <p class="profile-email">
+              {{ (user.email if user and user.email else (session.email if session.email else "resident@vietconnect.com")) }}
+            </p>
+            <div class="profile-badges">
+              <span class="badge badge-verified">Verified Resident</span>
+              <span class="badge badge-id">ID: #{{ user.id if user and user.id else session.user_id }}</span>
+            </div>
+          </div>
+        </div>
+        <div class="profile-stats">
+          <div class="stat-item">
+            <span class="stat-value">Active</span>
+            <span class="stat-label">Status</span>
+          </div>
+          <div class="stat-divider"></div>
+          <div class="stat-item">
+            <span class="stat-value">HCMC</span>
+            <span class="stat-label">Location</span>
+          </div>
+        </div>
+      </div>
+    </aside>
+    <main class="profile-main fade-up" style="animation-delay: 0.1s">
+      <div class="profile-card main-form-card">
+        <div class="card-header">
+          <h3>Account Settings</h3>
+          <p>Update your personal information and contact details.</p>
+        </div>
+        <form class="profile-form" id="settingsForm">
+          <div class="form-grid">
+            <div class="form-group">
+              <label for="name">Full Name</label>
+              <input id="name"
+                     name="name"
+                     type="text"
+                     class="input-modern"
+                     value="{{ user.fullname if user and user.fullname else '' }}"
+                     placeholder="Enter your full name"
+                     disabled />
+            </div>
+            <div class="form-group">
+              <label for="email">Email Address</label>
+              <input id="email"
+                     name="email"
+                     type="email"
+                     class="input-modern"
+                     value="{{ user.email if user and user.email else '' }}"
+                     disabled
+                     readonly />
+              <small style="color: #9ca3af; font-size: 11px; margin-top: 4px">Email cannot be changed.</small>
+            </div>
+            <div class="form-group">
+              <label for="phone">Phone Number</label>
+              <input id="phone"
+                     name="phone"
+                     type="tel"
+                     class="input-modern"
+                     value="{{ user.phone if user and user.phone else '' }}"
+                     placeholder="+84..."
+                     disabled />
+            </div>
+            <div class="form-group">
+              <label for="media">Media / Social Link</label>
+              <input id="media"
+                     name="media"
+                     type="text"
+                     class="input-modern"
+                     value="{{ user.media if user and user.media else '' }}"
+                     placeholder="Facebook, Zalo link..."
+                     disabled />
+              <div id="media-display" class="media-display-box" style="display: none">
+                <div class="link-content">
+                  <svg width="18"
+                       height="18"
+                       viewBox="0 0 24 24"
+                       fill="none"
+                       stroke="currentColor"
+                       stroke-width="2"
+                       class="link-icon">
+                    <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
+                    <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
+                  </svg>
+                  <span id="media-text-content" class="link-text"></span>
+                </div>
+                <span class="copy-tooltip">Click to copy</span>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="gender">Gender</label>
+              <select id="gender" name="gender" class="input-modern" disabled>
+                <option value="" disabled {{ 'selected' if not user or not user.gender }}>Select Gender
+                </option>
+                <option value="Male" {{ 'selected' if user and user.gender == 'Male' }}>Male
+                </option>
+                <option value="Female" {{ 'selected' if user and user.gender == 'Female' }}>Female
+                </option>
+                <option value="Other" {{ 'selected' if user and user.gender == 'Other' }}>Other
+                </option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="dob">Date of Birth</label>
+              <input id="dob"
+                     name="dob"
+                     type="date"
+                     class="input-modern"
+                     value="{{ user.dob if user and user.dob else '' }}"
+                     disabled />
+            </div>
+          </div>
+          <div class="form-actions">
+            <button type="button" id="btnChange" class="btn-change-mode btn-sm">
+              <svg width="14"
+                   height="14"
+                   viewBox="0 0 24 24"
+                   fill="none"
+                   stroke="currentColor"
+                   stroke-linecap="round"
+                   stroke-linejoin="round"
+                   class="btn-icon-svg">
+                <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+              </svg>
+              Edit Profile
+            </button>
+            <div id="editButtons" style="display: none">
+              <button type="button" id="btnDiscard" class="btn-cancel btn-sm">
+                <svg width="14"
+                     height="14"
+                     viewBox="0 0 24 24"
+                     fill="none"
+                     stroke="currentColor"
+                     stroke-linecap="round"
+                     stroke-linejoin="round"
+                     class="btn-icon-svg">
+                  <circle cx="12" cy="12" r="10"></circle>
+                  <line x1="15" y1="9" x2="9" y2="15"></line>
+                  <line x1="9" y1="9" x2="15" y2="15"></line>
+                </svg>
+                Discard
+              </button>
+              <button type="button" id="btnSave" class="btn-save btn-sm">
+                <svg width="14"
+                     height="14"
+                     viewBox="0 0 24 24"
+                     fill="none"
+                     stroke="currentColor"
+                     stroke-linecap="round"
+                     stroke-linejoin="round"
+                     class="btn-icon-svg">
+                  <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                  <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                </svg>
+                Save Changes
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </main>
+    <!-- Phần thêm nhóm máu, tiền sử bệnh-->
+    <div class="profile-card medical-section fade-up"
+         style="animation-delay: 0.2s">
+      <div class="card-header">
+        <h3>Emergency Medical Card</h3>
+        <p>This digital card helps first responders identify you.</p>
+      </div>
+      <div class="medical-widget">
+        <div class="medical-content">
+          <div class="medical-icon-large">
+            <svg width="32"
+                 height="32"
+                 viewBox="0 0 24 24"
+                 fill="none"
+                 stroke="currentColor"
+                 stroke-width="2">
+              <path d="M22 12h-4l-3 9L9 3l-3 9H2" />
+            </svg>
+          </div>
+          <div class="medical-info">
+            <h4 id="display-blood-type">Blood Type: --</h4>
+            <div class="emergency-detail-row">
+              <strong>Allergies:</strong>
+              <span id="display-allergies">None</span>
+            </div>
+            <div class="emergency-detail-row">
+              <strong>History:</strong>
+              <span id="display-history">None</span>
+            </div>
+          </div>
+        </div>
+        <button class="btn-action-medical" onclick="openEmergencyModal()">Update Medical ID</button>
+      </div>
+    </div>
+    <div id="emergency-modal" class="modal-overlay" style="display: none;">
+      <div class="modal-content fade-up">
+        <div class="modal-header"
+             style="display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    margin-bottom: 20px">
+          <h3 style="margin: 0;">Update Emergency Card</h3>
+          <button class="close-modal"
+                  onclick="closeEmergencyModal()"
+                  style="background:none;
+                         border:none;
+                         font-size: 24px;
+                         cursor:pointer">&times;</button>
+        </div>
+        <div class="modal-body">
+          <div class="form-group" style="margin-bottom: 20px;">
+            <label style="display: block; font-weight: 600; margin-bottom: 8px;">Blood Group</label>
+            <select id="emergency-blood" class="input-modern" style="width: 100%;">
+              <option value="">Select Blood Group</option>
+              <option value="A+">A+</option>
+              <option value="A-">A-</option>
+              <option value="B+">B+</option>
+              <option value="B-">B-</option>
+              <option value="AB+">AB+</option>
+              <option value="AB-">AB-</option>
+              <option value="O+">O+</option>
+              <option value="O-">O-</option>
+            </select>
+          </div>
+          <div class="form-group" style="margin-bottom: 20px;">
+            <label style="display: flex;
+                          justify-content: space-between;
+                          font-weight: 600;
+                          margin-bottom: 8px">
+              Allergies
+              <button type="button"
+                      onclick="addEmergencyField('allergy-list')"
+                      style="background:none;
+                             border:none;
+                             color:var(--brand);
+                             cursor:pointer;
+                             font-size: 13px">+ Add Allergy</button>
+            </label>
+            <div id="allergy-list"></div>
+          </div>
+          <div class="form-group" style="margin-bottom: 20px;">
+            <label style="display: flex;
+                          justify-content: space-between;
+                          font-weight: 600;
+                          margin-bottom: 8px">
+              Medical History
+              <button type="button"
+                      onclick="addEmergencyField('history-list')"
+                      style="background:none;
+                             border:none;
+                             color:var(--brand);
+                             cursor:pointer;
+                             font-size: 13px">+ Add History</button>
+            </label>
+            <div id="history-list"></div>
+          </div>
+        </div>
+        <div class="modal-footer"
+             style="display: flex;
+                    gap: 12px;
+                    justify-content: flex-end;
+                    margin-top: 24px">
+          <button class="btn-discard"
+                  onclick="closeEmergencyModal()"
+                  style="padding: 10px 20px;
+                         border-radius: 12px;
+                         border: 1px solid #e5e7eb;
+                         background: white;
+                         cursor: pointer;
+                         display: inline-flex;
+                         align-items: center;
+                         gap: 8px">
+            <svg width="16"
+                 height="16"
+                 viewBox="0 0 24 24"
+                 fill="none"
+                 stroke="currentColor"
+                 stroke-width="2"
+                 stroke-linecap="round"
+                 stroke-linejoin="round"
+                 style="color: #6b7280">
+              <circle cx="12" cy="12" r="10"></circle>
+              <line x1="15" y1="9" x2="9" y2="15"></line>
+              <line x1="9" y1="9" x2="15" y2="15"></line>
+            </svg>
+            Cancel
+          </button>
+          <button class="btn-save"
+                  id="btn-save-emergency"
+                  style="padding: 10px 24px;
+                         border-radius: 12px;
+                         background: var(--brand);
+                         color: white;
+                         border: none;
+                         cursor: pointer;
+                         font-weight: 600;
+                         display: inline-flex;
+                         align-items: center;
+                         gap: 8px">
+            <svg width="16"
+                 height="16"
+                 viewBox="0 0 24 24"
+                 fill="none"
+                 stroke="currentColor"
+                 stroke-width="2"
+                 stroke-linecap="round"
+                 stroke-linejoin="round">
+              <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+              <polyline points="22 4 12 14.01 9 11.01"></polyline>
+            </svg>
+            Save Changes
+          </button>
+        </div>
+      </div>
+    </div>
+    <!-- Phần lưu lịch sử khám bệnh-->
+    <div class="profile-card medical-section fade-up"
+         style="animation-delay: 0.2s">
+      <div class="card-header">
+        <h3>Medical History</h3>
+        <p>Your previous check-ups and digital health records.</p>
+      </div>
+      <div class="history-list-container">
+        {% if user.medical_records %}
+          {% for record in user.medical_records | sort(attribute='visit_date', reverse=True) %}
+            <div class="history-item-card">
+              <div class="date-badge">
+                {% if record.visit_date %}
+                  <span class="month">{{ record.visit_date.strftime("%b") }}</span>
+                  <span class="day">{{ record.visit_date.strftime("%d") }}</span>
+                {% else %}
+                  <span class="month">N/A</span>
+                  <span class="day">--</span>
+                {% endif %}
+              </div>
+              <div class="history-main-info">
+                <h4 class="diagnosis-title">{{ record.diagnosis }}</h4>
+                <div class="hospital-meta">
+                  <svg width="14"
+                       height="14"
+                       viewBox="0 0 24 24"
+                       fill="none"
+                       stroke="currentColor"
+                       stroke-width="2">
+                    <path d="M3 21h18M3 7v14M21 7v14M9 21V11h6v10M12 3v4M12 7h.01"></path>
+                  </svg>
+                  <span>{{ record.hospital_name }}</span>
+                </div>
+              </div>
+              <div class="history-status">
+                <span class="record-id">#{{ record.id }}</span>
+                <button class="btn-view-detail" onclick="viewRecordDetail('{{ record.id }}')">View Detail</button>
+              </div>
+            </div>
+          {% endfor %}
+        {% else %}
+          <div class="empty-history">
+            <p>No medical records found. Upload an image to start.</p>
+          </div>
+        {% endif %}
+      </div>
+      <div class="history-footer">
+        <button class="btn-add-ocr"
+                onclick="document.getElementById('ocr-upload-input').click()">
+          <svg width="16"
+               height="16"
+               viewBox="0 0 24 24"
+               fill="none"
+               stroke="currentColor"
+               stroke-width="2">
+            <line x1="12" y1="5" x2="12" y2="19"></line>
+            <line x1="5" y1="12" x2="19" y2="12"></line>
+          </svg>
+          Add New Record via OCR
+        </button>
+        <input type="file"
+               id="ocr-upload-input"
+               hidden
+               accept="image/*"
+               onchange="handleOCRUpload(this)">
+      </div>
+    </div>
+    <!-- User commit phiếu khám bệnh -->
+    <div id="ocr-draft-container"
+         style="display: none"
+         class="profile-card draft-section fade-up">
+      <div class="card-header">
+        <h3 id="draft-title" style="color: var(--brand);">Confirm Extracted Data</h3>
+        <p id="draft-subtitle">Please verify and edit the information from your medical record.</p>
+      </div>
+      <div class="draft-form-grid">
+        <div class="form-group">
+          <label>Hospital Name</label>
+          <input type="text" id="draft-hospital" class="input-modern">
+        </div>
+        <div class="form-group">
+          <label>Visit Date</label>
+          <input type="date" id="draft-date" class="input-modern">
+        </div>
+        <div class="form-group">
+          <label>Diagnosis</label>
+          <input type="text" id="draft-diagnosis" class="input-modern">
+        </div>
+        <div class="form-group">
+          <label>Doctor Name</label>
+          <input type="text" id="draft-doctor" class="input-modern">
+        </div>
+        <div class="input-group">
+          <label>Symptoms</label>
+          <textarea id="draft-symptoms"
+                    class="input-modern"
+                    placeholder="E.g. Headache, fever..."></textarea>
+        </div>
+        <div class="form-group" style="grid-column: 1 / -1;">
+          <label>Doctor's Advice & Notes</label>
+          <textarea id="draft-notes"
+                    class="input-modern"
+                    style="height: 100px;
+                           padding: 12px;
+                           resize: none"
+                    placeholder="Enter doctor's instructions..."></textarea>
+        </div>
+        <div class="form-group" style="grid-column: 1 / -1; margin-top: 10px;">
+          <label style="display: flex;
+                        justify-content: space-between;
+                        align-items: center">
+            Prescribed Medications
+            <button type="button"
+                    onclick="addNewMedicationRow()"
+                    style="background:none;
+                           border:none;
+                           color:var(--brand);
+                           cursor:pointer;
+                           font-size:12px">+ Add Medication</button>
+          </label>
+          <div id="draft-medications-list" style="margin-top: 10px;"></div>
+        </div>
+      </div>
+      <div class="draft-actions">
+        <button class="btn-cancel btn-sm" onclick="cancelDraft()">
+          <svg width="14"
+               height="14"
+               viewBox="0 0 24 24"
+               fill="none"
+               stroke="currentColor"
+               stroke-width="2"
+               stroke-linecap="round"
+               stroke-linejoin="round"
+               style="margin-right: 6px">
+            <circle cx="12" cy="12" r="10"></circle>
+            <line x1="15" y1="9" x2="9" y2="15"></line>
+            <line x1="9" y1="9" x2="15" y2="15"></line>
+          </svg>
+          Discard
+        </button>
+        <button class="btn-save btn-sm" id="btn-save-medical-db">
+          <svg width="14"
+               height="14"
+               viewBox="0 0 24 24"
+               fill="none"
+               stroke="currentColor"
+               stroke-width="2"
+               stroke-linecap="round"
+               stroke-linejoin="round"
+               style="margin-right: 6px">
+            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+            <polyline points="22 4 12 14.01 9 11.01"></polyline>
+          </svg>
+          Confirm & Save to History
+        </button>
+      </div>
+    </div>
+    <div id="loading-overlay" class="loading-overlay" style="display: none;">
+      <div class="spinner"></div>
+      <p>Đang xử lý, vui lòng đợi...</p>
+    </div>
+  </div>
+{% endblock %}
+{% block script %}<script src="{{ url_for('profile.static', filename='scripts/profile.js') }}"></script>{% endblock %}

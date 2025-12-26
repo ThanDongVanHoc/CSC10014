@@ -1,0 +1,69 @@
+{% extends "layout.html" %} {% block title %}VietConnect - Translate{% endblock
+%} {% block css %}
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link
+  href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Stencil+Text:wght@100;300;400;500;600;700;800;900&family=Manrope:wght@200;300;400;500;600;700;800&display=swap"
+  rel="stylesheet"
+/>
+
+<link
+  rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+/>
+
+<link
+  rel="stylesheet"
+  href="{{ url_for('translate.static', filename='css/app/core/layout.css') }}"
+/>
+
+<link
+  rel="stylesheet"
+  href="{{ url_for('translate.static', filename='css/app/sidebar/structure.css') }}"
+/>
+<link
+  rel="stylesheet"
+  href="{{ url_for('translate.static', filename='css/app/sidebar/controls.css') }}"
+/>
+<link
+  rel="stylesheet"
+  href="{{ url_for('translate.static', filename='css/app/sidebar/history.css') }}"
+/>
+<link
+  rel="stylesheet"
+  href="{{ url_for('translate.static', filename='css/app/sidebar/collapsed.css') }}"
+/>
+
+<link
+  rel="stylesheet"
+  href="{{ url_for('translate.static', filename='css/translate/layout.css') }}"
+/>
+<link
+  rel="stylesheet"
+  href="{{ url_for('translate.static', filename='css/translate/controls.css') }}"
+/>
+<link
+  rel="stylesheet"
+  href="{{ url_for('translate.static', filename='css/translate/messages.css') }}"
+/>
+<link
+  rel="stylesheet"
+  href="{{ url_for('translate.static', filename='css/translate/input.css') }}"
+/>
+<link
+  rel="stylesheet"
+  href="{{ url_for('translate.static', filename='css/translate/micro.css') }}"
+/>
+{% endblock %} {% block content %}
+<div class="app">
+  <div class="translate-Container" id="translateContainer">
+    {% include "translate_block.html" %}
+  </div>
+</div>
+{% endblock %} {% block script %}
+<script
+  type="module"
+  src="{{ url_for('translate.static', filename='scripts/index.js') }}"
+></script>
+<script src="https://unpkg.com/siriwave/dist/siriwave.umd.min.js"></script>
+{% endblock %}

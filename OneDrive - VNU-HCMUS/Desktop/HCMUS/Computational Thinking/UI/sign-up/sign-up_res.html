@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sign Up — VietConnect Health</title>
+    
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/logo.png') }}" />
+
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#2b9dee",
+                        "primary-glow": "rgba(43, 157, 238, 0.4)",
+                        "glass-border": "rgba(255, 255, 255, 0.4)",
+                        "glass-surface": "rgba(255, 255, 255, 0.65)",
+                        "text-main": "#111518",
+                        "text-secondary": "#617989",
+                    },
+                    fontFamily: {
+                        "display": ["Space Grotesk", "sans-serif"],
+                        "body": ["Inter", "sans-serif"],
+                    },
+                    backgroundImage: {
+                        'gemstone': 'linear-gradient(135deg, #2b9dee 0%, #1a7bbd 100%)',
+                    },
+                    boxShadow: {
+                        'glass': '0 8px 32px 0 rgba(31, 38, 135, 0.07)',
+                        'gemstone': '0 10px 20px -5px rgba(43, 157, 238, 0.5), inset 0 2px 4px rgba(255,255,255,0.4), inset 0 -2px 4px rgba(0,0,0,0.1)',
+                    },
+                },
+            },
+        }
+    </script>
+
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #f0f4f8;
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(255, 255, 255, 0.8) 0%, rgba(240, 244, 248, 0) 50%),
+                radial-gradient(circle at 90% 80%, rgba(43, 157, 238, 0.08) 0%, rgba(240, 244, 248, 0) 50%);
+            background-attachment: fixed;
+            min-height: 100vh;
+        }
+
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            box-shadow: 
+                0 4px 6px -1px rgba(0, 0, 0, 0.02), 
+                0 2px 4px -1px rgba(0, 0, 0, 0.02),
+                inset 0 1px 1px rgba(255, 255, 255, 0.9);
+        }
+
+        .text-gradient {
+            background: linear-gradient(135deg, #111518 0%, #3e4c59 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Form styling overrides to match design */
+        input:focus {
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(43, 157, 238, 0.3);
+        }
+        
+        /* Error handling styles kept from logic but adapted visually */
+        .error {
+            color: #ef4444;
+            font-size: 0.75rem;
+            margin-top: 0.25rem;
+            min-height: 1.25rem;
+        }
+        
+        /* Password meter styles */
+        .pw-meter { height: 4px; background: #e2e8f0; margin-top: 8px; border-radius: 2px; overflow: hidden; }
+        .pw-meter span { display: block; height: 100%; transition: width 0.3s ease; background: #2b9dee; }
+    </style>
+</head>
+
+<body class="text-text-main flex items-center justify-center p-4 lg:p-8">
+
+    <div class="fixed top-20 right-[-10%] w-[600px] h-[600px] bg-blue-400/10 rounded-full blur-[100px] pointer-events-none z-0"></div>
+    <div class="fixed bottom-[-10%] left-[-10%] w-[500px] h-[500px] bg-teal-400/10 rounded-full blur-[80px] pointer-events-none z-0"></div>
+
+    <main class="glass-panel w-full max-w-6xl rounded-[2.5rem] overflow-hidden shadow-glass relative z-10 grid grid-cols-1 lg:grid-cols-12 min-h-[700px]">
+        
+        <div class="hidden lg:col-span-5 lg:flex flex-col relative bg-cover bg-center" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAejbGiBNZBNrsQ2IC3rASRLwnBbnMA2Aq7dLyvcPxlMzC5ybYkBbrD425WufBqvrGXWF_TZXHFViwYjz5ChElTaxGelsjZwDehocM_2cH-4qYW6ZwGEy5gOXE5gRbC2jRMugfIUETDDUQ4-cgo1krR71ucKQ6ZCTBdS-GXRRCZAFt-abbsyPwMX3-q0hJA-OMnmMFdX8z2RdKptMZICenyGJZi4W-3JQRkpOykA3DAdECeu093AE1oDrEox96iKL6y4mTCalOs8FzB');">
+            <div class="absolute inset-0 bg-gradient-to-t from-primary/90 via-primary/40 to-transparent"></div>
+            
+            <div class="relative z-10 p-12 flex flex-col h-full justify-between text-white">
+                <div class="flex items-center gap-3">
+                    <div class="size-10 bg-white/20 backdrop-blur-md rounded-xl flex items-center justify-center shadow-lg">
+                        <span class="material-symbols-outlined text-[24px]">local_hospital</span>
+                    </div>
+                    <span class="font-display font-bold text-xl tracking-tight">VietConnect</span>
+                </div>
+
+                <div class="mb-10">
+                    <h2 class="text-4xl font-display font-bold mb-4 leading-tight">Your Health,<br/>Connected.</h2>
+                    <p class="text-white/90 font-light text-lg mb-6">
+                        Join the future of healthcare. Access medical records, book appointments, and get emergency support instantly.
+                    </p>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="px-3 py-1 bg-white/20 backdrop-blur-md rounded-full text-sm font-medium border border-white/20">Emergency-ready</span>
+                        <span class="px-3 py-1 bg-white/20 backdrop-blur-md rounded-full text-sm font-medium border border-white/20">Electronic Records</span>
+                        <span class="px-3 py-1 bg-white/20 backdrop-blur-md rounded-full text-sm font-medium border border-white/20">Privacy-first</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-span-1 lg:col-span-7 p-6 md:p-12 lg:p-16 overflow-y-auto">
+            <div class="max-w-md mx-auto">
+                <div class="mb-8">
+                    <h2 class="text-3xl md:text-4xl font-display font-bold text-gradient mb-2">Create Account</h2>
+                    <p class="text-text-secondary">
+                        Already have an account? 
+                        <a href="{{url_for('auth.signin_page')}}" class="text-primary font-bold hover:underline">Sign in</a>
+                    </p>
+                </div>
+
+                <form id="signupForm" novalidate action="/auth/signup" method="POST" class="space-y-4">
+                    
+                    <div class="space-y-1">
+                        <label for="fullname" class="text-sm font-medium text-text-secondary ml-1">Full Name</label>
+                        <div class="relative">
+                            <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-gray-400">person</span>
+                            <input id="fullname" name="fullname" type="text" placeholder="Ex: Nam Pham" required
+                                class="w-full bg-white/50 border border-white/60 rounded-[1rem] pl-11 pr-4 py-3 text-text-main placeholder-gray-400 focus:bg-white transition-all text-sm font-body shadow-sm" />
+                        </div>
+                        <div class="error" id="err-name" aria-live="polite"></div>
+                    </div>
+
+                    <div class="space-y-1">
+                        <label for="email" class="text-sm font-medium text-text-secondary ml-1">Email Address</label>
+                        <div class="relative">
+                            <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-gray-400">mail</span>
+                            <input id="email" name="email" type="email" placeholder="name@example.com" required
+                                class="w-full bg-white/50 border border-white/60 rounded-[1rem] pl-11 pr-4 py-3 text-text-main placeholder-gray-400 focus:bg-white transition-all text-sm font-body shadow-sm" />
+                        </div>
+                        <div class="error" id="err-email" aria-live="polite"></div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="space-y-1">
+                            <label for="phone" class="text-sm font-medium text-text-secondary ml-1">Phone</label>
+                            <input id="phone" name="phone" type="text" placeholder="+84..."
+                                class="w-full bg-white/50 border border-white/60 rounded-[1rem] px-4 py-3 text-text-main placeholder-gray-400 focus:bg-white transition-all text-sm font-body shadow-sm" />
+                        </div>
+                        
+                        <div class="space-y-1">
+                            <label for="lang" class="text-sm font-medium text-text-secondary ml-1">Language</label>
+                            <div class="relative">
+                                <select id="lang" name="lang" class="w-full bg-white/50 border border-white/60 rounded-[1rem] px-4 py-3 text-text-main focus:bg-white transition-all text-sm font-body shadow-sm appearance-none cursor-pointer">
+                                    {% if form_data.lang == 'en' %} <option value="en" selected>English</option> {% else %} <option value="en">English</option> {% endif %}
+                                    {% if form_data.lang == 'vi' %} <option value="vi" selected>Tiếng Việt</option> {% else %} <option value="vi">Tiếng Việt</option> {% endif %}
+                                    {% if form_data.lang == 'zh' %} <option value="zh" selected>中文</option> {% else %} <option value="zh">中文</option> {% endif %}
+                                    {% if form_data.lang == 'ja' %} <option value="ja" selected>日本語</option> {% else %} <option value="ja">日本語</option> {% endif %}
+                                </select>
+                                <span class="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none">expand_more</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="space-y-1">
+                        <label for="password" class="text-sm font-medium text-text-secondary ml-1">Password</label>
+                        <div class="relative">
+                            <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-gray-400">lock</span>
+                            <input id="password" name="password" type="password" placeholder="At least 8 characters" required
+                                class="w-full bg-white/50 border border-white/60 rounded-[1rem] pl-11 pr-12 py-3 text-text-main placeholder-gray-400 focus:bg-white transition-all text-sm font-body shadow-sm" />
+                            <button type="button" id="togglePw" class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-primary transition-colors" title="Show / Hide password">
+                                <span class="material-symbols-outlined text-[20px]">visibility</span>
+                            </button>
+                        </div>
+                        <div class="pw-meter" aria-hidden="true"><span id="pwBar" style="width: 0%"></span></div>
+                        <p class="text-xs text-text-secondary mt-1" id="pwNote">Use 8+ chars with number & symbol.</p>
+                        <div class="error" id="err-pw" aria-live="polite"></div>
+                    </div>
+
+                    <div class="space-y-1">
+                        <label for="confirm" class="text-sm font-medium text-text-secondary ml-1">Confirm Password</label>
+                        <div class="relative">
+                            <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-gray-400">lock_reset</span>
+                            <input id="confirm" name="confirm" type="password" placeholder="Repeat password" required
+                                class="w-full bg-white/50 border border-white/60 rounded-[1rem] pl-11 pr-4 py-3 text-text-main placeholder-gray-400 focus:bg-white transition-all text-sm font-body shadow-sm" />
+                        </div>
+                        <div class="error" id="err-confirm" aria-live="polite"></div>
+                    </div>
+
+                    <div class="flex items-start gap-2 pt-2">
+                        <input id="agree" type="checkbox" class="mt-1 rounded border-gray-300 text-primary focus:ring-primary/50" />
+                        <label for="agree" class="text-sm text-text-secondary">
+                            I agree to the <a href="#" class="text-primary hover:underline">Terms of Service</a> and <a href="#" class="text-primary hover:underline">Privacy Policy</a> regarding my medical data.
+                        </label>
+                    </div>
+                    <div class="error" id="err-terms">{{ errors.terms or '' }}</div>
+
+                    <button type="submit" class="w-full bg-gemstone text-white font-bold py-4 rounded-[1rem] shadow-gemstone hover:brightness-110 active:scale-95 transition-all mt-4 flex items-center justify-center gap-2">
+                        <span>Create Account</span>
+                        <span class="material-symbols-outlined">arrow_forward</span>
+                    </button>
+
+                    <div class="relative flex py-4 items-center">
+                        <div class="flex-grow border-t border-gray-300/50"></div>
+                        <span class="flex-shrink mx-4 text-xs text-text-secondary uppercase">or continue with</span>
+                        <div class="flex-grow border-t border-gray-300/50"></div>
+                    </div>
+
+                    <a href="{{ url_for('auth.google_login') }}" class="flex items-center justify-center gap-3 w-full bg-white/60 hover:bg-white border border-white rounded-[1rem] py-3 shadow-sm transition-all text-sm font-medium text-text-main">
+                        <img src="https://www.svgrepo.com/show/475656/google-color.svg" width="20" alt="Google" />
+                        Google
+                    </a>
+                </form>
+
+                <div class="mt-8 text-center">
+                    <a href="{{url_for('home_page')}}" class="text-sm text-text-secondary hover:text-primary transition-colors flex items-center justify-center gap-1">
+                        <span class="material-symbols-outlined text-[16px]">arrow_back</span>
+                        Back to Home
+                    </a>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="{{ url_for('auth.static', filename='scripts/common.js') }}"></script>
+    <script src="{{ url_for('auth.static', filename='scripts/pages/sign-up.js') }}"></script>
+</body>
+</html>

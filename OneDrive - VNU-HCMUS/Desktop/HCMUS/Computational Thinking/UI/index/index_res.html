@@ -1,0 +1,300 @@
+{% extends "layout.html" %}
+
+{% block css %}
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+
+<script>
+    tailwind.config = {
+        darkMode: "class",
+        theme: {
+            extend: {
+                colors: {
+                    "primary": "#00b37e", /* Adjusted to match VietConnect Green Brand */
+                    "primary-glow": "rgba(0, 179, 126, 0.4)",
+                    "glass-border": "rgba(255, 255, 255, 0.4)",
+                    "glass-surface": "rgba(255, 255, 255, 0.65)",
+                    "text-main": "#111518",
+                    "text-secondary": "#617989",
+                },
+                fontFamily: {
+                    "display": ["Space Grotesk", "sans-serif"],
+                    "body": ["Inter", "sans-serif"],
+                },
+                backgroundImage: {
+                    'ethereal-gradient': 'linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%)',
+                    'gemstone': 'linear-gradient(135deg, #00b37e 0%, #008f64 100%)',
+                },
+                boxShadow: {
+                    'glass': '0 8px 32px 0 rgba(31, 38, 135, 0.07)',
+                    'gemstone': '0 10px 20px -5px rgba(0, 179, 126, 0.5), inset 0 2px 4px rgba(255,255,255,0.4), inset 0 -2px 4px rgba(0,0,0,0.1)',
+                },
+                backdropBlur: {
+                    'heavy': '24px',
+                }
+            },
+        },
+    }
+</script>
+
+<style>
+    /* Base Styles Overrides */
+    body {
+        font-family: 'Inter', sans-serif;
+        background: #f0f4f8;
+        background-image: 
+            radial-gradient(circle at 10% 20%, rgba(255, 255, 255, 0.8) 0%, rgba(240, 244, 248, 0) 50%),
+            radial-gradient(circle at 90% 80%, rgba(0, 179, 126, 0.08) 0%, rgba(240, 244, 248, 0) 50%);
+        background-attachment: fixed;
+    }
+
+    h1, h2, h3, h4 { font-family: 'Space Grotesk', sans-serif; }
+
+    /* Hide scrollbar */
+    ::-webkit-scrollbar { width: 0px; background: transparent; }
+
+    .glass-panel {
+        background: rgba(255, 255, 255, 0.6);
+        backdrop-filter: blur(24px);
+        -webkit-backdrop-filter: blur(24px);
+        border: 1px solid rgba(255, 255, 255, 0.6);
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02), inset 0 1px 1px rgba(255, 255, 255, 0.9);
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    .glass-panel:hover {
+        background: rgba(255, 255, 255, 0.75);
+        transform: translateY(-2px);
+        box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.05), inset 0 1px 1px rgba(255, 255, 255, 0.9);
+    }
+    
+    .floating-nav {
+        background: rgba(255, 255, 255, 0.7);
+        backdrop-filter: blur(30px);
+        border: 1px solid rgba(255, 255, 255, 0.5);
+        box-shadow: 0 10px 40px -10px rgba(0,0,0,0.08), inset 0 1px 0 rgba(255,255,255,0.6);
+    }
+
+    .text-gradient {
+        background: linear-gradient(135deg, #111518 0%, #3e4c59 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="text-text-main overflow-x-hidden selection:bg-primary selection:text-white">
+    
+    <nav class="fixed top-6 left-1/2 transform -translate-x-1/2 z-50 w-full max-w-3xl">
+        <div class="floating-nav rounded-full px-2 py-2 flex items-center justify-between mx-4 md:mx-0">
+            <div class="flex items-center gap-3 pl-4 pr-6 border-r border-slate-200/50">
+                <div class="size-8 bg-gradient-to-br from-primary to-teal-600 rounded-xl flex items-center justify-center text-white shadow-lg shadow-teal-500/30">
+                    <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Logo" class="w-5 h-5 object-contain brightness-0 invert">
+                </div>
+                <span class="font-display font-bold text-lg tracking-tight text-text-main">VietConnect</span>
+            </div>
+            
+            <div class="hidden md:flex items-center gap-1">
+                <a class="px-4 py-2 rounded-full text-sm font-medium text-text-main hover:bg-white/50 transition-colors" href="#">Emergency</a>
+                <a class="px-4 py-2 rounded-full text-sm font-medium text-text-main hover:bg-white/50 transition-colors" href="#">Hospitals</a>
+                <a class="px-4 py-2 rounded-full text-sm font-medium text-text-main hover:bg-white/50 transition-colors" href="#">Pharmacy</a>
+            </div>
+            
+            <div class="flex items-center gap-2 pl-2">
+                <a href="{{ url_for('services') }}" class="bg-gemstone text-white px-5 py-2.5 rounded-full text-sm font-bold shadow-gemstone hover:brightness-110 active:scale-95 transition-all flex items-center gap-2">
+                    <span class="material-symbols-outlined text-[18px]">medical_services</span>
+                    <span>Get Help</span>
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="relative pt-32 pb-20 px-4 md:px-8 lg:px-16 max-w-[1600px] mx-auto grid grid-cols-1 lg:grid-cols-12 gap-6 min-h-screen">
+        
+        <div class="fixed top-20 right-[-10%] w-[600px] h-[600px] bg-teal-400/10 rounded-full blur-[100px] pointer-events-none z-0"></div>
+        <div class="fixed bottom-[-10%] left-[-10%] w-[500px] h-[500px] bg-green-400/10 rounded-full blur-[80px] pointer-events-none z-0"></div>
+
+        <div class="lg:col-span-7 flex flex-col justify-center z-10 space-y-8 lg:pr-12">
+            <div class="space-y-6">
+                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/40 border border-white/60 backdrop-blur-sm shadow-sm w-fit">
+                    <div class="size-2 rounded-full bg-green-500 animate-pulse"></div>
+                    <span class="text-xs font-semibold text-text-secondary uppercase tracking-wider">AI-Powered Healthcare Support</span>
+                </div>
+                
+                <h1 class="text-6xl md:text-7xl lg:text-8xl font-display font-bold leading-[0.95] tracking-tight text-gradient">
+                    Your Health <br/>
+                    <span class="text-transparent bg-clip-text bg-gradient-to-r from-primary to-teal-400">in Vietnam</span> <br/>
+                    Simplified.
+                </h1>
+                
+                <p class="text-lg md:text-xl text-text-secondary max-w-lg leading-relaxed font-body font-light">
+                    VietConnect bridges the gap between foreign residents and local medical care. Translation, appointment booking, and emergency guidance—powered by AI & people.
+                </p>
+            </div>
+
+            <div class="relative group max-w-xl w-full transform hover:scale-[1.01] transition-all">
+                <div class="absolute -inset-0.5 bg-gradient-to-r from-green-300 to-teal-300 rounded-[2rem] opacity-30 blur group-hover:opacity-60 transition duration-500"></div>
+                <div class="relative bg-white/60 backdrop-filter backdrop-blur-xl border border-white/80 rounded-[1.8rem] flex items-center p-2 shadow-glass h-16">
+                    <div class="pl-4 text-primary">
+                        <span class="material-symbols-outlined text-[28px]">vital_signs</span>
+                    </div>
+                    <input class="w-full bg-transparent border-none focus:ring-0 text-text-main placeholder-slate-400 text-lg h-full px-4 font-body" placeholder="Describe symptoms or find a clinic..." type="text"/>
+                    <button class="bg-primary/10 hover:bg-primary/20 p-3 rounded-full text-primary transition-colors">
+                        <span class="material-symbols-outlined">send</span>
+                    </button>
+                </div>
+            </div>
+
+            <div class="flex flex-wrap items-center gap-4 pt-4">
+                <a href="{{ url_for('services') }}" class="bg-gemstone h-14 px-8 rounded-[1.2rem] text-white font-bold text-lg shadow-gemstone hover:brightness-110 active:scale-95 transition-all flex items-center gap-2">
+                    <span>Start Triage</span>
+                    <span class="material-symbols-outlined">arrow_forward</span>
+                </a>
+                <button class="bg-white/50 h-14 px-8 rounded-[1.2rem] text-text-main font-semibold border border-white/60 hover:bg-white/80 backdrop-blur-md shadow-sm active:scale-95 transition-all">
+                    Emergency Numbers
+                </button>
+            </div>
+        </div>
+
+        <div class="lg:col-span-5 grid grid-cols-2 gap-4 h-full relative z-10 lg:mt-12">
+            
+            <div class="col-span-2 glass-panel rounded-[2rem] p-4 relative overflow-hidden group min-h-[280px] flex flex-col justify-end">
+                <div class="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-105" 
+                     style="background-image: url('{{ url_for('static', filename='images/illustrate.jpg') }}');"></div>
+                <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent"></div>
+                <div class="relative z-10 p-2">
+                    <div class="bg-white/20 backdrop-blur-md border border-white/30 p-4 rounded-2xl">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-white/90 text-sm font-medium">Verified Network</span>
+                            <span class="text-green-400 material-symbols-outlined text-[20px]">verified</span>
+                        </div>
+                        <h3 class="text-white text-xl font-bold font-display">Trusted Clinics</h3>
+                        <p class="text-white/80 text-sm">Navigated by Locals & AI</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-span-1 glass-panel rounded-[2rem] p-6 flex flex-col items-center justify-center text-center gap-3 aspect-square group cursor-pointer hover:bg-white/80">
+                <div class="size-16 rounded-2xl bg-green-50 flex items-center justify-center text-primary shadow-inner mb-2 group-hover:scale-110 transition-transform">
+                    <span class="material-symbols-outlined text-[36px]">translate</span>
+                </div>
+                <h4 class="font-bold text-text-main">Medical Translation</h4>
+                <p class="text-xs text-text-secondary leading-tight">Communicate with doctors easily</p>
+            </div>
+
+            <div class="col-span-1 glass-panel rounded-[2rem] p-6 flex flex-col items-center justify-center text-center gap-3 aspect-square group cursor-pointer hover:bg-white/80">
+                <div class="size-16 rounded-2xl bg-blue-50 flex items-center justify-center text-blue-600 shadow-inner mb-2 group-hover:scale-110 transition-transform">
+                    <span class="material-symbols-outlined text-[36px]">ambulance</span>
+                </div>
+                <h4 class="font-bold text-text-main">Ambulance</h4>
+                <p class="text-xs text-text-secondary leading-tight">Quick emergency dispatch</p>
+            </div>
+
+            <div class="col-span-2 glass-panel rounded-[2rem] p-6 flex items-center justify-between">
+                <div>
+                    <p class="text-sm text-text-secondary font-medium mb-1">System Status</p>
+                    <h3 class="text-2xl font-bold text-text-main font-display">Agents Online</h3>
+                    <p class="text-xs text-emerald-600 font-bold mt-1 flex items-center gap-1">
+                        <span class="material-symbols-outlined text-[14px]">support_agent</span>
+                        Ready to assist
+                    </p>
+                </div>
+                <div class="size-12 rounded-full bg-green-100 flex items-center justify-center text-green-600 animate-pulse">
+                     <span class="material-symbols-outlined">wifi</span>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <section class="relative py-20 overflow-hidden z-10">
+        <div class="max-w-[1600px] mx-auto px-4 md:px-8 lg:px-16">
+            <div class="flex items-end justify-between mb-10">
+                <div>
+                    <h2 class="text-4xl font-display font-bold text-text-main mb-2">Healthcare Support</h2>
+                    <p class="text-text-secondary">Comprehensive medical assistance for expats.</p>
+                </div>
+                <div class="flex gap-2">
+                     <button class="size-10 rounded-full border border-slate-200 flex items-center justify-center hover:bg-white transition-colors">
+                        <span class="material-symbols-outlined">arrow_back</span>
+                    </button>
+                    <button class="size-10 rounded-full bg-text-main text-white flex items-center justify-center shadow-lg hover:bg-black transition-colors">
+                        <span class="material-symbols-outlined">arrow_forward</span>
+                    </button>
+                </div>
+            </div>
+
+            <div class="flex gap-6 overflow-x-auto pb-10 snap-x snap-mandatory scroll-smooth hide-scrollbar px-1">
+                
+                <div class="min-w-[320px] md:min-w-[400px] snap-center glass-panel rounded-[2rem] p-2 group hover:-translate-y-2 transition-all">
+                    <div class="h-48 w-full rounded-[1.5rem] bg-gradient-to-br from-green-100 to-emerald-50 mb-4 relative overflow-hidden flex items-center justify-center">
+                        <span class="material-symbols-outlined text-[80px] text-primary/20">smart_toy</span>
+                        <div class="absolute bottom-3 left-4 bg-white/40 backdrop-blur-md text-text-main text-xs font-bold px-3 py-1 rounded-full border border-white/20">AI Support</div>
+                    </div>
+                    <div class="px-4 pb-4">
+                        <h3 class="text-xl font-bold text-text-main mb-2">AI Symptom Triage</h3>
+                        <p class="text-text-secondary text-sm leading-relaxed mb-4">
+                            Instant analysis of your condition. Our AI classifies emergency levels and directs you to the right specialist immediately.
+                        </p>
+                        <a class="text-primary font-bold text-sm flex items-center gap-1 group-hover:gap-2 transition-all" href="#">
+                            Start Chat <span class="material-symbols-outlined text-[16px]">arrow_right_alt</span>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="min-w-[320px] md:min-w-[400px] snap-center glass-panel rounded-[2rem] p-2 group hover:-translate-y-2 transition-all">
+                    <div class="h-48 w-full rounded-[1.5rem] bg-gradient-to-br from-blue-100 to-indigo-50 mb-4 relative overflow-hidden flex items-center justify-center">
+                        <span class="material-symbols-outlined text-[80px] text-blue-500/20">support_agent</span>
+                         <div class="absolute bottom-3 left-4 bg-white/40 backdrop-blur-md text-text-main text-xs font-bold px-3 py-1 rounded-full border border-white/20">Human Support</div>
+                    </div>
+                    <div class="px-4 pb-4">
+                        <h3 class="text-xl font-bold text-text-main mb-2">Multilingual Agents</h3>
+                        <p class="text-text-secondary text-sm leading-relaxed mb-4">
+                            Seamless escalation to human agents for complex medical issues, hospital admission support, or sensitive advice.
+                        </p>
+                        <a class="text-primary font-bold text-sm flex items-center gap-1 group-hover:gap-2 transition-all" href="#">
+                            Connect Now <span class="material-symbols-outlined text-[16px]">arrow_right_alt</span>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="min-w-[320px] md:min-w-[400px] snap-center glass-panel rounded-[2rem] p-2 group hover:-translate-y-2 transition-all">
+                    <div class="h-48 w-full rounded-[1.5rem] bg-gradient-to-br from-orange-100 to-red-50 mb-4 relative overflow-hidden flex items-center justify-center">
+                         <span class="material-symbols-outlined text-[80px] text-orange-500/20">location_on</span>
+                         <div class="absolute bottom-3 left-4 bg-white/40 backdrop-blur-md text-text-main text-xs font-bold px-3 py-1 rounded-full border border-white/20">Network</div>
+                    </div>
+                    <div class="px-4 pb-4">
+                        <h3 class="text-xl font-bold text-text-main mb-2">Hospital Network</h3>
+                        <p class="text-text-secondary text-sm leading-relaxed mb-4">
+                            Direct connections to trusted hospitals and clinics with guided navigation and price transparency.
+                        </p>
+                        <a class="text-primary font-bold text-sm flex items-center gap-1 group-hover:gap-2 transition-all" href="#">
+                            View Map <span class="material-symbols-outlined text-[16px]">arrow_right_alt</span>
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <footer class="mt-10 border-t border-white/40 bg-white/40 backdrop-blur-xl mb-6 mx-4 md:mx-16 rounded-3xl">
+        <div class="px-8 py-8 flex flex-col md:flex-row items-center justify-between gap-4">
+            <div>
+                <p class="font-display font-bold text-text-main">VietConnect</p>
+                <p class="text-sm text-text-secondary">© 2025 Designed for foreign residents in HCMC.</p>
+            </div>
+            <div class="flex gap-6 items-center">
+                <a class="text-sm text-text-secondary hover:text-primary transition-colors" href="#">Privacy</a>
+                <a class="text-sm text-text-secondary hover:text-primary transition-colors" href="https://www.facebook.com/pham.huu.nam.AmnOO" target="_blank">Contact Support</a>
+            </div>
+        </div>
+    </footer>
+
+</div>
+{% endblock %}
+
+{% block script %}
+<script src="{{ url_for('static', filename='script/index.js') }}"></script>
+{% endblock %}

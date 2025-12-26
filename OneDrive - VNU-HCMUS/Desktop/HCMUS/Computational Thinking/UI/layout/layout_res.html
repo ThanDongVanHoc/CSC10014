@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{% block title %}VietConnect Healthcare{% endblock %}</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#2b9dee",
+                        "primary-glow": "rgba(43, 157, 238, 0.4)",
+                        "glass-border": "rgba(255, 255, 255, 0.4)",
+                        "glass-surface": "rgba(255, 255, 255, 0.65)",
+                        "text-main": "#111518",
+                        "text-secondary": "#617989",
+                    },
+                    fontFamily: {
+                        "display": ["Space Grotesk", "sans-serif"],
+                        "body": ["Inter", "sans-serif"],
+                    },
+                    backgroundImage: {
+                        'gemstone': 'linear-gradient(135deg, #2b9dee 0%, #1a7bbd 100%)',
+                    },
+                    boxShadow: {
+                        'glass': '0 8px 32px 0 rgba(31, 38, 135, 0.07)',
+                        'gemstone': '0 10px 20px -5px rgba(43, 157, 238, 0.5), inset 0 2px 4px rgba(255,255,255,0.4), inset 0 -2px 4px rgba(0,0,0,0.1)',
+                    }
+                },
+            },
+        }
+    </script>
+
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #f0f4f8;
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(255, 255, 255, 0.8) 0%, rgba(240, 244, 248, 0) 50%),
+                radial-gradient(circle at 90% 80%, rgba(43, 157, 238, 0.08) 0%, rgba(240, 244, 248, 0) 50%);
+            background-attachment: fixed;
+            min-height: 100vh;
+        }
+
+        /* Glass Panel Class */
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02);
+        }
+
+        /* Navigation Pill */
+        .floating-nav {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(30px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            box-shadow: 0 10px 40px -10px rgba(0,0,0,0.08);
+        }
+
+        /* Smooth Transitions */
+        .elastic-transition {
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        
+        /* Hide scrollbar */
+        ::-webkit-scrollbar { width: 0px; background: transparent; }
+    </style>
+
+    {% block css %}{% endblock %}
+  </head>
+  
+  <body class="text-text-main overflow-x-hidden selection:bg-primary selection:text-white">
+
+    <div class="fixed top-20 right-[-10%] w-[600px] h-[600px] bg-blue-400/10 rounded-full blur-[100px] pointer-events-none z-0"></div>
+    <div class="fixed bottom-[-10%] left-[-10%] w-[500px] h-[500px] bg-teal-400/10 rounded-full blur-[80px] pointer-events-none z-0"></div>
+
+    <nav class="fixed top-6 left-1/2 transform -translate-x-1/2 z-50 w-full max-w-4xl px-4">
+        <div class="floating-nav rounded-full px-2 py-2 flex items-center justify-between">
+            
+            <a href="{{url_for('home_page')}}" class="flex items-center gap-3 pl-4 pr-6 border-r border-slate-200/50 hover:opacity-80 transition">
+                <div class="size-8 bg-gradient-to-br from-primary to-blue-600 rounded-xl flex items-center justify-center text-white shadow-lg">
+                    <span class="material-symbols-outlined text-[20px]">medical_services</span>
+                </div>
+                <div class="flex flex-col">
+                    <span class="font-display font-bold text-lg tracking-tight leading-none text-text-main">VietConnect</span>
+                    <span class="text-[10px] uppercase tracking-wider text-text-secondary font-semibold">Healthcare</span>
+                </div>
+            </a>
+
+            <div class="hidden md:flex items-center gap-1">
+                <a class="px-4 py-2 rounded-full text-sm font-medium text-text-main hover:bg-white/50 transition-colors" href="{{url_for('home_page')}}">Home</a>
+                <a class="px-4 py-2 rounded-full text-sm font-medium text-text-main hover:bg-white/50 transition-colors" href="{{url_for('about_us')}}">About</a>
+                <a class="px-4 py-2 rounded-full text-sm font-medium text-text-main hover:bg-white/50 transition-colors" href="{{url_for('map.map')}}">Map</a>
+                <a class="px-4 py-2 rounded-full text-sm font-medium text-text-main hover:bg-white/50 transition-colors" href="https://www.facebook.com/pham.huu.nam.AmnOO" target="_blank">Support</a>
+            </div>
+
+            <div class="flex items-center gap-2 pl-2">
+                {% if not session.user_id %}
+                    <a href="{{ url_for('auth.signin_page') }}" class="hidden sm:block px-4 py-2 text-sm font-bold text-text-secondary hover:text-primary transition-colors">
+                        Sign In
+                    </a>
+                    <a href="{{ url_for('auth.signup_page') }}" class="bg-gemstone text-white px-5 py-2.5 rounded-full text-sm font-bold shadow-gemstone hover:brightness-110 active:scale-95 transition-all elastic-transition">
+                        Sign Up
+                    </a>
+                {% else %}
+                    <div class="relative group">
+                        <button class="flex items-center gap-3 bg-white/50 hover:bg-white/80 pr-4 pl-1 py-1 rounded-full border border-white/60 transition-all">
+                            <img src="{{ session.avatar }}" alt="Avatar" class="size-8 rounded-full object-cover border border-white shadow-sm" />
+                            <div class="text-left hidden sm:block">
+                                <p class="text-xs text-text-secondary leading-none">Welcome,</p>
+                                <p class="text-sm font-bold text-text-main leading-none truncate max-w-[100px]">{{ session.fullname }}</p>
+                            </div>
+                            <span class="material-symbols-outlined text-text-secondary text-sm">expand_more</span>
+                        </button>
+
+                        <div class="absolute right-0 top-full mt-2 w-64 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform group-hover:translate-y-0 translate-y-2 z-50">
+                            <div class="glass-panel rounded-2xl p-2 shadow-xl">
+                                <div class="px-3 py-2 border-b border-gray-100 mb-1">
+                                    <span class="text-xs font-bold text-text-secondary tracking-wider uppercase">Account</span>
+                                </div>
+                                
+                                <a href="{{ url_for('profile') }}" class="flex items-center gap-3 p-3 hover:bg-blue-50/50 rounded-xl transition-colors group/item">
+                                    <div class="size-8 rounded-lg bg-blue-100 text-blue-600 flex items-center justify-center group-hover/item:bg-blue-600 group-hover/item:text-white transition-colors">
+                                        <span class="material-symbols-outlined text-[18px]">person</span>
+                                    </div>
+                                    <div>
+                                        <p class="text-sm font-bold text-text-main">My Profile</p>
+                                        <p class="text-xs text-text-secondary">Personal settings</p>
+                                    </div>
+                                </a>
+
+                                <div class="h-px bg-gray-200/50 my-1 mx-2"></div>
+
+                                <a href="{{ url_for('auth.logout') }}" class="flex items-center gap-3 p-3 hover:bg-red-50/50 rounded-xl transition-colors group/item">
+                                    <div class="size-8 rounded-lg bg-red-100 text-red-500 flex items-center justify-center group-hover/item:bg-red-500 group-hover/item:text-white transition-colors">
+                                        <span class="material-symbols-outlined text-[18px]">logout</span>
+                                    </div>
+                                    <div>
+                                        <p class="text-sm font-bold text-red-600">Log Out</p>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </nav>
+
+    <main class="relative pt-32 pb-20 px-4 md:px-8 lg:px-16 max-w-[1600px] mx-auto min-h-screen z-10">
+        {% block content %} {% endblock %}
+    </main>
+
+    <footer class="border-t border-white/40 bg-white/40 backdrop-blur-xl relative z-20">
+        <div class="max-w-[1600px] mx-auto px-4 md:px-8 py-8 flex flex-col md:flex-row items-center justify-between gap-4">
+            <div class="flex items-center gap-2">
+                 <span class="material-symbols-outlined text-text-secondary">health_and_safety</span>
+                 <p class="text-sm text-text-secondary">© 2025 VietConnect Healthcare. All rights reserved.</p>
+            </div>
+            <div class="flex gap-6">
+                <a class="text-sm text-text-secondary hover:text-primary transition-colors" href="#">Privacy Policy</a>
+                <a class="text-sm text-text-secondary hover:text-primary transition-colors" href="#">Terms of Service</a>
+                <a class="text-sm text-text-secondary hover:text-primary transition-colors" href="https://www.facebook.com/pham.huu.nam.AmnOO">Support</a>
+            </div>
+        </div>
+    </footer>
+
+    <div id="toast-box" class="fixed bottom-5 right-5 z-50 transform transition-all duration-300 translate-y-20 opacity-0 pointer-events-none">
+        <div class="glass-panel px-6 py-4 rounded-2xl flex items-center gap-3 shadow-glass border-l-4 border-green-500">
+            <div class="size-8 rounded-full bg-green-100 flex items-center justify-center text-green-600">
+                <span class="material-symbols-outlined text-[20px]">check</span>
+            </div>
+            <div class="toast-message text-text-main font-medium">Updated successfully!</div>
+        </div>
+    </div>
+
+    <script>
+        // Inline script to handle Toast logic compatible with your existing layout.js
+        // We just add a class to show it, removing the need for external CSS toggling if logic matches
+        const toast = document.getElementById('toast-box');
+        
+        function showToast(message) {
+            if(message) document.querySelector('.toast-message').textContent = message;
+            toast.classList.remove('translate-y-20', 'opacity-0', 'pointer-events-none');
+            setTimeout(() => {
+                toast.classList.add('translate-y-20', 'opacity-0', 'pointer-events-none');
+            }, 3000);
+        }
+    </script>
+    <script src="{{ url_for('static', filename='script/layout.js') }}"></script>
+    {% block script %}{% endblock %}
+  </body>
+</html>

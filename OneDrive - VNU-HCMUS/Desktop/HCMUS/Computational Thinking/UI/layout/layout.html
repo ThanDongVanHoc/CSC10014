@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{% block title %}VietConnect{% endblock %}</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Stencil+Text:wght@100;300;400;500;600;700;800;900&family=Manrope:wght@200;300;400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/layout.css') }}"
+    />
+    {% block css %}{% endblock %}
+  </head>
+  <body>
+    <header class="navigation-bar">
+      <a
+        href="{{url_for('home_page')}}"
+        class="logo"
+        style="text-decoration: none"
+      >
+        <img
+          src="{{ url_for('static', filename='images/logo.png') }}"
+          class="logo-img"
+          alt="VietConnect"
+        />
+        <div class="logo-text">
+          VIETCONNECT<br />
+          <span class="logo-subtext">RESIDENT SERVICES</span>
+        </div>
+      </a>
+
+      <nav class="menu">
+        <a href="{{url_for('home_page')}}">Why VietConnect?</a>
+        <a href="{{url_for('about_us')}}">About Us</a>
+        <a href="https://www.facebook.com/pham.huu.nam.AmnOO" target="_blank"
+          >Support</a
+        >
+        <a href="{{url_for('map.map')}}"> Map </a>
+      </nav>
+
+      <div class="auth-buttons">
+        {% if not session.user_id %}
+        <a href="{{ url_for('auth.signin_page') }}" class="signin-btn">
+          Sign In
+        </a>
+        <a href="{{ url_for('auth.signup_page') }}" class="signup-btn">
+          Sign Up
+        </a>
+        {% else %}
+        <div class="user-dropdown-container">
+          <div class="user-trigger">
+            <div class="avatar-frame">
+              <img src="{{ session.avatar }}" alt="Avatar" class="avatar-img" />
+            </div>
+
+            <div class="user-meta">
+              <span class="greeting-label">Welcome back,</span>
+              <span class="user-name-display" title="{{ session.fullname }}"
+                >{{ session.fullname }}</span
+              >
+            </div>
+
+            <div class="chevron-icon">
+              <svg
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path d="M6 9l6 6 6-6" />
+              </svg>
+            </div>
+          </div>
+
+          <div class="dropdown-menu">
+            <div class="dropdown-header-label">ACCOUNT</div>
+
+            <a href="{{ url_for('profile') }}" class="dropdown-item">
+              <div class="item-icon-box blue-bg">
+                <svg
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                  <circle cx="12" cy="7" r="4"></circle>
+                </svg>
+              </div>
+              <div class="item-content">
+                <span class="item-main-text">My Profile</span>
+                <span class="item-sub-text">Personal settings</span>
+              </div>
+            </a>
+
+            <div class="dropdown-divider"></div>
+
+            <a
+              href="{{ url_for('auth.logout') }}"
+              class="dropdown-item danger-item"
+            >
+              <div class="item-icon-box red-bg">
+                <svg
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                  <polyline points="16 17 21 12 16 7"></polyline>
+                  <line x1="21" y1="12" x2="9" y2="12"></line>
+                </svg>
+              </div>
+              <div class="item-content">
+                <span class="item-main-text">Log Out</span>
+              </div>
+            </a>
+          </div>
+        </div>
+        {% endif %}
+      </div>
+    </header>
+
+    <main>{% block content %} {% endblock %}</main>
+
+    <div id="toast-box" class="toast-box">
+      <div class="toast-icon-container">
+        <svg
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="3"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <polyline points="20 6 9 17 4 12"></polyline>
+        </svg>
+      </div>
+      <div class="toast-message">Updated successfully!</div>
+    </div>
+
+    <script src="{{ url_for('static', filename='script/layout.js') }}"></script>
+    {% block script %}{% endblock %}
+  </body>
+</html>

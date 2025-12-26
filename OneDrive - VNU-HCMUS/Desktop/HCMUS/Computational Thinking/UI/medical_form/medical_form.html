@@ -1,0 +1,143 @@
+{% extends "layout.html" %} 
+{% block title %}VietConnect - AI Health Check{% endblock %} 
+
+{% block css %}
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Manrope:wght@400;500;700&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"/>
+<link rel="stylesheet" href="{{ url_for('medical_form.static', filename='css/medical_form.css') }}"/>
+{% endblock %} 
+
+{% block content %}
+<div class="med-page-wrapper">
+    <div class="med-container">
+        
+        <div class="med-header">
+            <div class="header-badge">AI Powered</div>
+            <h1 class="med-title">Symptom Checker</h1>
+            <p class="med-subtitle">Describe your condition to receive an AI-based preliminary assessment.</p>
+        </div>
+
+        <div class="med-grid">
+            
+            <div class="med-card form-panel">
+                <form id="aiDiagnosticForm">
+                    
+                    <h4 class="section-title"><i class="fas fa-stethoscope"></i> Symptoms & Pain</h4>
+                    
+                    <div class="form-group">
+                        <label>Describe your Symptoms</label>
+                        <div class="quick-tags" id="quickTags">
+                            <span class="tag" onclick="addTag('Fever')">+ Fever</span>
+                            <span class="tag" onclick="addTag('Cough')">+ Cough</span>
+                            <span class="tag" onclick="addTag('Headache')">+ Headache</span>
+                            <span class="tag" onclick="addTag('Fatigue')">+ Fatigue</span>
+                            <span class="tag" onclick="addTag('Nausea')">+ Nausea</span>
+                        </div>
+                        <textarea 
+                            id="symptomsInput" 
+                            class="med-input textarea" 
+                            placeholder="Type here or click tags above (e.g. sharp pain in chest)..." 
+                            rows="4"></textarea>
+                    </div>
+
+                    <div class="form-row two-col">
+                        <div class="form-group">
+                            <label>Pain Level (1-10)</label>
+                            <div class="select-wrapper">
+                                <select id="painLevel" class="med-input">
+                                    <option value="1">1 - Very Mild</option>
+                                    <option value="2">2 - Mild</option>
+                                    <option value="3">3 - Uncomfortable</option>
+                                    <option value="4">4 - Moderate</option>
+                                    <option value="5" selected>5 - Distracting</option>
+                                    <option value="6">6 - Distressing</option>
+                                    <option value="7">7 - Unmanageable</option>
+                                    <option value="8">8 - Intense</option>
+                                    <option value="9">9 - Severe</option>
+                                    <option value="10">10 - Worst Possible</option>
+                                </select>
+                                <i class="fas fa-chevron-down select-arrow"></i>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>How long have you had this?</label>
+                            <div class="input-group-split">
+                                <input type="number" id="durationValue" class="med-input left-split" placeholder="e.g. 3" min="1" value = "1">
+                                <div class="select-wrapper right-split-wrapper">
+                                    <select id="durationUnit" class="med-input right-split">
+                                        <option value="hours">Hours</option>
+                                        <option value="days" selected>Days</option>
+                                        <option value="weeks">Weeks</option>
+                                        <option value="months">Months</option>
+                                        <option value="years">Years</option>
+                                    </select>
+                                    <i class="fas fa-chevron-down select-arrow"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <h4 class="section-title"><i class="fas fa-map-marker-alt"></i> Location Context</h4>
+                    <div class="form-group">
+                        <label>Current Location (HCMC)</label>
+                        <p class="helper-text">Helps identify local outbreaks (e.g., Dengue).</p>
+                        <div class="select-wrapper">
+                            <select id="locationInput" class="med-input" required>
+                                <option value="" disabled selected>Select District...</option>
+                            </select>
+                            <i class="fas fa-chevron-down select-arrow"></i>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="med-btn-primary" id="analyzeBtn">
+                        <span>Run AI Analysis</span>
+                        <i class="fas fa-arrow-right"></i>
+                    </button>
+                </form>
+
+                <div id="aiResults" class="ai-results hidden">
+                    <div class="divider"></div>
+                    <div class="results-header">
+                        <h4><i class="fas fa-brain"></i> AI Prediction</h4>
+                        <span class="beta-tag">Top-K Analysis</span>
+                    </div>
+                    <div id="predictionList" class="prediction-list">
+                        </div>
+                    <button class="med-btn-secondary" onclick="resetForm()">Start Over</button>
+                </div>
+            </div>
+
+            <div class="med-card history-panel">
+                <div class="history-header">
+                    <div class="icon-circle">
+                        <i class="fas fa-history"></i>
+                    </div>
+                    <div>
+                        <h3>Medical Record</h3>
+                        <p class="small-text">Linked to your VietConnect ID</p>
+                    </div>
+                </div>
+                
+                <div class="history-list" id="historyList">
+                    <div class="skeleton-loader"></div>
+                    <div class="skeleton-loader"></div>
+                    <div class="skeleton-loader"></div>
+                </div>
+
+                <div class="info-box">
+                    <i class="fas fa-lock"></i>
+                    <p>Your data is encrypted and used only for diagnostic accuracy.</p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+{% endblock %} 
+
+{% block script %}
+<script type="module" src="{{ url_for('medical_form.static', filename='scripts/index.js') }}"></script>
+{% endblock %}

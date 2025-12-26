@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Translator</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#2b9dee",
+                        "primary-glow": "rgba(43, 157, 238, 0.4)",
+                        "glass-border": "rgba(255, 255, 255, 0.4)",
+                        "glass-surface": "rgba(255, 255, 255, 0.65)",
+                        "text-main": "#111518",
+                        "text-secondary": "#617989",
+                    },
+                    fontFamily: {
+                        "display": ["Space Grotesk", "sans-serif"],
+                        "body": ["Inter", "sans-serif"],
+                    },
+                    backgroundImage: {
+                        'gemstone': 'linear-gradient(135deg, #2b9dee 0%, #1a7bbd 100%)',
+                    },
+                    boxShadow: {
+                        'glass': '0 8px 32px 0 rgba(31, 38, 135, 0.07)',
+                        'gemstone': '0 10px 20px -5px rgba(43, 157, 238, 0.5), inset 0 2px 4px rgba(255,255,255,0.4)',
+                    }
+                },
+            },
+        }
+    </script>
+
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #f0f4f8;
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(255, 255, 255, 0.8) 0%, rgba(240, 244, 248, 0) 50%),
+                radial-gradient(circle at 90% 80%, rgba(43, 157, 238, 0.08) 0%, rgba(240, 244, 248, 0) 50%);
+            background-attachment: fixed;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Glassmorphism Classes (Mượn từ Sample) */
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02), inset 0 1px 1px rgba(255, 255, 255, 0.9);
+            border-radius: 2rem;
+        }
+
+        .elastic-transition {
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        /* --- LOGIC PRESERVATION STYLES --- */
+        /* Các class này giữ logic hiển thị nhưng được override style để đẹp hơn */
+        
+        /* Active Panel Logic */
+        .tr-panel {
+            transition: all 0.3s ease;
+            opacity: 0.8;
+            transform: scale(0.98);
+            border: 2px solid transparent;
+        }
+        
+        .tr-panel--active {
+            opacity: 1;
+            transform: scale(1);
+            background: rgba(255, 255, 255, 0.85);
+            border-color: #2b9dee; /* Primary color */
+            box-shadow: 0 20px 40px -10px rgba(43, 157, 238, 0.15);
+        }
+
+        /* Input styling */
+        .tr-inputwrap {
+            display: flex;
+            align-items: center;
+            width: 100%;
+            height: 100%;
+        }
+
+        /* Hide generic scrollbar */
+        ::-webkit-scrollbar { width: 0px; background: transparent; }
+        
+        /* Layout Grid */
+        .app-layout {
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            gap: 24px;
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 24px;
+            height: 100vh;
+        }
+        
+        @media (max-width: 1024px) {
+            .app-layout { grid-template-columns: 80px 1fr; }
+            .sidebar-text { display: none; }
+        }
+    </style>
+</head>
+<body class="text-text-main selection:bg-primary selection:text-white">
+
+    <div class="fixed top-20 right-[-10%] w-[600px] h-[600px] bg-blue-400/10 rounded-full blur-[100px] pointer-events-none z-0"></div>
+    <div class="fixed bottom-[-10%] left-[-10%] w-[500px] h-[500px] bg-teal-400/10 rounded-full blur-[80px] pointer-events-none z-0"></div>
+
+    <div class="app-layout relative z-10">
+        
+        <aside class="sidebar glass-panel flex flex-col h-full overflow-hidden relative transition-all duration-300" aria-label="Translation History">
+            <div class="sidebar-header-gpt p-6 border-b border-white/50">
+                <div class="top-row flex items-center justify-between mb-6">
+                    <div class="brand-toggle flex items-center gap-3 cursor-pointer group" id="brandToggle" title="Expand Sidebar">
+                        <div class="size-10 bg-gradient-to-br from-primary to-blue-600 rounded-xl flex items-center justify-center text-white shadow-lg shadow-blue-500/30 shrink-0">
+                             <img src="{{ url_for('static', filename='images/logo.png') }}" alt="App Logo" class="sidebar-logo w-6 h-6 object-contain filter brightness-0 invert" onerror="this.style.display='none'; this.parentElement.innerHTML='<i class=\'fas fa-language\'></i>'"/>
+                        </div>
+                        <span class="sidebar-text font-display font-bold text-xl tracking-tight text-text-main">VinTrans</span>
+                    </div>
+                    <button id="hideBtn" class="size-8 rounded-full hover:bg-black/5 flex items-center justify-center text-text-secondary transition-colors md:hidden">
+                        <i class="fas fa-columns"></i>
+                    </button>
+                </div>
+
+                <nav class="sidebar-nav flex flex-col gap-3">
+                    <button id="btnNew" class="w-full bg-gemstone text-white h-12 rounded-xl font-bold shadow-gemstone hover:brightness-110 active:scale-95 elastic-transition flex items-center justify-center gap-2" title="New Translation">
+                        <i class="fas fa-pen-to-square"></i>
+                        <span class="sidebar-text">New Translation</span>
+                    </button>
+
+                    <button id="btnSearchTrigger" class="w-full bg-white/50 hover:bg-white/80 text-text-main h-10 rounded-xl font-medium border border-white/60 transition-colors flex items-center justify-center gap-2" title="Search">
+                        <i class="fas fa-magnifying-glass text-primary"></i>
+                        <span class="sidebar-text">Search</span>
+                    </button>
+                </nav>
+            </div>
+
+            <div class="search-wrapper-hidden p-4" id="searchWrapper" style="display: none">
+                <div class="relative bg-white/60 backdrop-blur-xl border border-white/80 rounded-xl flex items-center h-10 shadow-sm">
+                    <i class="fas fa-search absolute left-3 text-gray-400 text-sm"></i>
+                    <input id="searchInput" class="gpt-search-input w-full bg-transparent border-none focus:ring-0 text-sm pl-9 pr-3 h-full font-body placeholder:text-gray-400" placeholder="Search..."/>
+                </div>
+            </div>
+
+            <div id="convoHeader" class="px-6 py-4 text-xs font-bold text-text-secondary uppercase tracking-widest">
+                Recent translations
+            </div>
+
+            <div id="convoList" class="convo-list flex-1 overflow-y-auto px-4 pb-4 space-y-2" role="list">
+                </div>
+        </aside>
+
+        <section class="tr-translate flex flex-col gap-6 h-full overflow-hidden" aria-label="Live Translation">
+            
+            <div class="flex items-center justify-between px-2">
+                <div>
+                    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/40 border border-white/60 backdrop-blur-sm shadow-sm mb-2">
+                        <div class="size-2 rounded-full bg-green-500 animate-pulse"></div>
+                        <span class="text-[10px] font-bold text-text-secondary uppercase tracking-wider">Live System</span>
+                    </div>
+                    <h2 class="font-display font-bold text-2xl text-text-main">Consultation Room</h2>
+                </div>
+            </div>
+
+            <article class="tr-panel tr-panel--patient glass-panel flex-1 flex flex-col overflow-hidden relative group" data-role="patient">
+                <header class="tr-panel__header flex items-center justify-between p-4 border-b border-white/30 bg-white/10 backdrop-blur-md z-20 relative">
+                    <div class="flex items-center gap-3">
+                        <button class="tr-pick size-10 rounded-full bg-white/50 border border-white/60 flex items-center justify-center text-primary shadow-sm transition-all aria-pressed:bg-primary aria-pressed:text-white" type="button" aria-pressed="true">
+                            <i class="fas fa-check tr-pick__tick"></i>
+                        </button>
+                        <span class="px-3 py-1 rounded-full bg-blue-100 text-primary text-xs font-bold tracking-wide shadow-inner">PATIENT</span>
+                    </div>
+                    
+                    <div class="tr-langs flex items-center gap-3 bg-white/40 px-4 py-2 rounded-full border border-white/50 shadow-sm">
+                        <span class="tr-lang flex items-center gap-2 cursor-pointer hover:opacity-80">
+                            <img class="w-6 h-6 rounded-full shadow-sm object-cover" src="https://flagcdn.com/w40/gb.png" alt="UK"/>
+                            <span class="tr-code font-bold text-xs text-text-main">EN</span>
+                        </span>
+                        <span class="tr-swap text-text-secondary hover:text-primary transition-colors cursor-pointer"><i class="fas fa-arrow-right-arrow-left"></i></span>
+                        <span class="tr-lang flex items-center gap-2 cursor-pointer hover:opacity-80">
+                            <img class="w-6 h-6 rounded-full shadow-sm object-cover" src="https://flagcdn.com/w40/vn.png" alt="VN"/>
+                            <span class="tr-code font-bold text-xs text-text-main">VIE</span>
+                        </span>
+                    </div>
+                </header>
+
+                <div class="tr-panel__body flex-1 flex flex-col relative z-10">
+                    <div class="tr-messages flex-1 overflow-y-auto p-6 space-y-4 font-body text-text-main">
+                        <div class="text-center text-text-secondary text-sm italic opacity-60 mt-10">Ready to translate...</div>
+                    </div>
+
+                    <div class="tr-composer p-4">
+                        <div class="relative group elastic-transition transform hover:scale-[1.005]">
+                            <div class="absolute -inset-0.5 bg-gradient-to-r from-blue-300 to-teal-300 rounded-[1.5rem] opacity-30 blur group-hover:opacity-60 transition duration-500"></div>
+                            <div class="tr-inputwrap relative bg-white/70 backdrop-blur-xl border border-white/80 rounded-[1.4rem] p-2 shadow-glass h-16 flex items-center">
+                                <input class="tr-input w-full bg-transparent border-none focus:ring-0 text-text-main placeholder-slate-400 text-lg h-full px-4 font-body" type="text" placeholder="Type here (Patient)..."/>
+                                
+                                <div class="flex items-center gap-1 pr-2">
+                                    <button class="tr-iconbtn tr-mic size-10 flex items-center justify-center rounded-full hover:bg-primary/10 text-text-secondary hover:text-primary transition-colors" type="button" title="Record">
+                                        <i class="fas fa-microphone text-lg"></i>
+                                    </button>
+                                    <button class="tr-iconbtn tr-iconbtn--send size-10 flex items-center justify-center rounded-full bg-primary text-white shadow-lg hover:brightness-110 active:scale-95 transition-all">
+                                        <i class="fas fa-paper-plane text-sm"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </article>
+
+            <article class="tr-panel tr-panel--doctor glass-panel flex-1 flex flex-col overflow-hidden relative group" data-role="doctor">
+                <header class="tr-panel__header flex items-center justify-between p-4 border-b border-white/30 bg-white/10 backdrop-blur-md z-20 relative">
+                    <div class="flex items-center gap-3">
+                        <button class="tr-pick size-10 rounded-full bg-white/50 border border-white/60 flex items-center justify-center text-teal-600 shadow-sm transition-all aria-pressed:bg-teal-500 aria-pressed:text-white" type="button" aria-pressed="false">
+                            <i class="fas fa-check tr-pick__tick"></i>
+                        </button>
+                        <span class="px-3 py-1 rounded-full bg-teal-100 text-teal-700 text-xs font-bold tracking-wide shadow-inner">DOCTOR</span>
+                    </div>
+
+                    <div class="tr-langs flex items-center gap-3 bg-white/40 px-4 py-2 rounded-full border border-white/50 shadow-sm">
+                        <span class="tr-lang flex items-center gap-2 cursor-pointer hover:opacity-80">
+                            <img class="w-6 h-6 rounded-full shadow-sm object-cover" src="https://flagcdn.com/w40/vn.png" alt="VN"/>
+                            <span class="tr-code font-bold text-xs text-text-main">VIE</span>
+                        </span>
+                        <span class="tr-swap text-text-secondary hover:text-teal-600 transition-colors cursor-pointer"><i class="fas fa-arrow-right-arrow-left"></i></span>
+                        <span class="tr-lang flex items-center gap-2 cursor-pointer hover:opacity-80">
+                            <img class="w-6 h-6 rounded-full shadow-sm object-cover" src="https://flagcdn.com/w40/gb.png" alt="UK"/>
+                            <span class="tr-code font-bold text-xs text-text-main">EN</span>
+                        </span>
+                    </div>
+                </header>
+
+                <div class="tr-panel__body flex-1 flex flex-col relative z-10">
+                    <div class="tr-messages flex-1 overflow-y-auto p-6 space-y-4 font-body text-text-main">
+                        </div>
+
+                    <div class="tr-composer tr-composer--hidden p-4">
+                        <div class="relative group elastic-transition transform hover:scale-[1.005]">
+                            <div class="absolute -inset-0.5 bg-gradient-to-r from-teal-300 to-green-300 rounded-[1.5rem] opacity-30 blur group-hover:opacity-60 transition duration-500"></div>
+                            <div class="tr-inputwrap relative bg-white/70 backdrop-blur-xl border border-white/80 rounded-[1.4rem] p-2 shadow-glass h-16 flex items-center">
+                                <input class="tr-input w-full bg-transparent border-none focus:ring-0 text-text-main placeholder-slate-400 text-lg h-full px-4 font-body" type="text" placeholder="Type here (Doctor)..."/>
+                                
+                                <div class="flex items-center gap-1 pr-2">
+                                    <button class="tr-iconbtn tr-mic size-10 flex items-center justify-center rounded-full hover:bg-teal-500/10 text-text-secondary hover:text-teal-600 transition-colors" type="button" title="Record">
+                                        <i class="fas fa-microphone text-lg"></i>
+                                    </button>
+                                    <button class="tr-iconbtn tr-iconbtn--send size-10 flex items-center justify-center rounded-full bg-teal-500 text-white shadow-lg hover:brightness-110 active:scale-95 transition-all">
+                                        <i class="fas fa-paper-plane text-sm"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </article>
+
+            <div id="translateToast" class="toast-box fixed bottom-8 right-8 glass-panel p-4 flex items-center gap-3 transform translate-y-20 opacity-0 transition-all duration-300 shadow-gemstone z-50">
+                <div class="toast-icon-container">
+                    <i class="fas fa-check-circle text-green-500 text-xl"></i>
+                </div>
+                <div class="toast-message font-medium text-text-main">Notification</div>
+            </div>
+        </section>
+    </div>
+</body>
+</html>
