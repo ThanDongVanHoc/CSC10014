@@ -7,11 +7,11 @@ import json
 import cloudinary
 import cloudinary.uploader
 import cloudinary.api
-from dotenv import load_dotenv
+from dotenv import load_dotenv, find_dotenv
 from typing import List, Optional
 
 # --- CẤU HÌNH HỆ THỐNG ---
-load_dotenv()
+load_dotenv(find_dotenv())
 
 # Cấu hình Cloudinary
 cloudinary.config( 

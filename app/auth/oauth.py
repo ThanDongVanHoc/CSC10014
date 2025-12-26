@@ -5,10 +5,10 @@ import cachecontrol
 import google.auth.transport.requests
 from google.oauth2 import id_token
 from google_auth_oauthlib.flow import Flow
-from dotenv import load_dotenv  
+from dotenv import load_dotenv, find_dotenv
 
 # Load biến môi trường ngay lập tức
-load_dotenv()
+load_dotenv(find_dotenv())
 
 GOOGLE_CLIENT_ID = os.environ.get("GOOGLE_CLIENT_ID")
 client_secrets_file = os.path.join(pathlib.Path(__file__).parent, "client_secrets.json")

@@ -2,9 +2,9 @@ import os
 import cloudinary
 import cloudinary.uploader
 from urllib.parse import urlparse
-from dotenv import load_dotenv 
+from dotenv import load_dotenv, find_dotenv
 
-load_dotenv()
+load_dotenv(find_dotenv())
 
 cloudinary.config( 
     cloud_name = os.getenv("CLOUD_NAME"), 

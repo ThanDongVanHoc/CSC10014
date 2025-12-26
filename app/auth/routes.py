@@ -2,7 +2,7 @@ from flask import redirect, render_template, url_for, session, request, abort, f
 from . import auth_bp
 from . import oauth  
 import os
-from dotenv import load_dotenv
+from dotenv import load_dotenv, find_dotenv
 import time
 from app.db import db
 from werkzeug.security import generate_password_hash
@@ -23,7 +23,7 @@ from .utils import (
     clear_auth_session
 )
 
-load_dotenv() # Load lại cho chắc chắn các biến khác trong routes cần dùng
+load_dotenv(find_dotenv()) # Load lại cho chắc chắn các biến khác trong routes cần dùng
 
 @auth_bp.route('/google_login')
 @clear_auth_session

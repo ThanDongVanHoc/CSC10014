@@ -2,7 +2,7 @@ import requests
 import os
 import dotenv
 
-dotenv.load_dotenv()
+dotenv.load_dotenv(dotenv.find_dotenv())
 
 class ChatPro:
     def __init__(self, search_model_url, interact_model_url):

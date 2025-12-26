@@ -7,12 +7,12 @@ import csv
 import pickle
 from datetime import datetime
 from typing import List, Dict, Optional
-from dotenv import load_dotenv
+from dotenv import load_dotenv, find_dotenv
 import google.generativeai as genai
 from haversine import haversine, Unit
 
 # Load environment variables
-load_dotenv()
+load_dotenv(find_dotenv())
 genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
 
 class MedicalMapService:
@@ -227,20 +227,3 @@ class MedicalMapService:
 
         results.sort(key=lambda x: x['final_score'], reverse=True)
         return results[:k]
-
-# # --- TEST ---
-# async def main():
-#     service = MedicalMapService()
-#     payload = {
-#         "user_context": {"age": 32, "gender": "Male", "chronic_conditions": []},
-#         "request": {
-#             "location": { "lat": 10.762, "lng": 106.660 }, 
-#             "symptoms": "Chấn thương sọ não, chảy máu đầu" 
-#         }
-#     }
-#     print("\n🔍 Searching...")
-#     results = await service.search_top_k_hospitals(payload)
-#     print(json.dumps(results, indent=2, ensure_ascii=False))
-
-# if __name__ == "__main__":
-#     asyncio.run(main())

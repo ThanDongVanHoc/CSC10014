@@ -540,6 +540,7 @@ async function deleteMedicalRecord(id) {
 
 // 1. Mở và Đóng Modal
 function openEmergencyModal() {
+    initEmergencyCard();
     document.getElementById('emergency-modal').style.display = 'flex';
     // Ngăn scroll trang web khi đang mở modal
     document.body.style.overflow = 'hidden';

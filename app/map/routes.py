@@ -288,6 +288,7 @@ def map():
         for item in ai_results:
             # Tra cứu trong RAM (siêu nhanh)
             h_db = db_map.get(item.get('id'))
+            print("Checking hospital ID:", item.get('id'), "Found in DB:", bool(h_db))
             
             if h_db and h_db.lat and h_db.lng:
                 # Tạo object mới, copy dữ liệu từ AI

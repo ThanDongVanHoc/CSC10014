@@ -6,10 +6,10 @@ Quản lý tất cả settings tập trung
 import os
 from dataclasses import dataclass
 from typing import Optional
-from dotenv import load_dotenv
+from dotenv import load_dotenv, find_dotenv
 
 # Load environment variables
-load_dotenv()
+load_dotenv(find_dotenv())
 
 
 @dataclass(frozen=True)
