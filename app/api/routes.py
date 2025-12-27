@@ -64,7 +64,7 @@ def find_hospital_action():
                      user_id=session.get('user_id', None), 
                      frontend_data = data)
     
-    # 3. Lưu vào Session để trang Map có thể lấy ra dùng
+    # 3. Lưu vào Session để trang Map có thể lấy ra dùng``
     session['ai_hospitals_results'] = found_hospitals
     session['user_location'] = location
 

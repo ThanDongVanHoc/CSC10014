@@ -5,24 +5,6 @@
  */
 
 export const MedicalService = {
-  // Mock fetching hospital prices based on your API specs
-  // GET /service-price/api/hospitals/{hospitalId}/prices
-  getHospitalPrices: async (hospitalId) => {
-    // Simulate network latency
-    await new Promise((resolve) => setTimeout(resolve, 300));
-
-    // Mock Response
-    return {
-      hospitalId: hospitalId,
-      currency: "VND",
-      items: [
-        { service: "Cấp cứu", price: 800000 + Math.floor(Math.random() * 50000) },
-        { service: "X-Quang", price: 250000 },
-        { service: "Khám tổng quát", price: 150000 },
-      ],
-    };
-  },
-
   // Mock fetching Real-time Stats (Wait Time + Demand)
   // This drives the "Heatmap" visualization
   getRealTimeStats: async (hospitalId) => {

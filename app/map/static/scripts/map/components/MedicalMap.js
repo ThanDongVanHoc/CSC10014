@@ -137,10 +137,6 @@ async function renderMedicalMarkers() {
     // Nếu dữ liệu thiếu tọa độ thì bỏ qua (An toàn)
     if (!h.lat || !h.lng) continue;
 
-    // A. Lấy giá dịch vụ (Vẫn cần gọi mock service hoặc API riêng cho giá)
-    // Dùng catch để dù lỗi lấy giá cũng không chặn việc vẽ map
-    const prices = await MedicalService.getHospitalPrices(h.id).catch(() => ({ items: [] }));
-
     // B. Chuẩn bị dữ liệu hiển thị (Mapping từ UI Context của Backend)
     const ui = h.ui_context || {};
     
@@ -199,7 +195,7 @@ async function renderMedicalMarkers() {
     const marker = L.marker([h.lat, h.lng], { icon: customIcon }).addTo(medicalLayer);
 
     // E. POPUP (Hiển thị Giá & Stats)
-    const popupContent = buildHorizontalPopup(hospitalInfo, stats, prices, color);
+    const popupContent = buildHorizontalPopup(hospitalInfo, stats, color);
     
     marker.bindPopup(popupContent, { 
       maxWidth: 450, 
@@ -284,10 +280,7 @@ async function renderMedicalMarkers() {
 }
 
 // --- UTILS UI BUILDER ---
-function buildHorizontalPopup(hospital, stats, prices, color) {
-  // Lấy giá mẫu để hiển thị
-  const emergencyPrice = prices.items?.find(i => i.service.includes("Cấp cứu"))?.price || 500000;
-  const xrayPrice = prices.items?.find(i => i.service.includes("X-Quang"))?.price || 200000;
+function buildHorizontalPopup(hospital, stats, color) {
   
   const statusHtml = stats.isOpen 
     ? `<span class="med-status open"><i class="fas fa-clock"></i> 24/7 Service</span>`
@@ -321,17 +314,6 @@ function buildHorizontalPopup(hospital, stats, prices, color) {
           <div class="med-stat-box">
              <span class="med-stat-label">Distance</span>
              <span class="med-stat-value">${stats.distanceDisplay}</span>
-          </div>
-        </div>
-
-        <div class="med-prices">
-          <div class="med-price-item">
-            <span>🚑 Emergency</span>
-            <span class="med-price-val">${emergencyPrice.toLocaleString()} ₫</span>
-          </div>
-          <div class="med-price-item">
-            <span>🩻 X-Ray Scan</span>
-            <span class="med-price-val">${xrayPrice.toLocaleString()} ₫</span>
           </div>
         </div>
 
