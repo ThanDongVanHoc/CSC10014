@@ -2,14 +2,12 @@ from app.db.models import Place, SearchHistory, Hospital
 from datetime import datetime
 from . import map_bp
 from flask import render_template, send_from_directory, session, request, jsonify
-from sqlalchemy import select
-from sqlalchemy import and_
+from sqlalchemy import select, and_
 from app.db import db
 import os
 from ..chat.utils import get_user, query_pois_db, check_poi_db
 import requests
-from app.db.models import Hospital
-
+from ..services.med_service import HospitalService
 
 @map_bp.route('/getHospital', methods = ['GET'])
 def get_hospital():
@@ -150,12 +148,10 @@ def check_poi():
     else:
         return jsonify({"isPoi": False}), 200
 
-
 @map_bp.route('/pois/<path:filename>')
 def serve_poi_img(filename):
     BASE_DIR = os.path.join(os.getcwd(), 'Dataset/crawler')
     return send_from_directory(BASE_DIR, filename)
-
 
 @map_bp.route('/log_search_history', methods=['POST'])
 def log_search_history():
@@ -258,10 +254,6 @@ def proxy_route(mode, coords):
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
-
-
-
-
 @map_bp.route('/map')
 def map():
     # 1. Lấy dữ liệu thô từ AI (chỉ có ID, tên, score, chưa có lat/lng)
@@ -288,6 +280,7 @@ def map():
         for item in ai_results:
             # Tra cứu trong RAM (siêu nhanh)
             h_db = db_map.get(item.get('id'))
+            services = HospitalService.get_hospital_services(h_db.id) if h_db else []
             print("Checking hospital ID:", item.get('id'), "Found in DB:", bool(h_db))
             
             if h_db and h_db.lat and h_db.lng:
@@ -301,8 +294,8 @@ def map():
                 new_item['phone'] = h_db.phone_number
                 new_item['image'] = h_db.image_url
                 new_item['intro'] = str(h_db.description or "").lower()
-
-                
+                new_item['services'] = services
+                print(new_item['services'])
                 enriched_hospitals.append(new_item)
 
     # # 3. Trả về template danh sách đã có đầy đủ Tọa độ + AI Score

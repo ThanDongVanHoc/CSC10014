@@ -3,11 +3,11 @@ from datetime import datetime
 from requests import session
 from app.gateways.med_map_gateway import HospitalGateway
 from app.db import db
-from app.db.models import User
+from app.db.models import User, HospitalService as HospitalServiceModel
 import json
-from sqlalchemy import select
-from sqlalchemy import and_
+from sqlalchemy import select, and_
 from flask import session  # Đảm bảo có dòng này
+
 class HospitalService:
     @staticmethod
     def find_best_hospitals(user_id, frontend_data):
@@ -19,7 +19,6 @@ class HospitalService:
         lat = 10.76268
         lng = 106.68168
         symptoms = frontend_data.get('symptoms', None)
-
 
         try:
             stmt = select(User).where(User.id == user_id).limit(1)
@@ -49,7 +48,6 @@ class HospitalService:
                 "chronic_diseases": chronic,
                 "allergies": allergies,
                 "avatar_url": user.avatar_url,
-
                 "age": (datetime.now().year - dob_value.year) if dob_value and hasattr(dob_value, 'year') else 0,
                 "gender": getattr(user, 'gender', None) or session.get('gender') or "All",
             }
@@ -80,11 +78,21 @@ class HospitalService:
 
         print(full_context)
 
-        print()
-
         hospitalGw = HospitalGateway()
         # 3. Chuyển cho Gateway để gọi API Backend thực sự
         results =  hospitalGw.search_hospitals(full_context)
         print(results)
 
         return results.get('data')
+    
+    @staticmethod
+    def get_hospital_services(hospital_id: int) -> list:
+        """Lấy danh sách dịch vụ y tế của bệnh viện từ DB."""
+        try:
+            services = db.session.execute(
+                db.select(HospitalServiceModel).filter_by(hospital_id=hospital_id)
+            ).scalars().all()
+            return [s.to_dict() for s in services]
+        except Exception as e:
+            print(f"❌ Lỗi lấy dịch vụ bệnh viện: {e}")
+            return []

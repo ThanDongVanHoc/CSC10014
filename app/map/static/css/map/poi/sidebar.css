@@ -13,9 +13,9 @@
 .poi-sidebar {
   position: absolute;
   /* Căn chỉnh vị trí an toàn tuyệt đối */
-  top: 100px;
-  right: 12px;
-  bottom: 70px; /* Không chạm đáy để tránh nút Zoom */
+  top: 70px;
+  right: 50px;
+  bottom: 100px; /* Không chạm đáy để tránh nút Zoom */
 
   width: var(--sidebar-width);
   max-height: 75%; /* Giới hạn chiều cao */
@@ -95,20 +95,151 @@
   background: white;
 }
 
+.sidebar-tabs {
+  display: flex;
+  background: white; /* Nền trắng để tách biệt */
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+  padding: 0 16px;
+  flex-shrink: 0; /* Không bị co lại khi nội dung dài */
+}
+
+.tab-btn {
+  flex: 1; /* Chia đều chiều rộng */
+  padding: 14px 0;
+  border: none;
+  background: none;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  cursor: pointer;
+  position: relative;
+  transition: color 0.2s ease;
+}
+
+.tab-btn:hover {
+  color: var(--primary-color);
+  background-color: rgba(26, 115, 232, 0.04); /* Hiệu ứng hover nhẹ */
+}
+
+/* Hiệu ứng gạch chân khi Active (Giống Google) */
+.tab-btn.active {
+  color: var(--primary-color);
+}
+
+.tab-btn.active::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 40px; /* Độ rộng gạch chân */
+  height: 3px;
+  background: var(--primary-color);
+  border-top-left-radius: 3px;
+  border-top-right-radius: 3px;
+}
+
 /* 3. NỘI DUNG (SCROLL) */
 .sidebar-body-container {
-  padding: 10px 24px 24px 24px;
-  overflow-y: auto;
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-
-  /* Ẩn thanh cuộn */
-  scrollbar-width: none;
-  -ms-overflow-style: none;
+  /* Xóa padding cũ để xử lý từng tab riêng */
+  padding: 0;
+  flex: 1; /* Chiếm hết khoảng trống còn lại */
+  overflow-y: auto; /* Chỉ cuộn phần nội dung này */
+  background: #fff;
 }
+
 .sidebar-body-container::-webkit-scrollbar {
   display: none;
+}
+
+.tab-content {
+  display: none; /* Mặc định ẩn */
+  padding: 20px 24px;
+  flex-direction: column;
+  gap: 20px;
+  animation: fadeIn 0.3s ease;
+}
+
+.tab-content.active {
+  display: flex; /* Hiện khi active */
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.service-search-box {
+  position: relative;
+  margin-bottom: 12px;
+}
+
+.service-search-input {
+  width: 100%;
+  padding: 10px 12px 10px 36px;
+  border: 1px solid #dadce0;
+  border-radius: 8px;
+  font-size: 14px;
+  outline: none;
+  background: #f8f9fa;
+  transition: all 0.2s;
+}
+
+.service-search-input:focus {
+  background: #fff;
+  border-color: var(--primary-color);
+  box-shadow: 0 1px 4px rgba(26, 115, 232, 0.2);
+}
+
+.search-icon-small {
+  position: absolute;
+  left: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #9aa0a6;
+  font-size: 18px;
+}
+
+/* Item Dịch vụ */
+.service-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 0;
+  border-bottom: 1px solid #f1f3f4;
+}
+
+.service-item:last-child {
+  border-bottom: none;
+}
+
+.svc-name {
+  font-size: 14px;
+  color: var(--text-color);
+  font-weight: 500;
+  line-height: 1.4;
+}
+
+.svc-price {
+  font-size: 14px;
+  font-weight: 700;
+  color: #d93025; /* Màu đỏ cho giá tiền */
+  white-space: nowrap;
+  margin-left: 12px;
+}
+
+.vip-badge {
+  color: #fbbc04; /* Màu vàng ngôi sao */
+  font-size: 16px;
+  margin-right: 4px;
+  vertical-align: middle;
 }
 
 /* Tiêu đề & Loại */
@@ -235,4 +366,363 @@
 }
 .info-link:hover {
   text-decoration: underline;
+}
+
+/* --- CSS CHO SERVICE LIST --- */
+
+.empty-state {
+  text-align: center;
+  padding: 30px;
+  color: #888;
+}
+
+/* 1. Accordion */
+.service-group-accordion {
+  margin-bottom: 8px;
+  border: 1px solid #f1f3f4;
+  border-radius: 12px;
+  background: #fff;
+  overflow: hidden;
+}
+
+.service-group-accordion[open] {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  border-color: transparent;
+}
+
+.group-summary {
+  display: flex;
+  align-items: center;
+  padding: 12px 16px;
+  cursor: pointer;
+  background: #fafafa;
+  list-style: none;
+}
+.group-summary::-webkit-details-marker {
+  display: none;
+}
+.group-summary:hover {
+  background: #f1f3f4;
+}
+
+.group-name {
+  flex: 1;
+  font-size: 13px;
+  font-weight: 700;
+  color: #444;
+  text-transform: uppercase;
+}
+.group-badge {
+  background: #e8eaed;
+  color: #5f6368;
+  font-size: 11px;
+  padding: 2px 8px;
+  border-radius: 10px;
+  font-weight: 600;
+  margin-right: 8px;
+}
+.arrow-icon {
+  font-size: 20px;
+  color: #9aa0a6;
+  transition: transform 0.2s;
+}
+.service-group-accordion[open] .arrow-icon {
+  transform: rotate(180deg);
+}
+
+/* 2. Service Row */
+.group-content {
+  padding: 0 16px;
+  background: #fff;
+}
+
+.service-row {
+  display: flex;
+  align-items: center;
+  padding: 12px 0;
+  border-bottom: 1px solid #f1f3f4;
+}
+.service-row:last-child {
+  border-bottom: none;
+}
+
+/* 3. Icon Box */
+.svc-icon-box {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 12px;
+  flex-shrink: 0;
+}
+.svc-icon-box span {
+  font-size: 20px;
+}
+
+/* Icon Colors */
+.icon-blue {
+  background: #e8f0fe;
+  color: #1967d2;
+}
+.icon-red {
+  background: #fce8e6;
+  color: #c5221f;
+}
+.icon-green {
+  background: #e6f4ea;
+  color: #137333;
+}
+.icon-teal {
+  background: #e0f2f1;
+  color: #00796b;
+}
+.icon-purple {
+  background: #f3e8fd;
+  color: #9334e6;
+}
+.icon-orange {
+  background: #ffe0b2;
+  color: #e65100;
+}
+.icon-gray {
+  background: #f1f3f4;
+  color: #5f6368;
+}
+
+/* 4. Content */
+.svc-info {
+  flex: 1;
+}
+.svc-name {
+  font-size: 14px;
+  font-weight: 500;
+  color: #202124;
+  margin-bottom: 2px;
+}
+.vip-star {
+  font-size: 16px;
+  color: #fbbc04;
+  vertical-align: middle;
+  margin-right: 4px;
+}
+
+/* 5. Price Colors */
+.svc-price {
+  font-size: 13px;
+  font-weight: 600;
+}
+.price-low {
+  color: #137333;
+}
+.price-med {
+  color: #ea8600;
+}
+.price-high {
+  color: #d93025;
+}
+.price-normal {
+  color: #5f6368;
+}
+
+/* --- COST ESTIMATOR --- */
+/* Đẩy nội dung lên để không bị thanh tổng tiền che mất */
+#service-list-container {
+  padding-bottom: 100px; /* Tăng khoảng trống đệm */
+}
+
+/* Thanh tổng tiền dính đáy */
+.cost-estimator-footer {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+
+  /* QUAN TRỌNG: Thêm dòng này để tính padding vào trong width */
+  box-sizing: border-box;
+
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  border-top: 1px solid rgba(0, 0, 0, 0.05);
+
+  /* Tăng padding 2 bên để chữ không bị sát mép bo tròn */
+  padding: 16px 24px;
+
+  border-bottom-left-radius: 28px;
+  border-bottom-right-radius: 28px;
+
+  transform: translateY(100%);
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 10;
+  box-shadow: 0 -5px 20px rgba(0, 0, 0, 0.08);
+}
+/* Class để hiện footer */
+.cost-estimator-footer.visible {
+  transform: translateY(0);
+}
+
+/* Bố cục nội dung */
+.cost-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* Phần bên trái: Icon + Label */
+.cost-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #5f6368;
+}
+
+.cost-icon {
+  font-size: 24px;
+  color: var(--primary-color);
+  background: rgba(26, 115, 232, 0.1);
+  padding: 6px;
+  border-radius: 50%;
+}
+
+.cost-label {
+  font-size: 13px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Phần bên phải: Giá tiền + Số lượng */
+.cost-value {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.total-price-text {
+  font-size: 20px;
+  font-weight: 800; /* Chữ đậm hơn để nhấn mạnh */
+  color: var(--primary-color);
+  line-height: 1.2;
+}
+
+.item-count-badge {
+  font-size: 12px;
+  color: #5f6368;
+  font-weight: 500;
+  background: #f1f3f4;
+  padding: 2px 8px;
+  border-radius: 12px;
+  margin-top: 4px;
+}
+
+.svc-checkbox {
+  /* Xóa style mặc định của trình duyệt */
+  appearance: none;
+  -webkit-appearance: none;
+
+  width: 24px;
+  height: 24px;
+
+  /* Tạo viền tròn */
+  border: 2px solid #dadce0;
+  border-radius: 50%;
+
+  margin-right: 16px;
+  cursor: pointer;
+
+  /* Để căn giữa dấu tick sau này */
+  display: grid;
+  place-content: center;
+  transition: all 0.2s ease;
+
+  /* Đảm bảo không bị méo */
+  flex-shrink: 0;
+}
+
+/* Tạo dấu tick (checkmark) bên trong */
+.svc-checkbox::before {
+  content: "";
+  width: 14px;
+  height: 14px;
+  transform: scale(0); /* Mặc định ẩn dấu tick */
+  transition: 0.2s transform ease-in-out;
+
+  /* Vẽ hình dấu tick bằng clip-path (hoặc dùng icon font nếu muốn) */
+  box-shadow: inset 1em 1em white;
+  background-color: white;
+  transform-origin: center;
+  clip-path: polygon(14% 44%, 0 65%, 50% 100%, 100% 16%, 80% 0%, 43% 62%);
+}
+
+/* Trạng thái khi được chọn (Checked) */
+.svc-checkbox:checked {
+  background-color: var(--primary-color); /* Màu xanh chủ đạo */
+  border-color: var(--primary-color);
+}
+
+/* Hiện dấu tick khi checked */
+.svc-checkbox:checked::before {
+  transform: scale(1);
+}
+
+.service-search-box {
+  display: flex;
+  align-items: center;
+  background-color: #f3f4f6; /* Màu xám nhạt giống hình mẫu */
+  padding: 8px 12px; /* Padding vừa phải cho gọn */
+  border-radius: 8px; /* Bo góc 8px nhìn hiện đại */
+  border: 1px solid transparent; /* Ẩn viền đi */
+  transition: all 0.2s ease;
+  margin-bottom: 0px;
+}
+
+/* 2. Hiệu ứng khi bấm vào: Chuyển nền trắng, hiện viền xanh tinh tế */
+.service-search-box:focus-within {
+  background-color: #ffffff;
+  border-color: #3b82f6; /* Viền xanh chỉ hiện khi gõ */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05); /* Đổ bóng nhẹ */
+}
+
+/* 3. Icon kính lúp: Màu xám trung tính */
+.search-icon-small {
+  color: #9ca3af;
+  font-size: 20px;
+
+  /* QUAN TRỌNG: Tăng khoảng cách để không bị dính chữ */
+  margin-right: 12px;
+
+  /* QUAN TRỌNG: Giữ cứng icon, không cho bị bóp méo */
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+}
+
+.service-search-box:focus-within .search-icon-small {
+  color: #3b82f6;
+}
+
+/* 4. Ô nhập liệu */
+.service-search-input {
+  border: none;
+  background: transparent;
+  outline: none;
+
+  /* QUAN TRỌNG: Chiếm hết khoảng trống còn lại bên phải */
+  flex-grow: 1;
+
+  /* QUAN TRỌNG: Căn chữ sang trái tuyệt đối */
+  text-align: left;
+
+  font-size: 14px;
+  color: #1f2937;
+  font-weight: 500;
+  padding-left: 30px;
+  line-height: 1.5;
+}
+
+.service-search-input::placeholder {
+  color: #9ca3af;
+  font-weight: 400;
 }

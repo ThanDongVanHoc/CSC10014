@@ -266,10 +266,6 @@ class EmergencyCard(db.Model):
     def __repr__(self):
         return f'<EmergencyCard for User {self.user_id}>'
     
-
-
-
-
 class Hospital(db.Model):
     __tablename__ = 'hospitals'
 
@@ -293,6 +289,12 @@ class Hospital(db.Model):
     
     query_kw = db.Column(db.String(100), nullable=True) # Từ khóa đã xử lý
     original_keyword = db.Column(db.String(255), nullable=True) # Cột 'Tu khoa goc'
+
+    services: Mapped[List["HospitalService"]] = relationship(
+        "HospitalService", 
+        back_populates="hospital", 
+        cascade="all, delete-orphan"
+    )
 
     # Đánh Index:
     # 1. lat, lng: Tìm kiếm bán kính (Nearby search)
@@ -329,4 +331,22 @@ class Hospital(db.Model):
             "description": self.description,
             "query_kw": self.query_kw,
             "original_keyword": self.original_keyword
+        }
+    
+class HospitalService(db.Model):
+    __tablename__ = 'hospital_services'
+
+    id = db.Column(db.Integer, primary_key=True)
+    hospital_id = db.Column(db.Integer, db.ForeignKey('hospitals.id'), nullable=False)
+    
+    service_name = db.Column(db.Text, nullable=False)
+    price = db.Column(db.Text, nullable=True)       
+    
+    hospital: Mapped["Hospital"] = relationship("Hospital", back_populates="services")
+
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "service_name": self.service_name,
+            "price": self.price
         }

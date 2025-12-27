@@ -273,7 +273,8 @@ async function renderMedicalMarkers() {
             location: hospitalInfo.address,
             phone: hospitalInfo.phone || "---",
             website: hospitalInfo.website || "#",
-            latlng: L.latLng(h.lat, h.lng)
+            latlng: L.latLng(h.lat, h.lng),
+            services: h.services || [],
         };
 
         // Mở Sidebar

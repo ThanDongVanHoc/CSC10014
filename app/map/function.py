@@ -1,7 +1,7 @@
 from . import map_bp
 from flask import current_app
 from app.db import db
-from app.db.models import User
+from app.db.models import User, HospitalService
 import requests
 import json
 
@@ -162,4 +162,5 @@ def orchestrate_card(symptoms: dict, user_email: str = None, user_id: int = None
 		return resp.json()
 	except requests.RequestException as e:
 		return {'error': 'card_request_failed', 'detail': str(e)}
+
 

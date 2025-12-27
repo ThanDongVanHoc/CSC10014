@@ -1,13 +1,8 @@
 from . import api_bp
-from flask import jsonify, request, redirect, url_for, render_template
-import random
-from flask import session
+from flask import jsonify, request, redirect, url_for, render_template, session
 from app.services.med_service import HospitalService
 from app.services.user_service import UserService
-import requests
 from app.profile.routes import get_medical_history 
-
-
 
 @api_bp.route('/patient-history', methods=['GET'])
 def get_patient_history():
@@ -53,15 +48,12 @@ def get_all_patient_data():
 
     return data
 
-
-
 @api_bp.route('/find-hospitals', methods=['POST'])
 def find_hospital_action():
     # 1. Lấy dữ liệu JSON từ Fetch gửi lên
     data = request.json 
 
     print("user from medical form data:", data)
-
 
     location = data.get('location')
     
@@ -72,9 +64,6 @@ def find_hospital_action():
                      user_id=session.get('user_id', None), 
                      frontend_data = data)
     
-    
-
-
     # 3. Lưu vào Session để trang Map có thể lấy ra dùng
     session['ai_hospitals_results'] = found_hospitals
     session['user_location'] = location

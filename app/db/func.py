@@ -3,52 +3,45 @@ from .models import Place, Hospital
 from deep_translator import GoogleTranslator
 
 def poi_csv_to_db(record):
-    translator = GoogleTranslator(source='auto', target='en')
     query_kw = "other" 
-
-    # Lấy dữ liệu
+    
+    # Lấy dữ liệu (Lúc này dữ liệu đã được dịch ở bên ngoài rồi)
     name = record.get("Ten")
-    location = record.get("Dia chi")
+    location = record.get("Dia chi") # Đã là tiếng Anh
     lat = record.get("Lat")
     lng = record.get("Lng")
     img = record.get("Hinh anh")
     phone_number = record.get("So dien thoai")
     website = record.get("Website")
-    intro = record.get("Loai")
+    intro = record.get("Loai")       # Đã là tiếng Anh
     original_kw = record.get("Tu khoa goc", "") 
 
+    # Validate
     if pd.isna(location) or pd.isna(lat) or pd.isna(lng) or \
        pd.isna(img) or str(img).strip() == "Không có" or \
        pd.isna(intro):
-        
         return None
     
     if pd.isna(phone_number) or str(phone_number).strip().lower() in ["không có", "nan", ""]:
         phone_number = None
     
-    try:
-        if location:
-            location = translator.translate(str(location))
-        if intro:
-            intro = translator.translate(str(intro))
-            
-    except Exception as e:
-        print(f"Lỗi dịch thuật tại {name}: {e}")
-        
-    # Logic gán query_kw
-    if "Phòng công chứng" in original_kw:
+    # Logic gán query_kw (Giữ nguyên)
+    # Lưu ý: original_kw vẫn là tiếng Việt để check logic
+    check_kw = str(original_kw).lower() if original_kw else ""
+    
+    if "phòng công chứng" in check_kw:
         query_kw = "notary-office"
-    elif "Lãnh sự quán" in original_kw:
+    elif "lãnh sự quán" in check_kw:
         query_kw = "consulate"
-    elif "Bệnh viện" in original_kw:
+    elif "bệnh viện" in check_kw:
         query_kw = "hospital"
-    elif "Ủy ban nhân dân" in original_kw:
+    elif "ủy ban nhân dân" in check_kw:
         query_kw = "peoples-committee"
-    elif "Công an" in original_kw:
+    elif "công an" in check_kw:
         query_kw = "police"
-    elif "Trung tâm y tế" in original_kw:
+    elif "trung tâm y tế" in check_kw:
         query_kw = "medical-center"
-    elif "Cục QL XNC" in original_kw or "Cục Quản lý Xuất nhập cảnh" in original_kw: 
+    elif "cục ql xnc" in check_kw or "cục quản lý xuất nhập cảnh" in check_kw: 
         query_kw = "immigration-office"
         
     return Place(
@@ -109,3 +102,4 @@ def process_hospital_data(record):
         original_keyword=orig_kw,
         query_kw=query_kw
     )
+
