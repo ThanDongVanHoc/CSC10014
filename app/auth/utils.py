@@ -72,10 +72,6 @@ def logout_user_session():
     session.pop("avatar", None)
     session.pop("user_email", None)
 
-def get_user_by_email(email: str) -> User | None:
-    stmt = select(User).where(User.email == email)
-    return db.session.scalars(stmt).first()
-
 def get_user_by_google_sub_or_email(google_sub: str, email: str) -> User | None:
     stmt = select(User).where(
         or_(User.google_sub == google_sub, User.email == email)

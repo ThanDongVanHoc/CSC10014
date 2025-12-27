@@ -91,8 +91,6 @@ def main_chat():
         }
     }
 
-    
-
     try:
         response = requests.post(base_url, json=payload, params={"key": API_KEY})
         data = response.json()

@@ -5,9 +5,10 @@ from flask import render_template, send_from_directory, session, request, jsonif
 from sqlalchemy import select, and_
 from app.db import db
 import os
-from ..chat.utils import get_user, query_pois_db, check_poi_db
+from ..chat.utils import query_pois_db, check_poi_db
 import requests
 from ..services.med_service import HospitalService
+from app.db.func import get_user    
 
 @map_bp.route('/getHospital', methods = ['GET'])
 def get_hospital():

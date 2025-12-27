@@ -4,6 +4,7 @@ import json
 from . import profile_bp
 from app.db import db
 from app.db.models import MedicalRecord
+from app.db.func import get_user
 
 
 @profile_bp.route('/api/save-medical-record', methods=['POST'])
@@ -177,4 +178,9 @@ def update_emergency_card():
 
 @profile_bp.route('/')
 def profile():
-    return render_template('profile.html')
+    user_email = session.get('user_email', None)
+    print(user_email)
+    if not user_email:
+        return "Unauthorized", 401
+    user = get_user(user_email)
+    return render_template('profile.html', user=user)

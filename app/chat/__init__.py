@@ -8,5 +8,4 @@ chat_bp = Blueprint('chat', __name__,
 
 # Import routes để chúng được đăng ký vào Blueprint
 from . import routes
-from . import forms_routes
 from . import main_chat

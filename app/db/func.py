@@ -1,6 +1,10 @@
 import pandas as pd # Bắt buộc phải import pandas để check NaN
 from .models import Place, Hospital 
 from deep_translator import GoogleTranslator
+from sqlalchemy import select, and_
+from sqlalchemy.sql import func
+from app.db import db
+from app.db.models import User
 
 def poi_csv_to_db(record):
     query_kw = "other" 
@@ -102,4 +106,12 @@ def process_hospital_data(record):
         original_keyword=orig_kw,
         query_kw=query_kw
     )
+
+def get_user(email):
+    """
+    Tìm user theo email.
+    Trả về: User Object hoặc None nếu không tìm thấy.
+    """
+    stmt = select(User).where(User.email == email)
+    return db.session.scalar(stmt)
 

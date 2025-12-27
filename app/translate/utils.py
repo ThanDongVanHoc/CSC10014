@@ -2,16 +2,8 @@ from sqlalchemy import select, desc
 from sqlalchemy.sql import func
 from app.db import db
 from app.db.models import User, Translate_Conversation, Translate_Message
+from app.db.func import get_user
 from .storage_utils import delete_file_from_cloudinary
-
-def get_user(email):
-    """
-    Tìm user theo email.
-    Trả về: User Object hoặc None nếu không tìm thấy.
-    """
-    if not email: return None
-    stmt = select(User).where(User.email == email)
-    return db.session.scalar(stmt)
 
 def list_translate_conversations(email):
     """

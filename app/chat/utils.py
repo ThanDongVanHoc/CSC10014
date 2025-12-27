@@ -4,18 +4,8 @@ from sqlalchemy import select, and_
 from sqlalchemy.sql import func
 from app.db import db
 from app.db.models import User, Chat_Conversation, Chat_Message, Place
+from app.db.func import get_user
 import json
-
-# USER SERVICES
-
-def get_user(email):
-    """
-    Tìm user theo email.
-    Trả về: User Object hoặc None nếu không tìm thấy.
-    """
-    stmt = select(User).where(User.email == email)
-    return db.session.scalar(stmt)
-
 # CONVERSATION SERVICES
 
 def list_conversations(email):

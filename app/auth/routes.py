@@ -14,7 +14,6 @@ from .utils import (
     reset_pass_info_required,
     login_user_session,
     logout_user_session,
-    get_user_by_email,
     get_user_by_google_sub_or_email,
     verify_user_password,
     create_google_user,
@@ -22,6 +21,8 @@ from .utils import (
     get_session_data,
     clear_auth_session
 )
+
+from app.db.func import get_user
 
 load_dotenv(find_dotenv()) # Load lại cho chắc chắn các biến khác trong routes cần dùng
 
@@ -130,7 +131,7 @@ def signin_page():
         form_data['email'] = email if email else ''
 
         if not errors:
-            user = get_user_by_email(email)
+            user = get_user(email)
             
             if not user:
                 errors['email'] = 'This Email account does not exist.'
@@ -164,7 +165,7 @@ def signup_page():
             errors['confirm'] = 'Passwords do not match!'
 
         if not errors.get('email'): 
-            existing_user = get_user_by_email(email)
+            existing_user = get_user(email)
             if existing_user:
                 errors['email'] = 'This email is already in use!'
         
@@ -289,7 +290,7 @@ def reset_pass():
 
         user = None 
         if not errors:
-            user = get_user_by_email(email)
+            user = get_user(email)
             
             if not user:
                 errors['email'] = 'This Email account does not exist.'
@@ -356,7 +357,7 @@ def verify_reset_pass():
         session.modified = True
         return redirect(url_for('.handle_reset_pass'))
 
-    user = get_user_by_email(reset_pass_info["email"]) 
+    user = get_user(reset_pass_info["email"]) 
     if user:
         user.password_hash = reset_pass_info["new_password_hash"]
         db.session.commit()
@@ -392,7 +393,7 @@ def update_user_setting():
     if not data:
         return jsonify({"message": "No data provided"}), 400
 
-    user = get_user_by_email(session["user_email"])
+    user = get_user(session["user_email"])
     user.fullname = data.get('name') 
     user.phone = data.get('phone')
     user.media = data.get('media') 
