@@ -19,6 +19,7 @@ class HospitalService:
         lat = 10.76268
         lng = 106.68168
         symptoms = frontend_data.get('symptoms', None)
+        session["current_symptoms"] = symptoms
 
         try:
             stmt = select(User).where(User.id == user_id).limit(1)

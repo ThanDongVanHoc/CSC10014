@@ -27,3 +27,5 @@ timestamp,query,urgency,reasoning
 2025-12-27T08:31:34.354325,"Age: 0. Symptoms: I have been feeling very tired lately and I have a persistent dry cough. My throat is sore when I swallow, and I've noticed a mild fever starting this morning.. History: .",HIGH,
 2025-12-27T08:33:32.567177,"Age: 0. Symptoms: I have been feeling very tired lately and I have a persistent dry cough. My throat is sore when I swallow, and I've noticed a mild fever starting this morning.. History: .",HIGH,
 2025-12-27T13:11:15.721565,"Age: 19. Symptoms: Fever, Headache, Fatigue. History: .",HIGH,
+2025-12-27T15:57:16.235662,"Age: 19. Symptoms: Cough, Headache. History: .",LOW,
+2025-12-27T16:19:37.818313,"Age: 19. Symptoms: Cough, Headache. History: .",LOW,
