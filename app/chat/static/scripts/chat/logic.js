@@ -46,22 +46,35 @@ export async function sendMessage(text) {
   DOM.chatMessages.scrollTop = DOM.chatMessages.scrollHeight;
 
   try {
-    const { lat, lng } = await getLocationOrDefault();
+    // const { lat, lng } = await getLocationOrDefault();
 
     let data;
-    if (window.USE_MOCK_CHAT_RESPONSE) {
-      // const response = await fetch("/chat/static/mock_responses/patientData.json");
-      const response = await fetch("/api/get-all-patient-data");
+    // if (window.USE_MOCK_CHAT_RESPONSE) {
+    //   // const response = await fetch("/chat/static/mock_responses/patientData.json");
+    //   const response = await fetch("/api/get-all-patient-data");
 
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
+    //   if (!response.ok) {
+    //     throw new Error(`HTTP error! status: ${response.status}`);
+    //   }
 
-      data = await response.json();
-      console.log("Using mock chat response:", data);
-    }
+    //   data = await response.json();
+    //   console.log("Using mock chat response:", data);
+    // }
+
+
+    const resp = await fetch('/chat/bot-reply', {
+        method: 'POST', 
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({text})
+    });
+
+
+    const dataChat = await resp.json(); 
+    
+    const reply = dataChat.reply || 'No respond back.';
 
     loadingDiv.remove();
+
 
     // USER logic: Rename & Update
     if (State.isLoggedIn) {
@@ -77,8 +90,7 @@ export async function sendMessage(text) {
       }
     }
 
-    const textToSend = "I have created a patient record based on your input.";
-    appendMessageToUI("model", textToSend, data);
+    appendMessageToUI("model", reply, data);
 
     // GUEST logic: Lưu Bot msg
     currentChat = State.conversations.find((c) => c.id == State.selectedId);

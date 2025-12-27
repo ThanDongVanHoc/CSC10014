@@ -27,6 +27,10 @@
 />
 <link
   rel="stylesheet"
+  href="{{ url_for('map.static', filename='css/map/core/med-map.css') }}"
+/>
+<link
+  rel="stylesheet"
   href="{{ url_for('map.static', filename='css/map/core/markers.css') }}"
 />
 <link
@@ -77,6 +81,7 @@
 />
     <link rel="stylesheet" href="css/enhanced-admin-styles.css">
     
+  
 {% endblock %} {% block content %}
 
   <!-- MAP -->

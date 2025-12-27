@@ -310,9 +310,9 @@ def chat_issue():
 
 @chat_bp.route('/clear_session', methods=['POST'])
 def clear_session():
-    if "history" in session:
-        session["history"].clear()
-    return '', 204
+    session.pop("history", None) # Xóa history, nếu không có thì bỏ qua (None)
+    session.modified = True      # "Commit" giả cho session, ép Flask phải lưu lại
+    return jsonify({"status": "success"}), 200
 
 # ============= Conversation API cho user đã login =============
 
@@ -381,27 +381,3 @@ def delete_convo(convo_id):
 @chat_bp.route('/auth_status')
 def auth_status():
     return jsonify({"logged_in": bool(session.get("user_email"))})
-
-
-# In your Flask application file (e.g., routes.py or app.py)
-
-@chat_bp.route('/admin_helper')
-def admin_helper():
-    """Serve the administrative helper page"""
-    location_name = request.args.get('name', 'Unknown Location')
-    location_address = request.args.get('address', 'Address not available')
-    location_type = request.args.get('type', 'default')
-    lat = request.args.get('lat', '')
-    lng = request.args.get('lng', '')
-    
-    return render_template(
-        'admin_helper_page.html',
-        location_name=location_name,
-        location_address=location_address,
-        location_type=location_type,
-        lat=lat,
-        lng=lng
-    )
-    
-    
- 

@@ -281,54 +281,69 @@ async function renderMedicalMarkers() {
 
 // --- UTILS UI BUILDER ---
 function buildHorizontalPopup(hospital, stats, color) {
-  
-  const statusHtml = stats.isOpen 
-    ? `<span class="med-status open"><i class="fas fa-clock"></i> 24/7 Service</span>`
-    : `<span class="med-status closed"><i class="fas fa-door-closed"></i> Closed</span>`;
+  // 1. Xử lý trạng thái mở cửa
+  const statusClass = stats.isOpen ? "status-open" : "status-closed";
+  const statusText = stats.isOpen ? "Open 24/7" : "Closed";
+  const statusIcon = stats.isOpen ? "fa-clock" : "fa-door-closed";
 
   return `
     <div class="med-popup-card">
-      <div class="med-popup-left">
-        <div>
-          <div class="med-hospital-icon" style="background: ${color}">
-            <i class="fas fa-hospital-alt"></i>
+      <div class="med-header">
+        <div class="med-icon-box" style="background: ${color}15; color: ${color}; border: 1px solid ${color}30">
+          <i class="fas fa-hospital-alt"></i>
+        </div>
+        
+        <div class="med-header-info">
+          <div class="med-badges">
+            <span class="med-badge-priority" style="background:${color};">${stats.urgency} PRIORITY</span>
+            <span class="med-badge-status ${statusClass}"><i class="fas ${statusIcon}"></i> ${statusText}</span>
           </div>
-          <div class="med-info">
-            <div class="med-type" style="color:${color}">${stats.urgency} PRIORITY</div>
-            <h3>${hospital.name}</h3>
-            <div class="med-rating">
-              ${renderStars(Math.min(stats.rating / 2, 5))} 
-              <span style="color:#64748b; font-weight:400; margin-left:4px">(${stats.rating})</span>
+          
+          <h3 class="med-title">${hospital.name}</h3>
+          
+          <div class="med-rating-row">
+            <div class="stars">${renderStars(Math.min(stats.rating / 2, 5))}</div>
+            <span class="rating-num">${stats.rating} <span style="color:#94a3b8; font-weight:400">(128 reviews)</span></span>
+          </div>
+        </div>
+      </div>
+
+      <div class="med-body">
+        <div class="med-stats-grid">
+          <div class="med-stat-item">
+            <div class="stat-icon-circle" style="color:${color}; background:${color}10">
+                <i class="fas fa-hourglass-half"></i>
+            </div>
+            <div class="stat-content">
+              <span class="label">Wait Time</span>
+              <span class="value" style="color:${color}">${stats.waitTimeDisplay}</span>
+            </div>
+          </div>
+          
+          <div class="med-stat-item">
+            <div class="stat-icon-circle" style="color:#64748b; background:#f1f5f9">
+                <i class="fas fa-map-marker-alt"></i>
+            </div>
+            <div class="stat-content">
+              <span class="label">Distance</span>
+              <span class="value">${stats.distanceDisplay}</span>
             </div>
           </div>
         </div>
-        ${statusHtml}
       </div>
 
-      <div class="med-popup-right">
-        <div class="med-stats-row">
-          <div class="med-stat-box">
-             <span class="med-stat-label">Wait Time</span>
-             <span class="med-stat-value" style="color:${color}">${stats.waitTimeDisplay}</span>
-          </div>
-          <div class="med-stat-box">
-             <span class="med-stat-label">Distance</span>
-             <span class="med-stat-value">${stats.distanceDisplay}</span>
-          </div>
-        </div>
-
-        <div class="med-actions">
-          <button id="btn-route-${hospital.id}" class="med-btn med-btn-route">
-            <i class="fas fa-directions"></i>
-          </button>
-          <button id="btn-book-${hospital.id}" class="med-btn med-btn-book" style="background:${color}">
-            Book Now
-          </button>
-        </div>
+      <div class="med-footer">
+        <button id="btn-route-${hospital.id}" class="med-btn btn-outline">
+          <i class="fas fa-location-arrow"></i> Route
+        </button>
+        <button id="btn-book-${hospital.id}" class="med-btn btn-fill" style="background:${color}; box-shadow: 0 4px 15px ${color}50;">
+          Book Now <i class="fas fa-chevron-right" style="font-size: 10px; margin-left: 4px;"></i>
+        </button>
       </div>
     </div>
   `;
 }
+
 
 function renderStars(rating) {
   let stars = '';

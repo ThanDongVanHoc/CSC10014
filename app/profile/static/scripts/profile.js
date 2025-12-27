@@ -231,7 +231,7 @@ async function handleOCRUpload(input) {
     formData.append("file", file);
 
     try {
-        const response = await fetch("http://127.0.0.1:8000/extract-medical-data", {
+        const response = await fetch("http://127.0.0.1:8003/extract-medical-data", {
             method: "POST",
             body: formData
         });

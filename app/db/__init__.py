@@ -124,7 +124,7 @@ def load_hospital_command():
     
     db.create_all()
 
-    file_path = r"OneDrive - VNU-HCMUS\Desktop\HCMUS\Computational Thinking\Price hospital\data\data_benhvien_hcm.csv"
+    file_path = r"Price-hospital\data\data_benhvien_hcm.csv"
     click.echo(f"Đọc file: {file_path}")
     
     try:
@@ -251,7 +251,7 @@ def load_services_command(folder_path):
 
     # --- XỬ LÝ ĐƯỜNG DẪN ---
     if not folder_path:
-        folder_path = r"OneDrive - VNU-HCMUS\Desktop\HCMUS\Computational Thinking\Price hospital\data"
+        folder_path = r"Price-hospital\data"
 
     if not os.path.exists(folder_path):
         click.echo(f"❌ Không tìm thấy thư mục: {folder_path}")

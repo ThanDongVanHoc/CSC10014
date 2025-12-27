@@ -26,3 +26,4 @@ timestamp,query,urgency,reasoning
 2025-12-26T12:53:20.375683,Age: 0. Symptoms: I have been coughing and running a fever for the last three days. My throat is very sore and it hurts to swallow. History: .,HIGH,
 2025-12-27T08:31:34.354325,"Age: 0. Symptoms: I have been feeling very tired lately and I have a persistent dry cough. My throat is sore when I swallow, and I've noticed a mild fever starting this morning.. History: .",HIGH,
 2025-12-27T08:33:32.567177,"Age: 0. Symptoms: I have been feeling very tired lately and I have a persistent dry cough. My throat is sore when I swallow, and I've noticed a mild fever starting this morning.. History: .",HIGH,
+2025-12-27T13:11:15.721565,"Age: 19. Symptoms: Fever, Headache, Fatigue. History: .",HIGH,
