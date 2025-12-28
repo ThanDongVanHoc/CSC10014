@@ -95,7 +95,7 @@ export const MapGuideUI = {
           .smart-suggestion-btn.loading { opacity: 0.6; pointer-events: none; }
           .smart-suggestion-btn.loading::after {
             content: ''; display: inline-block; width: 12px; height: 12px;
-            border: 2px solid #2563eb; border-top-color: transparent;
+            border: 2px solid #00AEEF; border-top-color: transparent;
             border-radius: 50%; margin-left: 8px;
             animation: spin 0.6s linear infinite;
           }
@@ -122,12 +122,10 @@ export const MapGuideUI = {
     if (stepData.suggestion_query) {
       suggestionHtml = `
         <div class="smart-suggestion-btn" id="suggestion-btn-${stepData.id}" 
-             onclick="window.MapGuideUI.triggerSuggestion('${
-               stepData.suggestion_query
-             }', ${stepData.id})">
-            <i class="fas fa-search-location"></i> ${
-              stepData.suggestion_text || "Find nearby places"
-            }
+             onclick="window.MapGuideUI.triggerSuggestion('${stepData.suggestion_query
+        }', ${stepData.id})">
+            <i class="fas fa-search-location"></i> ${stepData.suggestion_text || "Find nearby places"
+        }
         </div>`;
     }
 
@@ -161,9 +159,8 @@ export const MapGuideUI = {
         <div class="guide-overlay-header">
             <div style="flex-grow:1">
                 <span class="guide-progress-text">Detailed Instruction</span>
-                <span class="guide-step-badge">${
-                  currentIndex + 1
-                } / ${totalSteps}</span>
+                <span class="guide-step-badge">${currentIndex + 1
+      } / ${totalSteps}</span>
             </div>
             <div class="guide-window-controls">
                 <button class="win-btn" id="btn-guide-min" title="Minimize"><i class="fas fa-minus"></i></button>
@@ -179,17 +176,14 @@ export const MapGuideUI = {
 
           ${actionButtonsHtml}
           
-          <div id="suggestion-result-${
-            stepData.id
-          }" class="suggestion-result" style="display:none; margin-top:10px;">
-            <i class="fas fa-check-circle"></i> <span id="suggestion-text-${
-              stepData.id
-            }"></span>
+          <div id="suggestion-result-${stepData.id
+      }" class="suggestion-result" style="display:none; margin-top:10px;">
+            <i class="fas fa-check-circle"></i> <span id="suggestion-text-${stepData.id
+      }"></span>
           </div>
           
-          <div id="problem-form-${
-            stepData.id
-          }" style="display:none; margin-top:10px;">
+          <div id="problem-form-${stepData.id
+      }" style="display:none; margin-top:10px;">
             <textarea
               id="problem-input-${stepData.id}"
               class="guide-problem-input"
@@ -198,39 +192,31 @@ export const MapGuideUI = {
             ></textarea>
 
             <div style="display:flex; gap:8px; margin-top:8px;">
-              <button class="btn-submit-issue" onclick="window.submitIssue(${
-                stepData.id
-              })">Gửi vấn đề</button>
-              <button class="btn-cancel-issue" onclick="window.toggleIssueForm(${
-                stepData.id
-              }, false)">Hủy</button>
+              <button class="btn-submit-issue" onclick="window.submitIssue(${stepData.id
+      })">Gửi vấn đề</button>
+              <button class="btn-cancel-issue" onclick="window.toggleIssueForm(${stepData.id
+      }, false)">Hủy</button>
             </div>
           </div>
 
-          <div id="solution-box-${
-            stepData.id
-          }" class="ai-solution-box" style="display:none; margin-top:10px;">
+          <div id="solution-box-${stepData.id
+      }" class="ai-solution-box" style="display:none; margin-top:10px;">
             <div class="solution-title"><i class="fas fa-robot"></i> AI Suggestions</div>
-            <div id="solution-content-${
-              stepData.id
-            }" class="solution-content"></div>
+            <div id="solution-content-${stepData.id
+      }" class="solution-content"></div>
           </div>
 
           <div id="action-buttons-${stepData.id}" class="guide-overlay-actions">
-            ${
-              currentIndex > 0
-                ? `<button class="action-btn btn-undo" id="btn-guide-undo"><i class="fas fa-undo"></i></button>`
-                : ""
-            }
-            <button class="action-btn btn-issue" id="btn-guide-issue-${
-              stepData.id
-            }"><i class="fas fa-exclamation-triangle"></i> Issue</button>
-            <button class="action-btn btn-next" id="btn-guide-next-${
-              stepData.id
-            }">
-                ${
-                  currentIndex === totalSteps - 1 ? "Finish" : "Next"
-                } <i class="fas fa-arrow-right"></i>
+            ${currentIndex > 0
+        ? `<button class="action-btn btn-undo" id="btn-guide-undo"><i class="fas fa-undo"></i></button>`
+        : ""
+      }
+            <button class="action-btn btn-issue" id="btn-guide-issue-${stepData.id
+      }"><i class="fas fa-exclamation-triangle"></i> Issue</button>
+            <button class="action-btn btn-next" id="btn-guide-next-${stepData.id
+      }">
+                ${currentIndex === totalSteps - 1 ? "Finish" : "Next"
+      } <i class="fas fa-arrow-right"></i>
             </button>
           </div>
         </div>
@@ -368,9 +354,8 @@ export const MapGuideUI = {
         if (resultDiv && resultText) {
           resultDiv.style.background = "#fff7ed";
           resultDiv.style.borderColor = "#fb923c";
-          resultText.innerHTML = `<i class="fas fa-info-circle" style="color:#ea580c"></i> ${
-            result.message || "No suitable places found"
-          }`;
+          resultText.innerHTML = `<i class="fas fa-info-circle" style="color:#ea580c"></i> ${result.message || "No suitable places found"
+            }`;
           resultDiv.style.display = "block";
           setTimeout(() => {
             if (resultDiv) {

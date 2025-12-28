@@ -40,9 +40,12 @@
 }
 
 .profile-left-wrapper {
-  display: flex; /* Xếp Avatar và Text thành hàng ngang */
-  align-items: center; /* Căn giữa theo chiều dọc */
-  gap: 24px; /* Khoảng cách giữa Avatar và Tên */
+  display: flex;
+  /* Xếp Avatar và Text thành hàng ngang */
+  align-items: center;
+  /* Căn giữa theo chiều dọc */
+  gap: 24px;
+  /* Khoảng cách giữa Avatar và Tên */
 }
 
 /* --- AVATAR --- */
@@ -50,8 +53,10 @@
   position: relative;
   /* XÓA: margin-right: 24px; (Không cần nữa) */
   /* XÓA: margin-bottom: 0; */
-  width: 80px; /* GIẢM: Giảm xuống 80px hoặc 90px cho gọn hàng ngang */
-  height: 80px; /* GIẢM: Tương ứng */
+  width: 80px;
+  /* GIẢM: Giảm xuống 80px hoặc 90px cho gọn hàng ngang */
+  height: 80px;
+  /* GIẢM: Tương ứng */
   flex-shrink: 0;
 }
 
@@ -82,14 +87,15 @@
 
 .edit-avatar-btn:hover {
   transform: scale(1.1);
-  background: #009966;
+  background: #1d4ed8;
 }
 
 /* --- SIDEBAR TEXT --- */
 .profile-fullname {
   margin: 0;
   white-space: nowrap;
-  font-size: 20px; /* Tăng lên xíu cho đẹp */
+  font-size: 20px;
+  /* Tăng lên xíu cho đẹp */
   font-weight: 800;
   line-height: 1;
 }
@@ -98,7 +104,8 @@
 .profile-email {
   margin: 0;
   padding-left: 16px;
-  border-left: 2px solid #e5e7eb; /* Đường gạch ngăn cách */
+  border-left: 2px solid #e5e7eb;
+  /* Đường gạch ngăn cách */
   line-height: 1;
   color: #6b7280;
 }
@@ -106,7 +113,8 @@
 .profile-badges {
   margin: 0;
   padding-left: 16px;
-  border-left: 2px solid #e5e7eb; /* Đường gạch ngăn cách */
+  border-left: 2px solid #e5e7eb;
+  /* Đường gạch ngăn cách */
   display: flex;
   align-items: center;
 }
@@ -120,14 +128,19 @@
   /* THÊM DÒNG NÀY: Để ngăn xuống dòng khi màn hình đủ rộng */
   flex-wrap: nowrap;
 }
+
 /* Stats: Đảm bảo nằm gọn gàng bên phải */
 .profile-stats {
   display: flex;
   align-items: center;
-  justify-content: flex-end; /* Căn sang phải */
-  width: auto; /* Chỉ chiếm độ rộng vừa đủ nội dung */
-  margin-left: auto; /* Đẩy hết phần còn dư sang bên trái */
-  gap: 30px; /* Khoảng cách giữa Active và HCMC */
+  justify-content: flex-end;
+  /* Căn sang phải */
+  width: auto;
+  /* Chỉ chiếm độ rộng vừa đủ nội dung */
+  margin-left: auto;
+  /* Đẩy hết phần còn dư sang bên trái */
+  gap: 30px;
+  /* Khoảng cách giữa Active và HCMC */
 
   /* Xóa border-left cũ nếu muốn nó nằm tách biệt hẳn */
   border-left: none;
@@ -149,6 +162,7 @@
   background: #ecfdf5;
   color: var(--brand);
 }
+
 .badge-id {
   background: #f3f4f6;
   color: #4b5563;
@@ -167,8 +181,10 @@
   border-left: 2px solid #e5e7eb;
   display: flex;
   align-items: center;
-  gap: 8px; /* Tạo khoảng cách giữa "Verified" và "ID" */
-  flex-wrap: nowrap; /* Ép buộc nằm trên 1 dòng */
+  gap: 8px;
+  /* Tạo khoảng cách giữa "Verified" và "ID" */
+  flex-wrap: nowrap;
+  /* Ép buộc nằm trên 1 dòng */
 }
 
 .stat-item {
@@ -176,17 +192,20 @@
   flex-direction: column;
   align-items: center;
 }
+
 .stat-value {
   font-size: 16px;
   font-weight: 800;
   color: #111827;
 }
+
 .stat-label {
   font-size: 11px;
   color: #9ca3af;
   font-weight: 600;
   text-transform: uppercase;
 }
+
 .stat-divider {
   width: 1px;
   background: #e5e7eb;
@@ -413,13 +432,13 @@
 .btn-save {
   background-color: var(--brand);
   color: white;
-  box-shadow: 0 4px 10px rgba(0, 179, 126, 0.2);
+  box-shadow: 0 4px 10px rgba(37, 99, 235, 0.2);
 }
 
 .btn-save:hover {
-  background-color: #009966;
+  background-color: #1d4ed8;
   transform: translateY(-1px);
-  box-shadow: 0 6px 12px rgba(0, 179, 126, 0.3);
+  box-shadow: 0 6px 12px rgba(37, 99, 235, 0.3);
 }
 
 /* 3. NÚT DISCARD (Đỏ nhạt) */
@@ -455,11 +474,13 @@
   padding: 20px;
   border: 1px solid rgba(0, 179, 126, 0.1);
 }
+
 .medical-content {
   display: flex;
   align-items: center;
   gap: 16px;
 }
+
 .medical-icon-large {
   width: 48px;
   height: 48px;
@@ -471,12 +492,14 @@
   color: var(--brand);
   box-shadow: 0 4px 12px rgba(0, 179, 126, 0.15);
 }
+
 .medical-info h4 {
   margin: 0 0 4px 0;
   font-size: 16px;
   font-weight: 800;
   color: #064e3b;
 }
+
 .medical-info p {
   margin: 0;
   font-size: 13px;
@@ -493,6 +516,7 @@
   cursor: pointer;
   transition: all 0.2s;
 }
+
 .btn-action-medical:hover {
   background: var(--brand);
   color: #ffffff;
@@ -504,26 +528,31 @@
     opacity: 0;
     transform: translateY(20px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
   }
 }
+
 .fade-up {
   animation: fadeUp 0.6s ease-out forwards;
 }
 
 /* --- RESPONSIVE --- */
 @media (max-width: 900px) {
+
   .profile-page-wrapper,
   .form-grid {
     grid-template-columns: 1fr;
   }
+
   .medical-widget {
     flex-direction: column;
     text-align: center;
     gap: 20px;
   }
+
   .medical-content {
     flex-direction: column;
   }
@@ -563,21 +592,27 @@
 
 /* Tùy chỉnh Thanh cuộn cho Chrome, Safari, và Edge */
 .history-list-container::-webkit-scrollbar {
-  width: 6px; /* Độ rộng thanh cuộn (nhỏ gọn) */
+  width: 6px;
+  /* Độ rộng thanh cuộn (nhỏ gọn) */
 }
 
 .history-list-container::-webkit-scrollbar-track {
-  background: transparent; /* Nền của thanh cuộn */
+  background: transparent;
+  /* Nền của thanh cuộn */
 }
 
 .history-list-container::-webkit-scrollbar-thumb {
-  background-color: #e5e7eb; /* Màu của tay kéo (xám nhạt giống Profile) */
-  border-radius: 20px; /* Bo tròn đầu thanh */
-  border: 2px solid transparent; /* Tạo khoảng trống nếu cần */
+  background-color: #e5e7eb;
+  /* Màu của tay kéo (xám nhạt giống Profile) */
+  border-radius: 20px;
+  /* Bo tròn đầu thanh */
+  border: 2px solid transparent;
+  /* Tạo khoảng trống nếu cần */
 }
 
 .history-list-container::-webkit-scrollbar-thumb:hover {
-  background-color: #d1d5db; /* Đậm hơn một chút khi di chuột vào */
+  background-color: #d1d5db;
+  /* Đậm hơn một chút khi di chuột vào */
 }
 
 .history-item-card {
@@ -655,9 +690,12 @@
 }
 
 .btn-view-detail {
-  background: #ffffff; /* Nền trắng */
-  color: var(--brand); /* Màu xanh thương hiệu */
-  border: 1px solid #dcfce7; /* Viền xanh nhạt */
+  background: #ffffff;
+  /* Nền trắng */
+  color: var(--brand);
+  /* Màu xanh thương hiệu */
+  border: 1px solid #dcfce7;
+  /* Viền xanh nhạt */
   width: 40px;
   height: 40px;
   border-radius: 10px;
@@ -669,7 +707,8 @@
 }
 
 .btn-view-detail:hover {
-  background: #ecfdf5; /* Nền xanh cực nhạt khi hover */
+  background: #ecfdf5;
+  /* Nền xanh cực nhạt khi hover */
   border-color: var(--brand);
   transform: scale(1.05);
 }
@@ -708,14 +747,18 @@
 .draft-section {
   /* Đảm bảo chiếm trọn chiều rộng grid giống Medical Card */
   grid-column: 1 / -1;
-  width: 100%; /* Khớp với chiều rộng bạn đã đặt cho medical-section */
+  width: 100%;
+  /* Khớp với chiều rộng bạn đã đặt cho medical-section */
   margin: 0 auto 32px auto;
 
   background: #ffffff;
-  border-radius: 24px; /* Bo góc lớn đồng bộ với profile-card */
+  border-radius: 24px;
+  /* Bo góc lớn đồng bộ với profile-card */
   border: 1px solid #f3f4f6;
-  border-left: 4px solid var(--brand); /* Thanh màu xanh đặc trưng bên trái */
-  padding: 32px; /* Padding rộng rãi giống các thẻ trên */
+  border-left: 4px solid var(--brand);
+  /* Thanh màu xanh đặc trưng bên trái */
+  padding: 32px;
+  /* Padding rộng rãi giống các thẻ trên */
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
   box-sizing: border-box;
 }
@@ -753,7 +796,8 @@
   width: 50px;
   height: 50px;
   border: 5px solid #f3f3f3;
-  border-top: 5px solid #3498db; /* Màu chính của bạn */
+  border-top: 5px solid #3498db;
+  /* Màu chính của bạn */
   border-radius: 50%;
   animation: spin 1s linear infinite;
 }
@@ -762,6 +806,7 @@
   0% {
     transform: rotate(0deg);
   }
+
   100% {
     transform: rotate(360deg);
   }
@@ -777,7 +822,8 @@
 }
 
 .btn-delete-record:hover {
-  background-color: #ef4444 !important; /* Màu đỏ đậm hơn khi hover */
+  background-color: #ef4444 !important;
+  /* Màu đỏ đậm hơn khi hover */
   color: white !important;
   transform: scale(1.05);
 }
@@ -809,9 +855,11 @@
 }
 
 .card-removing {
-  transform: translateX(100px); /* Đẩy thẻ sang phải */
+  transform: translateX(100px);
+  /* Đẩy thẻ sang phải */
   opacity: 0;
-  margin-bottom: -100px; /* Thu hẹp khoảng cách để thẻ dưới trượt lên mượt mà */
+  margin-bottom: -100px;
+  /* Thu hẹp khoảng cách để thẻ dưới trượt lên mượt mà */
   pointer-events: none;
 }
 
@@ -831,8 +879,10 @@
 
 /* Khi đang xem, nút sẽ có màu khác */
 .btn-view-detail.viewing {
-  background: #f1f5f9; /* Màu xám nhạt */
-  color: #64748b; /* Màu icon trầm xuống */
+  background: #f1f5f9;
+  /* Màu xám nhạt */
+  color: #64748b;
+  /* Màu icon trầm xuống */
   border-color: #cbd5e1;
 }
 
@@ -847,9 +897,12 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(17, 24, 39, 0.6); /* Màu xám tối mờ */
-  backdrop-filter: blur(4px); /* Làm mờ hậu cảnh */
-  display: none; /* Ẩn mặc định */
+  background: rgba(17, 24, 39, 0.6);
+  /* Màu xám tối mờ */
+  backdrop-filter: blur(4px);
+  /* Làm mờ hậu cảnh */
+  display: none;
+  /* Ẩn mặc định */
   align-items: center;
   justify-content: center;
   z-index: 9999;

@@ -7,15 +7,19 @@
   height: 100%;
   max-height: 100%;
   width: 100%;
-  gap: 12px; /* Giảm gap xuống một chút (từ 16px -> 12px) để tiết kiệm diện tích */
-  overflow: hidden; /* Chặn mọi sự trôi/tràn ra ngoài */
-  padding-bottom: 2px; /* Fix lỗi viền dưới cùng đôi khi bị che mất 1px */
+  gap: 12px;
+  /* Giảm gap xuống một chút (từ 16px -> 12px) để tiết kiệm diện tích */
+  overflow: hidden;
+  /* Chặn mọi sự trôi/tràn ra ngoài */
+  padding-bottom: 2px;
+  /* Fix lỗi viền dưới cùng đôi khi bị che mất 1px */
   box-sizing: border-box;
 }
 
 /* KHUNG PANEL CHÍNH */
 .tr-panel {
-  flex: 1; /* Mỗi ô chia đều không gian còn lại */
+  flex: 1;
+  /* Mỗi ô chia đều không gian còn lại */
   display: flex;
   flex-direction: column;
   background-color: #ffffff;
@@ -34,15 +38,16 @@
 .tr-panel--patient {
   background: #f0f9ff;
 }
+
 .tr-panel--doctor {
   background: #ffffff;
 }
 
 /* Trạng thái Active */
 .tr-panel--active {
-  border-color: #00b37e;
+  border-color: #00AEEF;
   /* Shadow nhỏ lại để không bị cảm giác tràn viền */
-  box-shadow: 0 0 0 2px rgba(0, 179, 126, 0.15);
+  box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.15);
   background: #ffffff;
   z-index: 5;
 }
@@ -51,12 +56,15 @@
 .tr-panel__header {
   display: flex;
   align-items: center;
-  padding: 10px 16px; /* Giảm padding một chút cho gọn */
+  padding: 10px 16px;
+  /* Giảm padding một chút cho gọn */
   background: rgba(255, 255, 255, 0.95);
   border-bottom: 1px solid rgba(0, 0, 0, 0.06);
   gap: 12px;
-  flex-shrink: 0; /* Header không được co lại */
-  height: 50px; /* Cố định chiều cao header */
+  flex-shrink: 0;
+  /* Header không được co lại */
+  height: 50px;
+  /* Cố định chiều cao header */
   box-sizing: border-box;
 }
 
@@ -65,9 +73,11 @@
   flex: 1;
   display: flex;
   flex-direction: column;
-  overflow: hidden; /* Body con không được tràn ra khỏi panel */
+  overflow: hidden;
+  /* Body con không được tràn ra khỏi panel */
   position: relative;
-  min-height: 0; /* Quan trọng cho Flexbox cuộn */
+  min-height: 0;
+  /* Quan trọng cho Flexbox cuộn */
 }
 
 .toast-box {
@@ -92,7 +102,8 @@
   transform: translateY(20px);
   transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 
-  z-index: 9999; /* Luôn nổi lên trên */
+  z-index: 9999;
+  /* Luôn nổi lên trên */
 }
 
 /* Class kích hoạt hiển thị */
@@ -110,7 +121,8 @@
   height: 32px;
   border-radius: 8px;
   flex-shrink: 0;
-  background-color: #f0fdf4; /* Nền xanh nhạt cho icon check */
+  background-color: #f0fdf4;
+  /* Nền xanh nhạt cho icon check */
 }
 
 .toast-message {
@@ -121,7 +133,8 @@
 .toast-translate {
   position: absolute;
   right: 20px;
-  bottom: 30px; /* Cách đáy 30px */
+  bottom: 30px;
+  /* Cách đáy 30px */
   width: auto;
   max-width: 300px;
 }

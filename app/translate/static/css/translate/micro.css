@@ -136,16 +136,21 @@
 .tr-iconbtn.is-confirm i {
   font-size: 16px !important;
   line-height: 1;
-  transform: translateY(0.5px); /* cân mắt nhẹ */
+  transform: translateY(0.5px);
+  /* cân mắt nhẹ */
 }
 
 /* Chỉ nhấn màu icon (tinh tế) */
 .tr-iconbtn.is-cancel i {
   color: #ef4444;
-} /* đỏ nhẹ */
+}
+
+/* đỏ nhẹ */
 .tr-iconbtn.is-confirm i {
   color: #10b981;
-} /* xanh nhẹ */
+}
+
+/* xanh nhẹ */
 
 /* Hover: nâng nhẹ + kính rõ hơn tí */
 .tr-iconbtn.is-cancel:hover,
@@ -242,6 +247,7 @@
   /* Chỉnh nhẹ để icon tam giác nằm giữa thị giác */
   margin-left: 2px;
 }
+
 .tr-voice-btn.playing i {
   margin-left: 0;
 }
@@ -249,19 +255,25 @@
 /* 3. Khu vực Sóng âm (Waveform Wrapper) */
 .tr-voice-wave {
   display: flex;
-  align-items: center; /* Căn giữa theo chiều dọc */
-  justify-content: flex-start; /* Căn trái */
-  gap: 3px; /* Khoảng cách giữa các thanh */
+  align-items: center;
+  /* Căn giữa theo chiều dọc */
+  justify-content: flex-start;
+  /* Căn trái */
+  gap: 3px;
+  /* Khoảng cách giữa các thanh */
   height: 24px;
-  flex: 1; /* Chiếm hết khoảng trống còn lại */
+  flex: 1;
+  /* Chiếm hết khoảng trống còn lại */
 }
 
 /* 4. Các thanh sóng (Bars) */
 .tr-voice-bar {
   width: 3px;
   border-radius: 99px;
-  background-color: currentColor; /* Ăn theo màu chữ của cha */
-  opacity: 0.4; /* Trạng thái chưa chạy tới: Mờ */
+  background-color: currentColor;
+  /* Ăn theo màu chữ của cha */
+  opacity: 0.4;
+  /* Trạng thái chưa chạy tới: Mờ */
   transition: opacity 0.1s linear, height 0.2s ease;
 }
 
@@ -276,7 +288,8 @@
   font-weight: 500;
   min-width: 35px;
   text-align: right;
-  font-variant-numeric: tabular-nums; /* Giữ số không bị nhảy */
+  font-variant-numeric: tabular-nums;
+  /* Giữ số không bị nhảy */
 }
 
 /* --- THEME MÀU SẮC --- */
@@ -286,9 +299,11 @@
 .tr-msg.right .tr-voice-msg {
   color: #ffffff;
 }
+
 .tr-msg.right .tr-voice-btn i {
   color: #ffffff;
 }
+
 .tr-msg.right .tr-voice-btn:active {
   background: rgba(255, 255, 255, 0.2);
 }
@@ -298,6 +313,8 @@
 .tr-msg.left .tr-voice-msg {
   color: #0f172a;
 }
+
 .tr-msg.left .tr-voice-btn i {
-  color: #2563eb; /* Icon Play màu xanh đặc trưng */
+  color: #00AEEF;
+  /* Icon Play màu xanh đặc trưng */
 }

@@ -99,7 +99,7 @@ function generateBoardingPassHTML(data, isExport = false) {
   const p = data.patient;
 
   // 1. Color Logic
-  const triageColor = data.triage?.color_code || '#00b37e';
+  const triageColor = data.triage?.color_code || '#00AEEF';
 
   // Contrast Logic: Tự động chọn màu chữ Đen/Trắng
   const getContrastColor = (hexcolor) => {

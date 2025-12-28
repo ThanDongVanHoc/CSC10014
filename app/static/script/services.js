@@ -8,7 +8,7 @@ document.addEventListener("DOMContentLoaded", () => {
       // Kiểm tra nếu có đường dẫn hợp lệ
       if (href && href !== "#" && href !== "") {
         // Hiệu ứng visual: đổi màu viền ngay lập tức để người dùng biết đã bấm
-        card.style.borderColor = "#00b37e";
+        card.style.borderColor = "#00AEEF";
         card.style.backgroundColor = "#f9fafb";
 
         // Chuyển trang

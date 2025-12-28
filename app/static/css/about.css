@@ -24,7 +24,7 @@ body {
   background: #f3f4f6;
   font-weight: 700;
   font-size: 13px;
-  color: var(--brand-green-dark, #009966);
+  color: var(--brand-green-dark, #1d4ed8);
   margin-bottom: 20px;
   letter-spacing: 1px;
   text-transform: uppercase;
@@ -53,7 +53,8 @@ body {
   display: grid;
   /* Giảm minmax từ 220px xuống 180px để 5 thẻ vừa khít trên 1 hàng 1200px */
   grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-  gap: 20px; /* Giảm khoảng cách một chút */
+  gap: 20px;
+  /* Giảm khoảng cách một chút */
   justify-content: center;
 }
 
@@ -61,14 +62,16 @@ body {
 .team-card {
   background: #ffffff;
   border-radius: 24px;
-  padding: 30px 20px; /* Giảm padding cho gọn */
+  padding: 30px 20px;
+  /* Giảm padding cho gọn */
   text-align: center;
   border: 1px solid #f3f4f6;
   transition: all 0.3s ease;
   display: flex;
   flex-direction: column;
   align-items: center;
-  height: 100%; /* Để các thẻ cao bằng nhau */
+  height: 100%;
+  /* Để các thẻ cao bằng nhau */
 }
 
 .team-card:hover {
@@ -84,9 +87,12 @@ body {
   margin-bottom: 20px;
   position: relative;
 
-  border-radius: 50%; /* Biến khung vuông thành hình tròn */
-  overflow: hidden; /* Cắt bỏ phần thừa ra ngoài hình tròn */
-  display: flex; /* Căn giữa ảnh trong khung tròn */
+  border-radius: 50%;
+  /* Biến khung vuông thành hình tròn */
+  overflow: hidden;
+  /* Cắt bỏ phần thừa ra ngoài hình tròn */
+  display: flex;
+  /* Căn giữa ảnh trong khung tròn */
   align-items: center;
   justify-content: center;
 }
@@ -96,7 +102,7 @@ body {
   height: 100%;
   border-radius: 50%;
   object-fit: cover;
-  box-shadow: 0 0 0 4px #ecfdf5;
+  box-shadow: 0 0 0 4px #eff6ff;
 }
 
 /* Typography cho Card */
@@ -110,7 +116,7 @@ body {
 .member-role {
   font-size: 11px;
   font-weight: 700;
-  color: var(--brand, #00b37e);
+  color: var(--brand, #00AEEF);
   text-transform: uppercase;
   letter-spacing: 1px;
   margin-bottom: 12px;
@@ -135,7 +141,8 @@ body {
   width: 36px;
   height: 36px;
   border-radius: 50%;
-  background: #f3f4f6; /* Nền xám nhạt cho icon */
+  background: #f3f4f6;
+  /* Nền xám nhạt cho icon */
   color: #111827;
   display: flex;
   align-items: center;
@@ -147,7 +154,8 @@ body {
 .social-icon svg {
   width: 18px;
   height: 18px;
-  fill: currentColor; /* Để icon đổi màu theo text */
+  fill: currentColor;
+  /* Để icon đổi màu theo text */
 }
 
 /* Màu riêng cho từng mạng xã hội khi hover */
@@ -157,9 +165,11 @@ body {
 }
 
 .social-icon.fb:hover {
-  background: #1877f2; /* Màu xanh Facebook */
+  background: #1877f2;
+  /* Màu xanh Facebook */
 }
 
 .social-icon.in:hover {
-  background: #e1306c; /* Màu gradient Instagram (đơn giản hóa thành hồng) */
+  background: #e1306c;
+  /* Màu gradient Instagram (đơn giản hóa thành hồng) */
 }

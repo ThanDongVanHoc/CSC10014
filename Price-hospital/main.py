@@ -13,7 +13,7 @@ from pydantic import BaseModel
 DATA_FOLDER = "data"
 HOSPITAL_INFO_FILE = "data_benhvien_hcm.csv" # Main hospital info file
 HOST = "127.0.0.1"
-PORT = 8000  # Standard FastAPI port
+PORT = 8002  # Standard FastAPI port
 
 # Global state to hold loaded data
 global_df = pd.DataFrame()

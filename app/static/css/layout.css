@@ -2,14 +2,14 @@
 
 :root {
   --navbar-color: white;
-  --primary-color: #00b37e;
+  --primary-color: #00AEEF;
   --dark-blue: #0d2c54;
   --text-light: #555;
   --bg-light: #f4f8f7;
-  /* Giữ màu xanh của bạn, nếu muốn màu Estonia đổi thành #0065ca */
-  --brand: #00b37e;
+  /* Màu xanh dương */
+  --brand: #00AEEF;
   --muted: #6b7280;
-  --brand-600: #009966;
+  --brand-600: #1d4ed8;
   --bg: #fbfdff;
   --card: #ffffff;
   --radius: 12px;
@@ -21,10 +21,10 @@
 
 [data-theme="dark"] {
   --navbar-color: #0b0e12;
-  --brand: #00d58a;
+  --brand: #60a5fa;
   --muted: #9aa1a8;
   --bg: #0b0e12;
-  --card: blue;
+  --card: #1e293b;
   --glass: rgba(255, 255, 255, 0.03);
   --shadow: 0 8px 30px rgba(2, 6, 23, 0.6);
 }
@@ -48,9 +48,11 @@ main {
 /* ===== NAVIGATION BAR ===== */
 .navigation-bar {
   display: flex;
-  align-items: center; /* Căn giữa trục dọc */
+  align-items: center;
+  /* Căn giữa trục dọc */
   justify-content: space-between;
-  height: 90px; /* Header cao thoáng */
+  height: 90px;
+  /* Header cao thoáng */
   padding: 0 40px;
   background-color: #ffffff;
   border-bottom: 1px solid #e5e7eb;
@@ -71,14 +73,16 @@ main {
 .logo-img {
   width: 44px;
   height: 44px;
-  border-right: 1px solid #d1d5db; /* Đường gạch ngăn cách */
+  border-right: 1px solid #d1d5db;
+  /* Đường gạch ngăn cách */
   padding-right: 16px;
 }
 
 .logo-text {
   font-family: "Manrope", sans-serif;
   font-size: 16px;
-  font-weight: 800; /* Rất đậm */
+  font-weight: 800;
+  /* Rất đậm */
   color: var(--brand);
   line-height: 1.1;
   text-transform: uppercase;
@@ -105,8 +109,10 @@ main {
   position: relative;
   text-decoration: none;
   color: var(--text-main) !important;
-  font-size: 18px; /* Yêu cầu chữ to */
-  font-weight: 700; /* Chữ đậm tròn trịa */
+  font-size: 18px;
+  /* Yêu cầu chữ to */
+  font-weight: 700;
+  /* Chữ đậm tròn trịa */
   padding: 10px 0;
   transition: color 0.3s ease;
 }
@@ -145,7 +151,8 @@ main {
   color: var(--text-main);
   border: none;
   font-weight: 700;
-  font-size: 14px; /* Chữ nhỏ gọn */
+  font-size: 14px;
+  /* Chữ nhỏ gọn */
   text-decoration: none;
   cursor: pointer;
 
@@ -153,7 +160,8 @@ main {
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 40px; /* Chiều cao nhỏ gọn */
+  height: 40px;
+  /* Chiều cao nhỏ gọn */
   padding: 0 12px;
 }
 
@@ -168,7 +176,8 @@ main {
   border: 1px solid transparent;
   border-radius: 99px;
   font-weight: 700;
-  font-size: 14px; /* Chữ nhỏ gọn */
+  font-size: 14px;
+  /* Chữ nhỏ gọn */
   text-decoration: none;
   cursor: pointer;
   transition: all 0.2s ease;
@@ -178,7 +187,8 @@ main {
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 40px; /* Chiều cao nhỏ gọn */
+  height: 40px;
+  /* Chiều cao nhỏ gọn */
   padding: 0 24px;
 }
 
@@ -194,7 +204,8 @@ main {
 /* --- USER INFO (Đã sửa lỗi lệch dòng) --- */
 .user-info {
   display: flex;
-  align-items: center; /* Avatar và Text căn giữa theo trục ngang */
+  align-items: center;
+  /* Avatar và Text căn giữa theo trục ngang */
   gap: 12px;
   padding: 4px 20px 4px 6px;
   background: #f3f4f6;
@@ -226,7 +237,8 @@ main {
 
 .logout-link {
   font-size: 12px;
-  color: #ef4444; /* Màu đỏ */
+  color: #ef4444;
+  /* Màu đỏ */
   text-decoration: none;
   font-weight: 600;
   display: block;
@@ -264,8 +276,10 @@ main {
 .user-trigger {
   display: flex;
   align-items: center;
-  gap: 10px; /* Giảm khoảng cách */
-  padding: 4px 12px 4px 4px; /* Thu gọn padding trigger */
+  gap: 10px;
+  /* Giảm khoảng cách */
+  padding: 4px 12px 4px 4px;
+  /* Thu gọn padding trigger */
   background: #ffffff;
   border: 1px solid transparent;
   border-radius: 99px;
@@ -282,7 +296,8 @@ main {
 
 /* Avatar Frame - Nhỏ hơn chút */
 .avatar-frame {
-  width: 36px; /* Giảm từ 40px xuống 36px */
+  width: 36px;
+  /* Giảm từ 40px xuống 36px */
   height: 36px;
   border-radius: 50%;
   padding: 2px;
@@ -323,7 +338,8 @@ main {
 }
 
 .user-name-display {
-  font-size: 13px; /* Giảm font chữ tên */
+  font-size: 13px;
+  /* Giảm font chữ tên */
   font-weight: 700;
   color: #111827;
   display: block;
@@ -337,7 +353,8 @@ main {
   color: #d1d5db;
   transition: transform 0.3s ease;
   flex-shrink: 0;
-  transform: scale(0.9); /* Thu nhỏ icon mũi tên */
+  transform: scale(0.9);
+  /* Thu nhỏ icon mũi tên */
 }
 
 .user-dropdown-container:hover .chevron-icon {
@@ -358,9 +375,11 @@ main {
   width: 220px;
 
   background: #ffffff;
-  border-radius: 16px; /* Bo góc vừa phải hơn */
+  border-radius: 16px;
+  /* Bo góc vừa phải hơn */
   border: 1px solid #f3f4f6;
-  padding: 8px; /* Giảm padding tổng thể */
+  padding: 8px;
+  /* Giảm padding tổng thể */
 
   box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1),
     0 8px 10px -6px rgba(0, 0, 0, 0.05);
@@ -381,7 +400,8 @@ main {
   top: 100%;
   left: 0;
   width: 100%;
-  height: 10px; /* Giảm chiều cao cầu nối khớp với khoảng cách mới */
+  height: 10px;
+  /* Giảm chiều cao cầu nối khớp với khoảng cách mới */
   background: transparent;
 }
 
@@ -418,7 +438,8 @@ main {
   display: flex;
   align-items: center;
   gap: 10px;
-  padding: 8px 10px; /* Thu gọn padding item */
+  padding: 8px 10px;
+  /* Thu gọn padding item */
   border-radius: 10px;
   text-decoration: none;
   transition: all 0.2s ease;
@@ -435,7 +456,8 @@ main {
 
 /* Icon Box - Thu nhỏ */
 .item-icon-box {
-  width: 32px; /* Giảm từ 38px xuống 32px */
+  width: 32px;
+  /* Giảm từ 38px xuống 32px */
   height: 32px;
   border-radius: 8px;
   display: flex;
@@ -454,6 +476,7 @@ main {
   background-color: #f0f9ff;
   color: #0284c7;
 }
+
 .red-bg {
   background-color: #fef2f2;
   color: #ef4444;
@@ -466,7 +489,8 @@ main {
 }
 
 .item-main-text {
-  font-size: 13px; /* Giảm font */
+  font-size: 13px;
+  /* Giảm font */
   font-weight: 700;
   color: #374151;
 }
@@ -497,7 +521,8 @@ main {
 .dropdown-divider {
   height: 1px;
   background-color: #f3f4f6;
-  margin: 4px 0; /* Thu gọn margin divider */
+  margin: 4px 0;
+  /* Thu gọn margin divider */
 }
 
 .toast-box {
@@ -517,8 +542,10 @@ main {
   /* Trạng thái ẩn mặc định */
   visibility: hidden;
   opacity: 0;
-  transform: translateY(20px); /* Dịch xuống dưới */
-  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* Hiệu ứng nảy */
+  transform: translateY(20px);
+  /* Dịch xuống dưới */
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  /* Hiệu ứng nảy */
 }
 
 /* Class này sẽ được JS thêm vào để hiện thông báo */
@@ -531,18 +558,20 @@ main {
 .toast-icon-container {
   width: 32px;
   height: 32px;
-  background-color: #ecfdf5; /* Nền xanh nhạt */
+  background-color: #ecfdf5;
+  /* Nền xanh nhạt */
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--brand); /* Màu xanh chính (lấy từ biến --brand của bạn) */
+  color: var(--brand);
+  /* Màu xanh chính (lấy từ biến --brand của bạn) */
   flex-shrink: 0;
 }
 
 /* Nếu layout.css chưa có biến --brand thì dùng mã màu trực tiếp */
 .toast-icon-container {
-  color: #00b37e;
+  color: #00AEEF;
 }
 
 .toast-message {

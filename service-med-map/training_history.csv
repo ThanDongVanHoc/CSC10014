@@ -29,3 +29,8 @@ timestamp,query,urgency,reasoning
 2025-12-27T13:11:15.721565,"Age: 19. Symptoms: Fever, Headache, Fatigue. History: .",HIGH,
 2025-12-27T15:57:16.235662,"Age: 19. Symptoms: Cough, Headache. History: .",LOW,
 2025-12-27T16:19:37.818313,"Age: 19. Symptoms: Cough, Headache. History: .",LOW,
+2025-12-28T14:13:19.849767,"Age: 0. Symptoms: Cough, Headache, Headache. History: .",HIGH,
+2025-12-28T14:14:18.374267,"Age: 0. Symptoms: Cough, Headache, Headache. History: .",HIGH,
+2025-12-28T14:24:29.000228,"Age: 0. Symptoms: Fever, Cough, Headache, Fatigue. History: .",HIGH,
+2025-12-28T14:27:44.799196,"Age: 0. Symptoms: Fever, Cough, Headache. History: .",HIGH,
+2025-12-28T14:43:30.662239,"Age: 19. Symptoms: Fever, Cough, Headache. History: .",MEDIUM,

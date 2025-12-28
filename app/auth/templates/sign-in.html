@@ -1,101 +1,70 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Sign in - VietConnect</title>
-    <link
-      rel="icon"
-      type="image/png"
-      href="{{ url_for('static', filename='images/logo.png') }}"
-    />
 
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&display=swap"
-      rel="stylesheet"
-    />
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sign in - VietCare</title>
+  <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/logo.png') }}" />
 
-    <link
-      rel="stylesheet"
-      href="{{ url_for('auth.static', filename='css/common.css') }}"
-    />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&display=swap"
+    rel="stylesheet" />
 
-    <link
-      rel="stylesheet"
-      href="{{ url_for('auth.static', filename='css/pages/sign-in.css') }}"
-    />
-  </head>
+  <link rel="stylesheet" href="{{ url_for('auth.static', filename='css/common.css') }}" />
 
-  <body>
-    <div class="signin-card">
-      <img
-        src="{{ url_for('static', filename='images/logo.png') }}"
-        alt="VietConnect Logo"
-        class="signin-logo"
-      />
+  <link rel="stylesheet" href="{{ url_for('auth.static', filename='css/pages/sign-in.css') }}" />
+</head>
 
-      <h2 class="signin-title">Sign in to VietConnect</h2>
+<body>
+  <div class="signin-card">
+    <img src="{{ url_for('static', filename='images/logo.png') }}" alt="VietCare Logo" class="signin-logo" />
 
-      <form action="{{ url_for('auth.signin_page') }}" method="POST" id="form">
-        <div class="field">
-          <label for="email">Email address</label>
-          <input
-            id="email"
-            name="email"
-            type="email"
-            placeholder="name@example.com"
-            required
-            value="{{ form_data.email or '' }}"
-          />
-          {% if errors.email %}
-          <div class="error">{{ errors.email }}</div>
-          {% endif %}
-        </div>
+    <h2 class="signin-title">Sign in to VietCare</h2>
 
-        <div class="field">
-          <label for="password">
-            Password
-            <a href="{{ url_for('auth.reset_pass') }}" class="forgot-link"
-              >Forgot password?</a
-            >
-          </label>
-          <input
-            id="password"
-            name="password"
-            type="password"
-            placeholder="Enter your password"
-            required
-          />
-          {% if errors.password %}
-          <div class="error">{{ errors.password }}</div>
-          {% endif %}
-        </div>
-
-        <button type="submit" class="btn-submit">Sign in</button>
-      </form>
-
-      <div class="divider">or continue with</div>
-
-      <a href="{{ url_for('auth.google_login') }}" class="oauth-btn">
-        <img
-          src="https://www.svgrepo.com/show/475656/google-color.svg"
-          alt="Google"
-        />
-        Google
-      </a>
-
-      <div class="footer-text">
-        New to VietConnect?
-        <a href="{{url_for('auth.signup_page')}}">Create an account</a>
+    <form action="{{ url_for('auth.signin_page') }}" method="POST" id="form">
+      <div class="field">
+        <label for="email">Email address</label>
+        <input id="email" name="email" type="email" placeholder="name@example.com" required
+          value="{{ form_data.email or '' }}" />
+        {% if errors.email %}
+        <div class="error">{{ errors.email }}</div>
+        {% endif %}
       </div>
 
-      <div class="footer-link">
-        <a href="{{url_for('home_page')}}">← Back to Home</a>
+      <div class="field">
+        <label for="password">
+          Password
+          <a href="{{ url_for('auth.reset_pass') }}" class="forgot-link">Forgot password?</a>
+        </label>
+        <input id="password" name="password" type="password" placeholder="Enter your password" required />
+        {% if errors.password %}
+        <div class="error">{{ errors.password }}</div>
+        {% endif %}
       </div>
+
+      <button type="submit" class="btn-submit">Sign in</button>
+    </form>
+
+    <div class="divider">or continue with</div>
+
+    <a href="{{ url_for('auth.google_login') }}" class="oauth-btn">
+      <img src="https://www.svgrepo.com/show/475656/google-color.svg" alt="Google" />
+      Google
+    </a>
+
+    <div class="footer-text">
+      New to VietCare?
+      <a href="{{url_for('auth.signup_page')}}">Create an account</a>
     </div>
 
-    <script src="{{ url_for('auth.static', filename='scripts/pages/sign-in.js') }}"></script>
-  </body>
+    <div class="footer-link">
+      <a href="{{url_for('home_page')}}">← Back to Home</a>
+    </div>
+  </div>
+
+  <script src="{{ url_for('auth.static', filename='scripts/pages/sign-in.js') }}"></script>
+</body>
+
 </html>

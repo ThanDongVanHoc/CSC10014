@@ -45,8 +45,8 @@ export function renderSidebar(filter = "") {
                         <span class="title-text">${title}</span>
                     </div>
                     <div class="convo-sub" style="padding-left: 22px;">${formatTime(
-                      c.updated_at
-                    )}</div>
+      c.updated_at
+    )}</div>
                 </div>
                 <div class="chat-options" style="padding-left: 8px;"><span class="dots">⋯</span></div>
             </div>`;
@@ -224,7 +224,7 @@ function showChatToastMessage(message, isSuccess = true) {
 
   if (isSuccess) {
     iconContainer.style.backgroundColor = "#ecfdf5";
-    iconContainer.style.color = "#00b37e";
+    iconContainer.style.color = "#00AEEF";
     iconContainer.innerHTML =
       '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>';
   } else {

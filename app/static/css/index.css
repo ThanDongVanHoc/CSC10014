@@ -3,18 +3,19 @@
 /* ================================================= */
 
 :root {
-  --brand-green: #00b37e;
-  --brand-green-dark: #009966;
+  --brand-green: #00AEEF;
+  --brand-green-dark: #1d4ed8;
   --text-main: #111827;
   --muted: #6b7280;
   --card: #ffffff;
   --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
     0 2px 4px -1px rgba(0, 0, 0, 0.06);
-  --brand: #00b37e;
+  --brand: #00AEEF;
 }
 
 body {
-  background-color: #ffffff; /* Đặt nền body trắng */
+  background-color: #ffffff;
+  /* Đặt nền body trắng */
 }
 
 .hero-section-estonia {
@@ -62,12 +63,10 @@ body {
   display: inline-flex;
   align-items: center;
   gap: 10px;
-  background-image: linear-gradient(
-    to right,
-    #00b37e 0%,
-    #008f60 51%,
-    #0065ca 100%
-  );
+  background-image: linear-gradient(to right,
+      #00AEEF 0%,
+      #1d4ed8 51%,
+      #1e40af 100%);
   background-size: 200% auto;
   color: #ffffff;
   font-family: "Manrope", sans-serif;
@@ -77,14 +76,14 @@ body {
   border-radius: 99px;
   text-decoration: none;
   transition: 0.5s;
-  box-shadow: 0 4px 12px rgba(0, 179, 126, 0.25);
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25);
 }
 
 .btn-get-started-green:hover {
   background-position: right center;
   color: #e0f2fe;
   transform: translateY(-3px);
-  box-shadow: 0 10px 20px rgba(0, 101, 202, 0.3);
+  box-shadow: 0 10px 20px rgba(37, 99, 235, 0.3);
 }
 
 .btn-get-started-green svg {
@@ -123,9 +122,11 @@ body {
   0% {
     transform: translatey(0px);
   }
+
   50% {
     transform: translatey(-10px);
   }
+
   100% {
     transform: translatey(0px);
   }
@@ -137,12 +138,15 @@ body {
     text-align: center;
     gap: 50px;
   }
+
   .hero-actions-estonia {
     justify-content: center;
   }
+
   .stencil-title {
     font-size: 50px;
   }
+
   .hero-subtitle-estonia {
     margin-left: auto;
     margin-right: auto;
@@ -195,8 +199,10 @@ body {
   top: 40%;
   left: 50%;
 
-  margin-left: -150px; /* Căn giữa width */
-  margin-top: -240px; /* Căn giữa height */
+  margin-left: -150px;
+  /* Căn giữa width */
+  margin-top: -240px;
+  /* Căn giữa height */
 
   box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15);
 
@@ -210,13 +216,14 @@ body {
   width: 80px;
   height: 80px;
   margin-bottom: 30px;
-  background: #ecfdf5;
+  background: #eff6ff;
   color: var(--brand-green);
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
 }
+
 .card-vertical .icon svg {
   width: 40px;
   height: 40px;
@@ -245,6 +252,7 @@ body {
   z-index: 1;
   transition-delay: 0.05s;
 }
+
 .card-vertical.in-view:nth-child(1) {
   /* Đẩy cực xa sang trái (-380px) và giảm độ xoay còn -12deg để dễ đọc chữ */
   transform: rotate(-12deg) translateX(-450px) translateY(40px) scale(0.95);
@@ -255,6 +263,7 @@ body {
   z-index: 2;
   transition-delay: 0.15s;
 }
+
 .card-vertical.in-view:nth-child(2) {
   /* Đẩy xa hơn mức cũ (-140px) */
   transform: rotate(-4deg) translateX(-140px) translateY(0px) scale(0.98);
@@ -265,6 +274,7 @@ body {
   z-index: 3;
   transition-delay: 0.25s;
 }
+
 .card-vertical.in-view:nth-child(3) {
   /* Đẩy xa hơn mức cũ (140px) */
   transform: rotate(4deg) translateX(160px) translateY(0px) scale(0.98);
@@ -275,6 +285,7 @@ body {
   z-index: 4;
   transition-delay: 0.35s;
 }
+
 .card-vertical.in-view:nth-child(4) {
   /* Đẩy cực xa sang phải (380px) */
   transform: rotate(12deg) translateX(450px) translateY(40px) scale(0.95);
@@ -282,12 +293,14 @@ body {
 
 /* --- MOBILE: Trở về dạng xếp dọc bình thường --- */
 @media (max-width: 1200px) {
+
   /* Tăng breakpoint lên 1200px để tránh vỡ trên laptop nhỏ */
   .features-fanned-deck {
     height: auto;
     flex-direction: column;
     gap: 30px;
-    margin-top: 0px; /* Reset margin âm trên mobile */
+    margin-top: 0px;
+    /* Reset margin âm trên mobile */
   }
 
   .card-vertical {
@@ -318,16 +331,20 @@ body {
   margin-bottom: 50px;
 
   display: grid;
-  grid-template-columns: 1fr 1fr; /* Chia đôi màn hình: 1 bên chữ, 1 bên ảnh */
+  grid-template-columns: 1fr 1fr;
+  /* Chia đôi màn hình: 1 bên chữ, 1 bên ảnh */
   gap: 60px;
   align-items: center;
 }
 
 .what-is-title {
-  font-family: "Manrope", sans-serif; /* Hoặc font tiêu đề bạn đang dùng */
+  font-family: "Manrope", sans-serif;
+  /* Hoặc font tiêu đề bạn đang dùng */
   font-size: 42px;
-  color: #111827; /* Màu đen xám đậm */
-  font-weight: 300; /* Font mỏng giống mẫu E-Residency */
+  color: #111827;
+  /* Màu đen xám đậm */
+  font-weight: 300;
+  /* Font mỏng giống mẫu E-Residency */
   margin-bottom: 20px;
   line-height: 1.2;
 }
@@ -344,7 +361,8 @@ body {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  color: var(--brand-green); /* Dùng màu xanh thương hiệu của bạn */
+  color: var(--brand-green);
+  /* Dùng màu xanh thương hiệu của bạn */
   font-weight: 600;
   text-decoration: none;
   font-size: 16px;
@@ -361,7 +379,8 @@ body {
   position: relative;
   width: 100%;
   height: 400px;
-  background-color: #0065ca; /* Màu xanh nền giống mẫu E-Residency */
+  background-color: #0065ca;
+  /* Màu xanh nền giống mẫu E-Residency */
   border-radius: 24px;
   overflow: hidden;
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
@@ -373,18 +392,21 @@ body {
 .what-is-img {
   width: 100%;
   height: 100%;
-  object-fit: cover; /* Đảm bảo ảnh phủ kín khung mà không bị méo */
+  object-fit: cover;
+  /* Đảm bảo ảnh phủ kín khung mà không bị méo */
   transition: transform 0.5s ease;
 }
 
 .what-is-image-wrapper:hover .what-is-img {
-  transform: scale(1.05); /* Hiệu ứng zoom nhẹ khi di chuột vào */
+  transform: scale(1.05);
+  /* Hiệu ứng zoom nhẹ khi di chuột vào */
 }
 
 /* Responsive cho Mobile */
 @media (max-width: 992px) {
   .what-is-section {
-    grid-template-columns: 1fr; /* Chuyển thành 1 cột */
+    grid-template-columns: 1fr;
+    /* Chuyển thành 1 cột */
     gap: 40px;
     margin-top: 60px;
     text-align: center;
@@ -424,9 +446,11 @@ body {
 
 /* Style Card */
 .hiw-card {
-  background: #f9fafb; /* Nền xám rất nhạt */
+  background: #f9fafb;
+  /* Nền xám rất nhạt */
   border-radius: 16px;
-  overflow: hidden; /* Để bo góc cho ảnh ở trên */
+  overflow: hidden;
+  /* Để bo góc cho ảnh ở trên */
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   height: 100%;
   border: 1px solid #f3f4f6;
@@ -444,7 +468,8 @@ body {
 /* Vùng chứa ảnh/icon phía trên card */
 .hiw-image-area {
   height: 200px;
-  background-color: #ecfdf5; /* Nền xanh VietConnect nhạt */
+  background-color: #ecfdf5;
+  /* Nền xanh VietCare nhạt */
   display: flex;
   align-items: center;
   justify-content: center;
@@ -496,8 +521,10 @@ body {
     font-size: 36px;
     text-align: center;
   }
+
   .hiw-grid {
-    grid-template-columns: 1fr; /* Về 1 cột trên mobile */
+    grid-template-columns: 1fr;
+    /* Về 1 cột trên mobile */
     gap: 40px;
   }
 }

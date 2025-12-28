@@ -8,7 +8,8 @@
   transform: translateX(-50%);
   width: 90%;
   max-width: 450px;
-  z-index: 2000; /* Cao hơn mọi thứ */
+  z-index: 2000;
+  /* Cao hơn mọi thứ */
   display: flex;
   flex-direction: column;
   gap: 10px;
@@ -32,6 +33,7 @@
     transform: translateY(100px);
     opacity: 0;
   }
+
   to {
     transform: translateY(0);
     opacity: 1;
@@ -43,6 +45,7 @@
     opacity: 0;
     transform: translateY(10px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -104,7 +107,7 @@
   justify-content: center;
   gap: 8px;
   background: #eff6ff;
-  color: #2563eb;
+  color: #00AEEF;
   border: 1px dashed #bfdbfe;
   padding: 10px;
   border-radius: 8px;
@@ -138,7 +141,7 @@
   display: inline-block;
   width: 14px;
   height: 14px;
-  border: 2px solid #2563eb;
+  border: 2px solid #00AEEF;
   border-top-color: transparent;
   border-radius: 50%;
   animation: spin 0.6s linear infinite;
@@ -353,7 +356,8 @@
   gap: 12px;
   margin-top: 16px;
   padding-top: 16px;
-  border-top: 1px dashed rgba(0, 0, 0, 0.12); /* Đường kẻ mờ tinh tế hơn */
+  border-top: 1px dashed rgba(0, 0, 0, 0.12);
+  /* Đường kẻ mờ tinh tế hơn */
   justify-content: flex-start;
   flex-wrap: wrap;
 }
@@ -363,9 +367,11 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 10px 20px; /* Padding rộng hơn chút cho sang */
+  padding: 10px 20px;
+  /* Padding rộng hơn chút cho sang */
   border-radius: 8px;
-  font-family: "Segoe UI Semibold", "Segoe UI", Tahoma, sans-serif; /* Font dày hơn chút */
+  font-family: "Segoe UI Semibold", "Segoe UI", Tahoma, sans-serif;
+  /* Font dày hơn chút */
   font-size: 13px;
   font-weight: 600;
   letter-spacing: 0.4px;
@@ -381,26 +387,33 @@
   min-width: 135px;
   position: relative;
   overflow: hidden;
-  box-sizing: border-box; /* Đảm bảo padding không làm vỡ khung */
+  box-sizing: border-box;
+  /* Đảm bảo padding không làm vỡ khung */
 }
 
 .btn-doc-action i {
   margin-right: 10px;
-  font-size: 17px; /* Icon to hơn xíu */
+  font-size: 17px;
+  /* Icon to hơn xíu */
   transition: transform 0.2s;
-  filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.1)); /* Icon có bóng nhẹ */
+  filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.1));
+  /* Icon có bóng nhẹ */
 }
 
 /* Hover effects chung */
 .btn-doc-action:hover {
   transform: translateY(-3px);
 }
+
 .btn-doc-action:hover i {
-  transform: scale(1.1) rotate(-5deg); /* Icon lắc nhẹ khi hover */
+  transform: scale(1.1) rotate(-5deg);
+  /* Icon lắc nhẹ khi hover */
 }
+
 .btn-doc-action:active {
   transform: translateY(-1px);
-  filter: brightness(95%); /* Tối đi chút khi bấm xuống */
+  filter: brightness(95%);
+  /* Tối đi chút khi bấm xuống */
 }
 
 /* --- 1. PDF BUTTON (POWERPOINT STYLE - REDDISH ORANGE) --- */
@@ -444,14 +457,13 @@
   width: 100%;
   height: 100%;
   /* Vệt sáng sắc nét hơn */
-  background: linear-gradient(
-    90deg,
-    transparent,
-    rgba(255, 255, 255, 0.25),
-    transparent
-  );
+  background: linear-gradient(90deg,
+      transparent,
+      rgba(255, 255, 255, 0.25),
+      transparent);
   transition: 0.6s ease-in-out;
-  transform: skewX(-20deg); /* Nghiêng vệt sáng */
+  transform: skewX(-20deg);
+  /* Nghiêng vệt sáng */
 }
 
 .btn-doc-action:hover::after {
@@ -465,9 +477,12 @@
   left: 0;
   width: 100vw;
   height: 100vh;
-  background: rgba(0, 0, 0, 0.85); /* Đen mờ tối */
-  z-index: 99999; /* Luôn nổi trên cùng */
-  display: none; /* Mặc định ẩn */
+  background: rgba(0, 0, 0, 0.85);
+  /* Đen mờ tối */
+  z-index: 99999;
+  /* Luôn nổi trên cùng */
+  display: none;
+  /* Mặc định ẩn */
   flex-direction: column;
   align-items: center;
   justify-content: center;

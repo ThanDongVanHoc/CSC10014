@@ -1,14 +1,14 @@
 :root {
-    --primary: #00b37e;
-    --primary-dark: #008f64;
+    --primary: #00AEEF;
+    --primary-dark: #1d4ed8;
     --bg-page: #f0f4f8;
     --card-bg: #ffffff;
     --text-dark: #1e293b;
     --text-gray: #64748b;
     --border-light: #e2e8f0;
     --input-bg: #f8fafc;
-    --shadow-sm: 0 1px 3px rgba(0,0,0,0.05);
-    --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.05), 0 2px 4px -1px rgba(0,0,0,0.03);
+    --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.05);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
     --font-main: "Plus Jakarta Sans", sans-serif;
 }
 
@@ -19,9 +19,9 @@ body {
 
 .med-page-wrapper {
     padding: 40px 0;
-    background: linear-gradient(180deg, #e6fffa 0%, var(--bg-page) 300px);
+    background: linear-gradient(180deg, #eff6ff 0%, var(--bg-page) 300px);
     min-height: 100vh;
-    
+
     animation: slideDownFade 0.8s ease-out;
 }
 
@@ -68,14 +68,20 @@ body {
 /* Grid Layout */
 .med-grid {
     display: grid;
-    grid-template-columns: 2fr 1fr; /* Form wider than history */
+    grid-template-columns: 2fr 1fr;
+    /* Form wider than history */
     gap: 24px;
     align-items: start;
 }
 
 @media (max-width: 850px) {
-    .med-grid { grid-template-columns: 1fr; }
-    .history-panel { order: 2; }
+    .med-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .history-panel {
+        order: 2;
+    }
 }
 
 /* Cards */
@@ -84,7 +90,7 @@ body {
     border-radius: 20px;
     box-shadow: var(--shadow-md);
     padding: 32px;
-    border: 1px solid rgba(255,255,255,0.8);
+    border: 1px solid rgba(255, 255, 255, 0.8);
 }
 
 /* Section Titles inside form */
@@ -99,16 +105,28 @@ body {
     gap: 8px;
 }
 
-.section-title i { color: var(--primary); }
+.section-title i {
+    color: var(--primary);
+}
 
 /* Form Elements */
-.form-group { margin-bottom: 24px; }
+.form-group {
+    margin-bottom: 24px;
+}
 
-.form-row { display: grid; gap: 20px; }
-.form-row.two-col { grid-template-columns: 1fr 1fr; }
+.form-row {
+    display: grid;
+    gap: 20px;
+}
+
+.form-row.two-col {
+    grid-template-columns: 1fr 1fr;
+}
 
 @media (max-width: 600px) {
-    .form-row.two-col { grid-template-columns: 1fr; }
+    .form-row.two-col {
+        grid-template-columns: 1fr;
+    }
 }
 
 label {
@@ -136,8 +154,9 @@ label {
     font-family: inherit;
     font-size: 14px;
     transition: all 0.2s ease;
-    box-sizing: border-box; 
-    appearance: none; /* Removes default browser dropdown arrow */
+    box-sizing: border-box;
+    appearance: none;
+    /* Removes default browser dropdown arrow */
 }
 
 .med-input:focus {
@@ -147,7 +166,10 @@ label {
     box-shadow: 0 0 0 4px rgba(0, 179, 126, 0.1);
 }
 
-.med-input.textarea { resize: vertical; min-height: 100px; }
+.med-input.textarea {
+    resize: vertical;
+    min-height: 100px;
+}
 
 /* Custom Select Dropdown Styling */
 .select-wrapper {
@@ -189,7 +211,8 @@ label {
     background-color: #fff;
 }
 
-.left-split:focus, .right-split:focus {
+.left-split:focus,
+.right-split:focus {
     z-index: 10;
     position: relative;
 }
@@ -259,7 +282,10 @@ label {
     transition: all 0.2s;
 }
 
-.med-btn-secondary:hover { background: #f8fafc; color: var(--text-dark); }
+.med-btn-secondary:hover {
+    background: #f8fafc;
+    color: var(--text-dark);
+}
 
 /* Right Panel (History) */
 .history-header {
@@ -281,10 +307,23 @@ label {
     font-size: 20px;
 }
 
-.history-header h3 { margin: 0; font-size: 18px; font-weight: 700; }
-.small-text { font-size: 12px; color: var(--text-gray); margin: 2px 0 0 0; }
+.history-header h3 {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 700;
+}
 
-.history-list { display: flex; flex-direction: column; gap: 12px; }
+.small-text {
+    font-size: 12px;
+    color: var(--text-gray);
+    margin: 2px 0 0 0;
+}
+
+.history-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
 
 .history-item {
     display: flex;
@@ -311,8 +350,15 @@ label {
     text-transform: uppercase;
 }
 
-.recovered-st { background: #d1fae5; color: #065f46; }
-.ongoing-st { background: #fef3c7; color: #92400e; }
+.recovered-st {
+    background: #d1fae5;
+    color: #065f46;
+}
+
+.ongoing-st {
+    background: #fef3c7;
+    color: #92400e;
+}
 
 .info-box {
     margin-top: 24px;
@@ -336,14 +382,29 @@ label {
 }
 
 @keyframes pulse {
-    0% { opacity: 0.6; }
-    50% { opacity: 1; }
-    100% { opacity: 0.6; }
+    0% {
+        opacity: 0.6;
+    }
+
+    50% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0.6;
+    }
 }
 
 /* Results */
-.hidden { display: none; }
-.divider { height: 1px; background: var(--border-light); margin: 32px 0; }
+.hidden {
+    display: none;
+}
+
+.divider {
+    height: 1px;
+    background: var(--border-light);
+    margin: 32px 0;
+}
 
 .pred-item {
     margin-bottom: 16px;
@@ -351,29 +412,57 @@ label {
     border: 1px solid var(--border-light);
     border-radius: 10px;
 }
+
 .pred-header {
-    display: flex; justify-content: space-between;
-    margin-bottom: 8px; font-size: 14px; font-weight: 700;
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 8px;
+    font-size: 14px;
+    font-weight: 700;
     color: var(--text-dark);
 }
-.progress-bg { background: #f1f5f9; height: 10px; border-radius: 99px; overflow: hidden; }
-.progress-fill { height: 100%; border-radius: 99px; transition: width 1s ease-out; }
+
+.progress-bg {
+    background: #f1f5f9;
+    height: 10px;
+    border-radius: 99px;
+    overflow: hidden;
+}
+
+.progress-fill {
+    height: 100%;
+    border-radius: 99px;
+    transition: width 1s ease-out;
+}
 
 /* Colors for confidence */
-.high-conf { background: var(--primary); }
-.med-conf { background: #f59e0b; }
-.low-conf { background: #ef4444; }
+.high-conf {
+    background: var(--primary);
+}
+
+.med-conf {
+    background: #f59e0b;
+}
+
+.low-conf {
+    background: #ef4444;
+}
 
 
 
 /* Tạo hiệu ứng trượt và mờ dần */
 @keyframes slideDownFade {
     from {
-        transform: translateY(-40px); /* Bắt đầu cao hơn vị trí thực 40px */
-        opacity: 0;                   /* Mờ dần */
+        transform: translateY(-40px);
+        /* Bắt đầu cao hơn vị trí thực 40px */
+        opacity: 0;
+        /* Mờ dần */
     }
+
     to {
-        transform: translateY(0);     /* Về vị trí chuẩn */
-        opacity: 1;                   /* Hiện rõ */
+        transform: translateY(0);
+        /* Về vị trí chuẩn */
+        opacity: 1;
+        /* Hiện rõ */
     }
 }

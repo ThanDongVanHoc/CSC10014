@@ -21,7 +21,8 @@
 }
 
 .tr-composer .tr-iconbtn:hover {
-  background: #e2e8f0 !important; /* giữ hover xám cũ */
+  background: #e2e8f0 !important;
+  /* giữ hover xám cũ */
   color: #334155 !important;
   transform: translateY(-1px);
   box-shadow: 0 14px 30px rgba(15, 23, 42, 0.14),
@@ -41,22 +42,22 @@
 
 /* SEND: vẫn xanh nhưng tinh tế hơn (tròn + shadow nhẹ, hover ít lố) */
 .tr-composer .tr-iconbtn--send {
-  background: linear-gradient(135deg, #00b37e 0%, #009966 100%) !important;
+  background: linear-gradient(135deg, #00AEEF 0%, #1d4ed8 100%) !important;
   color: #ffffff !important;
 
-  box-shadow: 0 10px 22px rgba(16, 185, 129, 0.18),
+  box-shadow: 0 10px 22px rgba(37, 99, 235, 0.18),
     0 10px 22px rgba(15, 23, 42, 0.1), 0 1px 0 rgba(255, 255, 255, 0.25) inset;
 }
 
 .tr-composer .tr-iconbtn--send:hover {
   transform: translateY(-1px);
   filter: brightness(1.03);
-  box-shadow: 0 14px 32px rgba(16, 185, 129, 0.22),
+  box-shadow: 0 14px 32px rgba(37, 99, 235, 0.22),
     0 14px 32px rgba(15, 23, 42, 0.14), 0 1px 0 rgba(255, 255, 255, 0.3) inset;
 }
 
 .tr-composer .tr-mic:hover {
-  background: linear-gradient(135deg, #00b37e 0%, #009966 100%) !important;
+  background: linear-gradient(135deg, #00AEEF 0%, #1d4ed8 100%) !important;
   color: #fff !important;
 }
 
@@ -66,11 +67,14 @@
   font-weight: 700;
   padding: 5px 12px;
   border-radius: 20px;
-  background: #d1fae5; /* Xanh lá nhạt */
-  color: #00b37e; /* Chữ xanh lá */
+  background: #dbeafe;
+  /* Xanh dương nhạt */
+  color: #00AEEF;
+  /* Chữ xanh dương */
   letter-spacing: 0.5px;
   text-transform: uppercase;
 }
+
 .tr-role__pill--muted {
   background: #f1f5f9;
   color: #64748b;
@@ -143,6 +147,7 @@
   cursor: pointer;
   padding: 0;
 }
+
 .tr-pick__dot {
   width: 22px;
   height: 22px;
@@ -155,14 +160,17 @@
   font-size: 12px;
   transition: all 0.2s;
 }
+
 .tr-panel--active .tr-pick__dot {
-  background: #00b37e;
-  border-color: #00b37e;
+  background: #00AEEF;
+  border-color: #00AEEF;
   transform: scale(1.1);
 }
+
 .tr-pick__tick {
   display: none;
 }
+
 .tr-panel--active .tr-pick__tick {
   display: block;
 }
