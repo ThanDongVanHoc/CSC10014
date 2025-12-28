@@ -98,63 +98,75 @@ export async function loadSelectedChatToUI() {
 function generateBoardingPassHTML(data, isExport = false) {
   const p = data.patient;
 
-  // --- HELPER FUNCTION: Xử lý song ngữ ---
-  const renderBilingual = (obj, isLightMode = false) => {
+  // 1. Color Logic
+  const triageColor = data.triage?.color_code || '#00b37e';
+
+  // Contrast Logic: Tự động chọn màu chữ Đen/Trắng
+  const getContrastColor = (hexcolor) => {
+    hexcolor = hexcolor.replace('#', '');
+    if (hexcolor.length === 3) hexcolor = hexcolor.split('').map(c => c + c).join('');
+    const r = parseInt(hexcolor.substr(0, 2), 16);
+    const g = parseInt(hexcolor.substr(2, 2), 16);
+    const b = parseInt(hexcolor.substr(4, 2), 16);
+    const yiq = ((r * 299) + (g * 587) + (b * 114)) / 1000;
+    return (yiq >= 128) ? '#111827' : '#ffffff';
+  };
+
+  const headerTextColor = getContrastColor(triageColor);
+  const labelStyle = `color: ${headerTextColor}; opacity: 0.65; font-size: 10px; text-transform: uppercase; font-weight: 600;`;
+
+  // --- HELPER: Render Song ngữ chuẩn (English (Vietnamese)) ---
+  // Thống nhất phong cách hiển thị cho toàn bộ thẻ
+  const renderBilingualInline = (obj) => {
     if (!obj) return "—";
-    if (typeof obj === "string") return obj;
+    if (typeof obj === "string") return obj; // Fallback nếu là string
 
     const en = obj.en || obj.name_en || obj.name || "";
     const vi = obj.vi || obj.name_vi || "";
 
     if (!vi || vi.toLowerCase() === en.toLowerCase()) return en;
-    return `${en} <span class="bp-sub-text">${vi}</span>`;
+
+    // Sử dụng class opacity để nó tự hòa hợp với màu nền (dù nền đen hay trắng)
+    return `${en} <span class="bp-sub-text-inline">(${vi})</span>`;
   };
 
-  // --- HELPER FUNCTION: Xử lý danh sách ---
+  // --- HELPER: Render List ---
   const renderList = (arr) => {
-    if (!arr || arr.length === 0)
-      return "None <span class='bp-sub-text'>Không có</span>";
+    if (!arr || arr.length === 0) return "None <span style='opacity:0.6'>(Không có)</span>";
     return arr
-      .map(
-        (item) => `<span class="bp-list-item">${renderBilingual(item)}</span>`
-      )
+      .map((item) => `<div class="bp-list-item">• ${renderBilingualInline(item)}</div>`)
       .join("");
   };
 
-  // Data mapping
+  // Data Setup
   const triageCode = data.triage?.level ? `L${data.triage.level}` : "NA";
-  const triageDisplay = renderBilingual(data.triage?.display_text);
+  const triageDisplay = renderBilingualInline(data.triage?.display_text); // Dùng inline cho gọn
 
   const today = new Date();
-  const dateStr = today.toLocaleDateString("vi-VN", {
-    day: "2-digit",
-    month: "2-digit",
-    year: "numeric",
-  });
-  const timeStr = today.toLocaleTimeString("en-US", {
-    hour: "2-digit",
-    minute: "2-digit",
-    hour12: false,
-  });
+  const dateStr = today.toLocaleDateString("vi-VN", { day: "2-digit", month: "2-digit", year: "numeric" });
+  const timeStr = today.toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit", hour12: false });
 
   const natCode = p.nationality?.code || "VN";
-  const natName = renderBilingual(p.nationality);
+  const natName = renderBilingualInline(p.nationality); // VD: VietNam (Việt Nam)
   const emPhone = p.emergency_contact?.phone || "N/A";
   const emName = p.emergency_contact?.name || "N/A";
 
-  const closeBtnHTML = isExport
-    ? ""
-    : `<button class="bp-close-floating" id="internal-close-btn" title="Close">&times;</button>`;
+  const closeBtnHTML = isExport ? "" : `<button class="bp-close-floating" id="internal-close-btn" title="Close">&times;</button>`;
 
+  // Handle Symptoms (Logic cũ của bạn đã tốt, chỉ chỉnh lại style chút xíu)
   let complaintContent = "—";
-  if (
-    data.chief_complaint?.symptoms &&
-    data.chief_complaint.symptoms.length > 0
-  ) {
-    complaintContent = renderList(data.chief_complaint.symptoms);
+  if (data.chief_complaint?.symptoms && data.chief_complaint.symptoms.length > 0) {
+    complaintContent = data.chief_complaint.symptoms
+      .map(s => renderBilingualInline(s)) // Tái sử dụng hàm chuẩn hóa ở trên
+      .join(", ");
   } else {
     complaintContent = data.chief_complaint?.original || "—";
   }
+
+  const bloodType = p.blood_type || "Unknown";
+  const bloodTypeDisplay = bloodType === "Unknown"
+    ? `Unknown <span class="bp-sub-text-inline">(Chưa rõ)</span>`
+    : bloodType;
 
   return `
     <div class="medical-boarding-pass">
@@ -163,88 +175,87 @@ function generateBoardingPassHTML(data, isExport = false) {
       <div class="bp-route">
         <div class="bp-station text-left">
           <span class="bp-station-label">NATIONALITY / QUỐC TỊCH</span>
-          <span class="bp-station-code">${natCode}</span>
-          <span class="bp-station-name">${natName}</span>
-        </div>
-
-        <div class="bp-flight-icon" style="transform: none;">
-           <svg width="32" height="32" viewBox="0 0 24 24" fill="#0d2c54">
-              <path d="M19 3H5C3.9 3 3 3.9 3 5V19C3 20.1 3.9 21 5 21H19C20.1 21 21 20.1 21 19V5C21 3.9 20.1 3 19 3ZM10 17H8V15H6V13H8V11H10V13H12V15H10V17ZM16 19H14V17H16V19ZM16 15H14V13H16V15ZM16 11H14V9H16V11ZM16 7H14V5H16V7Z" />
-           </svg>
+          <div style="font-size:24px; font-weight:800; line-height:1; color: var(--bp-accent)">${natCode}</div>
+          <div style="font-size:12px; font-weight:600; color: var(--bp-accent); margin-top:4px;">${natName}</div>
         </div>
 
         <div class="bp-station text-right" style="align-items: flex-end;">
           <span class="bp-station-label">PRIORITY / MỨC ĐỘ</span>
-          <span class="bp-station-code text-danger">${triageCode}</span>
-          <span class="bp-station-name text-right" style="text-align:right;">${triageDisplay}</span>
+          <div style="display:flex; align-items:center; gap: 8px; margin-top:4px;">
+             <span class="bp-priority-badge" style="background-color: ${triageColor}; color: ${headerTextColor}; font-size:16px; padding: 4px 10px;">
+                ${triageCode}
+             </span>
+             <div style="text-align:right; display:flex; flex-direction:column;">
+                <span style="font-weight:700; font-size:13px; color:#111827; line-height:1.2;">${data.triage?.display_text?.en || ""}</span>
+                <span style="font-weight:500; font-size:11px; color:#6b7280; line-height:1.2;">${data.triage?.display_text?.vi || ""}</span>
+             </div>
+          </div>
         </div>
       </div>
 
-      <div class="bp-main-info">
+      <div class="bp-main-info" style="background-color: ${triageColor}; color: ${headerTextColor}; padding: 20px 24px;">
+        
         <div class="bp-row">
           <div class="bp-field">
-            <span class="bp-label-light">NAME / HỌ TÊN</span>
-            <span class="bp-value-large">${p.name || "—"}</span>
+            <span style="${labelStyle}">NAME / HỌ TÊN</span>
+            <span class="bp-value-large" style="font-size: 22px; color: ${headerTextColor}">${p.name || "—"}</span>
           </div>
           <div class="bp-field text-right">
-             <span class="bp-label-light">DATE / NGÀY</span>
-             <span class="bp-value-light">${dateStr}</span>
+             <span style="${labelStyle}">CHECK-IN</span>
+             <div style="display:flex; flex-direction:column; align-items:flex-end;">
+                <span style="font-size: 18px; font-weight:700; color: ${headerTextColor}">${timeStr}</span>
+                <span style="font-size: 13px; font-weight:500; opacity:0.8; color: ${headerTextColor}">${dateStr}</span>
+             </div>
           </div>
         </div>
 
-        <div class="bp-row">
+        <div class="bp-row" style="margin-bottom:0; margin-top:16px;">
           <div class="bp-field">
-            <span class="bp-label-light">AGE / GENDER</span>
-            <span class="bp-value-light">
-                ${p.age} / ${renderBilingual(p.gender, true)}
+            <span style="${labelStyle}">AGE / GENDER</span>
+            <span class="bp-value-light" style="color: ${headerTextColor}; font-size:16px;">
+                ${p.age} <span style="opacity:0.6">/</span> ${renderBilingualInline(p.gender)}
             </span>
           </div>
-          <div class="bp-field">
-            <span class="bp-label-light">BLOOD / NHÓM MÁU</span>
-            <span class="bp-value-light">${p.blood_type || "—"}</span>
-          </div>
-           <div class="bp-field text-right">
-            <span class="bp-label-light">TIME / GIỜ</span>
-            <span class="bp-value-light">${timeStr}</span>
+          <div class="bp-field text-right">
+            <span style="${labelStyle}">BLOOD / NHÓM MÁU</span>
+            <span class="bp-value-light" style="color: ${headerTextColor}; font-size:16px;">${bloodTypeDisplay}</span>
           </div>
         </div>
       </div>
 
-      <div class="bp-separator">
+      <div class="bp-separator" style="margin-top: -1px; z-index: 5;">
           <div class="bp-dashed-line"></div>
       </div>
 
-      <div class="bp-details">
-        
-        <div class="bp-detail-grid">
-           <div class="bp-field">
-              <span class="bp-label-dark">SYMPTOMS / TRIỆU CHỨNG</span>
-              <span class="bp-value-dark">${complaintContent}</span>
-           </div>
-           
-           <div class="bp-field">
-              <span class="bp-label-dark">MEDS / THUỐC ĐANG DÙNG</span>
+      <div class="bp-symptoms-section" style="border-left-color: ${triageColor}; margin-top:0; padding-top: 16px;">
+         <div class="bp-symptoms-header">
+            <span class="bp-symptoms-title">Chief Complaint / Triệu chứng chính</span>
+         </div>
+         <div class="bp-symptoms-content">
+            ${complaintContent}
+         </div>
+      </div>
+
+      <div class="bp-details bp-details-compact">
+        <div class="bp-detail-row">
+           <div class="bp-detail-col">
+              <span class="bp-label-dark">MEDS / THUỐC</span>
               <span class="bp-value-dark">${renderList(data.medications)}</span>
            </div>
+           <div class="bp-detail-col">
+              <span class="bp-label-dark">ALLERGIES / DỊ ỨNG</span>
+              <span class="bp-value-dark text-danger">${renderList(data.allergies)}</span>
+           </div>
         </div>
         
-        <div class="bp-detail-grid" style="margin-bottom:0;">
-           <div class="bp-field">
+        <div class="bp-detail-row">
+           <div class="bp-detail-col">
               <span class="bp-label-dark">HISTORY / TIỀN SỬ</span>
-              <span class="bp-value-dark">${renderList(
-                data.medical_history
-              )}</span>
-           </div>
-
-           <div class="bp-field">
-              <span class="bp-label-dark">ALLERGIES / DỊ ỨNG</span>
-              <span class="bp-value-dark text-danger">${renderList(
-                data.allergies
-              )}</span>
+              <span class="bp-value-dark">${renderList(data.medical_history)}</span>
            </div>
         </div>
 
-        <div class="bp-footer">
+        <div class="bp-footer" style="margin-top: 15px; border-top: 1px dashed #e5e7eb; padding-top: 15px;">
           <div class="bp-emergency">
              <span class="bp-emergency-label">EMERGENCY CONTACT / LIÊN HỆ KHẨN CẤP</span>
              <span class="bp-emergency-phone">${emPhone}</span>
@@ -256,7 +267,6 @@ function generateBoardingPassHTML(data, isExport = false) {
     </div>
   `;
 }
-
 // --- MODAL LOGIC ---
 function ensureMedicalModalExists() {
   if (document.getElementById("medical-modal")) return;

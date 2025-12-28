@@ -1,0 +1,583 @@
+{% extends "layout.html" %} 
+
+{% block title %}Hospital Price Search System - HCMC{% endblock %} 
+
+{% block css %}
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"/>
+
+    <style>
+        /* ================= THEME CONFIGURATION ================= */
+        :root {
+            --primary: #0f766e;       /* Teal-700 */
+            --primary-hover: #0d9488; /* Teal-600 */
+            --primary-light: #ccfbf1; /* Teal-100 */
+            --bg-body: #f8fafc;       /* Slate-50 */
+            --bg-card: #ffffff;
+            --text-main: #1e293b;     /* Slate-800 */
+            --text-secondary: #64748b;/* Slate-500 */
+            --border: #e2e8f0;        /* Slate-200 */
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.1);
+            --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06);
+            --radius-md: 12px;
+            --radius-lg: 16px;
+        }
+
+        body {
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            font-family: "Inter", "Plus Jakarta Sans", sans-serif;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* ================= LAYOUT ================= */
+        .main-container {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 0 24px;
+        }
+
+        /* Header */
+        .page-header {
+            text-align: center;
+            margin-bottom: 48px;
+        }
+        .page-title {
+            font-family: "Plus Jakarta Sans", sans-serif;
+            font-size: 36px;
+            font-weight: 800;
+            color: var(--primary);
+            margin-bottom: 12px;
+            letter-spacing: -0.02em;
+        }
+        .page-subtitle {
+            font-size: 16px;
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        /* ================= SEARCH COMPONENT ================= */
+        .search-card {
+            background: var(--bg-card);
+            border-radius: var(--radius-lg);
+            padding: 32px;
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--border);
+            margin-bottom: 40px;
+        }
+
+        .search-grid {
+            display: grid;
+            grid-template-columns: 2fr 1.5fr 1.5fr auto;
+            gap: 20px;
+            align-items: end;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .form-label {
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            color: var(--text-secondary);
+            letter-spacing: 0.05em;
+        }
+
+        .form-input, .form-select {
+            height: 48px;
+            padding: 0 16px;
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border);
+            font-family: inherit;
+            font-size: 14px;
+            color: var(--text-main);
+            background-color: #fff;
+            transition: all 0.2s ease;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .form-input:focus, .form-select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px var(--primary-light);
+        }
+
+        .price-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .price-separator { color: var(--text-secondary); }
+
+        /* Buttons */
+        .btn-action {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            height: 48px;
+            padding: 0 24px;
+            border-radius: var(--radius-md);
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            gap: 8px;
+            font-size: 14px;
+            border: none;
+        }
+
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+            box-shadow: 0 4px 6px rgba(15, 118, 110, 0.2);
+        }
+        .btn-primary:hover {
+            background-color: var(--primary-hover);
+            transform: translateY(-1px);
+        }
+        .btn-primary:disabled {
+            background-color: #94a3b8;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 1px solid var(--border);
+            color: var(--text-secondary);
+            width: 48px; /* Square for icon */
+        }
+        .btn-outline:hover {
+            border-color: var(--text-main);
+            color: var(--text-main);
+            background-color: #f1f5f9;
+        }
+
+        /* ================= RESULTS TABLE ================= */
+        .results-section {
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        .results-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding: 0 8px;
+        }
+        .results-count {
+            font-weight: 600;
+            color: var(--text-main);
+            font-size: 16px;
+        }
+        .results-count span { color: var(--primary); }
+
+        .table-container {
+            overflow-x: auto;
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--border);
+            background: white;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .custom-table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 800px;
+        }
+
+        .custom-table th {
+            text-align: left;
+            padding: 18px 24px;
+            font-size: 13px;
+            color: var(--text-secondary);
+            font-weight: 600;
+            text-transform: uppercase;
+            background-color: #f8fafc;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .custom-table td {
+            padding: 20px 24px;
+            border-bottom: 1px solid var(--border);
+            vertical-align: middle;
+        }
+
+        .custom-table tbody tr:last-child td { border-bottom: none; }
+        .custom-table tbody tr:hover { background-color: #f1f5f9; }
+
+        /* Table Content Styling */
+        .hospital-cell { display: flex; flex-direction: column; }
+        .hospital-name { font-weight: 700; color: var(--text-main); margin-bottom: 4px; }
+        .hospital-id { 
+            font-size: 11px; color: var(--text-secondary); 
+            background: #f1f5f9; padding: 2px 6px; border-radius: 4px; display: inline-block; width: fit-content;
+        }
+
+        .service-name {
+            color: #334155;
+            font-weight: 500;
+            font-size: 15px;
+            line-height: 1.5;
+        }
+
+        .price-badge {
+            background-color: var(--primary-light);
+            color: var(--primary);
+            font-weight: 700;
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-family: "Plus Jakarta Sans", sans-serif;
+            white-space: nowrap;
+        }
+
+        /* ================= STATES ================= */
+        .state-container {
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--text-secondary);
+        }
+        .spinner {
+            width: 40px; height: 40px;
+            border: 3px solid #e2e8f0;
+            border-top-color: var(--primary);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin: 0 auto 16px;
+        }
+        .load-more-btn {
+            margin: 30px auto;
+            display: block;
+            background: white;
+            border: 1px solid var(--border);
+            color: var(--primary);
+        }
+        .load-more-btn:hover {
+            background: var(--primary-light);
+            border-color: var(--primary);
+        }
+
+        /* Animations */
+        @keyframes spin { to { transform: rotate(360deg); } }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* Responsive */
+        @media (max-width: 992px) {
+            .search-grid { grid-template-columns: 1fr; gap: 16px; }
+            .price-group { display: grid; grid-template-columns: 1fr auto 1fr; }
+            
+            /* Card View for Mobile Table */
+            .custom-table, .custom-table tbody, .custom-table tr, .custom-table td { display: block; width: 100%; }
+            .custom-table thead { display: none; }
+            .custom-table tr { 
+                margin-bottom: 16px; 
+                border-bottom: 1px solid var(--border);
+                padding: 16px;
+            }
+            .custom-table td { 
+                padding: 8px 0; border: none; 
+                display: flex; justify-content: space-between; align-items: center;
+            }
+            .custom-table td:last-child { justify-content: flex-start; margin-top: 8px;}
+            
+            /* Special handling for mobile structure */
+            .service-name { font-weight: 700; margin-bottom: 4px; }
+        }
+    </style>
+{% endblock %} 
+
+{% block content %}
+    <main class="main-container">
+        <header class="page-header">
+            <h1 class="page-title"><i class="fa-solid fa-hospital-user"></i> Hospital Price Check</h1>
+            <p class="page-subtitle">
+                The open data system allows you to transparently compare technical service prices across major hospitals in Ho Chi Minh City.
+            </p>
+        </header>
+
+        <div class="search-card">
+            <form id="searchForm" class="search-grid">
+                <div class="form-group">
+                    <label class="form-label">Service Name</label>
+                    <div style="position: relative;">
+                        <input type="text" id="keyword" class="form-input" placeholder="e.g. General Checkup, MRI, X-Ray..." autocomplete="off">
+                        <i class="fa-solid fa-magnifying-glass" style="position: absolute; right: 16px; top: 16px; color: #94a3b8;"></i>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Hospital</label>
+                    <select id="hospitalSelect" class="form-select">
+                        <option value="">All Hospitals</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Price Range (VND)</label>
+                    <div class="price-group">
+                        <input type="text" id="minPrice" class="form-input currency-input" placeholder="Min" inputmode="numeric">
+                        
+                        <span class="price-separator"><i class="fa-solid fa-arrow-right"></i></span>
+                        
+                        <input type="text" id="maxPrice" class="form-input currency-input" placeholder="Max" inputmode="numeric">
+                    </div>
+                </div>
+
+                <div style="display: flex; gap: 12px;">
+                    <button type="button" class="btn-action btn-outline" onclick="resetForm()" title="Reset Filters">
+                        <i class="fas fa-redo"></i>
+                    </button>
+                    <button type="submit" class="btn-action btn-primary" id="btnSearch" style="width: 100%;">
+                        <span>Search</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <div class="results-section">
+            <div class="results-header">
+                <div class="results-count">Found <span id="totalResults">0</span> matching results</div>
+            </div>
+
+            <div class="table-container">
+                <table class="custom-table" id="resultsTable">
+                    <thead>
+                        <tr>
+                            <th style="width: 30%">Hospital</th>
+                            <th style="width: 50%">Service Name</th>
+                            <th style="width: 20%; text-align: right;">Unit Price</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tableBody">
+                        </tbody>
+                </table>
+            </div>
+
+            <div id="loading" class="state-container" style="display: none;">
+                <div class="spinner"></div>
+                <p>Retrieving data from server...</p>
+            </div>
+
+            <div id="emptyState" class="state-container" style="display: none;">
+                <i class="fa-solid fa-file-medical-alt" style="font-size: 48px; color: #cbd5e1; margin-bottom: 16px;"></i>
+                <p>No services found matching your criteria.</p>
+            </div>
+
+            <div id="errorState" class="state-container" style="display: none; color: #ef4444;">
+                <i class="fa-solid fa-triangle-exclamation" style="font-size: 32px; margin-bottom: 12px;"></i>
+                <p id="errorText">Unable to connect to the server.</p>
+            </div>
+
+            <button id="btnLoadMore" class="btn-action load-more-btn" style="display: none;" onclick="loadMore()">
+                Load More Results <i class="fa-solid fa-chevron-down"></i>
+            </button>
+        </div>
+    </main>
+{% endblock %} 
+
+{% block script %}
+    <script>
+        // CONFIGURATION
+        const API_BASE_URL = "http://127.0.0.1:8002"; 
+        const RESULTS_PER_PAGE = 20;
+        
+        // STATE
+        let currentSkip = 0;
+        let isFetching = false;
+
+        // --- 1. Initialization ---
+        document.addEventListener('DOMContentLoaded', () => {
+            fetchHospitals();
+            setupCurrencyFormatters(); // <--- Kích hoạt tính năng format tiền
+            showEmptyState(true, "Start by entering a keyword or selecting a hospital.");
+        });
+
+        // --- TÍNH NĂNG MỚI: Auto Format Currency (VNĐ) ---
+        function setupCurrencyFormatters() {
+            const inputs = document.querySelectorAll('.currency-input');
+            
+            inputs.forEach(input => {
+                input.addEventListener('input', function(e) {
+                    // 1. Lấy giá trị hiện tại và xóa hết ký tự không phải số
+                    let value = e.target.value.replace(/\D/g, '');
+                    
+                    // 2. Nếu có giá trị, format lại theo chuẩn VN (dấu chấm phân cách)
+                    if (value) {
+                        // Dùng Intl để format: 10000 -> 10.000
+                        value = new Intl.NumberFormat('vi-VN').format(value);
+                    }
+                    
+                    // 3. Gán lại vào ô input
+                    e.target.value = value;
+                });
+            });
+        }
+
+        // --- 2. Fetch Hospital List ---
+        async function fetchHospitals() {
+            try {
+                const response = await fetch(`${API_BASE_URL}/hospitals`);
+                if (!response.ok) throw new Error("Failed to load hospitals");
+                const hospitals = await response.json();
+                const select = document.getElementById('hospitalSelect');
+                hospitals.forEach(h => {
+                    const option = document.createElement('option');
+                    const val = typeof h === 'string' ? h : (h.hospital_name || h.name);
+                    option.value = val;
+                    option.text = val;
+                    select.appendChild(option);
+                });
+            } catch (error) {
+                console.error("API Error:", error);
+            }
+        }
+
+        // --- 3. Search Handler ---
+        document.getElementById('searchForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            searchServices(true);
+        });
+
+        async function searchServices(isNewSearch = false) {
+            if (isFetching) return;
+            
+            const tbody = document.getElementById('tableBody');
+            const loading = document.getElementById('loading');
+            const btnMore = document.getElementById('btnLoadMore');
+            const emptyState = document.getElementById('emptyState');
+            const errorState = document.getElementById('errorState');
+            const table = document.getElementById('resultsTable');
+
+            if (isNewSearch) {
+                currentSkip = 0;
+                tbody.innerHTML = '';
+                btnMore.style.display = 'none';
+                emptyState.style.display = 'none';
+                errorState.style.display = 'none';
+                document.getElementById('totalResults').innerText = '0';
+            }
+
+            isFetching = true;
+            loading.style.display = 'block';
+            document.getElementById('btnSearch').disabled = true;
+
+            const params = new URLSearchParams({
+                skip: currentSkip,
+                limit: RESULTS_PER_PAGE
+            });
+            
+            const keyword = document.getElementById('keyword').value.trim();
+            const hospital = document.getElementById('hospitalSelect').value;
+            
+            // --- QUAN TRỌNG: Lấy giá trị tiền và XÓA dấu chấm trước khi gửi API ---
+            // Ví dụ: "10.000" -> "10000"
+            const rawMinPrice = document.getElementById('minPrice').value.replace(/\./g, '');
+            const rawMaxPrice = document.getElementById('maxPrice').value.replace(/\./g, '');
+
+            if (keyword) params.append('q', keyword);
+            if (hospital) params.append('hospital_name', hospital);
+            if (rawMinPrice) params.append('min_price', rawMinPrice); // Gửi số nguyên
+            if (rawMaxPrice) params.append('max_price', rawMaxPrice); // Gửi số nguyên
+
+            try {
+                const response = await fetch(`${API_BASE_URL}/services?${params.toString()}`);
+                if (!response.ok) throw new Error(`Server Error: ${response.status}`);
+
+                const result = await response.json();
+                
+                document.getElementById('totalResults').innerText = new Intl.NumberFormat('en-US').format(result.total || 0);
+
+                if (result.data && result.data.length > 0) {
+                    renderRows(result.data);
+                    table.style.display = 'table';
+                    if (result.data.length === RESULTS_PER_PAGE && (currentSkip + RESULTS_PER_PAGE) < result.total) {
+                        btnMore.style.display = 'block';
+                    } else {
+                        btnMore.style.display = 'none';
+                    }
+                } else {
+                    if (isNewSearch) showEmptyState(true);
+                    btnMore.style.display = 'none';
+                }
+
+            } catch (error) {
+                console.error(error);
+                if (isNewSearch) {
+                    table.style.display = 'none';
+                    errorState.style.display = 'block';
+                    document.getElementById('errorText').innerText = "Could not connect to the Backend API.";
+                } else {
+                    alert("Failed to load more data.");
+                }
+            } finally {
+                loading.style.display = 'none';
+                isFetching = false;
+                document.getElementById('btnSearch').disabled = false;
+            }
+        }
+
+        // --- 4. Render Helper ---
+        function renderRows(data) {
+            const tbody = document.getElementById('tableBody');
+            data.forEach(item => {
+                const tr = document.createElement('tr');
+                const priceFmt = new Intl.NumberFormat('vi-VN', { 
+                    style: 'currency', 
+                    currency: 'VND' 
+                }).format(item.price);
+
+                tr.innerHTML = `
+                    <td>
+                        <div class="hospital-cell">
+                            <span class="hospital-name">${escapeHtml(item.hospital_name)}</span>
+                            <span class="hospital-id">${escapeHtml(item.hospital_id)}</span>
+                        </div>
+                    </td>
+                    <td><div class="service-name">${escapeHtml(item.service_name)}</div></td>
+                    <td style="text-align: right;"><span class="price-badge">${priceFmt}</span></td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        // --- 5. Utilities ---
+        function loadMore() {
+            currentSkip += RESULTS_PER_PAGE;
+            searchServices(false);
+        }
+
+        function resetForm() {
+            document.getElementById('searchForm').reset();
+            document.getElementById('tableBody').innerHTML = '';
+            document.getElementById('totalResults').innerText = '0';
+            document.getElementById('btnLoadMore').style.display = 'none';
+            document.getElementById('resultsTable').style.display = 'none';
+            showEmptyState(true, "Start by entering a keyword...");
+        }
+
+        function showEmptyState(show, message = "No services found matching your criteria.") {
+            const el = document.getElementById('emptyState');
+            const table = document.getElementById('resultsTable');
+            if (show) {
+                el.style.display = 'block';
+                el.querySelector('p').innerText = message;
+                table.style.display = 'none';
+            } else {
+                el.style.display = 'none';
+            }
+        }
+
+        function escapeHtml(text) {
+            if (!text) return "";
+            return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
+        }
+    </script>
+{% endblock %}

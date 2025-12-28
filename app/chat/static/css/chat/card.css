@@ -114,7 +114,8 @@
 /* ========================================= */
 #medical-modal {
   position: fixed;
-  top: 90px; /* Đẩy modal xuống 90px (bằng chiều cao Header) */
+  top: 90px;
+  /* Đẩy modal xuống 90px (bằng chiều cao Header) */
   height: calc(100% - 90px);
   left: 0;
   width: 100%;
@@ -164,14 +165,16 @@
   width: 24px;
   height: 24px;
   border-radius: 50%;
-  background: rgba(0, 0, 0, 0.05); /* Màu nền mờ nhạt */
+  background: rgba(0, 0, 0, 0.05);
+  /* Màu nền mờ nhạt */
   border: none;
   color: #9ca3af;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  z-index: 100; /* Luôn nổi lên trên */
+  z-index: 100;
+  /* Luôn nổi lên trên */
   font-size: 18px;
   line-height: 1;
   transition: all 0.2s;
@@ -185,15 +188,18 @@
 /* --- ROUTE --- */
 .bp-route {
   background: white;
-  padding: 24px 24px 20px 24px; /* Tăng padding top chút vì mất header */
+  padding: 24px 24px 20px 24px;
+  /* Tăng padding top chút vì mất header */
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
+
 .bp-station {
   display: flex;
   flex-direction: column;
 }
+
 .bp-station-label {
   font-size: 10px;
   color: var(--bp-gray);
@@ -201,18 +207,21 @@
   font-weight: 700;
   margin-bottom: 2px;
 }
+
 .bp-station-code {
   font-size: 36px;
   font-weight: 900;
   color: var(--bp-accent);
   line-height: 1;
 }
+
 .bp-station-name {
   font-size: 12px;
   color: var(--bp-brand);
   font-weight: 700;
   margin-top: 4px;
 }
+
 .bp-flight-icon {
   color: #e5e7eb;
   transform: rotate(90deg);
@@ -225,18 +234,22 @@
   color: white;
   position: relative;
 }
+
 .bp-row {
   display: flex;
   justify-content: space-between;
   margin-bottom: 20px;
 }
+
 .bp-row:last-child {
   margin-bottom: 0;
 }
+
 .bp-field {
   display: flex;
   flex-direction: column;
 }
+
 .bp-label-light {
   font-size: 10px;
   text-transform: uppercase;
@@ -244,11 +257,13 @@
   font-weight: 600;
   margin-bottom: 4px;
 }
+
 .bp-value-light {
   font-size: 15px;
   font-weight: 700;
   color: white;
 }
+
 .bp-value-large {
   font-size: 18px;
 }
@@ -262,11 +277,13 @@
   align-items: center;
   margin-top: -1px;
 }
+
 .bp-dashed-line {
   width: 100%;
   border-top: 2px dashed #d1d5db;
   margin: 0 20px;
 }
+
 .bp-separator::before,
 .bp-separator::after {
   content: "";
@@ -276,23 +293,30 @@
   height: 30px;
   z-index: 5;
 }
+
 .bp-separator::before {
   left: 0;
   background: radial-gradient(circle at 0 50%, transparent 10px, white 11px);
 }
+
 .bp-separator::after {
   right: 0;
   background: radial-gradient(circle at 100% 50%, transparent 10px, white 11px);
 }
 
 .bp-sub-text {
-  display: block; /* Xuống dòng */
-  font-size: 0.85em; /* Nhỏ hơn chữ chính 1 chút */
+  display: block;
+  /* Xuống dòng */
+  font-size: 0.85em;
+  /* Nhỏ hơn chữ chính 1 chút */
   font-weight: 500;
-  color: inherit; /* Kế thừa màu (trắng hoặc đen tùy nền) */
-  opacity: 0.8; /* Làm mờ nhẹ để không rối mắt */
+  color: inherit;
+  /* Kế thừa màu (trắng hoặc đen tùy nền) */
+  opacity: 0.8;
+  /* Làm mờ nhẹ để không rối mắt */
   margin-top: 2px;
-  font-style: italic; /* In nghiêng nhẹ cho dễ phân biệt */
+  font-style: italic;
+  /* In nghiêng nhẹ cho dễ phân biệt */
   line-height: 1.2;
 }
 
@@ -319,12 +343,14 @@
   padding: 10px 24px 30px 24px;
   flex-grow: 1;
 }
+
 .bp-detail-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 16px;
   margin-bottom: 20px;
 }
+
 .bp-label-dark {
   font-size: 10px;
   text-transform: uppercase;
@@ -332,12 +358,14 @@
   font-weight: 700;
   margin-bottom: 4px;
 }
+
 .bp-value-dark {
   font-size: 13px;
   font-weight: 600;
   color: var(--bp-text);
   line-height: 1.4;
 }
+
 .text-danger {
   color: #ef4444;
 }
@@ -345,7 +373,8 @@
 /* --- FOOTER --- */
 .bp-footer {
   display: flex;
-  justify-content: center; /* Căn giữa nội dung vì chỉ còn 1 cột */
+  justify-content: center;
+  /* Căn giữa nội dung vì chỉ còn 1 cột */
   align-items: center;
   margin-top: 20px;
   padding-top: 15px;
@@ -358,24 +387,31 @@
 .bp-emergency {
   display: flex;
   flex-direction: column;
-  align-items: center; /* Căn giữa các dòng chữ */
+  align-items: center;
+  /* Căn giữa các dòng chữ */
   text-align: center;
 }
 
 .bp-emergency-label {
   font-size: 9px;
   font-weight: 700;
-  color: #ef4444; /* Màu đỏ cảnh báo */
+  color: #ef4444;
+  /* Màu đỏ cảnh báo */
   text-transform: uppercase;
-  margin-bottom: 4px; /* Tăng khoảng cách chút cho thoáng */
+  margin-bottom: 4px;
+  /* Tăng khoảng cách chút cho thoáng */
   letter-spacing: 0.5px;
 }
 
 .bp-emergency-phone {
-  font-size: 16px; /* Tăng kích thước số điện thoại cho rõ */
-  font-weight: 800;
-  color: #111827;
-  line-height: 1.2;
+  font-size: 24px !important;
+  /* To hơn nữa */
+  letter-spacing: 1px;
+  margin: 4px 0;
+  color: #ef4444;
+  /* Màu đỏ */
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  /* Tạo khối nhẹ */
 }
 
 .bp-emergency-name {
@@ -383,4 +419,94 @@
   color: #6b7280;
   font-weight: 600;
   margin-top: 2px;
+}
+
+/* --- NEW ADDITIONS FOR UPDATED LAYOUT --- */
+
+/* Badge cho mức độ ưu tiên (Sử dụng dynamic color) */
+.bp-priority-badge {
+  padding: 4px 12px;
+  border-radius: 4px;
+  font-weight: 800;
+  color: #111827;
+  /* Màu chữ tối để tương phản với các màu cảnh báo sáng (Vàng/Cam) */
+  display: inline-block;
+  min-width: 40px;
+  text-align: center;
+  margin-right: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Phần Triệu chứng nổi bật */
+.bp-symptoms-section {
+  background: #f9fafb;
+  border-left: 5px solid var(--bp-brand);
+  /* Sẽ bị override bởi inline style color_code */
+  padding: 16px 24px;
+  margin-top: -10px;
+  /* Kéo lên đè nhẹ vào phần separator */
+  position: relative;
+  z-index: 10;
+  margin-bottom: 10px;
+}
+
+.bp-symptoms-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.bp-symptoms-title {
+  font-size: 11px;
+  font-weight: 800;
+  text-transform: uppercase;
+  color: var(--bp-gray);
+  letter-spacing: 0.5px;
+}
+
+.bp-symptoms-content {
+  font-size: 16px;
+  /* Chữ to hơn */
+  font-weight: 700;
+  color: var(--bp-text);
+  line-height: 1.4;
+}
+
+/* Điều chỉnh lại Grid chi tiết bên dưới */
+.bp-details-compact {
+  padding: 10px 24px 24px 24px;
+}
+
+.bp-detail-row {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 16px;
+  border-bottom: 1px dashed #e5e7eb;
+  padding-bottom: 12px;
+}
+
+.bp-detail-row:last-child {
+  border-bottom: none;
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+
+.bp-detail-col {
+  flex: 1;
+}
+
+/* Icon nhỏ cho section header */
+.icon-mini {
+  width: 14px;
+  height: 14px;
+  color: var(--bp-gray);
+}
+
+.bp-sub-text-inline {
+  font-size: 0.9em;
+  font-weight: 500;
+  opacity: 0.7;
+  /* Tự động ăn theo màu chữ chính (đen hoặc trắng) */
+  margin-left: 4px;
 }

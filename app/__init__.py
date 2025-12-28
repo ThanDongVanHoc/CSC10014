@@ -9,6 +9,7 @@ from .profile import profile_bp
 from .db import init_db
 from .map import map_bp 
 from .api import api_bp
+from .price_filter import price_filter_bp  
 
 import os
 import pathlib
@@ -37,7 +38,8 @@ def create_app(test_config = None):
     app.register_blueprint(translate_bp)
     app.register_blueprint(medical_form_bp)
     app.register_blueprint(api_bp)
-
+    app.register_blueprint(price_filter_bp)
+                                                                                                                                                         
     app.register_blueprint(profile_bp)
     #
     init_db(app)
