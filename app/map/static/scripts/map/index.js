@@ -9,16 +9,17 @@ import { initSearchService } from "./services/search.js";
 import { initGPSControl } from "./components/GPSControl.js";
 import { initMapEvents } from "./services/mapEvents.js";
 // --- NEW IMPORT ---
-import { initMedicalHeatmap, toggleMedicalMode} from "./components/MedicalMap.js"; 
+import { initMedicalHeatmap, toggleMedicalMode } from "./components/MedicalMap.js";
 
 
 export function initMap() {
   // 1. Initialize Map
   const map = L.map("map").setView([10.762622, 106.660172], 12);
 
-  L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-    maxZoom: 19,
-    attribution: "&copy; OSM contributors",
+  L.tileLayer('https://{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}', {
+    maxZoom: 20,
+    subdomains: ['mt0', 'mt1', 'mt2', 'mt3'],
+    attribution: '© Google Maps'
   }).addTo(map);
 
   setMapInstance(map);
@@ -29,23 +30,23 @@ export function initMap() {
   initSearchService(map);
   initGPSControl(map);
   initMapEvents(map);
-  
+
   // --- NEW: Initialize Medical Heatmap ---
   initMedicalHeatmap();
-  
+
   const medicalDataRaw = document.getElementById('medical-results-data');
   if (medicalDataRaw) {
-      const hospitals = JSON.parse(medicalDataRaw.textContent);
+    const hospitals = JSON.parse(medicalDataRaw.textContent);
 
-      if (hospitals && hospitals.hospitals.length > 0) {
+    if (hospitals && hospitals.hospitals.length > 0) {
 
-        console.log("Detecting AI results, auto-activating Medical Mode...");
-        toggleMedicalMode(); // Gọi hàm này để nó tự chạy render và đổi icon nút
+      console.log("Detecting AI results, auto-activating Medical Mode...");
+      toggleMedicalMode(); // Gọi hàm này để nó tự chạy render và đổi icon nút
 
-        if (hospitals.hospitals[0]) {
-            map.flyTo([hospitals.hospitals[0].lat, hospitals.hospitals[0].lng], 14);
-        }
+      if (hospitals.hospitals[0]) {
+        map.flyTo([hospitals.hospitals[0].lat, hospitals.hospitals[0].lng], 14);
       }
+    }
   }
 
   // 3. Initialize transport panel
