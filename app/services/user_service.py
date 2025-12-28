@@ -2,7 +2,7 @@ from flask import session, jsonify
 import json
 from sqlalchemy import select
 from app.db import db
-from app.db.models import User
+from app.db.models import User, EmergencyCard
 from app.gateways.card_gateway import CardGateway
 from datetime import datetime
 from app.profile.routes import get_medical_history 
@@ -64,11 +64,26 @@ class UserService:
             print(f"Error parsing medical history response: {e}")
             history_list = []
 
-        # --- 3. Tổng hợp dữ liệu (User DB + Medical History) ---
+        # --- 3. Tổng hợp dữ liệu (User DB + Medical History + EmergencyCard) ---
         
-        # A. Dị ứng & Mãn tính (Từ User Profile)
-        allergies = _parse_json_field(getattr(user, 'allergies', None)) if user else []
+        # Lấy thông tin từ EmergencyCard
+        emergency_card = None
+        if user:
+            emergency_card = EmergencyCard.query.filter_by(user_id=user.id).first()
+        
+        # A. Dị ứng & Mãn tính (Từ EmergencyCard hoặc User Profile)
+        # Ưu tiên lấy từ EmergencyCard trước
+        if emergency_card and emergency_card.allergies:
+            allergies = _parse_json_field(emergency_card.allergies)
+        else:
+            allergies = _parse_json_field(getattr(user, 'allergies', None)) if user else []
+        
         chronic_from_db = _parse_json_field(getattr(user, 'chronic_conditions', None)) if user else []
+        
+        # Blood type từ EmergencyCard
+        blood_type_value = None
+        if emergency_card and emergency_card.blood_group:
+            blood_type_value = emergency_card.blood_group
 
         # B. Xử lý Medications & History Strings (Từ MedicalRecord)
         extracted_medications = set()
@@ -147,7 +162,7 @@ class UserService:
             },
             "medical_critical": {
                 "current_symptoms": current_symptoms or "N/A",
-                "blood_type": getattr(user, 'blood_type', None) or session.get('blood_type') or "Unknown",
+                "blood_type": blood_type_value or getattr(user, 'blood_type', None) or session.get('blood_type') or "Unknown",
                 "allergies": allergies,
                 "Medications": final_medications,         # List tên thuốc đã lọc trùng
                 "Medical_history": final_medical_history, # List chẩn đoán
