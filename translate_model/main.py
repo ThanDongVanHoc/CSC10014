@@ -37,7 +37,7 @@ import edge_tts
 app = FastAPI(title="Medical AI Speech Translation Service")
 
 # Cấu hình Gemini
-GEMINI_API_KEY = os.getenv("GEMINI_API_KEY3") 
+GEMINI_API_KEY = os.getenv("GEMINI_API_KEY10") 
 genai.configure(api_key=GEMINI_API_KEY)
 model = genai.GenerativeModel('gemini-2.5-flash')
 

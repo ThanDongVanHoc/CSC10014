@@ -16,8 +16,6 @@ class HospitalService:
         lat = frontend_data.get('lat', None)
         lng = frontend_data.get('lng', None)
 
-        lat = 10.76268
-        lng = 106.68168
         symptoms = frontend_data.get('symptoms', None)
         session["current_symptoms"] = symptoms
 

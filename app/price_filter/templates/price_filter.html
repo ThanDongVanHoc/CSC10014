@@ -3,103 +3,130 @@
 {% block title %}Hospital Price Search System - HCMC{% endblock %} 
 
 {% block css %}
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet"/>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"/>
 
     <style>
-        /* ================= THEME CONFIGURATION ================= */
+        /* ================= THEME CONFIGURATION (MATCHING INDEX/LAYOUT) ================= */
         :root {
-            --primary: #0f766e;       /* Teal-700 */
-            --primary-hover: #0d9488; /* Teal-600 */
-            --primary-light: #ccfbf1; /* Teal-100 */
-            --bg-body: #f8fafc;       /* Slate-50 */
+            /* Brand Colors based on index.css & layout.css */
+            --brand: #00AEEF;       
+            --brand-dark: #1d4ed8; 
+            --brand-gradient: linear-gradient(to right, #00AEEF 0%, #1d4ed8 51%, #1e40af 100%);
+            
+            /* Text Colors */
+            --text-main: #111827;     /* Gray-900 */
+            --text-secondary: #6b7280;/* Gray-500 */
+            --text-light: #9ca3af;    /* Gray-400 */
+
+            /* Backgrounds */
+            --bg-body: #fbfdff;       
             --bg-card: #ffffff;
-            --text-main: #1e293b;     /* Slate-800 */
-            --text-secondary: #64748b;/* Slate-500 */
-            --border: #e2e8f0;        /* Slate-200 */
-            --shadow-sm: 0 1px 3px rgba(0,0,0,0.1);
-            --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06);
+            --bg-input: #ffffff;
+            --bg-hover: #f9fafb;
+
+            /* UI Elements */
+            --border: #e5e7eb;        
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            --shadow-brand: 0 4px 12px rgba(37, 99, 235, 0.25);
+            
             --radius-md: 12px;
-            --radius-lg: 16px;
+            --radius-lg: 24px; /* Larger radius for modern look */
+            --radius-pill: 99px;
         }
 
         body {
             background-color: var(--bg-body);
             color: var(--text-main);
-            font-family: "Inter", "Plus Jakarta Sans", sans-serif;
+            font-family: "Manrope", sans-serif; /* Unified Font */
             -webkit-font-smoothing: antialiased;
         }
 
         /* ================= LAYOUT ================= */
         .main-container {
             max-width: 1200px;
-            margin: 40px auto;
+            margin: 40px auto 80px auto;
             padding: 0 24px;
         }
 
         /* Header */
         .page-header {
             text-align: center;
-            margin-bottom: 48px;
+            margin-bottom: 50px;
         }
         .page-title {
-            font-family: "Plus Jakarta Sans", sans-serif;
-            font-size: 36px;
+            font-family: "Manrope", sans-serif;
+            font-size: 42px;
             font-weight: 800;
-            color: var(--primary);
-            margin-bottom: 12px;
-            letter-spacing: -0.02em;
+            color: var(--text-main);
+            margin-bottom: 16px;
+            letter-spacing: -0.03em;
+            line-height: 1.2;
+        }
+        .page-title i {
+            color: var(--brand);
+            margin-right: 10px;
         }
         .page-subtitle {
-            font-size: 16px;
+            font-size: 18px;
             color: var(--text-secondary);
             max-width: 600px;
             margin: 0 auto;
             line-height: 1.6;
+            font-weight: 400;
         }
 
         /* ================= SEARCH COMPONENT ================= */
         .search-card {
             background: var(--bg-card);
             border-radius: var(--radius-lg);
-            padding: 32px;
-            box-shadow: var(--shadow-md);
-            border: 1px solid var(--border);
-            margin-bottom: 40px;
+            padding: 40px;
+            box-shadow: var(--shadow-lg);
+            border: 1px solid rgba(0,0,0,0.05);
+            margin-bottom: 50px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        /* Subtle hover effect for the card */
+        .search-card:hover {
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
         }
 
         .search-grid {
             display: grid;
             grid-template-columns: 2fr 1.5fr 1.5fr auto;
-            gap: 20px;
+            gap: 24px;
             align-items: end;
         }
 
         .form-group {
             display: flex;
             flex-direction: column;
-            gap: 8px;
+            gap: 10px;
         }
 
         .form-label {
-            font-size: 12px;
-            font-weight: 600;
+            font-size: 13px;
+            font-weight: 700;
             text-transform: uppercase;
             color: var(--text-secondary);
             letter-spacing: 0.05em;
         }
 
         .form-input, .form-select {
-            height: 48px;
-            padding: 0 16px;
+            height: 52px;
+            padding: 0 20px;
             border-radius: var(--radius-md);
             border: 1px solid var(--border);
-            font-family: inherit;
-            font-size: 14px;
+            font-family: "Manrope", sans-serif;
+            font-size: 15px;
+            font-weight: 500;
             color: var(--text-main);
-            background-color: #fff;
+            background-color: var(--bg-input);
             transition: all 0.2s ease;
             width: 100%;
             box-sizing: border-box;
@@ -107,82 +134,114 @@
 
         .form-input:focus, .form-select:focus {
             outline: none;
-            border-color: var(--primary);
-            box-shadow: 0 0 0 4px var(--primary-light);
+            border-color: var(--brand);
+            box-shadow: 0 0 0 4px rgba(0, 174, 239, 0.15); /* Brand color shadow */
+        }
+        
+        .form-input::placeholder {
+            color: var(--text-light);
+        }
+
+        /* Search Icon inside input */
+        .input-icon-wrapper {
+            position: relative;
+        }
+        .input-icon {
+            position: absolute; 
+            right: 20px; 
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-light);
+            pointer-events: none;
         }
 
         .price-group {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 12px;
         }
-        .price-separator { color: var(--text-secondary); }
+        .price-separator { 
+            color: var(--text-light); 
+            font-size: 14px;
+        }
 
         /* Buttons */
         .btn-action {
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            height: 48px;
-            padding: 0 24px;
-            border-radius: var(--radius-md);
-            font-weight: 600;
+            height: 52px; /* Matches input height */
+            padding: 0 32px;
+            border-radius: var(--radius-pill); /* Pill shape like index.css */
+            font-family: "Manrope", sans-serif;
+            font-weight: 700;
             cursor: pointer;
-            transition: all 0.2s ease;
-            gap: 8px;
-            font-size: 14px;
+            transition: all 0.5s ease;
+            gap: 10px;
+            font-size: 15px;
             border: none;
         }
 
+        /* Primary Button - Matching "Get Started" Gradient */
         .btn-primary {
-            background-color: var(--primary);
+            background-image: var(--brand-gradient);
+            background-size: 200% auto;
             color: white;
-            box-shadow: 0 4px 6px rgba(15, 118, 110, 0.2);
+            box-shadow: var(--shadow-brand);
         }
+        
         .btn-primary:hover {
-            background-color: var(--primary-hover);
-            transform: translateY(-1px);
+            background-position: right center;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(37, 99, 235, 0.3);
         }
+        
         .btn-primary:disabled {
-            background-color: #94a3b8;
+            background: #cbd5e1;
             cursor: not-allowed;
             transform: none;
+            box-shadow: none;
         }
 
+        /* Outline Button (Reset) */
         .btn-outline {
-            background: transparent;
+            background: white;
             border: 1px solid var(--border);
             color: var(--text-secondary);
-            width: 48px; /* Square for icon */
+            width: 52px; /* Square for icon */
+            padding: 0;
+            border-radius: 12px; /* Slightly rounded square */
         }
         .btn-outline:hover {
             border-color: var(--text-main);
             color: var(--text-main);
-            background-color: #f1f5f9;
+            background-color: var(--bg-hover);
+            transform: translateY(-2px);
         }
 
         /* ================= RESULTS TABLE ================= */
         .results-section {
-            animation: fadeIn 0.5s ease-out;
+            animation: fadeIn 0.6s ease-out;
         }
 
         .results-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 20px;
+            margin-bottom: 24px;
             padding: 0 8px;
         }
         .results-count {
-            font-weight: 600;
+            font-family: "Manrope", sans-serif;
+            font-weight: 700;
             color: var(--text-main);
-            font-size: 16px;
+            font-size: 18px;
         }
-        .results-count span { color: var(--primary); }
+        .results-count span { color: var(--brand); }
 
         .table-container {
             overflow-x: auto;
-            border-radius: var(--radius-lg);
+            border-radius: 16px;
             border: 1px solid var(--border);
             background: white;
             box-shadow: var(--shadow-sm);
@@ -196,73 +255,97 @@
 
         .custom-table th {
             text-align: left;
-            padding: 18px 24px;
-            font-size: 13px;
+            padding: 20px 28px;
+            font-size: 12px;
             color: var(--text-secondary);
-            font-weight: 600;
+            font-weight: 700;
             text-transform: uppercase;
-            background-color: #f8fafc;
+            letter-spacing: 0.05em;
+            background-color: #f9fafb;
             border-bottom: 1px solid var(--border);
         }
 
         .custom-table td {
-            padding: 20px 24px;
+            padding: 24px 28px;
             border-bottom: 1px solid var(--border);
             vertical-align: middle;
+            color: var(--text-main);
         }
 
         .custom-table tbody tr:last-child td { border-bottom: none; }
-        .custom-table tbody tr:hover { background-color: #f1f5f9; }
+        
+        .custom-table tbody tr {
+            transition: background-color 0.2s ease;
+        }
+        .custom-table tbody tr:hover { 
+            background-color: #f0f9ff; /* Light brand blue hover */
+        }
 
         /* Table Content Styling */
-        .hospital-cell { display: flex; flex-direction: column; }
-        .hospital-name { font-weight: 700; color: var(--text-main); margin-bottom: 4px; }
+        .hospital-cell { display: flex; flex-direction: column; gap: 4px; }
+        .hospital-name { 
+            font-weight: 700; 
+            color: var(--text-main); 
+            font-size: 15px;
+        }
         .hospital-id { 
-            font-size: 11px; color: var(--text-secondary); 
-            background: #f1f5f9; padding: 2px 6px; border-radius: 4px; display: inline-block; width: fit-content;
+            font-size: 11px; 
+            color: var(--text-secondary); 
+            background: #f3f4f6; 
+            padding: 2px 8px; 
+            border-radius: 6px; 
+            display: inline-block; 
+            width: fit-content;
+            font-weight: 600;
         }
 
         .service-name {
-            color: #334155;
-            font-weight: 500;
+            color: #374155;
+            font-weight: 600;
             font-size: 15px;
             line-height: 1.5;
         }
 
         .price-badge {
-            background-color: var(--primary-light);
-            color: var(--primary);
-            font-weight: 700;
-            padding: 8px 12px;
-            border-radius: 8px;
-            font-family: "Plus Jakarta Sans", sans-serif;
+            background-color: #ecfdf5; /* Fallback */
+            background-color: rgba(0, 174, 239, 0.1); /* Brand light */
+            color: var(--brand);
+            font-weight: 800;
+            padding: 8px 16px;
+            border-radius: 99px;
+            font-family: "Manrope", sans-serif;
             white-space: nowrap;
+            font-size: 14px;
         }
 
         /* ================= STATES ================= */
         .state-container {
             text-align: center;
-            padding: 60px 20px;
+            padding: 80px 20px;
             color: var(--text-secondary);
         }
         .spinner {
-            width: 40px; height: 40px;
-            border: 3px solid #e2e8f0;
-            border-top-color: var(--primary);
+            width: 44px; height: 44px;
+            border: 4px solid #e5e7eb;
+            border-top-color: var(--brand);
             border-radius: 50%;
             animation: spin 0.8s linear infinite;
-            margin: 0 auto 16px;
+            margin: 0 auto 20px;
         }
         .load-more-btn {
-            margin: 30px auto;
-            display: block;
+            margin: 40px auto;
+            display: flex;
             background: white;
             border: 1px solid var(--border);
-            color: var(--primary);
+            color: var(--brand);
+            font-weight: 700;
+            border-radius: var(--radius-pill);
+            box-shadow: var(--shadow-sm);
         }
         .load-more-btn:hover {
-            background: var(--primary-light);
-            border-color: var(--primary);
+            background: #f0f9ff;
+            border-color: var(--brand);
+            transform: translateY(-2px);
         }
 
         /* Animations */
@@ -271,25 +354,29 @@
 
         /* Responsive */
         @media (max-width: 992px) {
-            .search-grid { grid-template-columns: 1fr; gap: 16px; }
+            .search-grid { grid-template-columns: 1fr; gap: 20px; }
             .price-group { display: grid; grid-template-columns: 1fr auto 1fr; }
+            .btn-action { width: 100%; }
+            .btn-outline { width: 100%; margin-bottom: 12px; }
             
             /* Card View for Mobile Table */
             .custom-table, .custom-table tbody, .custom-table tr, .custom-table td { display: block; width: 100%; }
             .custom-table thead { display: none; }
             .custom-table tr { 
-                margin-bottom: 16px; 
-                border-bottom: 1px solid var(--border);
-                padding: 16px;
+                margin-bottom: 20px; 
+                border: 1px solid var(--border);
+                border-radius: 16px;
+                padding: 20px;
+                box-shadow: var(--shadow-sm);
             }
             .custom-table td { 
-                padding: 8px 0; border: none; 
+                padding: 10px 0; border: none; 
                 display: flex; justify-content: space-between; align-items: center;
+                text-align: left;
             }
-            .custom-table td:last-child { justify-content: flex-start; margin-top: 8px;}
+            .custom-table td:last-child { justify-content: flex-start; margin-top: 12px; padding-top: 12px; border-top: 1px dashed var(--border);}
             
-            /* Special handling for mobile structure */
-            .service-name { font-weight: 700; margin-bottom: 4px; }
+            .service-name { font-size: 16px; margin-bottom: 4px; }
         }
     </style>
 {% endblock %} 
@@ -307,9 +394,9 @@
             <form id="searchForm" class="search-grid">
                 <div class="form-group">
                     <label class="form-label">Service Name</label>
-                    <div style="position: relative;">
+                    <div class="input-icon-wrapper">
                         <input type="text" id="keyword" class="form-input" placeholder="e.g. General Checkup, MRI, X-Ray..." autocomplete="off">
-                        <i class="fa-solid fa-magnifying-glass" style="position: absolute; right: 16px; top: 16px; color: #94a3b8;"></i>
+                        <i class="fa-solid fa-magnifying-glass input-icon"></i>
                     </div>
                 </div>
 
@@ -331,12 +418,12 @@
                     </div>
                 </div>
 
-                <div style="display: flex; gap: 12px;">
+                <div style="display: flex; gap: 12px; width: 100%;">
                     <button type="button" class="btn-action btn-outline" onclick="resetForm()" title="Reset Filters">
                         <i class="fas fa-redo"></i>
                     </button>
                     <button type="submit" class="btn-action btn-primary" id="btnSearch" style="width: 100%;">
-                        <span>Search</span>
+                        <span>Search</span> <i class="fa-solid fa-arrow-right"></i>
                     </button>
                 </div>
             </form>
@@ -348,7 +435,7 @@
             </div>
 
             <div class="table-container">
-                <table class="custom-table" id="resultsTable">
+                <table class="custom-table" id="resultsTable" style="display: none;">
                     <thead>
                         <tr>
                             <th style="width: 30%">Hospital</th>
@@ -367,8 +454,11 @@
             </div>
 
             <div id="emptyState" class="state-container" style="display: none;">
-                <i class="fa-solid fa-file-medical-alt" style="font-size: 48px; color: #cbd5e1; margin-bottom: 16px;"></i>
-                <p>No services found matching your criteria.</p>
+                <div style="width: 80px; height: 80px; background: #f3f4f6; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 24px;">
+                    <i class="fa-solid fa-file-medical-alt" style="font-size: 32px; color: #9ca3af;"></i>
+                </div>
+                <h3 style="font-size: 18px; font-weight: 700; color: var(--text-main); margin-bottom: 8px;">No results found</h3>
+                <p>Try adjusting your search keywords or filters.</p>
             </div>
 
             <div id="errorState" class="state-container" style="display: none; color: #ef4444;">
@@ -396,26 +486,20 @@
         // --- 1. Initialization ---
         document.addEventListener('DOMContentLoaded', () => {
             fetchHospitals();
-            setupCurrencyFormatters(); // <--- Kích hoạt tính năng format tiền
+            setupCurrencyFormatters(); 
             showEmptyState(true, "Start by entering a keyword or selecting a hospital.");
         });
 
-        // --- TÍNH NĂNG MỚI: Auto Format Currency (VNĐ) ---
+        // --- TÍNH NĂNG: Auto Format Currency (VNĐ) ---
         function setupCurrencyFormatters() {
             const inputs = document.querySelectorAll('.currency-input');
             
             inputs.forEach(input => {
                 input.addEventListener('input', function(e) {
-                    // 1. Lấy giá trị hiện tại và xóa hết ký tự không phải số
                     let value = e.target.value.replace(/\D/g, '');
-                    
-                    // 2. Nếu có giá trị, format lại theo chuẩn VN (dấu chấm phân cách)
                     if (value) {
-                        // Dùng Intl để format: 10000 -> 10.000
                         value = new Intl.NumberFormat('vi-VN').format(value);
                     }
-                    
-                    // 3. Gán lại vào ô input
                     e.target.value = value;
                 });
             });
@@ -477,15 +561,13 @@
             const keyword = document.getElementById('keyword').value.trim();
             const hospital = document.getElementById('hospitalSelect').value;
             
-            // --- QUAN TRỌNG: Lấy giá trị tiền và XÓA dấu chấm trước khi gửi API ---
-            // Ví dụ: "10.000" -> "10000"
             const rawMinPrice = document.getElementById('minPrice').value.replace(/\./g, '');
             const rawMaxPrice = document.getElementById('maxPrice').value.replace(/\./g, '');
 
             if (keyword) params.append('q', keyword);
             if (hospital) params.append('hospital_name', hospital);
-            if (rawMinPrice) params.append('min_price', rawMinPrice); // Gửi số nguyên
-            if (rawMaxPrice) params.append('max_price', rawMaxPrice); // Gửi số nguyên
+            if (rawMinPrice) params.append('min_price', rawMinPrice); 
+            if (rawMaxPrice) params.append('max_price', rawMaxPrice); 
 
             try {
                 const response = await fetch(`${API_BASE_URL}/services?${params.toString()}`);
@@ -499,7 +581,7 @@
                     renderRows(result.data);
                     table.style.display = 'table';
                     if (result.data.length === RESULTS_PER_PAGE && (currentSkip + RESULTS_PER_PAGE) < result.total) {
-                        btnMore.style.display = 'block';
+                        btnMore.style.display = 'flex'; // Changed to flex for centering
                     } else {
                         btnMore.style.display = 'none';
                     }
@@ -563,12 +645,12 @@
             showEmptyState(true, "Start by entering a keyword...");
         }
 
-        function showEmptyState(show, message = "No services found matching your criteria.") {
+        function showEmptyState(show, message) {
             const el = document.getElementById('emptyState');
             const table = document.getElementById('resultsTable');
             if (show) {
                 el.style.display = 'block';
-                el.querySelector('p').innerText = message;
+                if(message) el.querySelector('p').innerText = message;
                 table.style.display = 'none';
             } else {
                 el.style.display = 'none';

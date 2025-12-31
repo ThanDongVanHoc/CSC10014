@@ -13,7 +13,7 @@ from haversine import haversine, Unit
 
 # Load environment variables
 load_dotenv(find_dotenv())
-genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
+genai.configure(api_key=os.getenv("GEMINI_API_KEY3"))
 
 class MedicalMapService:
     _instance = None

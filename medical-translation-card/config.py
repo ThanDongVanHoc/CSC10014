@@ -45,7 +45,7 @@ class Settings:
     
     def _initialize(self) -> None:
         """Khởi tạo settings từ environment variables"""
-        gemini_api_key = os.getenv("GEMINI_API_KEY", "")
+        gemini_api_key = os.getenv("GEMINI_API_KEY2", "")
         
         self.gemini = GeminiConfig(
             api_key=gemini_api_key,
