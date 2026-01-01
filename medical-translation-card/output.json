@@ -1,0 +1,76 @@
+{
+  "patient": {
+    "name": "John Smith",
+    "age": 35,
+    "gender": {
+      "en": "Male",
+      "vi": "Nam"
+    },
+    "nationality": {
+      "code": "US",
+      "name_en": "USA",
+      "name_vi": "Mỹ"
+    },
+    "blood_type": "A+",
+    "emergency_contact": {
+      "name": "Jane Smith",
+      "phone": "+1 234 567 8900"
+    }
+  },
+  "triage": {
+    "level": 3,
+    "color_code": "#FFD700",
+    "display_text": {
+      "en": "Urgent / Moderate",
+      "vi": "Khẩn cấp / Trung bình"
+    },
+    "response_time_minutes": 30
+  },
+  "chief_complaint": {
+    "original": "I have had a headache and dizziness since this morning",
+    "symptoms": [
+      {
+        "en": "Headache",
+        "vi": "Đau đầu"
+      },
+      {
+        "en": "Dizziness",
+        "vi": "Chóng mặt"
+      }
+    ]
+  },
+  "allergies": [
+    {
+      "name_en": "Penicillin",
+      "name_vi": "Penicillin"
+    },
+    {
+      "name_en": "Aspirin",
+      "name_vi": "Aspirin"
+    }
+  ],
+  "medications": [
+    {
+      "name": "Metformin"
+    },
+    {
+      "name": "Warfarin"
+    }
+  ],
+  "medical_history": [
+    {
+      "en": "Diabetes Mellitus",
+      "vi": "Đái tháo đường / Tiểu đường"
+    },
+    {
+      "en": "Hypertension",
+      "vi": "Tăng huyết áp / Cao huyết áp"
+    }
+  ],
+  "surgical_history": [
+    {
+      "en": "Appendectomy",
+      "vi": "Phẫu thuật cắt ruột thừa"
+    }
+  ]
+}

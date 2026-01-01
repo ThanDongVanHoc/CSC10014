@@ -1,166 +1,539 @@
-/* This is container part*/
-.container{
-    max-width: 1200px;
-    margin: 0 auto; 
-    padding: 40px 20px; 
+/* ================================================= */
+/* ===== 1. HERO SECTION & ROOT VARIABLES ========== */
+/* ================================================= */
+
+:root {
+  --brand-green: #00AEEF;
+  --brand-green-dark: #1d4ed8;
+  --text-main: #111827;
+  --muted: #6b7280;
+  --card: #ffffff;
+  --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+    0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  --brand: #00AEEF;
 }
 
-.container-section{
-    display : grid; 
-    grid-template-columns: 1fr 460px;
-    gap: 36px; 
-    align-items: center;
-    margin-top : 22px; 
+body {
+  background-color: #ffffff;
+  /* Đặt nền body trắng */
 }
 
-.container-section h1{
-    font-size:36px;
-    line-height:1.05;
-    margin:0
+.hero-section-estonia {
+  padding: 80px 0 100px 0;
+  background-color: #ffffff;
+  overflow: hidden;
 }
 
-.container-section p{
-    color:var(--muted);
-    margin-top:14px;
-    font-size:16px
+.hero-grid-estonia {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 60px;
+  align-items: center;
 }
 
-.main-button{
-    display : inline-flex; 
-    align-items: center;
-    gap : 8px; 
-    cursor: pointer; 
-    font-weight : 600; 
-    border:1px solid transparent; 
-    font-size : 15px; 
-    border-radius:999px;
-    padding:8px 14px;
+.stencil-title {
+  font-family: "Big Shoulders Stencil Text", cursive;
+  font-weight: 300;
+  text-transform: lowercase;
+  color: var(--brand-green);
+  font-size: 68px;
+  line-height: 1.1;
+  margin: 0 0 24px 0;
+  letter-spacing: 1px;
 }
 
-.get-started{
-    background: var(--brand);
-    color: white;
-    padding: 12px 24px; 
-    font-size: 16px;
-    font-weight: 700;
+.hero-subtitle-estonia {
+  font-family: "Manrope", sans-serif;
+  font-size: 18px;
+  color: #374151;
+  font-weight: 400;
+  line-height: 1.6;
+  margin-bottom: 40px;
+  max-width: 95%;
 }
 
-.learn-more {
-    background: transparent;
-    color: var(--muted);
-    border: 2px solid rgba(0,0,0,0.08);
-    padding: 12px 24px;
-    font-size: 16px;
-    font-weight: 700;
+/* --- NÚT GET STARTED --- */
+.hero-actions-estonia {
+  margin-bottom: 50px;
+  display: flex;
+  justify-content: flex-start;
 }
 
-.get-started:hover {
-    background: var(--brand-600);
-    transform: translateY(-2px);
-    box-shadow: 0 4px 10px rgba(0, 179, 126, 0.3);
+.btn-get-started-green {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background-image: linear-gradient(to right,
+      #00AEEF 0%,
+      #1d4ed8 51%,
+      #1e40af 100%);
+  background-size: 200% auto;
+  color: #ffffff;
+  font-family: "Manrope", sans-serif;
+  font-weight: 700;
+  font-size: 16px;
+  padding: 14px 36px;
+  border-radius: 99px;
+  text-decoration: none;
+  transition: 0.5s;
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25);
 }
 
-.learn-more:hover {
-    background-color: #f9f9f9;
-    transform: translateY(-1px);
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    border-color: #aaa;
+.btn-get-started-green:hover {
+  background-position: right center;
+  color: #e0f2fe;
+  transform: translateY(-3px);
+  box-shadow: 0 10px 20px rgba(37, 99, 235, 0.3);
 }
 
-.get-started:active {
-    transform: translateY(0);
+.btn-get-started-green svg {
+  transition: transform 0.3s ease;
 }
 
-.learn-more:active {
-    transform: translateY(0);
+.btn-get-started-green:hover svg {
+  transform: translateX(4px);
 }
 
-/*This is freatures css*/
-.features{
-    display : grid; 
-    grid-template-columns: 1fr 1fr 1fr;
-    gap:18px;
-    margin-top:44px;
+.backed-by-large {
+  font-family: "Manrope", sans-serif;
+  font-size: 16px;
+  color: #6b7280;
+  font-weight: 600;
+  margin-top: 20px;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
 }
 
-
-.card{
-    background:var(--card);
-    border-radius: 12px; 
-    padding: 18px; 
-    box-shadow: var(--shadow);
-    min-height:120px;
-    display : flex; 
-    align-items: flex-start;
-    gap : 12px; 
+.hero-image-container-estonia {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-
-.card .icon{
-    width:44px;
-    height:44px;
-    border-radius:10px;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    background:var(--glass);
+.hero-logo-huge {
+  width: 100%;
+  max-width: 500px;
+  height: auto;
+  filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.05));
+  animation: float 6s ease-in-out infinite;
 }
 
-.card h3{
-    margin:0;
-    font-size:18px;
-}
-.card p{
-    margin:6px 0 0;
-    color:var(--muted);
-    font-size:16px;
+@keyframes float {
+  0% {
+    transform: translatey(0px);
+  }
+
+  50% {
+    transform: translatey(-10px);
+  }
+
+  100% {
+    transform: translatey(0px);
+  }
 }
 
-.how-it-work{
-    box-shadow:var(--shadow);
-    padding:20px;
-    border-radius:12px;
-    background:var(--card);
+@media (max-width: 992px) {
+  .hero-grid-estonia {
+    grid-template-columns: 1fr;
+    text-align: center;
+    gap: 50px;
+  }
+
+  .hero-actions-estonia {
+    justify-content: center;
+  }
+
+  .stencil-title {
+    font-size: 50px;
+  }
+
+  .hero-subtitle-estonia {
+    margin-left: auto;
+    margin-right: auto;
+  }
 }
 
-    .user-info {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    background: #f9f9f9;
-    border-radius: 12px;
-    padding: 8px 14px;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+/* ================================================= */
+/* ===== 2. FANNED DECK STYLES (HIỆU ỨNG CARD MỚI) == */
+/* ================================================= */
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px 40px 20px;
 }
 
-.avatar {
-    width: 48px;
-    height: 48px;
-    border-radius: 50%;
-    border: 2px solid #ddd;
-    object-fit: cover;
-    transition: transform 0.2s ease;
-}
-.avatar:hover {
-    transform: scale(1.05);
+.features-fanned-deck {
+  position: relative;
+  /* Giảm chiều cao container xuống một chút */
+  height: 550px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  /* CẬP NHẬT QUAN TRỌNG: Dùng số âm lớn để kéo ngược lên trên sát phần Hero */
+  margin-top: -120px;
+  margin-bottom: 60px;
+
+  /* Đảm bảo nó nổi lên trên nếu bị background khác che */
+  z-index: 10;
 }
 
-.user-text {
-    display: flex;
+/* Style chung cho Card Dọc */
+.card-vertical {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 40px 30px;
+
+  width: 300px;
+  height: 480px;
+
+  background: #ffffff;
+  border-radius: 24px;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+
+  position: absolute;
+  /* CẬP NHẬT: Đặt vị trí 40% thay vì 50% để card nằm cao hơn */
+  top: 40%;
+  left: 50%;
+
+  margin-left: -150px;
+  /* Căn giữa width */
+  margin-top: -240px;
+  /* Căn giữa height */
+
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15);
+
+  /* Trạng thái ẩn ban đầu */
+  opacity: 0;
+  transform: translateY(150px) scale(0.8) rotate(0deg);
+  transition: all 1s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.card-vertical .icon {
+  width: 80px;
+  height: 80px;
+  margin-bottom: 30px;
+  background: #eff6ff;
+  color: var(--brand-green);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.card-vertical .icon svg {
+  width: 40px;
+  height: 40px;
+}
+
+.card-vertical h3 {
+  font-size: 22px;
+  margin-bottom: 16px;
+  color: #111827;
+}
+
+.card-vertical p {
+  font-size: 16px;
+  line-height: 1.6;
+  color: #6b7280;
+}
+
+/* --- HIỆU ỨNG XÒE (Đã chỉnh khoảng cách rộng hơn) --- */
+.card-vertical.in-view {
+  opacity: 1;
+  box-shadow: 0 35px 60px -15px rgba(0, 0, 0, 0.2);
+}
+
+/* Card 1: Ngoài cùng bên trái */
+.card-vertical:nth-child(1) {
+  z-index: 1;
+  transition-delay: 0.05s;
+}
+
+.card-vertical.in-view:nth-child(1) {
+  /* Đẩy cực xa sang trái (-380px) và giảm độ xoay còn -12deg để dễ đọc chữ */
+  transform: rotate(-12deg) translateX(-450px) translateY(40px) scale(0.95);
+}
+
+/* Card 2: Giữa trái */
+.card-vertical:nth-child(2) {
+  z-index: 2;
+  transition-delay: 0.15s;
+}
+
+.card-vertical.in-view:nth-child(2) {
+  /* Đẩy xa hơn mức cũ (-140px) */
+  transform: rotate(-4deg) translateX(-140px) translateY(0px) scale(0.98);
+}
+
+/* Card 3: Giữa phải */
+.card-vertical:nth-child(3) {
+  z-index: 3;
+  transition-delay: 0.25s;
+}
+
+.card-vertical.in-view:nth-child(3) {
+  /* Đẩy xa hơn mức cũ (140px) */
+  transform: rotate(4deg) translateX(160px) translateY(0px) scale(0.98);
+}
+
+/* Card 4: Ngoài cùng bên phải */
+.card-vertical:nth-child(4) {
+  z-index: 4;
+  transition-delay: 0.35s;
+}
+
+.card-vertical.in-view:nth-child(4) {
+  /* Đẩy cực xa sang phải (380px) */
+  transform: rotate(12deg) translateX(450px) translateY(40px) scale(0.95);
+}
+
+/* --- MOBILE: Trở về dạng xếp dọc bình thường --- */
+@media (max-width: 1200px) {
+
+  /* Tăng breakpoint lên 1200px để tránh vỡ trên laptop nhỏ */
+  .features-fanned-deck {
+    height: auto;
     flex-direction: column;
+    gap: 30px;
+    margin-top: 0px;
+    /* Reset margin âm trên mobile */
+  }
+
+  .card-vertical {
+    position: relative;
+    top: auto;
+    left: auto;
+    margin: 0;
+    width: 100%;
+    max-width: 350px;
+    height: auto;
+    padding: 30px;
+    transform: translateY(50px);
+    opacity: 0;
+  }
+
+  .card-vertical.in-view:nth-child(1),
+  .card-vertical.in-view:nth-child(2),
+  .card-vertical.in-view:nth-child(3),
+  .card-vertical.in-view:nth-child(4) {
+    transform: translateY(0) rotate(0) scale(1) translateX(0);
+    opacity: 1;
+  }
 }
 
-.greeting {
-    font-size: 15px;
-    color: #333;
+.what-is-section {
+  /* Khoảng cách top lớn để không bị các thẻ bài (Fanned Deck) che mất */
+  margin-top: 200px;
+  margin-bottom: 50px;
+
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  /* Chia đôi màn hình: 1 bên chữ, 1 bên ảnh */
+  gap: 60px;
+  align-items: center;
 }
 
-.logout-link {
-    font-size: 14px;
-    color: #e53935;
-    text-decoration: none;
-    margin-top: 2px;
+.what-is-title {
+  font-family: "Manrope", sans-serif;
+  /* Hoặc font tiêu đề bạn đang dùng */
+  font-size: 42px;
+  color: #111827;
+  /* Màu đen xám đậm */
+  font-weight: 300;
+  /* Font mỏng giống mẫu E-Residency */
+  margin-bottom: 20px;
+  line-height: 1.2;
 }
-.logout-link:hover {
-    text-decoration: underline;
+
+.what-is-desc {
+  font-family: "Manrope", sans-serif;
+  font-size: 18px;
+  color: #374151;
+  line-height: 1.7;
+  margin-bottom: 24px;
+}
+
+.what-is-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--brand-green);
+  /* Dùng màu xanh thương hiệu của bạn */
+  font-weight: 600;
+  text-decoration: none;
+  font-size: 16px;
+  transition: opacity 0.3s;
+}
+
+.what-is-link:hover {
+  opacity: 0.8;
+  text-decoration: underline;
+}
+
+/* Phần ảnh bên phải */
+.what-is-image-wrapper {
+  position: relative;
+  width: 100%;
+  height: 400px;
+  background-color: #0065ca;
+  /* Màu xanh nền giống mẫu E-Residency */
+  border-radius: 24px;
+  overflow: hidden;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.what-is-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  /* Đảm bảo ảnh phủ kín khung mà không bị méo */
+  transition: transform 0.5s ease;
+}
+
+.what-is-image-wrapper:hover .what-is-img {
+  transform: scale(1.05);
+  /* Hiệu ứng zoom nhẹ khi di chuột vào */
+}
+
+/* Responsive cho Mobile */
+@media (max-width: 992px) {
+  .what-is-section {
+    grid-template-columns: 1fr;
+    /* Chuyển thành 1 cột */
+    gap: 40px;
+    margin-top: 60px;
+    text-align: center;
+  }
+
+  .what-is-link {
+    justify-content: center;
+  }
+
+  .what-is-image-wrapper {
+    height: 300px;
+  }
+}
+
+/* --- BOTTOM SECTION STYLE --- */
+.how-it-works-section {
+  padding: 60px 0 100px 0;
+  background-color: #ffffff;
+}
+
+/* Tiêu đề Section: Font Manrope mỏng, to */
+.section-title {
+  font-family: "Manrope", sans-serif;
+  font-weight: 300;
+  font-size: 48px;
+  color: #111827;
+  margin-bottom: 60px;
+  letter-spacing: -1px;
+}
+
+/* Grid 3 cột */
+.hiw-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 30px;
+}
+
+/* Style Card */
+.hiw-card {
+  background: #f9fafb;
+  /* Nền xám rất nhạt */
+  border-radius: 16px;
+  overflow: hidden;
+  /* Để bo góc cho ảnh ở trên */
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  height: 100%;
+  border: 1px solid #f3f4f6;
+
+  /* Cài đặt cho Animation */
+  opacity: 0;
+  transform: translateY(40px);
+}
+
+.hiw-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.1);
+}
+
+/* Vùng chứa ảnh/icon phía trên card */
+.hiw-image-area {
+  height: 200px;
+  background-color: #ecfdf5;
+  /* Nền xanh VietCare nhạt */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Nội dung bên dưới */
+.hiw-content {
+  padding: 32px;
+  text-align: left;
+}
+
+.hiw-content h3 {
+  font-family: "Manrope", sans-serif;
+  font-size: 24px;
+  font-weight: 600;
+  color: #111827;
+  margin-bottom: 12px;
+}
+
+/* Nhãn (Badge) đen */
+.hiw-badge {
+  display: inline-block;
+  background-color: #111827;
+  color: #fff;
+  font-size: 12px;
+  font-weight: 700;
+  padding: 4px 12px;
+  border-radius: 99px;
+  margin-bottom: 16px;
+  text-transform: uppercase;
+}
+
+.hiw-content p {
+  font-size: 16px;
+  color: #6b7280;
+  line-height: 1.6;
+}
+
+/* Class kích hoạt Animation */
+.fade-up.in-view {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+}
+
+/* Responsive Mobile */
+@media (max-width: 992px) {
+  .section-title {
+    font-size: 36px;
+    text-align: center;
+  }
+
+  .hiw-grid {
+    grid-template-columns: 1fr;
+    /* Về 1 cột trên mobile */
+    gap: 40px;
+  }
+}
+
+.card {
+  /* Style cơ bản cho các card nhỏ phía dưới cùng */
+  box-shadow: var(--shadow);
+  padding: 24px;
+  border-radius: 16px;
+  background: var(--card);
+  border: 1px solid #e5e7eb;
 }

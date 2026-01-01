@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Universal Medical Translation Card | Research & Prototype</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700&family=Merriweather:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    <style>
+        /* Base Typography & Colors */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #FDFBF7; /* Warm Neutral Background */
+            color: #2D3748; /* Dark Slate */
+        }
+        h1, h2, h3, h4 {
+            font-family: 'Merriweather', serif;
+        }
+
+        /* Chart Container Styling (Mandatory) */
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 100%; /* Allow filling grid column */
+            height: 300px;
+            max-height: 400px;
+            margin: 0 auto;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 350px;
+            }
+        }
+
+        /* Card Simulation Utilities */
+        .medical-card-shadow {
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+        }
+        
+        /* Toggle Switch */
+        .toggle-checkbox:checked {
+            right: 0;
+            border-color: #5B8C9B;
+        }
+        .toggle-checkbox:checked + .toggle-label {
+            background-color: #5B8C9B;
+        }
+        
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #C4C4C4;
+            border-radius: 4px;
+        }
+        @keyframes urgent-pulse {
+    0%, 100% { filter: brightness(100%); }
+    50% { filter: brightness(90%); } /* Tối đi một chút để tạo nhịp */
+}
+.animate-urgent {
+    animation: urgent-pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+    </style>
+    <!-- Chosen Palette: "Calm Professional" -->
+    <!-- Background: #FDFBF7 (Warm Alabaster) -->
+    <!-- Primary: #5B8C9B (Teal Slate - Trustworthy, Medical) -->
+    <!-- Secondary: #E07A5F (Muted Terra Cotta - For Alerts/Highlights) -->
+    <!-- Neutral: #3D405B (Deep Charcoal - Text) -->
+    
+    <!-- Application Structure Plan:
+         1. Header: Branding and Vision Statement.
+         2. "Universal Scope" Section: Intro explaining the shift from "Allergy-only" to "All-Disease" coverage.
+         3. "The Prototype" (Interactive): The core feature. A side-by-side or togglable view of the Card in EN (Professional) and VN (Professional). Users can switch 'scenarios' to see how the card adapts to different diseases (Cardiac, Diabetes, Trauma).
+         4. "Information Architecture" (Data Viz): A section analyzing WHAT data is on the card and WHY. Charts showing the hierarchy of medical needs.
+         5. "Revised Research Plan": A visual timeline showing the new roadmap for developing this universal tool.
+         Rationale: This structure moves from the "New Vision" -> "Tangible Proof" -> "Underlying Logic" -> "Next Steps".
+    -->
+
+    <!-- Visualization & Content Choices:
+         1. Interactive Card Simulator (HTML/JS): Goal: Inform/Change. Demonstrates the dual-language capability instantly. "Show, don't tell."
+         2. Stacked Bar Chart (Chart.js): Goal: Organize. Shows the "Data Priority Hierarchy" (Vital vs Admin data) to justify what appears on the main screen.
+         3. Process Flow / Timeline (HTML/Tailwind): Goal: Organize. Visualizes the "Research Plan" steps clearly. NO SVG used.
+         4. Donut Chart (Chart.js): Goal: Inform. Shows the "Target Disease Coverage" to emphasize the universal nature.
+    -->
+
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+</head>
+<body class="antialiased min-h-screen flex flex-col">
+
+    <!-- Header -->
+    <header class="bg-white border-b border-gray-200 sticky top-0 z-50" style="display: none;">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 bg-[#5B8C9B] rounded-lg flex items-center justify-center text-white font-bold text-xl">M</div>
+                <div>
+                    <h1 class="text-xl font-bold text-[#3D405B] leading-none">Universal Medical Card</h1>
+                    <p class="text-xs text-gray-500 mt-1">Research & Prototype v2.0</p>
+                </div>
+            </div>
+            <nav class="hidden md:flex space-x-8">
+                <a href="#vision" class="text-sm font-medium text-gray-600 hover:text-[#5B8C9B] transition-colors">Vision</a>
+                <a href="#prototype" class="text-sm font-medium text-gray-600 hover:text-[#5B8C9B] transition-colors">Prototype</a>
+                <a href="#architecture" class="text-sm font-medium text-gray-600 hover:text-[#5B8C9B] transition-colors">Architecture</a>
+                <a href="#plan" class="text-sm font-medium text-gray-600 hover:text-[#5B8C9B] transition-colors">Research Plan</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="flex-grow">
+        
+        <!-- SECTION 1: VISION (Universal Scope) -->
+        <section id="vision" class="py-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto" style="display: none;">
+            <div class="text-center max-w-3xl mx-auto mb-12">
+                <h2 class="text-3xl md:text-4xl font-bold text-[#3D405B] mb-6">Beyond Anaphylaxis: A Universal Tool</h2>
+                <p class="text-lg text-gray-600 leading-relaxed">
+                    The initial concept focused on allergies. However, research indicates that <strong>communication barriers affect all triage categories</strong>. The revised goal is to create a dynamic standard that covers Trauma, Cardiac, Metabolic, and Neurological emergencies.
+                </p>
+            </div>
+
+            <!-- Coverage Chart -->
+            <div class="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                <div>
+                    <h3 class="text-xl font-bold text-[#3D405B] mb-4">Target Condition Coverage</h3>
+                    <p class="text-gray-600 text-sm mb-6">
+                        The card must support a wide taxonomy of medical emergencies. We are expanding the database to cover the top 5 reasons for ER admissions among travelers.
+                    </p>
+                    <ul class="space-y-3">
+                        <li class="flex items-center text-sm text-gray-600">
+                            <span class="w-3 h-3 rounded-full bg-[#5B8C9B] mr-2"></span> Internal Medicine (Cardiac/Respiratory)
+                        </li>
+                        <li class="flex items-center text-sm text-gray-600">
+                            <span class="w-3 h-3 rounded-full bg-[#E07A5F] mr-2"></span> Trauma & Accidents
+                        </li>
+                        <li class="flex items-center text-sm text-gray-600">
+                            <span class="w-3 h-3 rounded-full bg-[#81B29A] mr-2"></span> Allergies & Reactions
+                        </li>
+                    </ul>
+                </div>
+                <div class="chart-container">
+                    <canvas id="coverageChart"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 2: PROTOTYPE (Interactive Card) -->
+        <section id="prototype" class="bg-[#EAEAEA] py-16 px-4 sm:px-6 lg:px-8">
+            <div class="max-w-7xl mx-auto">
+                <div class="mb-10 text-center">
+                    <h2 class="text-3xl font-bold text-[#3D405B]">Interactive Prototype v2.1</h2>
+                    <p class="text-gray-600 mt-2">Dữ liệu bệnh nhân đầy đủ theo chuẩn JSON mới.</p>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+                    
+                    <div class="lg:col-span-4 space-y-6">
+                        <div class="bg-white p-6 rounded-xl shadow-sm">
+                            <h3 class="text-sm font-bold text-gray-400 uppercase tracking-wider mb-4">Current Data Source</h3>
+                            <div class="p-4 bg-blue-50 border border-blue-200 rounded-lg">
+                                <p class="font-bold text-[#3D405B]">Patient: John Smith</p>
+                                <p class="text-sm text-gray-600">ID: #JS-2025-X99</p>
+                                <p class="text-xs text-gray-500 mt-2">Loaded JSON structure containing Triage Lvl 3, Surgical History, and Emergency Contacts.</p>
+                            </div>
+                        </div>
+
+                        <div class="bg-white p-6 rounded-xl shadow-sm">
+                            <h3 class="text-sm font-bold text-gray-400 uppercase tracking-wider mb-4">Select View Mode</h3>
+                            <div class="flex items-center justify-between bg-gray-100 p-1 rounded-lg">
+                                <button onclick="setMode('en')" id="mode-en" class="flex-1 py-2 text-sm font-bold rounded-md transition-all bg-white shadow-sm text-[#5B8C9B]">English (International)</button>
+                                <button onclick="setMode('vi')" id="mode-vn" class="flex-1 py-2 text-sm font-bold rounded-md transition-all text-gray-500 hover:text-[#5B8C9B]">Tiếng Việt (Local Doctor)</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="lg:col-span-8 flex justify-center items-start">
+                        <div class="bg-white w-full max-w-lg rounded-3xl overflow-hidden medical-card-shadow border border-gray-200 transform transition-all duration-300">
+                            
+                            <div id="card-header" class="bg-[#FFD700] px-6 py-5 text-[#3D405B] flex justify-between items-center relative overflow-hidden animate-urgent">
+                                <div class="relative z-10">
+                                    <div class="flex items-center gap-2 mb-1">
+                                        <span id="disp-triage-level" class="bg-white/90 px-2 py-0.5 rounded text-xs font-bold shadow-sm">LEVEL 3</span>
+                                        <span id="disp-triage-time" class="text-xs font-bold opacity-80">Target: 30 mins</span>
+                                    </div>
+                                    <p id="disp-triage-text" class="text-lg font-bold leading-none">Urgent / Moderate</p>
+                                </div>
+                                <div class="text-4xl relative z-10 opacity-50">🏥</div>
+                            </div>
+
+                            <div class="p-8 space-y-6">
+                                
+                                <div>
+                                    <p class="text-xs font-bold text-gray-400 uppercase mb-2">Chief Complaint / Lý do vào viện</p>
+                                    <div id="disp-symptoms-list" class="flex flex-wrap gap-2 mb-3">
+                                        </div>
+                                    <div class="bg-gray-50 border-l-4 border-[#5B8C9B] p-3 italic text-gray-600 text-sm">
+                                        "<span id="disp-original-complaint">I have had a headache...</span>"
+                                    </div>
+                                </div>
+
+                                <div class="w-full h-px bg-gray-100"></div>
+
+                                <div class="grid grid-cols-2 gap-x-8 gap-y-6">
+                                    
+                                    <div class="col-span-2 md:col-span-1">
+                                        <p class="text-xs font-bold text-gray-400 uppercase mb-2">Medical History / Tiền sử bệnh</p>
+                                        <ul id="disp-history-list" class="space-y-1 text-sm font-medium text-[#3D405B]">
+                                            </ul>
+                                    </div>
+
+                                    <div class="col-span-2 md:col-span-1">
+                                        <p class="text-xs font-bold text-gray-400 uppercase mb-2">Surgical History / Tiền sử phẫu thuật</p>
+                                        <ul id="disp-surgery-list" class="space-y-1 text-sm font-medium text-[#3D405B]">
+                                            </ul>
+                                    </div>
+
+                                    <div class="col-span-2 md:col-span-1">
+                                        <p class="text-xs font-bold text-gray-400 uppercase mb-2">Current Meds / Thuốc đang dùng</p>
+                                        <ul id="disp-meds-list" class="space-y-1 text-sm font-medium text-[#3D405B]">
+                                            </ul>
+                                    </div>
+
+                                     <div class="col-span-2 md:col-span-1">
+                                        <p class="text-xs font-bold text-gray-400 uppercase mb-2">Allergies / Dị ứng</p>
+                                        <ul id="disp-allergy-list" class="space-y-1 text-sm font-bold text-[#E07A5F]">
+                                            </ul>
+                                    </div>
+                                </div>
+
+                                <div class="w-full h-px bg-gray-100"></div>
+
+                                <div class="bg-slate-50 -mx-8 -mb-8 p-6 mt-4">
+                                    <div class="flex justify-between items-start mb-4">
+                                        <div>
+                                            <h3 id="disp-name" class="text-xl font-bold text-[#3D405B]">John Smith</h3>
+                                            <p class="text-sm text-gray-500">
+                                                <span id="disp-gender">Male</span>, 
+                                                <span id="disp-age">35</span> yrs
+                                            </p>
+                                            <p class="text-sm text-gray-500 flex items-center gap-1 mt-1">
+                                                <span class="text-lg">🌍</span> 
+                                                <span id="disp-nationality">USA</span>
+                                            </p>
+                                        </div>
+                                        <div class="text-right">
+                                            <div class="inline-block bg-white border border-gray-200 rounded-lg px-3 py-1 mb-2">
+                                                <p class="text-xs text-gray-400 font-bold uppercase">Blood</p>
+                                                <p id="disp-blood" class="text-xl font-bold text-[#E07A5F]">A+</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="bg-white border border-red-100 rounded-lg p-3 flex items-center justify-between">
+                                        <div>
+                                            <p class="text-[10px] font-bold text-red-400 uppercase tracking-wider">Emergency Contact / Liên hệ khẩn cấp</p>
+                                            <p id="disp-em-name" class="text-sm font-bold text-[#3D405B]">Jane Smith</p>
+                                        </div>
+                                        <p id="disp-em-phone" class="text-sm font-bold text-[#3D405B] bg-gray-50 px-2 py-1 rounded">+1 234 567 8900</p>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 3: INFORMATION ARCHITECTURE (Data Viz) -->
+        <section id="architecture" class="py-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto" style="display: none;">
+            <div class="mb-12">
+                <h2 class="text-3xl font-bold text-[#3D405B]">Information Architecture Analysis</h2>
+                <p class="text-lg text-gray-600 mt-2">
+                    What goes on the card? We analyzed ER Triage protocols to determine the hierarchy of information. The card displays only the "Critical 5" data points to minimize cognitive load.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+                <!-- Text Explanation -->
+                <div class="space-y-6">
+                    <div class="bg-white p-6 rounded-xl border-l-4 border-[#5B8C9B] shadow-sm">
+                        <h4 class="font-bold text-[#3D405B] text-lg mb-2">1. The Chief Complaint (50% Visual Weight)</h4>
+                        <p class="text-sm text-gray-600">The most critical data point. Why is the patient here? This drives the immediate triage category.</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-xl border-l-4 border-[#E07A5F] shadow-sm">
+                        <h4 class="font-bold text-[#3D405B] text-lg mb-2">2. Safety Constraints (30% Visual Weight)</h4>
+                        <p class="text-sm text-gray-600">Allergies and History. These prevent medical errors during the initial stabilization phase (e.g., avoiding drugs that trigger reactions).</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-xl border-l-4 border-gray-300 shadow-sm">
+                        <h4 class="font-bold text-[#3D405B] text-lg mb-2">3. Admin Data (20% Visual Weight)</h4>
+                        <p class="text-sm text-gray-600">Name, Age, Insurance. Necessary for record-keeping but secondary to survival.</p>
+                    </div>
+                </div>
+
+                <!-- Chart: Hierarchy -->
+                <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+                    <h3 class="font-bold text-[#3D405B] mb-4 text-center">Data Priority in Emergency Triage</h3>
+                    <div class="chart-container">
+                        <canvas id="hierarchyChart"></canvas>
+                    </div>
+                    <p class="text-xs text-center text-gray-400 mt-4 italic">Source: Standard ER Triage Protocols (Manchester Triage System)</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 4: REVISED RESEARCH PLAN (Timeline) -->
+        <section id="plan" class="bg-[#3D405B] text-white py-16 px-4 sm:px-6 lg:px-8" style="display: none;">
+            <div class="max-w-4xl mx-auto">
+                <div class="text-center mb-16">
+                    <h2 class="text-3xl font-bold text-white">Revised Research Plan</h2>
+                    <p class="text-gray-300 mt-2">Moving from "Allergy Card" to "Universal Medical Passport".</p>
+                </div>
+
+                <div class="relative border-l-2 border-[#5B8C9B] ml-4 md:ml-0 md:pl-0 space-y-12">
+                    
+                    <!-- Phase 1 -->
+                    <div class="relative pl-8 md:pl-0">
+                        <!-- Desktop Layout: Icon on line -->
+                        <div class="absolute -left-3 md:left-1/2 md:-translate-x-1/2 w-6 h-6 bg-[#5B8C9B] rounded-full border-4 border-[#3D405B]"></div>
+                        
+                        <div class="md:flex justify-between items-center group">
+                            <div class="md:w-[45%] md:text-right md:pr-8 mb-2 md:mb-0">
+                                <span class="text-[#5B8C9B] font-bold text-sm tracking-wider uppercase">Phase 1: Analysis</span>
+                                <h3 class="text-xl font-bold">ER Protocol Audit</h3>
+                            </div>
+                            <div class="md:w-[45%] md:pl-8">
+                                <p class="text-gray-300 text-sm bg-white/5 p-4 rounded-lg">
+                                    Analyze admission forms from 3 major hospitals (VN/INTL) to identify the "Minimum Viable Data" set required for 90% of emergencies.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Phase 2 -->
+                    <div class="relative pl-8 md:pl-0">
+                        <div class="absolute -left-3 md:left-1/2 md:-translate-x-1/2 w-6 h-6 bg-[#5B8C9B] rounded-full border-4 border-[#3D405B]"></div>
+                        
+                        <div class="md:flex justify-between items-center flex-row-reverse group">
+                            <div class="md:w-[45%] md:pl-8 mb-2 md:mb-0">
+                                <span class="text-[#5B8C9B] font-bold text-sm tracking-wider uppercase">Phase 2: Standardization</span>
+                                <h3 class="text-xl font-bold">Terminology Validation</h3>
+                            </div>
+                            <div class="md:w-[45%] md:text-right md:pr-8">
+                                <p class="text-gray-300 text-sm bg-white/5 p-4 rounded-lg">
+                                    Create a verified database of medical terms. Consult bilingual doctors to ensure "Chest Pain" maps to clinical "Cơn đau thắt ngực" not literal translations.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Phase 3 -->
+                    <div class="relative pl-8 md:pl-0">
+                        <div class="absolute -left-3 md:left-1/2 md:-translate-x-1/2 w-6 h-6 bg-[#E07A5F] rounded-full border-4 border-[#3D405B]"></div>
+                        
+                        <div class="md:flex justify-between items-center group">
+                            <div class="md:w-[45%] md:text-right md:pr-8 mb-2 md:mb-0">
+                                <span class="text-[#E07A5F] font-bold text-sm tracking-wider uppercase">Phase 3: Development</span>
+                                <h3 class="text-xl font-bold">Dual-View Prototype</h3>
+                            </div>
+                            <div class="md:w-[45%] md:pl-8">
+                                <p class="text-gray-300 text-sm bg-white/5 p-4 rounded-lg">
+                                    Build the toggle interface (Patient EN / Doctor VN) demonstrated above. Focus on high contrast and "Glanceability" (3-second rule).
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Phase 4 -->
+                    <div class="relative pl-8 md:pl-0">
+                        <div class="absolute -left-3 md:left-1/2 md:-translate-x-1/2 w-6 h-6 bg-gray-500 rounded-full border-4 border-[#3D405B]"></div>
+                        
+                        <div class="md:flex justify-between items-center flex-row-reverse group">
+                            <div class="md:w-[45%] md:pl-8 mb-2 md:mb-0">
+                                <span class="text-gray-500 font-bold text-sm tracking-wider uppercase">Phase 4: Validation</span>
+                                <h3 class="text-xl font-bold">Simulated Pilot</h3>
+                            </div>
+                            <div class="md:w-[45%] md:text-right md:pr-8">
+                                <p class="text-gray-300 text-sm bg-white/5 p-4 rounded-lg">
+                                    Test with 10 ER nurses using simulated cards. Measure "Time to Understanding" vs. Google Translate.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="bg-gray-50 py-8 border-t border-gray-200 text-center" style="display: none;">
+        <p class="text-sm text-gray-500">Universal Medical Card Research Project | 2025</p>
+    </footer>
+
+    <!-- JAVASCRIPT LOGIC -->
+    <script>
+        // --- Data Source (Updated to User JSON) ---
+        const jsonData = {
+            "patient": {
+                "name": "John Smith",
+                "age": 35,
+                "gender": { "en": "Male", "vi": "Nam" },
+                "nationality": { "code": "US", "name_en": "USA", "name_vi": "Mỹ" },
+                "blood_type": "A+",
+                "emergency_contact": { "name": "Jane Smith", "phone": "+1 234 567 8900" }
+            },
+            "triage": {
+                "level": 3,
+                "color_code": "#FFD700",
+                "display_text": { "en": "Urgent / Moderate", "vi": "Khẩn cấp / Trung bình" },
+                "response_time_minutes": 30
+            },
+            "chief_complaint": {
+                "original": "I have had a headache and dizziness since this morning",
+                "symptoms": [
+                    { "en": "Headache", "vi": "Đau đầu" },
+                    { "en": "Dizziness", "vi": "Chóng mặt" }
+                ]
+            },
+            "allergies": [
+                { "name_en": "Penicillin", "name_vi": "Penicillin" },
+                { "name_en": "Aspirin", "name_vi": "Aspirin" }
+            ],
+            "medications": [
+                { "name": "Metformin" },
+                { "name": "Warfarin" }
+            ],
+            "medical_history": [
+                { "en": "Diabetes Mellitus", "vi": "Đái tháo đường / Tiểu đường" },
+                { "en": "Hypertension", "vi": "Tăng huyết áp / Cao huyết áp" }
+            ],
+            "surgical_history": [
+                { "en": "Appendectomy", "vi": "Phẫu thuật cắt ruột thừa" }
+            ]
+        };
+
+        // State
+        let currentMode = 'en'; // 'en' or 'vi'
+
+        // --- Logic Functions ---
+
+        function setMode(mode) {
+            currentMode = mode;
+            
+            // UI Updates for toggle
+            const enBtn = document.getElementById('mode-en');
+            const vnBtn = document.getElementById('mode-vn');
+
+            if (mode === 'en') {
+                enBtn.className = "flex-1 py-2 text-sm font-bold rounded-md transition-all bg-white shadow-sm text-[#5B8C9B]";
+                vnBtn.className = "flex-1 py-2 text-sm font-bold rounded-md transition-all text-gray-500 hover:text-[#5B8C9B]";
+            } else {
+                vnBtn.className = "flex-1 py-2 text-sm font-bold rounded-md transition-all bg-white shadow-sm text-[#E07A5F]";
+                enBtn.className = "flex-1 py-2 text-sm font-bold rounded-md transition-all text-gray-500 hover:text-[#5B8C9B]";
+            }
+
+            updateCardDisplay();
+        }
+
+        function updateCardDisplay() {
+            const p = jsonData.patient;
+            const t = jsonData.triage;
+            const cc = jsonData.chief_complaint;
+
+            // 1. Triage Header
+            const header = document.getElementById('card-header');
+            header.style.backgroundColor = t.color_code;
+            document.getElementById('disp-triage-text').textContent = currentMode === 'en' ? t.display_text.en : t.display_text.vi;
+            document.getElementById('disp-triage-level').textContent = `LEVEL ${t.level}`;
+            document.getElementById('disp-triage-time').textContent = `Max wait: ${t.response_time_minutes}m`;
+
+            // 2. Chief Complaint
+            const symList = document.getElementById('disp-symptoms-list');
+            symList.innerHTML = '';
+            cc.symptoms.forEach(sym => {
+                const span = document.createElement('span');
+                span.className = "px-3 py-1 bg-[#5B8C9B] text-white rounded-full text-lg font-bold";
+                span.textContent = currentMode === 'en' ? sym.en : sym.vi;
+                symList.appendChild(span);
+            });
+            document.getElementById('disp-original-complaint').textContent = cc.original;
+
+            // 3. Lists Helper Function
+            const renderList = (elementId, dataArray, keyEn, keyVi) => {
+                const ul = document.getElementById(elementId);
+                ul.innerHTML = '';
+                if(dataArray.length === 0) {
+                    ul.innerHTML = '<li class="text-gray-400 italic">None</li>';
+                    return;
+                }
+                dataArray.forEach(item => {
+                    const li = document.createElement('li');
+                    li.className = "flex items-start";
+                    // Handle logic: if keyVi exists and mode is vi, use it. Else fallback.
+                    let text = "";
+                    if (currentMode === 'vi' && keyVi && item[keyVi]) {
+                        text = item[keyVi];
+                    } else if (keyEn && item[keyEn]) {
+                        text = item[keyEn]; // Mode en or fallback
+                    } else if (item.name) {
+                        text = item.name; // Simple object like medications
+                    }
+                    
+                    li.innerHTML = `<span class="mr-2">•</span> ${text}`;
+                    ul.appendChild(li);
+                });
+            };
+
+            // Render Medical History
+            renderList('disp-history-list', jsonData.medical_history, 'en', 'vi');
+            
+            // Render Surgical History
+            renderList('disp-surgery-list', jsonData.surgical_history, 'en', 'vi');
+
+            // Render Medications (Only has 'name', no translations usually)
+            renderList('disp-meds-list', jsonData.medications, 'name', 'name');
+
+            // Render Allergies (Keys are name_en / name_vi)
+            renderList('disp-allergy-list', jsonData.allergies, 'name_en', 'name_vi');
+
+            // 4. Demographics
+            document.getElementById('disp-name').textContent = p.name;
+            document.getElementById('disp-age').textContent = p.age;
+            document.getElementById('disp-gender').textContent = currentMode === 'en' ? p.gender.en : p.gender.vi;
+            document.getElementById('disp-nationality').textContent = currentMode === 'en' ? p.nationality.name_en : p.nationality.name_vi;
+            document.getElementById('disp-blood').textContent = p.blood_type;
+
+            // 5. Emergency Contact
+            document.getElementById('disp-em-name').textContent = p.emergency_contact.name;
+            document.getElementById('disp-em-phone').textContent = p.emergency_contact.phone;
+        }
+
+        // --- Chart Logic (Keep existing visual purpose) ---
+        // Just keeping chart rendering so the rest of the page doesn't break
+        const ctxCoverage = document.getElementById('coverageChart').getContext('2d');
+        new Chart(ctxCoverage, {
+            type: 'doughnut',
+            data: {
+                labels: ['Internal', 'Trauma', 'Allergies', 'Neuro'],
+                datasets: [{ data: [40, 25, 15, 10], backgroundColor: ['#5B8C9B', '#E07A5F', '#81B29A', '#F2CC8F'] }]
+            },
+            options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } }
+        });
+
+        const ctxHierarchy = document.getElementById('hierarchyChart').getContext('2d');
+        new Chart(ctxHierarchy, {
+            type: 'bar',
+            data: {
+                labels: ['Chief Complaint', 'Allergies', 'History'],
+                datasets: [{ data: [10, 9, 8], backgroundColor: ['#5B8C9B', '#E07A5F', '#81B29A'] }]
+            },
+            options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { x: { display: false }, y: { display: false } } }
+        });
+
+        // Init
+        document.addEventListener('DOMContentLoaded', () => {
+            updateCardDisplay();
+        });
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,176 @@
+.tr-composer .tr-iconbtn {
+  width: 40px;
+  height: 40px;
+  border-radius: 999px !important;
+
+  /* giữ mic màu xám y như code cũ */
+  background: #f1f5f9 !important;
+  color: #64748b !important;
+  border: none;
+
+  /* tinh tế hơn một chút */
+  box-shadow: 0 10px 22px rgba(15, 23, 42, 0.1),
+    0 1px 0 rgba(255, 255, 255, 0.65) inset;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  transition: transform 0.16s ease, box-shadow 0.16s ease, background 0.16s ease,
+    color 0.16s ease, filter 0.16s ease;
+}
+
+.tr-composer .tr-iconbtn:hover {
+  background: #e2e8f0 !important;
+  /* giữ hover xám cũ */
+  color: #334155 !important;
+  transform: translateY(-1px);
+  box-shadow: 0 14px 30px rgba(15, 23, 42, 0.14),
+    0 1px 0 rgba(255, 255, 255, 0.7) inset;
+}
+
+.tr-composer .tr-iconbtn:active {
+  transform: translateY(0) scale(0.96);
+}
+
+/* icon cân hơn */
+.tr-composer .tr-iconbtn i {
+  font-size: 16px;
+  line-height: 1;
+  transform: translateY(0.5px);
+}
+
+/* SEND: vẫn xanh nhưng tinh tế hơn (tròn + shadow nhẹ, hover ít lố) */
+.tr-composer .tr-iconbtn--send {
+  background: linear-gradient(135deg, #00AEEF 0%, #1d4ed8 100%) !important;
+  color: #ffffff !important;
+
+  box-shadow: 0 10px 22px rgba(37, 99, 235, 0.18),
+    0 10px 22px rgba(15, 23, 42, 0.1), 0 1px 0 rgba(255, 255, 255, 0.25) inset;
+}
+
+.tr-composer .tr-iconbtn--send:hover {
+  transform: translateY(-1px);
+  filter: brightness(1.03);
+  box-shadow: 0 14px 32px rgba(37, 99, 235, 0.22),
+    0 14px 32px rgba(15, 23, 42, 0.14), 0 1px 0 rgba(255, 255, 255, 0.3) inset;
+}
+
+.tr-composer .tr-mic:hover {
+  background: linear-gradient(135deg, #00AEEF 0%, #1d4ed8 100%) !important;
+  color: #fff !important;
+}
+
+/* Badges (Patient/Doctor) */
+.tr-role__pill {
+  font-size: 11px;
+  font-weight: 700;
+  padding: 5px 12px;
+  border-radius: 20px;
+  background: #dbeafe;
+  /* Xanh dương nhạt */
+  color: #00AEEF;
+  /* Chữ xanh dương */
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+.tr-role__pill--muted {
+  background: #f1f5f9;
+  color: #64748b;
+}
+
+/* Language Switcher */
+.tr-lang {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 10px;
+  border-radius: 999px;
+
+  background: rgba(255, 255, 255, 0.75);
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  box-shadow: 0 6px 18px rgba(15, 23, 42, 0.06);
+
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+}
+
+.tr-flag {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  object-fit: cover;
+
+  border: 2px solid rgba(255, 255, 255, 0.9);
+  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.18), 0 0 0 1px rgba(15, 23, 42, 0.1);
+  display: block;
+}
+
+.tr-langs {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin-left: auto;
+}
+
+.tr-code {
+  font-weight: 700;
+  font-size: 12px;
+  letter-spacing: 0.6px;
+  color: #0f172a;
+}
+
+.tr-swap {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 999px;
+
+  background: rgba(255, 255, 255, 0.55);
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  box-shadow: 0 6px 18px rgba(15, 23, 42, 0.05);
+}
+
+.tr-lang:hover {
+  transform: translateY(-1px);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  box-shadow: 0 10px 26px rgba(15, 23, 42, 0.09);
+}
+
+/* Nút chọn Panel (Hình tròn) */
+.tr-pick {
+  border: none;
+  background: none;
+  cursor: pointer;
+  padding: 0;
+}
+
+.tr-pick__dot {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  border: 2px solid #cbd5e1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 12px;
+  transition: all 0.2s;
+}
+
+.tr-panel--active .tr-pick__dot {
+  background: #00AEEF;
+  border-color: #00AEEF;
+  transform: scale(1.1);
+}
+
+.tr-pick__tick {
+  display: none;
+}
+
+.tr-panel--active .tr-pick__tick {
+  display: block;
+}

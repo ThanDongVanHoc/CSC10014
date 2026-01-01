@@ -1,0 +1,44 @@
+/* CONTAINER AUTH (Reset, Verify) */
+.auth-card-container {
+  width: 100%;
+  max-width: 400px; /* Đồng bộ kích thước với Sign In */
+  background: var(--bg-card);
+  border-radius: var(--radius-card);
+  padding: 40px 32px;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.auth-logo {
+  width: 60px;
+  margin-bottom: 24px;
+}
+
+.auth-title {
+  font-size: 26px;
+  font-weight: 800;
+  color: var(--text-main);
+  margin: 0 0 12px 0;
+  letter-spacing: -0.5px;
+}
+
+.auth-instruction {
+  font-size: 15px;
+  color: var(--text-muted);
+  line-height: 1.6;
+  margin-bottom: 30px;
+}
+
+/* Nút nằm ngang (Cancel + Submit) */
+.buttons-group {
+  display: flex;
+  gap: 12px;
+  margin-top: 24px;
+  width: 100%;
+}
+.buttons-group > * {
+  flex: 1;
+}

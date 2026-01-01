@@ -1,78 +1,38 @@
-import { initMap, invalidateMapSize } from './map.js';
-import { initChat as initGuestChat, setMapReference as setGuestMapRef } from './chat.js';
-import { initChat as initUserChat, setMapReference as setUserMapRef } from './chat_user.js';
-
-/**
- * Kiểm tra trạng thái đăng nhập của người dùng.
- * Backend trả:
- *    { logged_in: true } hoặc { logged_in: false }
- */
-async function checkUserLogin() {
-    try {
-        const resp = await fetch('/chat/auth_status');
-        if (!resp.ok) return false;
-        const data = await resp.json();
-        return data.logged_in === true;
-    } catch (err) {
-        console.error("Không thể kiểm tra trạng thái đăng nhập:", err);
-        return false;
-    }
-}
+import { initChat} from "./chat/index.js";
 
 async function initialize() {
-    console.log("🚀 logic.js loaded: Initializing app...");
+  console.log("🚀 logic.js loaded: Initializing app...");
 
-    // ============================
-    // 1. KHỞI TẠO MAP
-    // ============================
-    const { map, pinLocationToMap } = initMap();
+  // 3. KHỞI TẠO CHAT SYSTEM
+  await initChat();
 
-
-    // ============================
-    // 2. CHECK LOGIN → LOAD CHAT
-    // ============================
-    const isLoggedIn = await checkUserLogin();
-    console.log("🔍 Login status:", isLoggedIn);
-
-    if (isLoggedIn) {
-        console.log("🟢 Đang dùng chế độ USER (chat_user.js)");
-        initUserChat();
-
-        // Kết nối map với chat_user.js
-        if (typeof setUserMapRef === "function") {
-            setUserMapRef(pinLocationToMap);
-        }
-
-    } else {
-        console.log("🟠 Đang dùng chế độ GUEST (chat.js)");
-        initGuestChat();
-
-        // Kết nối map với chat.js
-        if (typeof setGuestMapRef === "function") {
-            setGuestMapRef(pinLocationToMap);
-        }
+  try {
+      await fetch("/chat/clear_session", { method: "POST" });
+      console.log("🧹 Session cleared for a fresh start.");
+    } catch (err) {
+      console.error("Failed to clear session:", err);
     }
 
+  // 4. XỬ LÝ UI RESIZE
+  const hideBtn = document.getElementById("hideBtn");
+  const showBtn = document.getElementById("showSidebar");
 
-    // ============================
-    // 3. THU GỌN BẢN ĐỒ
-    // ============================
-    const hideBtn = document.getElementById('hideBtn');
-    if (hideBtn) {
-        hideBtn.addEventListener('click', () => {
-            invalidateMapSize();
-        });
-    }
-
-
-    // ============================
-    // 4. CLEAR SESSION KHI ĐÓNG TAB (GUEST MODE)
-    // ============================
-    window.addEventListener("beforeunload", () => {
-        console.log("⏹ beforeunload → clear session");
-        sessionStorage.clear();
-        navigator.sendBeacon("/chat/clear_session");
+  if (hideBtn) {
+    hideBtn.addEventListener("click", () => {
+      setTimeout(invalidateMapSize, 300);
     });
+  }
+
+  if (showBtn) {
+    showBtn.addEventListener("click", () => {
+      setTimeout(invalidateMapSize, 300);
+    });
+  }
+
+  // 5. DỌN DẸP SESSION
+  window.addEventListener("beforeunload", () => {
+    navigator.sendBeacon("/chat/clear_session");
+  });
 }
 
-document.addEventListener('DOMContentLoaded', initialize);
+document.addEventListener("DOMContentLoaded", initialize);

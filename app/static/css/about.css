@@ -1,0 +1,175 @@
+/* --- CẤU HÌNH CHUNG --- */
+body {
+  font-family: "Manrope", sans-serif;
+  background-color: #ffffff;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px 80px 20px;
+}
+
+/* --- HERO SECTION --- */
+.about-header {
+  text-align: center;
+  margin-top: 60px;
+  margin-bottom: 60px;
+}
+
+.status-badge {
+  display: inline-block;
+  padding: 8px 20px;
+  border-radius: 999px;
+  background: #f3f4f6;
+  font-weight: 700;
+  font-size: 13px;
+  color: var(--brand-green-dark, #1d4ed8);
+  margin-bottom: 20px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.hero-title {
+  font-family: "Manrope", sans-serif;
+  font-size: 48px;
+  font-weight: 800;
+  line-height: 1.1;
+  margin: 0 0 24px 0;
+  color: #111827;
+}
+
+.hero-subtitle {
+  color: #6b7280;
+  font-size: 18px;
+  line-height: 1.6;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* --- TEAM GRID SECTION (ĐÃ SỬA) --- */
+.team-grid {
+  display: grid;
+  /* Giảm minmax từ 220px xuống 180px để 5 thẻ vừa khít trên 1 hàng 1200px */
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 20px;
+  /* Giảm khoảng cách một chút */
+  justify-content: center;
+}
+
+/* --- TEAM CARD DESIGN --- */
+.team-card {
+  background: #ffffff;
+  border-radius: 24px;
+  padding: 30px 20px;
+  /* Giảm padding cho gọn */
+  text-align: center;
+  border: 1px solid #f3f4f6;
+  transition: all 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100%;
+  /* Để các thẻ cao bằng nhau */
+}
+
+.team-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.1);
+  border-color: transparent;
+}
+
+/* Avatar Tròn */
+.avatar-wrapper {
+  width: 90px;
+  height: 90px;
+  margin-bottom: 20px;
+  position: relative;
+
+  border-radius: 50%;
+  /* Biến khung vuông thành hình tròn */
+  overflow: hidden;
+  /* Cắt bỏ phần thừa ra ngoài hình tròn */
+  display: flex;
+  /* Căn giữa ảnh trong khung tròn */
+  align-items: center;
+  justify-content: center;
+}
+
+.team-avatar {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+  box-shadow: 0 0 0 4px #eff6ff;
+}
+
+/* Typography cho Card */
+.member-name {
+  font-size: 17px;
+  font-weight: 800;
+  color: #111827;
+  margin: 0 0 6px 0;
+}
+
+.member-role {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--brand, #00AEEF);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 12px;
+}
+
+.member-bio {
+  font-size: 13px;
+  color: #6b7280;
+  line-height: 1.5;
+  margin-bottom: 20px;
+  flex-grow: 1;
+}
+
+/* Social Icons (Đã sửa để chứa SVG) */
+.social-links {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+}
+
+.social-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: #f3f4f6;
+  /* Nền xám nhạt cho icon */
+  color: #111827;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  transition: all 0.2s;
+}
+
+.social-icon svg {
+  width: 18px;
+  height: 18px;
+  fill: currentColor;
+  /* Để icon đổi màu theo text */
+}
+
+/* Màu riêng cho từng mạng xã hội khi hover */
+.social-icon:hover {
+  color: #ffffff;
+  transform: translateY(-2px);
+}
+
+.social-icon.fb:hover {
+  background: #1877f2;
+  /* Màu xanh Facebook */
+}
+
+.social-icon.in:hover {
+  background: #e1306c;
+  /* Màu gradient Instagram (đơn giản hóa thành hồng) */
+}

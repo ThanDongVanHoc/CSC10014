@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>VietCare • Services Selection</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Stencil+Text:wght@100;300;400;500;600;700;800;900&family=Manrope:wght@200;300;400;500;600;700;800&display=swap"
+    rel="stylesheet" />
+
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/layout.css') }}" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/services.css') }}" />
+</head>
+
+<body class="os-page">
+  <header class="os-topbar">
+    <a href="{{ url_for('home_page') }}" class="os-logo" style="text-decoration: none">
+      <img src="{{ url_for('static', filename='images/logo.png') }}" class="os-logo-img" alt="VietCare" />
+      <div class="os-logo-text">
+        VietCare<br />
+        <span class="os-logo-subtext">HEALTH CARE SERVICES</span>
+      </div>
+    </a>
+  </header>
+
+  <main class="os-main">
+    <div class="os-container">
+      <div class="os-header-section">
+        <div class="os-label">Onboarding</div>
+
+        <h1 class="os-title">Access our online system</h1>
+
+        <div class="os-divider"></div>
+
+        <p class="os-description">
+          Please select the service you would like to access today.<br />
+          We provide verified resources for your safety and convenience.
+        </p>
+      </div>
+
+      <div class="os-grid">
+        <div class="os-card" data-href="{{ url_for('chat.chat_page') }}">
+          <div class="os-image-wrapper">
+            <img src="{{ url_for('static', filename='images/navigation.png') }}" alt="Medical Map"
+              class="os-card-img" />
+          </div>
+          <div class="os-card-content">
+            <h3 class="os-card-title">Interact Medical Map</h3>
+            <p class="os-card-desc">
+              Find clinics, hospitals, and emergency points — fast, verified,
+              and nearby.
+            </p>
+          </div>
+          <div class="os-check-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"
+              stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="20 6 9 17 4 12"></polyline>
+            </svg>
+          </div>
+        </div>
+
+        <div class="os-card" data-href="{{ url_for('translate.translate_page') }}">
+          <div class="os-image-wrapper">
+            <img src="{{ url_for('static', filename='images/translate.png') }}" alt="Translation Suite"
+              class="os-card-img" />
+          </div>
+          <div class="os-card-content">
+            <h3 class="os-card-title">Live Translation Suite</h3>
+            <p class="os-card-desc">
+              Real-time translation for calls, clinics, police, and paperwork
+              — with AI assistance.
+            </p>
+          </div>
+          <div class="os-check-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"
+              stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="20 6 9 17 4 12"></polyline>
+            </svg>
+          </div>
+        </div>
+      </div>
+
+      <div class="os-footer">
+        <a href="{{ url_for('home_page') }}" class="os-home-btn" title="Back to Home">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+            <polyline points="9 22 9 12 15 12 15 22"></polyline>
+          </svg>
+        </a>
+      </div>
+    </div>
+  </main>
+
+  <script src="{{ url_for('static', filename='script/services.js') }}"></script>
+</body>
+
+</html>

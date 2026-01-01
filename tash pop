@@ -1,0 +1,304 @@
+*   [33ma6721b3[m[33m ([m[1;35mrefs/stash[m[33m)[m WIP on do_or_die: 1f258ff enable to find hospital
+[31m|[m[32m\[m  
+[31m|[m * [33m3e3e3bf[m index on do_or_die: 1f258ff enable to find hospital
+[31m|[m[31m/[m  
+*   [33m1f258ff[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mdo_or_die[m[33m, [m[1;31morigin/do_or_die[m[33m)[m enable to find hospital
+[33m|[m[34m\[m  
+[33m|[m * [33me6a49ac[m[33m ([m[1;31morigin/hospital-price[m[33m, [m[1;32mhospital-price[m[33m)[m add model have filter
+[33m|[m * [33m1a8ece5[m sus
+[33m|[m * [33mb8f79b6[m zzzzz
+[33m|[m * [33m3e2af31[m Them folder data moi
+*   [33m123f602[m merge orc-model
+[35m|[m[36m\[m  
+[35m|[m * [33me667380[m[33m ([m[1;31morigin/ocr-model[m[33m, [m[1;32mocr-model[m[33m)[m add dob and gender
+* [36m|[m [33mcadc8c2[m backend commit
+[1;31m|[m[36m\[m[36m|[m 
+[1;31m|[m * [33m3605726[m done profile
+* [1;32m|[m [33m36e0977[m fix bug translate
+* [1;32m|[m [33m68a4af9[m card UI
+[1;32m|[m[1;32m/[m  
+*   [33m67a69ae[m merge
+[1;33m|[m[1;34m\[m  
+[1;33m|[m * [33me12a40f[m add symtoms and notes, fix envinronment variables to GEMINI_API_KEY_4
+[1;33m|[m * [33m2b7d238[m front-end for health-passport
+[1;33m|[m * [33m35b026d[m front end for medical history
+[1;33m|[m * [33m33d3e01[m demo model with front-end
+[1;33m|[m *   [33ma250bdc[m fix merge commit
+[1;33m|[m [1;35m|[m[1;36m\[m  
+[1;33m|[m * [1;36m|[m [33m4731a9c[m add database for Medical Record
+[1;33m|[m * [1;36m|[m [33m96524b8[m model health-passport
+* [1;36m|[m [1;36m|[m [33m1989514[m fix bugs =))
+* [1;36m|[m [1;36m|[m [33m4f56838[m fix bug
+* [1;36m|[m [1;36m|[m   [33me433c37[m Merge branch 'do_or_die' of https://github.com/ThanDongVanHoc/CSC10014 into do_or_die
+[31m|[m[32m\[m [1;36m\[m [1;36m\[m  
+[31m|[m * [1;36m|[m [1;36m|[m [33m1f91653[m add medical form
+* [32m|[m [1;36m|[m [1;36m|[m [33m63bdb50[m complete translate services
+[32m|[m[32m/[m [1;36m/[m [1;36m/[m  
+* [1;36m|[m [1;36m|[m   [33m4fba9c5[m Merge branch 'do_or_die' of https://github.com/ThanDongVanHoc/CSC10014 into do_or_die
+[33m|[m[34m\[m [1;36m\[m [1;36m\[m  
+[33m|[m * [1;36m|[m [1;36m|[m [33m3d888a8[m restructure the request
+[33m|[m * [1;36m|[m [1;36m|[m   [33m15834d6[m fix minor bug in routes
+[33m|[m [35m|[m[36m\[m [1;36m\[m [1;36m\[m  
+[33m|[m * [36m\[m [1;36m\[m [1;36m\[m   [33m41dd3a6[m add interactive map and some bill and location
+[33m|[m [1;31m|[m[1;36m\[m [36m\[m [1;36m\[m [1;36m\[m  
+[33m|[m [1;31m|[m [1;36m|[m [36m|[m[1;36m_[m[1;36m|[m[1;36m/[m  
+[33m|[m [1;31m|[m [1;36m|[m[1;36m/[m[36m|[m [1;36m|[m   
+[33m|[m * [1;36m|[m [36m|[m [1;36m|[m [33m1a98a29[m add interactive map and some bill and location
+* [1;32m|[m [1;36m|[m [36m|[m [1;36m|[m [33m9ff84ae[m record
+[36m|[m [1;32m|[m[36m_[m[1;36m|[m[36m/[m [1;36m/[m  
+[36m|[m[36m/[m[1;32m|[m [1;36m|[m [1;36m|[m   
+* [1;32m|[m [1;36m|[m [1;36m|[m [33m0ce9f25[m translate UI
+[1;36m|[m [1;32m|[m[1;36m/[m [1;36m/[m  
+[1;36m|[m[1;36m/[m[1;32m|[m [1;36m|[m   
+* [1;32m|[m [1;36m|[m [33m08546cc[m fix UI
+[1;32m|[m[1;32m/[m [1;36m/[m  
+* [1;36m|[m [33m913bd1b[m fix css in map and chat
+* [1;36m|[m   [33m4f97230[m Merge branch 'do_or_die' of https://github.com/ThanDongVanHoc/CSC10014 into do_or_die
+[1;33m|[m[1;34m\[m [1;36m\[m  
+[1;33m|[m * [1;36m|[m [33m7118d4c[m remove map
+* [1;34m|[m [1;36m|[m   [33mc058303[m merge
+[1;34m|[m[1;36m\[m [1;34m\[m [1;36m\[m  
+[1;34m|[m [1;36m|[m[1;34m/[m [1;36m/[m  
+[1;34m|[m[1;34m/[m[1;36m|[m [1;36m|[m   
+[1;34m|[m * [1;36m|[m [33meb2520b[m profile UI, services UI
+* [1;36m|[m [1;36m|[m   [33m5500664[m fix map
+[31m|[m[1;36m\[m [1;36m\[m [1;36m\[m  
+[31m|[m [1;36m|[m [1;36m|[m[1;36m/[m  
+[31m|[m [1;36m|[m[1;36m/[m[1;36m|[m   
+[31m|[m * [1;36m|[m [33m2729644[m[33m ([m[1;31morigin/back-end[m[33m, [m[1;32mback-end[m[33m)[m Merge branch 'back-end' of https://github.com/ThanDongVanHoc/CSC10014 into back-end
+[31m|[m [33m|[m[1;36m\[m[1;36m|[m 
+[31m|[m * [1;36m|[m [33mcc8d35e[m commit to switch branch
+* [34m|[m [1;36m|[m [33m47d9b07[m init map page
+[1;36m|[m [34m|[m[1;36m/[m  
+[1;36m|[m[1;36m/[m[34m|[m   
+* [34m|[m [33m28e4c08[m change UI
+[34m|[m[34m/[m  
+*   [33ma93a86b[m succefully merge
+[35m|[m[36m\[m  
+[35m|[m *   [33m82b38b0[m fix conflic merge guide.json
+[35m|[m [1;31m|[m[1;32m\[m  
+[35m|[m [1;31m|[m * [33mcd62740[m save guide, check follow_up
+[35m|[m [1;31m|[m *   [33mad020b7[m Merge branch 'workspace-setup' into back-end
+[35m|[m [1;31m|[m [1;33m|[m[1;34m\[m  
+[35m|[m [1;31m|[m [1;33m|[m *   [33mbb10f9a[m Merge branch 'workspace-setup' of https://github.com/ThanDongVanHoc/CSC10014 into workspace-setup
+[35m|[m [1;31m|[m [1;33m|[m [1;35m|[m[1;36m\[m  
+[35m|[m [1;31m|[m [1;33m|[m [1;35m|[m * [33mf7350ad[m[33m ([m[1;31morigin/workspace-setup[m[33m)[m remove get current location , update model can overwrite info
+[35m|[m [1;31m|[m * [1;35m|[m [1;36m|[m [33m3a804b4[m some stuffs
+[35m|[m [1;31m|[m * [1;35m|[m [1;36m|[m [33me03eadb[m Merge branch 'workspace-setup' into back-end
+[35m|[m [1;31m|[m [31m|[m[1;35m\[m[1;35m|[m [1;36m|[m 
+[35m|[m [1;31m|[m [31m|[m * [1;36m|[m [33mcfad63a[m Merge branch 'workspace-setup' of https://github.com/ThanDongVanHoc/CSC10014 into workspace-setup
+[35m|[m [1;31m|[m [31m|[m [33m|[m[1;36m\[m[1;36m|[m 
+[35m|[m [1;31m|[m [31m|[m [33m|[m * [33m1b7d694[m update query 1 - easy to turn on complete and change model to gen2.5-lite
+[35m|[m [1;31m|[m * [33m|[m [34m|[m [33m04e32b3[m some stuffs
+[35m|[m * [34m|[m [33m|[m [34m|[m [33m69fbff0[m commit to merge
+* [34m|[m [34m|[m [33m|[m [34m|[m [33m1f1f411[m update guide for user
+[34m|[m [34m|[m[34m/[m [33m/[m [34m/[m  
+[34m|[m[34m/[m[34m|[m [33m|[m [34m|[m   
+* [34m|[m [33m|[m [34m|[m [33m0c0e0aa[m preview and download file
+* [34m|[m [33m|[m [34m|[m [33m1e375c5[m Merge branch 'back-end' of https://github.com/ThanDongVanHoc/CSC10014 into back-end
+[35m|[m[34m\[m[34m|[m [33m|[m [34m|[m 
+[35m|[m * [33m|[m [34m|[m   [33m5dc81d6[m fix some bugs and improve the submit issue
+[35m|[m [1;31m|[m[34m\[m [33m\[m [34m\[m  
+[35m|[m [1;31m|[m [34m|[m [33m|[m[34m/[m  
+[35m|[m [1;31m|[m [34m|[m[34m/[m[33m|[m   
+[35m|[m [1;31m|[m * [33m|[m [33mb67de2a[m[33m ([m[1;32mworkspace-setup[m[33m)[m update call api -> only 1 api call
+[35m|[m * [1;32m|[m [33m|[m   [33m5ac7fed[m merge
+[35m|[m [1;33m|[m[1;34m\[m [1;32m\[m [33m\[m  
+[35m|[m * [1;34m|[m [1;32m|[m [33m|[m [33m4490ba9[m fix minor bug
+* [1;34m|[m [1;34m|[m [1;32m|[m [33m|[m [33m48d507b[m forms data
+[1;34m|[m [1;34m|[m[1;34m/[m [1;32m/[m [33m/[m  
+[1;34m|[m[1;34m/[m[1;34m|[m [1;32m|[m [33m|[m   
+* [1;34m|[m [1;32m|[m [33m|[m [33m83c8ae1[m fix routes
+[1;34m|[m[1;34m/[m [1;32m/[m [33m/[m  
+* [1;32m|[m [33m|[m   [33m3f9ea93[m merge
+[1;35m|[m[1;36m\[m [1;32m\[m [33m\[m  
+[1;35m|[m * [1;32m|[m [33m|[m [33mfb27469[m chat greet, clean code
+[1;35m|[m * [1;32m|[m [33m|[m [33m6953e1d[m fix bug propagation, clean code
+* [1;36m|[m [1;32m|[m [33m|[m [33m230b00e[m add handle issue and minimize and plus
+[1;36m|[m[1;36m/[m [1;32m/[m [33m/[m  
+* [1;32m|[m [33m|[m [33m1eda7b2[m clean code
+* [1;32m|[m [33m|[m   [33m04591dc[m merge
+[31m|[m[32m\[m [1;32m\[m [33m\[m  
+[31m|[m * [1;32m\[m [33m\[m   [33mc0bb764[m improve some stuff
+[31m|[m [33m|[m[34m\[m [1;32m\[m [33m\[m  
+[31m|[m * [34m\[m [1;32m\[m [33m\[m   [33mb29a2d9[m merge
+[31m|[m [35m|[m[36m\[m [34m\[m [1;32m\[m [33m\[m  
+[31m|[m [35m|[m * [34m|[m [1;32m|[m [33m|[m [33m0c95df2[m[33m ([m[1;31morigin/front-end[m[33m, [m[1;32mfront-end[m[33m)[m Remove hardcoded Gemini API key
+[31m|[m [35m|[m * [34m|[m [1;32m|[m [33m|[m [33m8a58051[m merge 2 model and step-by-step guide
+[31m|[m [35m|[m [1;32m|[m [34m|[m[1;32m/[m [33m/[m  
+[31m|[m [35m|[m [1;32m|[m[1;32m/[m[34m|[m [33m|[m   
+[31m|[m [35m|[m * [34m|[m [33m|[m   [33m84cfc91[m Merge branch 'workspace-setup' of https://github.com/ThanDongVanHoc/CSC10014 into workspace-setup
+[31m|[m [35m|[m [1;31m|[m[1;32m\[m [34m\[m [33m\[m  
+[31m|[m [35m|[m * [1;32m|[m [34m|[m [33m|[m [33m0f109e7[m make guide for all k location in version 2 -> use main_v2.py
+* [35m|[m [1;32m|[m [1;32m|[m [34m|[m [33m|[m [33mf863282[m improve search, create pin
+[34m|[m [35m|[m[34m_[m[1;32m|[m[34m_[m[1;32m|[m[34m/[m [33m/[m  
+[34m|[m[34m/[m[35m|[m [1;32m|[m [1;32m|[m [33m|[m   
+* [35m|[m [1;32m|[m [1;32m|[m [33m|[m [33mb5e6ccd[m fix bug fullscreen
+* [35m|[m [1;32m|[m [1;32m|[m [33m|[m [33m0c41dd4[m add again raw_data_realtime
+* [35m|[m [1;32m|[m [1;32m|[m [33m|[m [33mb0bf757[m crawl img, phone, website, add poisidebar, render position if poi, clean code map
+[35m|[m[35m/[m [1;32m/[m [1;32m/[m [33m/[m  
+* [1;32m|[m [1;32m|[m [33m|[m   [33m67709c8[m Merge branch 'workspace-setup' into back-end
+[1;33m|[m[33m\[m [1;32m\[m [1;32m\[m [33m\[m  
+[1;33m|[m [33m|[m [1;32m|[m[33m_[m[1;32m|[m[33m/[m  
+[1;33m|[m [33m|[m[33m/[m[1;32m|[m [1;32m|[m   
+[1;33m|[m * [1;32m|[m [1;32m|[m [33m1280832[m clean code, crawl image
+[1;33m|[m [1;32m|[m [1;32m|[m[1;32m/[m  
+[1;33m|[m [1;32m|[m[1;32m/[m[1;32m|[m   
+[1;33m|[m * [1;32m|[m   [33mafc4387[m update branch
+[1;33m|[m [1;32m|[m[1;36m\[m [1;32m\[m  
+[1;33m|[m [1;32m|[m [1;36m|[m[1;32m/[m  
+[1;33m|[m [1;32m|[m[1;32m/[m[1;36m|[m   
+[1;33m|[m * [1;36m|[m [33m78bc19d[m edit md
+[1;33m|[m * [1;36m|[m [33ma6603aa[m remove pydantic
+[1;33m|[m * [1;36m|[m [33m04c3d35[m doc to reponse and request
+[1;33m|[m * [1;36m|[m [33mdf581b1[m update config and ask user at most 5 questions
+[1;33m|[m * [1;36m|[m   [33m1e0ee33[m make model more oop + enhance language when chat
+[1;33m|[m [31m|[m[32m\[m [1;36m\[m  
+[1;33m|[m [31m|[m * [1;36m|[m [33mebe76df[m Clear
+[1;33m|[m * [32m|[m [1;36m|[m [33m77aaa25[m make model more oop + enhance language when chat
+[1;33m|[m [32m|[m[32m/[m [1;36m/[m  
+[1;33m|[m * [1;36m|[m [33m6826567[m demo , need to ehance structure
+[1;33m|[m * [1;36m|[m [33mc1b6428[m Initial commit: Upload current workspace
+[1;33m|[m  [1;36m/[m  
+* [1;36m/[m [33m5ae5c6b[m change api key
+[1;36m|[m[1;36m/[m  
+*   [33m9d105e3[m pull code
+[33m|[m[34m\[m  
+[33m|[m * [33m49c6444[m improve some stuff
+* [34m|[m [33me8f6246[m pull code, fix bugs
+[35m|[m[34m\[m[34m|[m 
+[35m|[m * [33m8e6eb43[m update detail step-by-step guide on sample data and improve the UI
+* [36m|[m [33meb2141b[m fix UI, clean code, ...
+* [36m|[m [33m5f5f8a9[m Merge branch 'back-end' of https://github.com/ThanDongVanHoc/CSC10014 into back-end
+[1;31m|[m[36m\[m[36m|[m 
+[1;31m|[m * [33m6274638[m update UI by fixing bugs in screen size and chat content
+[1;31m|[m * [33m3f168bf[m update UI, fixed the show and hide sidebar of chat, improve the map ui by adding fullscreen and logo
+* [1;32m|[m [33m50c5356[m Merge branch 'back-end' of https://github.com/ThanDongVanHoc/CSC10014 into back-end
+[1;33m|[m[1;32m\[m[1;32m|[m 
+[1;33m|[m * [33m66748e6[m update UI
+[1;33m|[m * [33m3296e5f[m update
+* [1;34m|[m [33me7a7982[m clean db
+[1;34m|[m[1;34m/[m  
+*   [33m0c1c26d[m merge
+[1;35m|[m[1;36m\[m  
+[1;35m|[m *   [33m4f8209c[m Merge branch 'front-end' into back-end
+[1;35m|[m [31m|[m[32m\[m  
+[1;35m|[m [31m|[m * [33m1027cd8[m[33m ([m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m, [m[1;32mmain[m[33m)[m save bot chat
+[1;35m|[m [31m|[m * [33m485d9db[m clean code
+[1;35m|[m [31m|[m * [33m19e7ef4[m fix merge conflic
+[1;35m|[m [31m|[m *   [33ma23cb7e[m Merge branch 'front-end' of https://github.com/ThanDongVanHoc/CSC10014 into front-end
+[1;35m|[m [31m|[m [33m|[m[34m\[m  
+[1;35m|[m [31m|[m * [34m|[m [33m1fb1c1c[m add data base for chat
+[1;35m|[m * [34m|[m [34m|[m   [33m4c8a3e8[m merge
+[1;35m|[m [35m|[m[34m\[m [34m\[m [34m\[m  
+[1;35m|[m [35m|[m [34m|[m [34m|[m[34m/[m  
+[1;35m|[m [35m|[m [34m|[m[34m/[m[34m|[m   
+[1;35m|[m [35m|[m * [34m|[m [33m526cd95[m add
+[1;35m|[m [35m|[m * [34m|[m [33m0cfbc58[m add
+[1;35m|[m [35m|[m * [34m|[m [33m53e9d40[m add
+[1;35m|[m [35m|[m * [34m|[m [33m846c021[m update
+[1;35m|[m [35m|[m [34m|[m[34m/[m  
+* [35m|[m [34m/[m [33m36926ae[m fix my gps bug
+[35m|[m[35m/[m [34m/[m  
+* [34m|[m [33m3148f96[m Merge branch 'front-end' into back-end Merge front end
+[1;31m|[m[34m\[m[34m|[m 
+[1;31m|[m *   [33mda69e5b[m Merge pull request #4 from ThanDongVanHoc/front-end
+[1;31m|[m [1;33m|[m[1;34m\[m  
+[1;31m|[m [1;33m|[m *   [33mb39657a[m merge
+[1;31m|[m [1;33m|[m [1;35m|[m[1;36m\[m  
+[1;31m|[m [1;33m|[m [1;35m|[m *   [33m66d5cd5[m Merge branch 'back-end' into front-end
+[1;31m|[m [1;33m|[m [1;35m|[m [31m|[m[32m\[m  
+[1;31m|[m [1;33m|[m [1;35m|[m [31m|[m *   [33m2f046c8[m Resolve merge conflict during pull
+[1;31m|[m [1;33m|[m [1;35m|[m [31m|[m [33m|[m[34m\[m  
+[1;31m|[m [1;33m|[m [1;35m|[m * [33m|[m [34m\[m   [33m64c1df4[m Merge branch 'front-end' of https://github.com/ThanDongVanHoc/CSC10014 into front-end
+[1;31m|[m [1;33m|[m [1;35m|[m [35m|[m[36m\[m [33m\[m [34m\[m  
+[1;31m|[m [1;33m|[m [1;35m|[m * [36m|[m [33m|[m [34m|[m [33m8e85a2b[m clean code
+[1;31m|[m [1;33m|[m * [36m|[m [36m|[m [33m|[m [34m|[m [33m38fc78a[m add more stuff front-end
+[1;31m|[m [1;33m|[m [36m|[m [36m|[m[36m/[m [33m/[m [34m/[m  
+[1;31m|[m [1;33m|[m [36m|[m[36m/[m[36m|[m [33m|[m [34m|[m   
+[1;31m|[m * [36m|[m [36m|[m [33m|[m [34m|[m [33m99dbd0b[m Document API service for BE
+[1;31m|[m * [36m|[m [36m|[m [33m|[m [34m|[m [33m16a5952[m model, not fully
+[1;31m|[m * [36m|[m [36m|[m [33m|[m [34m|[m [33m7056e02[m Basic UI for test
+[1;31m|[m * [36m|[m [36m|[m [33m|[m [34m|[m [33ma97f119[m Instance Corpus for retrieval
+[1;31m|[m * [36m|[m [36m|[m [33m|[m [34m|[m [33m1da643a[m Build API server (Fast API) for service model
+[1;31m|[m * [36m|[m [36m|[m [33m|[m [34m|[m [33mb104439[m chore: requirements.txt
+[1;31m|[m * [36m|[m [36m|[m [33m|[m [34m|[m [33md1651bc[m Integrate classifier model pipeline (model finetune) , Evaluate distance score & specific data (Zeroshot)
+[1;31m|[m [34m|[m [36m|[m[34m_[m[36m|[m[34m_[m[33m|[m[34m/[m  
+[1;31m|[m [34m|[m[34m/[m[36m|[m [36m|[m [33m|[m   
+[1;31m|[m * [36m|[m [36m|[m [33m|[m [33ma0db108[m Merge pull request #3 from ThanDongVanHoc/front-end
+[1;31m|[m [1;31m|[m[36m\[m[36m|[m [36m|[m [33m|[m 
+[1;31m|[m * [36m|[m [36m|[m [33m|[m   [33maa49ab5[m Merge pull request #2 from ThanDongVanHoc/front-end
+[1;31m|[m [1;33m|[m[1;34m\[m [36m\[m [36m\[m [33m\[m  
+[1;31m|[m * [1;34m\[m [36m\[m [36m\[m [33m\[m   [33m6211198[m Merge pull request #1 from ThanDongVanHoc/front-end
+[1;31m|[m [1;35m|[m[1;36m\[m [1;34m\[m [36m\[m [36m\[m [33m\[m  
+* [1;35m|[m [1;36m\[m [1;34m\[m [36m\[m [36m\[m [33m\[m   [33m393af59[m pois suggestion
+[33m|[m[36m\[m [1;35m\[m [1;36m\[m [1;34m\[m [36m\[m [36m\[m [33m\[m  
+[33m|[m [36m|[m [1;35m|[m[36m_[m[1;36m|[m[36m_[m[1;34m|[m[36m/[m [36m/[m [33m/[m  
+[33m|[m [36m|[m[36m/[m[1;35m|[m [1;36m|[m [1;34m|[m [36m|[m [33m/[m   
+[33m|[m [36m|[m[33m_[m[1;35m|[m[33m_[m[1;36m|[m[33m_[m[1;34m|[m[33m_[m[36m|[m[33m/[m    
+[33m|[m[33m/[m[36m|[m [1;35m|[m [1;36m|[m [1;34m|[m [36m|[m     
+[33m|[m * [1;35m|[m [1;36m|[m [1;34m|[m [36m|[m [33m1160aaa[m fix bugs in maps interaction
+[33m|[m * [1;35m|[m [1;36m|[m [1;34m|[m [36m|[m [33m78a0cf3[m add chat logic
+[33m|[m [36m|[m [1;35m|[m[36m_[m[1;36m|[m[36m_[m[1;34m|[m[36m/[m  
+[33m|[m [36m|[m[36m/[m[1;35m|[m [1;36m|[m [1;34m|[m   
+[33m|[m * [1;35m|[m [1;36m|[m [1;34m|[m   [33m5432307[m Merge branch 'front-end' of https://github.com/ThanDongVanHoc/CSC10014 into front-end
+[33m|[m [33m|[m[1;34m\[m [1;35m\[m [1;36m\[m [1;34m\[m  
+[33m|[m [33m|[m [1;34m|[m [1;35m|[m[1;34m_[m[1;36m|[m[1;34m/[m  
+[33m|[m [33m|[m [1;34m|[m[1;34m/[m[1;35m|[m [1;36m|[m   
+[33m|[m [33m|[m * [1;35m|[m [1;36m|[m   [33m30f2d53[m add interaction with maps and find shortest path
+[33m|[m [33m|[m [35m|[m[36m\[m [1;35m\[m [1;36m\[m  
+[33m|[m [33m|[m * [36m|[m [1;35m|[m [1;36m|[m [33m4c78e51[m interaction with maps and find the shortest path
+[33m|[m * [36m|[m [36m|[m [1;35m|[m [1;36m|[m [33m4404ba3[m fix confilc
+[33m|[m [36m|[m [36m|[m[36m/[m [1;35m/[m [1;36m/[m  
+[33m|[m [36m|[m[36m/[m[36m|[m [1;35m|[m [1;36m|[m   
+[33m|[m * [36m|[m [1;35m|[m [1;36m|[m   [33m04c5293[m Merge branch 'back-end' into front-end
+[33m|[m [36m|[m[1;32m\[m [36m\[m [1;35m\[m [1;36m\[m  
+[33m|[m [36m|[m [1;32m|[m[36m/[m [1;35m/[m [1;36m/[m  
+[33m|[m [36m|[m[36m/[m[1;32m|[m [1;35m|[m [1;36m|[m   
+[33m|[m * [1;32m|[m [1;35m|[m [1;36m|[m   [33md8aa18c[m merge conflic
+[33m|[m [1;36m|[m[1;34m\[m [1;32m\[m [1;35m\[m [1;36m\[m  
+[33m|[m [1;36m|[m [1;34m|[m[1;36m_[m[1;32m|[m[1;36m_[m[1;35m|[m[1;36m/[m  
+[33m|[m [1;36m|[m[1;36m/[m[1;34m|[m [1;32m|[m [1;35m|[m   
+* [1;36m|[m [1;34m|[m [1;32m|[m [1;35m|[m [33mbd9f030[m complete login/signup
+[1;32m|[m [1;36m|[m[1;32m_[m[1;34m|[m[1;32m/[m [1;35m/[m  
+[1;32m|[m[1;32m/[m[1;36m|[m [1;34m|[m [1;35m|[m   
+* [1;36m|[m [1;34m|[m [1;35m|[m [33m41aff01[m Merge branch 'front-end' into back-end Refactor static files and update templates.
+[1;35m|[m[1;36m\[m[1;36m|[m [1;34m|[m [1;35m|[m 
+[1;35m|[m * [1;34m|[m [1;35m|[m [33mcdf8cf7[m fix sigup pages and logic
+[1;35m|[m * [1;34m|[m [1;35m|[m [33mef46c06[m fix signup page
+[1;35m|[m * [1;34m|[m [1;35m|[m [33m9d02558[m fix sigup pages and logic
+[1;35m|[m * [1;34m|[m [1;35m|[m [33m174c81b[m add api key
+[1;35m|[m * [1;34m|[m [1;35m|[m   [33me58530f[m Merge remote-tracking branch 'origin/back-end' into front-end
+[1;35m|[m [31m|[m[32m\[m [1;34m\[m [1;35m\[m  
+[1;35m|[m * [32m|[m [1;34m|[m [1;35m|[m [33m6aa6fa8[m clean code p2
+[1;35m|[m * [32m|[m [1;34m|[m [1;35m|[m   [33mc646ede[m Update signin.css
+[1;35m|[m [33m|[m[34m\[m [32m\[m [1;34m\[m [1;35m\[m  
+[1;35m|[m * [34m|[m [32m|[m [1;34m|[m [1;35m|[m [33mb7b801c[m[33m ([m[1;31morigin/origin/AI-ML[m[33m)[m clean code
+[1;35m|[m * [34m|[m [32m|[m [1;34m|[m [1;35m|[m   [33mbd20617[m Merge remote-tracking branch 'origin/front-end' into origin/AI-ML
+[1;35m|[m [1;35m|[m[36m\[m [34m\[m [32m\[m [1;34m\[m [1;35m\[m  
+[1;35m|[m [1;35m|[m [36m|[m[1;35m_[m[34m|[m[1;35m_[m[32m|[m[1;35m_[m[1;34m|[m[1;35m/[m  
+[1;35m|[m [1;35m|[m[1;35m/[m[36m|[m [34m|[m [32m|[m [1;34m|[m   
+* [1;35m|[m [36m|[m [34m|[m [32m|[m [1;34m|[m [33ma2f20c1[m refine login
+[1;34m|[m [1;35m|[m[1;34m_[m[36m|[m[1;34m_[m[34m|[m[1;34m_[m[32m|[m[1;34m/[m  
+[1;34m|[m[1;34m/[m[1;35m|[m [36m|[m [34m|[m [32m|[m   
+* [1;35m|[m [36m|[m [34m|[m [32m|[m [33m451bf12[m continue with gmail
+[32m|[m [1;35m|[m[32m_[m[36m|[m[32m_[m[34m|[m[32m/[m  
+[32m|[m[32m/[m[1;35m|[m [36m|[m [34m|[m   
+* [1;35m|[m [36m|[m [34m|[m [33m0683c82[m test merge
+[34m|[m [1;35m|[m[34m_[m[36m|[m[34m/[m  
+[34m|[m[34m/[m[1;35m|[m [36m|[m   
+* [1;35m|[m [36m|[m   [33mb4a4cbe[m gitignore, requirements.txt, change tree folder, and others
+[1;35m|[m[36m\[m [1;35m\[m [36m\[m  
+[1;35m|[m [36m|[m[1;35m/[m [36m/[m  
+[1;35m|[m[1;35m/[m[36m|[m [36m/[m   
+[1;35m|[m [36m|[m[36m/[m    
+[1;35m|[m * [33m01f5be8[m Coding front-end signin signup homepage chat and backend login
+[1;35m|[m * [33m8787a95[m Code front-end homepage & signup pages
+* [1;32m|[m [33mfa8233e[m[33m ([m[1;31morigin/Data[m[33m)[m gen queries
+* [1;32m|[m [33m1977916[m Crawl Raw Data, unprocessed
+* [1;32m|[m [33m9973b7d[m new tree folder
+[1;32m|[m[1;32m/[m  
+* [33mff25b89[m Flask Web Structure
+* [33md3a9c25[m first commit
+* [33m8a56831[m[33m ([m[1;31morigin/medical-translation-card[m[33m, [m[1;32mmedical-translation-card[m[33m)[m update
+* [33ma6629f7[m Initial commit - Medical Translation Card project

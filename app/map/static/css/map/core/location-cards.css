@@ -1,0 +1,149 @@
+.locations-container {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 12px;
+}
+
+.location-status {
+  margin: 0 0 8px 0;
+  font-size: 13px;
+  font-weight: 700;
+  color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.location-card {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 14px 16px;
+  border-radius: 14px;
+  background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  box-shadow: 0 4px 16px rgba(2, 6, 23, 0.08);
+  transition: all 0.2s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.location-card::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(
+    135deg,
+    rgba(0, 123, 255, 0.02) 0%,
+    transparent 100%
+  );
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.location-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 12px 28px rgba(0, 123, 255, 0.15);
+  border-color: rgba(0, 123, 255, 0.25);
+}
+
+.location-card:hover::after {
+  opacity: 1;
+}
+
+.location-card::before {
+  content: "📍";
+  position: absolute;
+  top: 12px;
+  right: 14px;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  font-size: 18px;
+}
+
+.location-card:hover::before {
+  opacity: 1;
+}
+
+.location-card h3 {
+  margin: 0;
+  font-size: 15px;
+  color: #0b1220;
+  font-weight: 700;
+  letter-spacing: -0.3px;
+  position: relative;
+  z-index: 1;
+}
+
+.location-card .address {
+  margin: 0;
+  font-size: 13px;
+  color: #64748b;
+  line-height: 1.4;
+  position: relative;
+  z-index: 1;
+}
+
+.location-card .phone {
+  margin: 0;
+  font-size: 13px;
+  color: #059669;
+  font-weight: 600;
+  position: relative;
+  z-index: 1;
+}
+
+.location-card .card-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 4px;
+  position: relative;
+  z-index: 1;
+}
+
+.location-card .links {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.location-card .links a {
+  font-size: 12px;
+  color: var(--brand);
+  text-decoration: none;
+  background: rgba(0, 123, 255, 0.08);
+  padding: 6px 10px;
+  border-radius: 6px;
+  transition: all 0.2s ease;
+  font-weight: 600;
+}
+
+.location-card .links a:hover {
+  background: rgba(0, 123, 255, 0.15);
+  text-decoration: none;
+  transform: translateY(-2px);
+  box-shadow: 0 2px 8px rgba(0, 123, 255, 0.2);
+}
+
+.location-card .distance {
+  min-width: 70px;
+  text-align: center;
+  background: linear-gradient(
+    135deg,
+    rgba(0, 123, 255, 0.15) 0%,
+    rgba(0, 123, 255, 0.08) 100%
+  );
+  color: var(--brand);
+  font-weight: 700;
+  padding: 8px 12px;
+  border-radius: 8px;
+  font-size: 13px;
+  box-shadow: 0 2px 4px rgba(0, 123, 255, 0.1);
+}

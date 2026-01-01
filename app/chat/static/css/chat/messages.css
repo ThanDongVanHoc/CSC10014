@@ -1,0 +1,209 @@
+.chat-messages {
+  padding: 20px;
+  overflow: auto;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  background: #fafbfc;
+}
+
+.chat-messages::-webkit-scrollbar {
+  width: 6px;
+}
+
+.chat-messages::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.chat-messages::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.15);
+  border-radius: 3px;
+}
+
+.chat-messages::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 0, 0, 0.25);
+}
+
+.msg {
+  max-width: 75%;
+  padding: 12px 16px;
+  border-radius: 14px;
+  font-size: 14px;
+  line-height: 1.5;
+  word-wrap: break-word;
+  animation: slideIn 0.3s ease;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.msg.user {
+  align-self: flex-end;
+  background: linear-gradient(135deg, var(--brand) 0%, #0056b3 100%);
+  color: white;
+  box-shadow: 0 4px 12px rgba(0, 123, 255, 0.25);
+  border-radius: 14px 4px 14px 14px;
+  font-weight: 500;
+}
+
+.msg.bot {
+  align-self: flex-start;
+  background: white;
+  color: #0b1220;
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  border-radius: 4px 14px 14px 14px;
+}
+
+.msg.bot.loading {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 16px 20px;
+}
+
+/* AI Loading Animations */
+.ai-loader {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.ai-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--brand);
+  animation: bounce 1.4s infinite ease-in-out;
+}
+
+.ai-dot:nth-child(1) {
+  animation-delay: -0.32s;
+}
+.ai-dot:nth-child(2) {
+  animation-delay: -0.16s;
+}
+.ai-dot:nth-child(3) {
+  animation-delay: 0s;
+}
+
+@keyframes bounce {
+  0%,
+  80%,
+  100% {
+    opacity: 0.4;
+    transform: scale(0.8) translateY(0);
+  }
+  40% {
+    opacity: 1;
+    transform: scale(1) translateY(-8px);
+  }
+}
+
+.ai-icon {
+  font-size: 16px;
+  animation: spin 2s linear infinite;
+  margin-right: 4px;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Location Container Tweak */
+.chat-messages .locations-container {
+  padding: 4px 0;
+}
+
+/* --- EMPTY STATE (UPDATED) --- */
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  text-align: center;
+  /* 1. Animation chậm hơn: Tăng từ 0.6s lên 1.5s */
+  animation: fadeInUp 1.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+  color: #1f1f1f;
+  padding-bottom: 40px;
+}
+
+/* Container mới để gom Icon và Chữ cùng dòng */
+.empty-header {
+  display: flex;
+  align-items: center; /* Căn giữa theo chiều dọc */
+  gap: 16px; /* Khoảng cách giữa Icon và Chữ */
+  margin-bottom: -4px;
+}
+
+/* Tùy chỉnh AI Icon */
+.empty-state .ai-icon {
+  font-size: 48px; /* Giảm nhẹ size cho cân đối với dòng */
+  margin: 0; /* Bỏ margin cũ */
+  display: inline-block;
+
+  /* 2. Logic xoay: 
+     - 1.5s: Khớp thời gian với chữ chạy lên
+     - ease-out: Xoay chậm dần khi dừng
+     - 1 forwards: Chỉ chạy 1 vòng rồi dừng lại luôn 
+  */
+  animation: spin 1.5s ease-out 1 forwards;
+}
+
+.empty-state h2 {
+  font-size: 32px;
+  font-weight: 700;
+  margin: 0; /* Bỏ margin để căn giữa với icon */
+  background: linear-gradient(135deg, #0b1220 0%, #4b5563 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.empty-state p {
+  font-size: 16px;
+  color: #6b7280;
+  max-width: 450px;
+  line-height: 1.6;
+  /* Thêm animation fade in cho text phụ xuất hiện chậm hơn 1 xíu cho mượt */
+  animation: fadeIn 2s ease-out;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(
+      40px
+    ); /* Xuất phát thấp hơn một chút để quãng đường dài hơn */
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 0;
+  } /* Delay 50% thời gian đầu */
+  100% {
+    opacity: 1;
+  }
+}

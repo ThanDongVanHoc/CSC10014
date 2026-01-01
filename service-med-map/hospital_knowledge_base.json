@@ -1,0 +1,3415 @@
+[
+  {
+    "id": "1913d55b",
+    "name": "Bệnh viện Chợ Rẫy",
+    "address": "201B Nguyễn Chí Thanh, Phường 12, Quận 5, Thành phố Hồ Chí Minh 700000, Việt Nam",
+    "phone": "+84 28 3855 4137",
+    "image": "https://lh3.googleusercontent.com/gps-cs-s/AG0ilSzZjaNo2p3PbgQZF8cfKDAtLkP5Fu0yA_aPtHsCMofhGDWuwswBTSLY1-E85Jfi6VDsoeXrgnyOd8GXOA-FmSApZ7rCP9m-WyQiChaxbPPn-tbn_iUsYIgVyju4JDsPSa9nzkOy=w1080-h1080-no",
+    "location": {
+      "lat": 10.7578646,
+      "lng": 106.6595131
+    },
+    "website": "/url?q=http://www.choray.vn/&opi=79508299&sa=U&ved=0ahUKEwjP-pP7ts6RAxUKhIkEHbDJCWEQ61gIFygS&usg=AOvVaw2ElBgGgGYTA0olEtIS5NBI",
+    "tier": 1,
+    "demographics": {
+      "min_age": 0,
+      "max_age": 120,
+      "gender": "All"
+    },
+    "specialties": [
+      "Đa khoa",
+      "Cấp cứu",
+      "Nội khoa",
+      "Ngoại khoa",
+      "Ung bướu",
+      "Tim mạch",
+      "Thần kinh"
+    ],
+    "strengths": [
+      "Cấp cứu đa chấn thương",
+      "Phẫu thuật phức tạp",
+      "Ghép tạng",
+      "Điều trị ung thư",
+      "Chẩn đoán hình ảnh tiên tiến"
+    ],
+    "medical_keywords": [
+      "Tai nạn",
+      "Cấp cứu",
+      "Ung thư",
+      "Đột quỵ",
+      "Tim mạch",
+      "Phẫu thuật"
+    ]
+  },
+  {
+    "id": "004c710a",
+    "name": "Bệnh viện Nhân Dân 115",
+    "address": "527 Sư Vạn Hạnh, Phường 12, Quận 10, Thành phố Hồ Chí Minh, Việt Nam",
+    "phone": "+84 28 3865 4139",
+    "image": "https://lh3.googleusercontent.com/gps-cs-s/AG0ilSytrAYW9o8PHTKjmdieDnECgp9v3AUSckoySAo_UDLmgi4TuqEQKIgSYDWPc4DNzKjDbCMonF1aUf1-fTVB5ujq6U3cCh9tnuvaWdRKZnWM0ghURuJZKMs1atU4Sm5aDRl0vkJeCkDUTJ6K=w1080-h1080-no",
+    "location": {
+      "lat": 10.773980199999999,
+      "lng": 106.6660284
+    },
+    "website": "https://benhvien115.com.vn/",
+    "tier": 1,
+    "demographics": {
+      "min_age": 0,
+      "max_age": 120,
+      "gender": "All"
+    },
+    "specialties": [
+      "Đa khoa",
+      "Thần kinh",
+      "Đột quỵ",
+      "Tim mạch",
+      "Ngoại tổng quát",
+      "Cấp cứu"
+    ],
+    "strengths": [
+      "Điều trị đột quỵ",
+      "Can thiệp tim mạch",
+      "Phẫu thuật thần kinh",
+      "Cấp cứu nội ngoại khoa"
+    ],
+    "medical_keywords": [
+      "Đột quỵ",
+      "Tim mạch",
+      "Thần kinh",
+      "Cấp cứu",
+      "Phẫu thuật"
+    ]
+  },
+  {
+    "id": "a0bb1f29",
+    "name": "Bệnh viện Nhân dân Gia Định",
+    "address": "1 Nơ Trang Long, Phường 7, Bình Thạnh, Thành phố Hồ Chí Minh, Việt Nam",
+    "phone": "+84 28 3841 2692",
+    "image": "https://lh3.googleusercontent.com/p/AF1QipOtZhHK4PKv3qy5FX5Q4N5GkeeZu1IZGzjBgRuN=w1080-h1080-no",
+    "location": {
+      "lat": 10.803747099999999,
+      "lng": 106.69413879999999
+    },
+    "website": "http://bvndgiadinh.org.vn/",
+    "tier": 1,
+    "demographics": {
+      "min_age": 0,
+      "max_age": 120,
+      "gender": "All"
+    },
+    "specialties": [
+      "Đa khoa",
+      "Nội khoa",
+      "Ngoại khoa",
+      "Sản phụ khoa",
+      "Nhi khoa",
+      "Cấp cứu"
+    ],
+    "strengths": [
+      "Khám chữa bệnh đa khoa",
+      "Phẫu thuật tổng quát",
+      "Chăm sóc sản phụ khoa",
+      "Cấp cứu 24/7"
+    ],
+    "medical_keywords": [
+      "Đa khoa",
+      "Cấp cứu",
+      "Phẫu thuật",
+      "Sản khoa",
+      "Nhi khoa"
+    ]
+  },
+  {
+    "id": "052fc7e2",
+    "name": "Bệnh viện Đại học Y Dược TP.HCM",
+    "address": "Cơ sở 1, 215 Đ. Hồng Bàng, Phường 11, Quận 5, Thành phố Hồ Chí Minh 700000, Việt Nam",
+    "phone": "+84 28 3855 4269",
+    "image": "https://lh3.googleusercontent.com/p/AF1QipPa70xZ4xzUuuk3e0K3nOgs0iTVX_0-XeRbBNG8=w1080-h1080-no",
+    "location": {
+      "lat": 10.7553783,
+      "lng": 106.6644592
+    },
+    "website": "/url?q=https://www.bvdaihoc.com.vn/&opi=79508299&sa=U&ved=0ahUKEwieyP3duM6RAxWRI0QIHUgwEJ4Q61gIHigR&usg=AOvVaw3t1wfkkupqhw4dcRslrc-v",
+    "tier": 1,
+    "demographics": {
+      "min_age": 0,
+      "max_age": 120,
+      "gender": "All"
+    },
+    "specialties": [
+      "Đa khoa chuyên sâu",
+      "Nội tiết",
+      "Tiêu hóa",
+      "Tim mạch",
+      "Cơ xương khớp",
+      "Da liễu",
+      "Y học cổ truyền"
+    ],
+    "strengths": [
+      "Chẩn đoán và điều trị chuyên sâu",
+      "Nghiên cứu khoa học",
+      "Đào tạo y khoa",
+      "Phối hợp đa chuyên khoa"
+    ],
+    "medical_keywords": [
+      "Nội tiết",
+      "Tiêu hóa",
+      "Tim mạch",
+      "Cơ xương khớp",
+      "Da liễu",
+      "Y học cổ truyền"
+    ]
+  },
+  {
+    "id": "bb44c167",
+    "name": "Bệnh Viện Đại Học Y Dược - Cơ Sở 2",
+    "address": "201 Nguyễn Chí Thanh, Phường 12, Quận 5, Thành phố Hồ Chí Minh, Việt Nam",
+    "phone": "+84 28 3955 5548",
+    "image": "https://lh3.googleusercontent.com/gps-cs-s/AG0ilSws6DrnLi5dOg5ejcANMLPvQbfQ9mig5Q-lumLWh-r5z9ecw-44HbUFd1M9Jl0AtMdSR7PmW5NvzvN6kSLakSpFT-kaHBkN9uhDT7bmJ9apFvja9T84-_N1fU5dDfu4SiDMCSAZ=w1080-h1080-no",
+    "location": {
+      "lat": 10.758172199999999,
+      "lng": 106.6612578
+    },
+    "website": "http://bvdaihoccoso2.com.vn/",
+    "tier": 1,
+    "demographics": {
+      "min_age": 0,
+      "max_age": 120,
+      "gender": "All"
+    },
+    "specialties": [
+      "Y học cổ truyền",
+      "Phục hồi chức năng",
+      "Nội khoa tổng quát",
+      "Vật lý trị liệu"
+    ],
+    "strengths": [
+      "Điều trị bằng y học cổ truyền",
+      "Phục hồi chức năng toàn diện",
+      "Kết hợp Đông Tây y"
+    ],
+    "medical_keywords": [
+      "Y học cổ truyền",
+      "Phục hồi chức năng",
+      "Vật lý trị liệu",
+      "Châm cứu"
+    ]
+  },
+  {
+    "id": "6a267730",
+    "name": "Cơ sở 3 - Bệnh viện Đại học Y Dược TPHCM",
+    "address": "221B Đ. Hoàng Văn Thụ, Phường 8, Phú Nhuận, Thành phố Hồ Chí Minh 700000, Việt Nam",
+    "phone": "+84 28 3844 4771",
+    "image": "https://lh3.googleusercontent.com/p/AF1QipN4ZgIueWlPgVQ82nXUo937fF5qdItu7G_rxQKp=w1080-h1080-no",
+    "location": {
+      "lat": 10.799703899999999,
+      "lng": 106.6708297
+    },
+    "website": "http://bvdaihoccoso3.com.vn/",
+    "tier": 1,
+    "demographics": {
+      "min_age": 0,
+      "max_age": 120,
+      "gender": "All"
+    },
+    "specialties": [
+      "Phục hồi chức năng",
+      "Vật lý trị liệu",
+      "Y học thể thao",
+      "Chấn thương chỉnh hình"
+    ],
+    "strengths": [
+      "Phục hồi chức năng chuyên sâu",
+      "Điều trị chấn thương thể thao",
+      "Vật lý trị liệu hiện đại"
+    ],
+    "medical_keywords": [
+      "Phục hồi chức năng",
+      "Vật lý trị liệu",
+      "Chấn thương thể thao",
+      "Đau lưng",
+      "Đau khớp"
+    ]
+  },
+  {
+    "id": "1d20652a",
+    "name": "Bệnh viện Từ Dũ",
+    "address": "284 Cống Quỳnh, Phường Phạm Ngũ Lão, Quận 1, Thành phố Hồ Chí Minh 700000, Việt Nam",
+    "phone": "+84 28 3952 6568",
+    "image": "https://lh3.googleusercontent.com/gps-cs-s/AG0ilSx2PTsSzhEpRhXlkcrPuI6vM7l-3FYqU0TlwXfcx7WNZyvLtzsk6HyJkjzfgNZLptjWl044Ci1TB4E77-MoAgGSmku4fItaUdVrAQDDrjFxHMINr__hwDSICn9vsfPVeeeubowsfA=w1080-h1080-no",
+    "location": {
+      "lat": 10.768483699999999,
+      "lng": 106.6853651
+    },
+    "website": "http://tudu.com.vn/",
+    "tier": 1,
+    "demographics": {
+      "min_age": 12,
+      "max_age": 120,
+      "gender": "Female"
+    },
+    "specialties": [
+      "Sản khoa",
+      "Phụ khoa",
+      "Hiếm muộn",
+      "Sơ sinh",
+      "Kế hoạch hóa gia đình"
+    ],
+    "strengths": [
+      "Chăm sóc thai kỳ nguy cơ cao",
+      "Điều trị vô sinh hiếm muộn",
+      "Phẫu thuật phụ khoa",
+      "Chăm sóc trẻ sơ sinh non yếu"
+    ],
+    "medical_keywords": [
+      "Mang thai",
+      "Sinh nở",
+      "Vô sinh",
+      "Phụ khoa",
+      "Sơ sinh",
+      "Khám thai"
+    ]
+  },
+  {
+    "id": "e1a6c5b2",
+    "name": "Bệnh Viện Từ Dũ - Khu N",
+    "address": "191 Nguyễn Thị Minh Khai, Phường Phạm Ngũ Lão, Quận 1, Thành phố Hồ Chí Minh 700000, Việt Nam",
+    "phone": "+84 28 5404 2829",
+    "image": "https://lh3.googleusercontent.com/gps-cs-s/AG0ilSydQTj3n__XvcCGnotKa7JEdo0X4MRRF9ipkY_P56yfgQOo3NzWLcmBQG4gG-oGKBwWWQhB5IbxHQqPSqJRHcnBU0hY8v5fDjqotC0lMoRibxPsn84O8GfARhLdaoUTlHS86uWX=w1080-h1080-no",
+    "location": {
+      "lat": 10.7694359,
+      "lng": 106.6860729
+    },
+    "website": "http://tudu.com.vn/",
+    "tier": 1,
+    "demographics": {
+      "min_age": 12,
+      "max_age": 120,
+      "gender": "Female"
+    },
+    "specialties": [
+      "Sản khoa",
+      "Phụ khoa",
+      "Khám thai",
+      "Siêu âm"
+    ],
+    "strengths": [
+      "Khám và tư vấn thai sản",
+      "Siêu âm chẩn đoán",
+      "Chăm sóc sức khỏe phụ nữ"
+    ],
+    "medical_keywords": [
+      "Khám thai",
+      "Siêu âm",
+      "Phụ khoa",
+      "Mang thai",
+      "Tầm soát"
+    ]
+  },
+  {
+    "id": "04ff4b2d",
+    "name": "Bệnh viện Hùng Vương",
+    "address": "9 Đ. Lý Thường Kiệt, Phường 12, Quận 5, Thành phố Hồ Chí Minh, Việt Nam",
+    "phone": "+84 28 3855 8532",
+    "image": "https://lh3.googleusercontent.com/gps-cs-s/AG0ilSwTQQe-D_TgxWO7X4r67gqvbN2L-am3atMWTu5gBbfSIGQBXENHRj3nijR6fbCAgOuQXdhRyHIGaBozwDzXJmRkihq7j4npuzbCdlPb8c8sfu_Ahe1RxTwBH5ddYM0We0VRr0RoXg=w1080-h1080-no",
+    "location": {
+      "lat": 10.7565723,
+      "lng": 106.66182739999999
+    },
+    "website": "http://www.bvhungvuong.vn/",
+    "tier": 1,
+    "demographics": {
+      "min_age": 12,
+      "max_age": 120,
+      "gender": "Female"
+    },
+    "specialties": [
+      "Sản khoa",
+      "Phụ khoa",
+      "Hiếm muộn",
+      "Sơ sinh",
+      "Ung thư phụ khoa"
+    ],
+    "strengths": [
+      "Chăm sóc thai sản toàn diện",
+      "Điều trị vô sinh",
+      "Phẫu thuật phụ khoa phức tạp",
+      "Sàng lọc và điều trị ung thư phụ khoa"
+    ],
+    "medical_keywords": [
+      "Mang thai",
+      "Sinh nở",
+      "Vô sinh",
+      "Phụ khoa",
+      "Sơ sinh",
+      "Ung thư cổ tử cung"
+    ]
+  },
+  {
+    "id": "da8130dd",
+    "name": "Bệnh viện Nhi đồng 1",
+    "address": "341 Sư Vạn Hạnh, Phường 10, Quận 10, Thành phố Hồ Chí Minh 70000, Việt Nam",
+    "phone": "+84 28 3927 1119",
+    "image": "https://lh3.googleusercontent.com/p/AF1QipOCrPIFFfXc6bxbWIIUfUTaJq3F4BkkOHG9-xHJ=w1080-h1080-no",
+    "location": {
+      "lat": 10.769126199999999,
+      "lng": 106.6710121
+    },
+    "website": "http://nhidong.org.vn/",
+    "tier": 1,
+    "demographics": {
+      "min_age": 0,
+      "max_age": 16,
+      "gender": "All"
+    },
+    "specialties": [
+      "Nhi khoa tổng quát",
+      "Nhiễm trùng",
+      "Tim mạch nhi",
+      "Phẫu thuật nhi",
+      "Cấp cứu nhi",
+      "Sơ sinh"
+    ],
+    "strengths": [
+      "Cấp cứu nhi khoa",
+      "Điều trị bệnh lý phức tạp ở trẻ em",
+      "Phẫu thuật nhi chuyên sâu",
+      "Chăm sóc trẻ sơ sinh bệnh lý"
+    ],
+    "medical_keywords": [
+      "Trẻ em",
+      "Sốt",
+      "Ho",
+      "Tiêu chảy",
+      "Bệnh truyền nhiễm",
+      "Cấp cứu nhi"
+    ]
+  },
+  {
+    "id": "139e46b3",
+    "name": "Bệnh viện Nhi Đồng 2",
+    "address": "14 Lý Tự Trọng, Bến Nghé, Quận 1, Thành phố Hồ Chí Minh, Việt Nam",
+    "phone": "+84 28 3829 5723",
+    "image": "https://lh3.googleusercontent.com/gps-cs-s/AG0ilSys0sANJbCVkzFxoXLoWguhnL5uS_Xj1Pf0gqABg1okONUGlwrnlD0zNvmaTqaLHBAqSAH-p1_hFUIKVZ6g3Tc2dirKngKEiromWsL1_-jnF0pyM1klDkk_oTPo2sgj4AHCqrac=w1080-h1080-no",
+    "location": {
+      "lat": 10.780517399999999,
+      "lng": 106.70323669999999
+    },
+    "website": "/url?q=http://www.benhviennhi.org.vn/&opi=79508299&sa=U&ved=0ahUKEwjhkIGLt86RAxX2mokEHfTRLlAQ61gIFygS&usg=AOvVaw13P2danlunBsYC7GsxtmF-",
+    "tier": 1,
+    "demographics": {
+      "min_age": 0,
+      "max_age": 15,
+      "gender": "All"
+    },
+    "specialties": [
+      "Nhi khoa",
+      "Nội nhi",
+      "Ngoại nhi",
+      "Truyền nhiễm nhi"
+    ],
+    "strengths": [
+      "Khám chữa bệnh nhi tổng quát",
+      "Phẫu thuật nhi",
+      "Cấp cứu nhi"
+    ],
+    "medical_keywords": [
+      "Sốt",
+      "Ho",
+      "Cảm cúm",
+      "Tiêu chảy",
+      "Viêm phổi",
+      "Bệnh nhi",
+      "Trẻ em"
+    ]
+  },
+  {
+    "id": "105a9b4b",
+    "name": "Bệnh viện Nhi Đồng Thành Phố",
+    "address": "15 Đ. Võ Trần Chí, Tân Kiên, Bình Chánh, Thành phố Hồ Chí Minh, Việt Nam",
+    "phone": "+84 28 2253 6688",
+    "image": "https://lh3.googleusercontent.com/p/AF1QipPYGyiQHoJAkWRPrNv8apRDhd4ckqUSiJohpF69=w1080-h1080-no",
+    "location": {
+      "lat": 10.7096251,
+      "lng": 106.5738758
+    },
+    "website": "http://bvndtp.org.vn/",
+    "tier": 1,
+    "demographics": {
+      "min_age": 0,
+      "max_age": 15,
+      "gender": "All"
+    },
+    "specialties": [
+      "Nhi khoa",
+      "Nội nhi",
+      "Ngoại nhi",
+      "Sơ sinh"
+    ],
+    "strengths": [
+      "Chăm sóc sức khỏe trẻ em toàn diện",
+      "Cơ sở vật chất hiện đại",
+      "Phẫu thuật nhi chuyên sâu"
+    ],
+    "medical_keywords": [
+      "Sốt",
+      "Ho",
+      "Cảm cúm",
+      "Tiêu chảy",
+      "Viêm phổi",
+      "Bệnh nhi",
+      "Trẻ em"
+    ]
+  },
+  {
+    "id": "5854f135",
+    "name": "Bệnh viện Ung bướu TP. HCM",
+    "address": "47 Nguyễn Huy Lượng, Phường 14, Bình Thạnh, Thành phố Hồ Chí Minh, Việt Nam",
+    "phone": "+84 28 3843 3022",
+    "image": "https://lh3.googleusercontent.com/gps-cs-s/AG0ilSxZGZsu0Fk6j8VPBiTIxoIN1T5pdce70H8LHdq2Aqnnqbx53usQSs2Q21UtJO9I5z4iIvy9oHDNErjZanuixWOzThWoDeguXnHszpqVoTaoH7urg2vARC6gzom1lOD90vFDJdKlJw=w1080-h1080-no",
+    "location": {
+      "lat": 10.8049868,
+      "lng": 106.6943584
+    },
+    "website": "https://benhvienungbuou.vn/",
+    "tier": 1,
+    "demographics": {
+      "min_age": 0,
+      "max_age": 120,
+      "gender": "All"
+    },
+    "specialties": [
+      "Ung bướu",
+      "Xạ trị",
+      "Hóa trị",
+      "Phẫu thuật ung thư",
+      "Chăm sóc giảm nhẹ"
+    ],
+    "strengths": [
+      "Chẩn đoán và điều trị ung thư",
+      "Nghiên cứu ung thư",
+      "Phẫu thuật khối u"
+    ],
+    "medical_keywords": [
+      "Ung thư",
+      "Khối u",
+      "Bướu",
+      "Hóa trị",
+      "Xạ trị",
+      "Tầm soát ung thư"
+    ]
+  },
+  {
+    "id": "9c6b29c1",
+    "name": "Cơ sở 2 Bệnh viện Ung Bướu TP. Hồ Chí Minh",
+    "address": "12 Đ. Số 400, Khu phố 3, Thủ Đức, Thành phố Hồ Chí Minh, Việt Nam",
+    "phone": "+84 28 3841 2637",
+    "image": "https://lh3.googleusercontent.com/gps-cs-s/AG0ilSyw5QFSt6BBR5VQKPO4cKVDsicO_zRwkc9MsB3AwXNGdfTpR7Xhm_qfGKCnCT4sHS57vNUw-FRP6DJs2zQvssG_cRRudVCdh5IjeSTIqVJj8Ygq9lt323iIREqDo5XnMcOHr72G=w1080-h1080-no",
+    "location": {
+      "lat": 10.8703629,
+      "lng": 106.8093938
+    },
+    "website": "http://benhvienungbuou.vn/",
+    "tier": 1,
+    "demographics": {
+      "min_age": 0,
+      "max_age": 120,
+      "gender": "All"
+    },
+    "specialties": [
+      "Ung bướu",
+      "Xạ trị",
+      "Hóa trị",
+      "Phẫu thuật ung thư",
+      "Chăm sóc giảm nhẹ"
+    ],
+    "strengths": [
+      "Mở rộng năng lực điều trị ung thư",
+      "Cơ sở vật chất hiện đại",
+      "Phẫu thuật khối u"
+    ],
+    "medical_keywords": [
+      "Ung thư",
+      "Khối u",
+      "Bướu",
+      "Hóa trị",
+      "Xạ trị",
+      "Tầm soát ung thư"
+    ]
+  },
+  {
+    "id": "cffca54d",
+    "name": "Bệnh viện Bình Dân",
+    "address": "371 Điện Biên Phủ, Phường 4, Quận 3, Thành phố Hồ Chí Minh 700000, Việt Nam",
+    "phone": "+84 28 3839 4747",
+    "image": "https://lh3.googleusercontent.com/gps-cs-s/AG0ilSxhCp_1wlLzsdHT0nTE5--ly6wRJxhxCajcfiC0So5Sgo-Gt701vUYO4LeFBSx8J2-rGYGNehOtEsD8L6WM5XnTP5jVPS4YR2iaVV5-_xSZZydylxZEQriI3ptq1Wol9np_Ixkt=w1080-h1080-no",
+    "location": {
+      "lat": 10.774024599999999,
+      "lng": 106.6812751
+    },
+    "website": "http://www.bvbinhdan.com.vn/",
+    "tier": 1,
+    "demographics": {
+      "min_age": 16,
+      "max_age": 120,
+      "gender": "All"
+    },
+    "specialties": [
+      "Ngoại tổng quát",
+      "Tiết niệu",
+      "Nam khoa",
+      "Nội soi"
+    ],
+    "strengths": [
+      "Phẫu thuật tiết niệu",
+      "Phẫu thuật nội soi",
+      "Điều trị các bệnh lý ngoại khoa"
+    ],
+    "medical_keywords": [
+      "Sỏi thận",
+      "Sỏi mật",
+      "Viêm ruột thừa",
+      "Thoát vị",
+      "Phẫu thuật",
+      "Tiết niệu",
+      "Nam khoa"
+    ]
+  },
+  {
+    "id": "7e2c9bc9",
+    "name": "Bệnh viện Bình Dân - Khu điều trị Kỹ thuật cao",
+    "address": "Điện Biên Phủ/326 - 328 Phường Vườn Lài, Phường 3, Quận 10, Thành phố Hồ Chí Minh, Việt Nam",
+    "phone": "+84 799 325 371",
+    "image": "https://lh3.googleusercontent.com/p/AF1QipMqcGZtLWm9yoKW8I5UCVXrqmLnCG64U-V_Oqc=w1080-h1080-no",
+    "location": {
+      "lat": 10.7750738,
+      "lng": 106.681394
+    },
+    "website": "http://bvbinhdan.com.vn/",
+    "tier": 1,
+    "demographics": {
+      "min_age": 16,
+      "max_age": 120,
+      "gender": "All"
+    },
+    "specialties": [
+      "Ngoại tổng quát",
+      "Tiết niệu",
+      "Nam khoa",
+      "Phẫu thuật kỹ thuật cao"
+    ],
+    "strengths": [
+      "Ứng dụng công nghệ cao trong điều trị",
+      "Phẫu thuật robot",
+      "Điều trị chuyên sâu các bệnh lý phức tạp"
+    ],
+    "medical_keywords": [
+      "Phẫu thuật nội soi",
+      "Robot phẫu thuật",
+      "Điều trị kỹ thuật cao",
+      "Sỏi thận",
+      "Ung thư tiền liệt tuyến"
+    ]
+  },
+  {
+    "id": "c2a6ac59",
+    "name": "Bệnh Viện Tai Mũi Họng Tp. HCM",
+    "address": "153 - 155 - 157 Trần Quốc Thảo, Phường 9, Quận 3, Thành phố Hồ Chí Minh, Việt Nam",
+    "phone": "+84 28 3931 7381",
+    "image": "https://lh3.googleusercontent.com/gps-cs-s/AG0ilSyJt34l8Svc1OaUMunR70E-kKDnujBCnlmVnGqDSCqVDY6IBHiWE6sMgBvK4_TjLHIpGGbQUs4aZpyXGNiOxClDbskCYTT45l_i15fvh2mRIZO9zEC3Wdeaj45Zdx9runJ6BqAXFA=w1080-h1080-no",
+    "location": {
+      "lat": 10.7842921,
+      "lng": 106.6840656
+    },
+    "website": "http://taimuihongtphcm.vn/",
+    "tier": 1,
+    "demographics": {
+      "min_age": 0,
+      "max_age": 120,
+      "gender": "All"
+    },
+    "specialties": [
+      "Tai Mũi Họng",
+      "Thính học",
+      "Phẫu thuật Tai Mũi Họng"
+    ],
+    "strengths": [
+      "Chẩn đoán và điều trị bệnh lý Tai Mũi Họng",
+      "Phẫu thuật nội soi Tai Mũi Họng",
+      "Khám thính lực"
+    ],
+    "medical_keywords": [
+      "Viêm họng",
+      "Viêm amidan",
+      "Viêm xoang",
+      "Ù tai",
+      "Điếc",
+      "Polyp mũi",
+      "Khàn tiếng",
+      "Đau tai"
+    ]
+  },
+  {
+    "id": "368085e6",
+    "name": "Bệnh viện Mắt TPHCM",
+    "address": "280 Điện Biên Phủ, Phường Võ Thị Sáu, Quận 3, Thành phố Hồ Chí Minh, Việt Nam",
+    "phone": "+84 28 3932 5364",
+    "image": "https://lh3.googleusercontent.com/p/AF1QipPByK6REpoQMt299WSvSjRF9iCP2vwd4oAV_pvq=w1080-h1080-no",
+    "location": {
+      "lat": 10.778585,
+      "lng": 106.6849517
+    },
+    "website": "/url?q=http://www.benhvienmat.com/&opi=79508299&sa=U&ved=0ahUKEwixso2Ut86RAxW7DkQIHSl9CGsQ61gIFygS&usg=AOvVaw31n5rD4biUcVEEUXdKUTMH",
+    "tier": 1,
+    "demographics": {
+      "min_age": 0,
+      "max_age": 120,
+      "gender": "All"
+    },
+    "specialties": [
+      "Nhãn khoa",
+      "Phẫu thuật mắt",
+      "Khúc xạ",
+      "Glaucoma",
+      "Võng mạc"
+    ],
+    "strengths": [
+      "Khám và điều trị các bệnh về mắt",
+      "Phẫu thuật đục thủy tinh thể",
+      "Phẫu thuật khúc xạ"
+    ],
+    "medical_keywords": [
+      "Đau mắt",
+      "Mờ mắt",
+      "Cận thị",
+      "Viễn thị",
+      "Loạn thị",
+      "Đục thủy tinh thể",
+      "Glocom",
+      "Viêm kết mạc"
+    ]
+  },
+  {
+    "id": "87e15752",
+    "name": "Bệnh viện Da Liễu TP.HCM",
+    "address": "2 Nguyễn Thông, Phường 6, Quận 3, Thành phố Hồ Chí Minh 700000, Việt Nam",
+    "phone": "+84 28 3930 1396",
+    "image": "https://lh3.googleusercontent.com/gps-cs-s/AG0ilSx1W5PSsM-GKlsC3ekBzNef0WEK6g0OZuZv6a9D60SWGsFSDpNci9NK0IJWxhWlvuTHO7EEKgKAhKtmxwfMgYyQSSdN5o972mPobuyRAfrSl7y8UaC8esyAGmemyWVyhGtr93VN=w1080-h1080-no",
+    "location": {
+      "lat": 10.776407299999999,
+      "lng": 106.6865735
+    },
+    "website": "https://bvdl.org.vn/",
+    "tier": 1,
+    "demographics": {
+      "min_age": 0,
+      "max_age": 120,
+      "gender": "All"
+    },
+    "specialties": [
+      "Da liễu",
+      "Bệnh lây truyền qua đường tình dục",
+      "Da liễu thẩm mỹ"
+    ],
+    "strengths": [
+      "Chẩn đoán và điều trị bệnh da liễu",
+      "Điều trị bệnh lây truyền qua đường tình dục",
+      "Thẩm mỹ da"
+    ],
+    "medical_keywords": [
+      "Mụn",
+      "Nám",
+      "Tàn nhang",
+      "Chàm",
+      "Vảy nến",
+      "Nấm da",
+      "Sùi mào gà",
+      "Giang mai",
+      "Bệnh ngoài da"
+    ]
+  },
+  {
+    "id": "9658e4f2",
+    "name": "Bệnh viện Truyền máu Huyết học - Cơ sở 2",
+    "address": "Số 01 Trần Hữu Nghiệp, Tân Kiên, Bình Chánh, Thành phố Hồ Chí Minh, Việt Nam",
+    "phone": "+84 28 3834 5555",
+    "image": "https://lh3.googleusercontent.com/gps-cs-s/AG0ilSw53z27bc_eUWa-xff7ANEdQdcl9sGiq4GJg0l32ID25bQSeHvFGlO9hhDHuWaLpt_SgMOsQdjw3s6Ps6fmNp5hiZWqWmhIs0OIs6iUw9NPRzv8wzXeOTcBxUh67U6EuegWCMZI=w1080-h1080-no",
+    "location": {
+      "lat": 10.709863499999999,
+      "lng": 106.57601989999999
+    },
+    "website": "https://bth.org.vn/",
+    "tier": 1,
+    "demographics": {
+      "min_age": 0,
+      "max_age": 120,
+      "gender": "All"
+    },
+    "specialties": [
+      "Huyết học",
+      "Truyền máu",
+      "Ghép tế bào gốc tạo máu",
+      "Rối loạn đông máu"
+    ],
+    "strengths": [
+      "Chẩn đoán và điều trị bệnh lý huyết học",
+      "Cung cấp máu và chế phẩm máu",
+      "Ghép tế bào gốc"
+    ],
+    "medical_keywords": [
+      "Thiếu máu",
+      "Ung thư máu",
+      "Rối loạn đông máu",
+      "Tan máu bẩm sinh",
+      "Truyền máu",
+      "Bệnh về máu"
+    ]
+  },
+  {
+    "id": "1b98be48",
+    "name": "Bệnh viện Truyền máu - Huyết học Tp. Hồ Chí Minh",
+    "address": "118 Đ. Hồng Bàng, Phường 12, Quận 5, Thành phố Hồ Chí Minh, Việt Nam",
+    "phone": "+84 28 3957 1342",
+    "image": "https://lh3.googleusercontent.com/gps-cs-s/AG0ilSxh6UqP2FX9_-aULphxx4fjbsx3fwJ38G3827O1g6j7TqEZOOqAyyXfg3k2uLPIFgb6hPq8gSmBJdUUp_yoFCe88BwLzA1Wkdo-8yEOJxxjEKATVkHxCLtFukLLJIhqgXlM5nFB=w1080-h1080-no",
+    "location": {
+      "lat": 10.756407,
+      "lng": 106.66588159999999
+    },
+    "website": "Không có",
+    "tier": 1,
+    "demographics": {
+      "min_age": 0,
+      "max_age": 120,
+      "gender": "All"
+    },
+    "specialties": [
+      "Huyết học",
+      "Truyền máu",
+      "Ung thư máu",
+      "Rối loạn đông máu"
+    ],
+    "strengths": [
+      "Chẩn đoán và điều trị bệnh lý huyết học",
+      "Ghép tế bào gốc tạo máu",
+      "Ngân hàng máu"
+    ],
+    "medical_keywords": [
+      "thiếu máu",
+      "ung thư máu",
+      "bạch cầu",
+      "tiểu cầu",
+      "rối loạn đông máu",
+      "tan máu bẩm sinh",
+      "truyền máu",
+      "ghép tủy"
+    ]
+  },
+  {
+    "id": "2cf135e6",
+    "name": "Bệnh viện Phạm Ngọc Thạch",
+    "address": "120 Đ. Hồng Bàng, Phường 12, Quận 5, Thành phố Hồ Chí Minh, Việt Nam",
+    "phone": "+84 28 3855 0207",
+    "image": "https://lh3.googleusercontent.com/gps-cs-s/AG0ilSwqzXx4AnptqpQdPEUFXOoIA4_8G9DVPyUAMty42nfOmsCS68N4ZnGdPfjWrlF4vX0nq-O5lecWnGSj-YGNSRgwnpROprW8HdgiMkgjkJ2dm3FNIc9RacriYH8hX3weXROyliY=w1080-h1080-no",
+    "location": {
+      "lat": 10.7570129,
+      "lng": 106.66597039999999
+    },
+    "website": "http://bvpnt.org.vn/",
+    "tier": 1,
+    "demographics": {
+      "min_age": 0,
+      "max_age": 120,
+      "gender": "All"
+    },
+    "specialties": [
+      "Lao",
+      "Bệnh phổi",
+      "Hô hấp"
+    ],
+    "strengths": [
+      "Chẩn đoán và điều trị lao",
+      "Lao kháng thuốc",
+      "Bệnh phổi mạn tính"
+    ],
+    "medical_keywords": [
+      "lao phổi",
+      "lao ngoài phổi",
+      "ho kéo dài",
+      "khó thở",
+      "viêm phổi",
+      "bệnh phổi tắc nghẽn mạn tính (COPD)"
+    ]
+  },
+  {
+    "id": "66886ee2",
+    "name": "Bệnh viện Bệnh Nhiệt đới",
+    "address": "764 Võ Văn Kiệt, Phường 1, Quận 5, Thành phố Hồ Chí Minh 700000, Việt Nam",
+    "phone": "+84 28 3923 5804",
+    "image": "https://lh3.googleusercontent.com/p/AF1QipO93qtYx3dcyhD8Op3zqt6VQTAkB66pMk728vvR=w1080-h1080-no",
+    "location": {
+      "lat": 10.752660599999999,
+      "lng": 106.67891639999999
+    },
+    "website": "http://www.bvbnd.vn/",
+    "tier": 1,
+    "demographics": {
+      "min_age": 0,
+      "max_age": 120,
+      "gender": "All"
+    },
+    "specialties": [
+      "Bệnh truyền nhiễm",
+      "Nhiễm trùng",
+      "HIV/AIDS",
+      "Gan mật"
+    ],
+    "strengths": [
+      "Chẩn đoán và điều trị bệnh truyền nhiễm cấp tính",
+      "Điều trị HIV/AIDS",
+      "Viêm gan siêu vi"
+    ],
+    "medical_keywords": [
+      "sốt xuất huyết",
+      "tay chân miệng",
+      "viêm não",
+      "viêm màng não",
+      "HIV",
+      "viêm gan B",
+      "viêm gan C",
+      "tiêu chảy",
+      "nhiễm trùng"
+    ]
+  },
+  {
+    "id": "a634a116",
+    "name": "Bệnh viện Tâm Thần Thành phố Hồ Chí Minh",
+    "address": "766 Võ Văn Kiệt, Phường 1, Quận 5, Thành phố Hồ Chí Minh, Việt Nam",
+    "phone": "+84 28 3923 4675",
+    "image": "https://lh3.googleusercontent.com/gps-cs-s/AG0ilSwfG9I4iNFO2wsHqcG9cYMQuf8Rhda8t8jBndje4fUDui439uifpEI2C0M824Kxrso4g_VFz252OaTzB9lPRVEcZpl_Dqwujb8ulyk5mUo4gq9kf7HGD_UOzUoywVIOvV6yNtaq7w=w1080-h1080-no",
+    "location": {
+      "lat": 10.752481699999999,
+      "lng": 106.6783073
+    },
+    "website": "https://bvtt-tphcm.org.vn/",
+    "tier": 1,
+    "demographics": {
+      "min_age": 0,
+      "max_age": 120,
+      "gender": "All"
+    },
+    "specialties": [
+      "Tâm thần",
+      "Tâm lý",
+      "Thần kinh"
+    ],
+    "strengths": [
+      "Chẩn đoán và điều trị rối loạn tâm thần",
+      "Tư vấn tâm lý",
+      "Quản lý bệnh mạn tính tâm thần"
+    ],
+    "medical_keywords": [
+      "trầm cảm",
+      "lo âu",
+      "tâm thần phân liệt",
+      "rối loạn lưỡng cực",
+      "mất ngủ",
+      "stress",
+      "rối loạn ám ảnh cưỡng chế"
+    ]
+  },
+  {
+    "id": "c03ea2c2",
+    "name": "Bệnh Viện Tâm Thần Lê Minh Xuân",
+    "address": "Ấp 6 Xã Lê Minh Xuân, Lê Minh Xuân, Thành Phố Hồ Chí Minh, Thành phố Hồ Chí Minh, Việt Nam",
+    "phone": "+84 28 3766 0313",
+    "image": "https://lh3.googleusercontent.com/gps-cs-s/AG0ilSxJAZoWDq7g2Wv-k6DP-7U0er6lFWDcEBLu54CEq7OrTofH7AGSYoT8PMhPdaG4fJ1uO6SqC8HP4VEiuJN70mqCPLBGVN6kZoLDXQ9QTd1_gmcUA7CShFHwpmCESJWgtRxuPyqP=w1080-h1080-no",
+    "location": {
+      "lat": 10.7698568,
+      "lng": 106.54543
+    },
+    "website": "Không có",
+    "tier": 2,
+    "demographics": {
+      "min_age": 0,
+      "max_age": 120,
+      "gender": "All"
+    },
+    "specialties": [
+      "Tâm thần",
+      "Phục hồi chức năng tâm thần"
+    ],
+    "strengths": [
+      "Điều trị và chăm sóc dài hạn bệnh nhân tâm thần",
+      "Phục hồi chức năng xã hội"
+    ],
+    "medical_keywords": [
+      "tâm thần mạn tính",
+      "phục hồi chức năng tâm thần",
+      "chăm sóc tâm thần",
+      "rối loạn hành vi"
+    ]
+  },
+  {
+    "id": "ab0f99b6",
+    "name": "Bệnh viện Trưng Vương",
+    "address": "266 Đ. Lý Thường Kiệt, Phường Diên Hồng, Quận 10, Thành phố Hồ Chí Minh 700000, Việt Nam",
+    "phone": "+84 28 3865 6744",
+    "image": "https://lh3.googleusercontent.com/gps-cs-s/AG0ilSyz-PNwRxgAww2FhKymXLQk5LeIEYIqte-1EwLK4FfNqZI3lFFeBQVmN13mHrl2z6K7Qsh0A_lw4WaugBHvlqv-rP0vhYZBnWL6UKQ8R2X63GV73ghEAMYStrcDnPyoQvTRBqCr3Q=w1080-h1080-no",
+    "location": {
+      "lat": 10.770505499999999,
+      "lng": 106.6594484
+    },
+    "website": "http://bvtrungvuong.vn/",
+    "tier": 1,
+    "demographics": {
+      "min_age": 0,
+      "max_age": 120,
+      "gender": "All"
+    },
+    "specialties": [
+      "Đa khoa",
+      "Nội",
+      "Ngoại",
+      "Sản phụ khoa",
+      "Nhi",
+      "Da liễu",
+      "Mắt",
+      "Tai Mũi Họng",
+      "Răng Hàm Mặt",
+      "Cấp cứu"
+    ],
+    "strengths": [
+      "Cấp cứu",
+      "Khám chữa bệnh đa khoa",
+      "Phẫu thuật tổng quát"
+    ],
+    "medical_keywords": [
+      "đau bụng",
+      "sốt",
+      "chấn thương",
+      "khám sức khỏe",
+      "phẫu thuật",
+      "sinh con",
+      "bệnh ngoài da"
+    ]
+  },
+  {
+    "id": "78858303",
+    "name": "Bệnh viện Nguyễn Tri Phương",
+    "address": "468 Nguyễn Trãi, Phường 7, Quận 5, Thành phố Hồ Chí Minh 70000, Việt Nam",
+    "phone": "+84 28 3923 4332",
+    "image": "https://lh3.googleusercontent.com/p/AF1QipMHxmrak3LItojn3l2rtzq9LKno6Pt5By0-xb8f=w1080-h1080-no",
+    "location": {
+      "lat": 10.7550025,
+      "lng": 106.6705345
+    },
+    "website": "https://bvnguyentriphuong.com.vn/",
+    "tier": 1,
+    "demographics": {
+      "min_age": 0,
+      "max_age": 120,
+      "gender": "All"
+    },
+    "specialties": [
+      "Đa khoa",
+      "Nội",
+      "Ngoại",
+      "Sản phụ khoa",
+      "Nhi",
+      "Mắt",
+      "Tai Mũi Họng",
+      "Răng Hàm Mặt",
+      "Thận - Tiết niệu",
+      "Tim mạch"
+    ],
+    "strengths": [
+      "Khám chữa bệnh đa khoa",
+      "Phẫu thuật",
+      "Tim mạch",
+      "Thận - Tiết niệu"
+    ],
+    "medical_keywords": [
+      "đau đầu",
+      "đau ngực",
+      "tiểu đường",
+      "huyết áp cao",
+      "sỏi thận",
+      "viêm đường tiết niệu",
+      "khám tổng quát"
+    ]
+  },
+  {
+    "id": "ea966db6",
+    "name": "Bệnh viện An Bình",
+    "address": "146 Đ. An Bình, Phường An Đông, Quận 5, Thành phố Hồ Chí Minh, Việt Nam",
+    "phone": "+84 28 3923 4359",
+    "image": "https://lh3.googleusercontent.com/gps-cs-s/AG0ilSw_0v-_U4kZqex79zyCFC6wStxCY51fZtUco7sFFDIS7sKBRlEjtiIgAF4uZnJQqRLEspp7lz90QGMATqCnq64QBYQweHkB5cUZ61B0irpzVHUkx4K4X4-tL8JNz05AdHD4xXZ9bg=w1080-h1080-no",
+    "location": {
+      "lat": 10.7542613,
+      "lng": 106.6715847
+    },
+    "website": "http://www.benhvienanbinh.vn/",
+    "tier": 2,
+    "demographics": {
+      "min_age": 0,
+      "max_age": 120,
+      "gender": "All"
+    },
+    "specialties": [
+      "Đa khoa",
+      "Nội",
+      "Ngoại",
+      "Sản phụ khoa",
+      "Nhi",
+      "Y học cổ truyền"
+    ],
+    "strengths": [
+      "Khám chữa bệnh đa khoa",
+      "Y học cổ truyền",
+      "Phục hồi chức năng"
+    ],
+    "medical_keywords": [
+      "đau lưng",
+      "đau khớp",
+      "cảm cúm",
+      "khám sức khỏe định kỳ",
+      "châm cứu",
+      "bấm huyệt"
+    ]
+  },
+  {
+    "id": "528af556",
+    "name": "BỆNH VIỆN NGUYỄN TRÃI",
+    "address": "314 Nguyễn Trãi, Phường 8, Quận 5, Thành phố Hồ Chí Minh, Việt Nam",
+    "phone": "Không có",
+    "image": "https://lh3.googleusercontent.com/gps-cs-s/AG0ilSyPlO7v7GRJOBFf18Jg7_EmjSRDIkYqYnnd6G4HmRUUAIKeUP52tUSxF7PG_SImHkwTPOSzZ4JPwCQ_V7o9BODXrD4o6_ygfWa-Erbq9xLjtsZYgnMZoDKSKGHmmmK8Zxuc1iRK=w1080-h1080-no",
+    "location": {
+      "lat": 10.756156299999999,
+      "lng": 106.6749535
+    },
+    "website": "https://bvnguyentrai.org.vn/",
+    "tier": 1,
+    "demographics": {
+      "min_age": 0,
+      "max_age": 120,
+      "gender": "All"
+    },
+    "specialties": [
+      "Đa khoa",
+      "Nội",
+      "Ngoại",
+      "Sản phụ khoa",
+      "Nhi",
+      "Y học cổ truyền",
+      "Châm cứu",
+      "Phục hồi chức năng"
+    ],
+    "strengths": [
+      "Kết hợp y học hiện đại và y học cổ truyền",
+      "Châm cứu",
+      "Phục hồi chức năng"
+    ],
+    "medical_keywords": [
+      "đau vai gáy",
+      "thoái hóa khớp",
+      "tai biến mạch máu não",
+      "liệt nửa người",
+      "châm cứu",
+      "bấm huyệt",
+      "thuốc bắc"
+    ]
+  },
+  {
+    "id": "011372f0",
+    "name": "Bệnh viện Chấn Thương Chỉnh Hình",
+    "address": "929 Trần Hưng Đạo, Phường 1, Quận 5, Thành phố Hồ Chí Minh, Việt Nam",
+    "phone": "+84 28 3923 7007",
+    "image": "https://lh3.googleusercontent.com/gps-cs-s/AG0ilSz5HxEshWLPLPEX-oZhJWklrbfhby_ow6EBF0C_jyj87V0E-m19m_TI8gh7xNLk2fpNoiItIl7YhVPZuVFKmP6ikzhI-ieUOAHkncgSwtLrxq_1vu3xYmuFGGL_G1JGNTxXXUMCDg=w1080-h1080-no",
+    "location": {
+      "lat": 10.7541909,
+      "lng": 106.67818749999999
+    },
+    "website": "http://www.bvctch.vn/",
+    "tier": 1,
+    "demographics": {
+      "min_age": 0,
+      "max_age": 120,
+      "gender": "All"
+    },
+    "specialties": [
+      "Chấn thương chỉnh hình",
+      "Cơ xương khớp",
+      "Phẫu thuật cột sống",
+      "Phẫu thuật khớp"
+    ],
+    "strengths": [
+      "Phẫu thuật chấn thương",
+      "Phẫu thuật chỉnh hình",
+      "Điều trị bệnh lý cơ xương khớp phức tạp"
+    ],
+    "medical_keywords": [
+      "gãy xương",
+      "bong gân",
+      "trật khớp",
+      "thoái hóa khớp",
+      "viêm khớp",
+      "đau cột sống",
+      "thoát vị đĩa đệm",
+      "phẫu thuật thay khớp"
+    ]
+  },
+  {
+    "id": "d6d1a0d0",
+    "name": "Bệnh viện Răng Hàm Mặt TP. HCM",
+    "address": "263 - 265 Trần Hưng Đạo, Phường Cô Giang, Quận 1, Thành phố Hồ Chí Minh, Việt Nam",
+    "phone": "+84 1900 636227",
+    "image": "https://lh3.googleusercontent.com/p/AF1QipM6SaJ5JTb9DLNNXgdDnJZfKd07ZtOJrq2egd_R=w1080-h1080-no",
+    "location": {
+      "lat": 10.7635458,
+      "lng": 106.69199289999999
+    },
+    "website": "https://bvranghammat.com/",
+    "tier": 1,
+    "demographics": {
+      "min_age": 0,
+      "max_age": 100,
+      "gender": "All"
+    },
+    "specialties": [
+      "Răng Hàm Mặt",
+      "Nha khoa",
+      "Phẫu thuật Hàm mặt"
+    ],
+    "strengths": [
+      "Chăm sóc răng miệng",
+      "Phẫu thuật hàm mặt phức tạp",
+      "Nắn chỉnh răng"
+    ],
+    "medical_keywords": [
+      "Đau răng",
+      "Sâu răng",
+      "Viêm nướu",
+      "Nhổ răng",
+      "Trồng răng",
+      "Chỉnh nha",
+      "Răng khôn",
+      "Chấn thương hàm mặt"
+    ]
+  },
+  {
+    "id": "be2ee6a2",
+    "name": "Bệnh viện Y Học Cổ Truyền TP.HCM",
+    "address": "179-187 Nam Kỳ Khởi Nghĩa, Phường Võ Thị Sáu, Quận 3, Thành phố Hồ Chí Minh, Việt Nam",
+    "phone": "+84 28 3932 6579",
+    "image": "https://lh3.googleusercontent.com/p/AF1QipMFkzhhxdKIWlOdDq1NYIa6WaXRag9rB9qHVpqx=w1080-h1080-no",
+    "location": {
+      "lat": 10.7860658,
+      "lng": 106.6877392
+    },
+    "website": "http://yhct.vn/",
+    "tier": 1,
+    "demographics": {
+      "min_age": 0,
+      "max_age": 100,
+      "gender": "All"
+    },
+    "specialties": [
+      "Y học Cổ truyền",
+      "Châm cứu",
+      "Bấm huyệt",
+      "Thuốc Nam",
+      "Thuốc Bắc",
+      "Vật lý trị liệu"
+    ],
+    "strengths": [
+      "Điều trị bệnh mạn tính",
+      "Phục hồi chức năng bằng YHCT",
+      "Châm cứu giảm đau"
+    ],
+    "medical_keywords": [
+      "Đau lưng",
+      "Đau khớp",
+      "Mất ngủ",
+      "Suy nhược cơ thể",
+      "Liệt nửa người",
+      "Tai biến mạch máu não",
+      "Thoái hóa khớp",
+      "Viêm xoang mạn tính"
+    ]
+  },
+  {
+    "id": "519ceacc",
+    "name": "Bệnh viện Phục hồi Chức năng - Điều trị Bệnh Nghề nghiệp TP. HCM",
+    "address": "313 Âu Dương Lân, Phường Rạch Ông, Quận 8, Thành phố Hồ Chí Minh, Việt Nam",
+    "phone": "+84 28 3856 9147",
+    "image": "https://lh3.googleusercontent.com/gps-cs-s/AG0ilSzoYgjsXvwdemsUP7TdzvJX5amm3jrTpajdRa-IvGnik4C4ACVquKhuq-qTpwYiz9kYHq0IXHrmTKmNUQHIGp87F--tGzDo42groE2A2lFXvLp1bKnqiJ4FTwGQ2JvB_jTdwGg=w1080-h1080-no",
+    "location": {
+      "lat": 10.7412467,
+      "lng": 106.68615679999999
+    },
+    "website": "http://bvphuchoichucnanghcm.vn/",
+    "tier": 1,
+    "demographics": {
+      "min_age": 0,
+      "max_age": 100,
+      "gender": "All"
+    },
+    "specialties": [
+      "Phục hồi chức năng",
+      "Vật lý trị liệu",
+      "Điều trị bệnh nghề nghiệp",
+      "Y học thể thao"
+    ],
+    "strengths": [
+      "Phục hồi sau tai biến",
+      "Phục hồi chấn thương",
+      "Điều trị bệnh liên quan đến công việc"
+    ],
+    "medical_keywords": [
+      "Tai biến mạch máu não",
+      "Chấn thương cột sống",
+      "Đau vai gáy",
+      "Hội chứng ống cổ tay",
+      "Bệnh bụi phổi",
+      "Điếc nghề nghiệp",
+      "Phục hồi vận động"
+    ]
+  },
+  {
+    "id": "2e73b02a",
+    "name": "Bệnh viện Thống Nhất",
+    "address": "1 Đ. Lý Thường Kiệt, Phường 7, Tân Bình, Thành phố Hồ Chí Minh 700000, Việt Nam",
+    "phone": "+84 28 3869 0277",
+    "image": "https://lh3.googleusercontent.com/p/AF1QipM9-mfEIvBwMUW1Db1YrZsDexsdYLXTVatO7M1V=w1080-h1080-no",
+    "location": {
+      "lat": 10.7915151,
+      "lng": 106.65345389999999
+    },
+    "website": "http://bvtn.org.vn/",
+    "tier": 1,
+    "demographics": {
+      "min_age": 0,
+      "max_age": 100,
+      "gender": "All"
+    },
+    "specialties": [
+      "Nội khoa",
+      "Ngoại khoa",
+      "Tim mạch",
+      "Thần kinh",
+      "Tiêu hóa",
+      "Hô hấp",
+      "Cấp cứu"
+    ],
+    "strengths": [
+      "Khám chữa bệnh đa khoa",
+      "Điều trị bệnh lý người cao tuổi",
+      "Tim mạch can thiệp"
+    ],
+    "medical_keywords": [
+      "Đau ngực",
+      "Khó thở",
+      "Đau bụng",
+      "Đau đầu",
+      "Đột quỵ",
+      "Cao huyết áp",
+      "Tiểu đường",
+      "Bệnh tim mạch"
+    ]
+  },
+  {
+    "id": "405783b2",
+    "name": "Bệnh viện Quân Y 175",
+    "address": "Nguyễn Kiệm/786 Đ. Hạnh Thông, Phường, Gò Vấp, Thành phố Hồ Chí Minh, Việt Nam",
+    "phone": "Không có",
+    "image": "https://lh3.googleusercontent.com/gps-cs-s/AG0ilSw_G4GlM1QDHg4hrLaMbYKtqsqZDeArP6lX4a-5AuShG9BV4JBGRTzPnBUpSXkQvm5KETH7lmrONA1Thk9mYEmb0bgYp2Tr7PT_oKIRvay1m1QSiCnO_wICfzQ-JRLrD9wMTbP1=w1080-h1080-no",
+    "location": {
+      "lat": 10.8175099,
+      "lng": 106.6806615
+    },
+    "website": "https://benhvien175.vn/",
+    "tier": 1,
+    "demographics": {
+      "min_age": 0,
+      "max_age": 100,
+      "gender": "All"
+    },
+    "specialties": [
+      "Nội khoa",
+      "Ngoại khoa",
+      "Chấn thương chỉnh hình",
+      "Cấp cứu",
+      "Truyền nhiễm",
+      "Ung bướu"
+    ],
+    "strengths": [
+      "Điều trị đa khoa",
+      "Chấn thương chiến tranh/tai nạn",
+      "Y học quân sự"
+    ],
+    "medical_keywords": [
+      "Chấn thương",
+      "Vết thương",
+      "Sốt",
+      "Nhiễm trùng",
+      "Ung thư",
+      "Đau bụng cấp",
+      "Tai nạn giao thông"
+    ]
+  },
+  {
+    "id": "3611078e",
+    "name": "Bệnh viện 30-4",
+    "address": "9 Sư Vạn Hạnh, Phường 9, Quận 5, Thành phố Hồ Chí Minh 72712, Việt Nam",
+    "phone": "Không có",
+    "image": "https://lh3.googleusercontent.com/gps-cs-s/AG0ilSzt6C9epx5n0otWk7hn3BcZJRH7kpN_MnPRAcqgqolpYH3Y4G55GOMU1v6tkRgY1dRRjjDqWZfXN_GUKnGSQi-R6054rFu7S-X30IqXfcmDoHIbpCze_V1e7IISmNULIVCnJkSb=w1080-h1080-no",
+    "location": {
+      "lat": 10.7591033,
+      "lng": 106.6730315
+    },
+    "website": "http://benhvien304.com.vn/",
+    "tier": 2,
+    "demographics": {
+      "min_age": 0,
+      "max_age": 100,
+      "gender": "All"
+    },
+    "specialties": [
+      "Nội khoa",
+      "Ngoại khoa",
+      "Cấp cứu",
+      "Khám sức khỏe định kỳ",
+      "Da liễu",
+      "Mắt"
+    ],
+    "strengths": [
+      "Khám tổng quát",
+      "Điều trị bệnh lý phổ biến",
+      "Chăm sóc sức khỏe cán bộ"
+    ],
+    "medical_keywords": [
+      "Sốt",
+      "Ho",
+      "Đau họng",
+      "Đau bụng",
+      "Khám sức khỏe",
+      "Mụn",
+      "Dị ứng",
+      "Đau mắt"
+    ]
+  },
+  {
+    "id": "0f97318a",
+    "name": "Bệnh viện Tân Định - Cơ sở 2",
+    "address": "237 Trần Hưng Đạo, Phường Cô Giang, Quận 1, Thành phố Hồ Chí Minh, Việt Nam",
+    "phone": "+84 28 3920 7527",
+    "image": "https://lh3.googleusercontent.com/gps-cs-s/AG0ilSwqdYwffnzFGKFOwh-m2RU22r8GMqMpQas5Z79z72cBQsU22vf_MPslwNr7Gn1IETiJTaxviShtZjRtkkMOnoML5gK_2dDYqzj1by0ZMjOAqSDbBFR4_FPxBVWaS2-hUaZTLIQ=w1080-h1080-no",
+    "location": {
+      "lat": 10.765051,
+      "lng": 106.693235
+    },
+    "website": "http://cs1.bvq1.vn/bvq1/",
+    "tier": 3,
+    "demographics": {
+      "min_age": 0,
+      "max_age": 100,
+      "gender": "All"
+    },
+    "specialties": [
+      "Khám bệnh tổng quát",
+      "Nội khoa",
+      "Ngoại khoa cơ bản",
+      "Cấp cứu ban đầu"
+    ],
+    "strengths": [
+      "Chăm sóc sức khỏe ban đầu",
+      "Khám chữa bệnh thông thường"
+    ],
+    "medical_keywords": [
+      "Cảm cúm",
+      "Sốt nhẹ",
+      "Đau bụng",
+      "Tiêu chảy",
+      "Kiểm tra sức khỏe",
+      "Tiêm chủng"
+    ]
+  },
+  {
+    "id": "bf52a5ee",
+    "name": "Bệnh viện Lê Văn Thịnh",
+    "address": "130 Lê Văn Thịnh, Phường Bình Trưng Tây, Thủ Đức, Thành phố Hồ Chí Minh, Việt Nam",
+    "phone": "Không có",
+    "image": "https://lh3.googleusercontent.com/gps-cs-s/AG0ilSxIXfyg_bqqTN_lxty2BNxSmAABRfTkChTlzAp4fZy4zuUH0hntLTq0mrWwEXTHqD48PmzCUKSQd4syV6WC9bfuUcqgW6pU9-DHS0IAC0Bkp7fjt8xQJx0Z_ASyiZBrWRer_fsb=w1080-h1080-no",
+    "location": {
+      "lat": 10.7825712,
+      "lng": 106.76910439999999
+    },
+    "website": "https://benhvienlevanthinh.vn/",
+    "tier": 2,
+    "demographics": {
+      "min_age": 0,
+      "max_age": 100,
+      "gender": "All"
+    },
+    "specialties": [
+      "Nội khoa",
+      "Ngoại khoa",
+      "Sản phụ khoa",
+      "Nhi khoa",
+      "Cấp cứu"
+    ],
+    "strengths": [
+      "Khám chữa bệnh đa khoa cho người dân địa phương",
+      "Chăm sóc sức khỏe cộng đồng"
+    ],
+    "medical_keywords": [
+      "Sốt",
+      "Ho",
+      "Đau bụng",
+      "Sinh đẻ",
+      "Khám thai",
+      "Bệnh trẻ em",
+      "Tai nạn nhỏ"
+    ]
+  },
+  {
+    "id": "bc658a31",
+    "name": "Bệnh Viện Quận 3",
+    "address": "114 Trần Quốc Thảo, Phường 14, Quận 3, Thành phố Hồ Chí Minh, Việt Nam",
+    "phone": "+84 28 3931 0400",
+    "image": "https://lh3.googleusercontent.com/gps-cs-s/AG0ilSw7VaruXDD4k6JdPUNEmSOkS3uwZRg8-33-pSCV-wMxWaI5W3F1SwuERiIzA6tGPEUzTVJDzfB9yxCrLv8Phm-ujfc6D1zA2N84imauPiRxhNkBynEGkgefLKtu5kvOALxhYi0M=w1080-h1080-no",
+    "location": {
+      "lat": 10.7847873,
+      "lng": 106.6839614
+    },
+    "website": "https://bvquan3.medinet.gov.vn/default.aspx",
+    "tier": 2,
+    "demographics": {
+      "min_age": 0,
+      "max_age": 100,
+      "gender": "All"
+    },
+    "specialties": [
+      "Nội khoa",
+      "Ngoại khoa",
+      "Sản phụ khoa",
+      "Nhi khoa",
+      "Cấp cứu"
+    ],
+    "strengths": [
+      "Khám chữa bệnh đa khoa cho người dân địa phương",
+      "Chăm sóc sức khỏe ban đầu"
+    ],
+    "medical_keywords": [
+      "Sốt",
+      "Ho",
+      "Đau bụng",
+      "Sinh đẻ",
+      "Khám thai",
+      "Bệnh trẻ em",
+      "Tai nạn nhỏ"
+    ]
+  },
+  {
+    "id": "6112858a",
+    "name": "Bệnh viện Quận 4",
+    "address": "65 Bến Vân Đồn, Phường 12, Quận 4, Thành phố Hồ Chí Minh, Việt Nam",
+    "phone": "+84 838 261 568",
+    "image": "https://lh3.googleusercontent.com/gps-cs-s/AG0ilSzbMTXVmwjaI65MJH45Fk0YlAoHHzZLCHorXiM6wkhYcFlfm6hWaeUwC6eGZOsgPv1AfF0uE5t2AS5FaxRWVg50ZxspvL8ySGO4Uc51NtBMEAxN1m8SkS2eN6ugHTCxl2qNPHR-=w1080-h1080-no",
+    "location": {
+      "lat": 10.765396899999999,
+      "lng": 106.7021024
+    },
+    "website": "http://benhvienquan4.vn/",
+    "tier": 2,
+    "demographics": {
+      "min_age": 0,
+      "max_age": 100,
+      "gender": "All"
+    },
+    "specialties": [
+      "Nội khoa",
+      "Ngoại khoa",
+      "Sản phụ khoa",
+      "Nhi khoa",
+      "Cấp cứu"
+    ],
+    "strengths": [
+      "Khám chữa bệnh đa khoa cho người dân địa phương",
+      "Chăm sóc sức khỏe ban đầu"
+    ],
+    "medical_keywords": [
+      "Sốt",
+      "Ho",
+      "Đau bụng",
+      "Sinh đẻ",
+      "Khám thai",
+      "Bệnh trẻ em",
+      "Tai nạn nhỏ"
+    ]
+  },
+  {
+    "id": "3f244999",
+    "name": "Bệnh viện Quận 5",
+    "address": "642 A Nguyễn Trãi, Phường 11, Quận 5, Thành phố Hồ Chí Minh 700000, Việt Nam",
+    "phone": "+84 28 3855 0235",
+    "image": "https://lh3.googleusercontent.com/p/AF1QipM4I9emYOP8EM9aTBZi-Fj5JmPAOhA7_PXhJAoN=w1080-h1080-no",
+    "location": {
+      "lat": 10.754035199999999,
+      "lng": 106.66581029999999
+    },
+    "website": "Không có",
+    "tier": 2,
+    "demographics": {
+      "min_age": 0,
+      "max_age": 120,
+      "gender": "All"
+    },
+    "specialties": [
+      "Nội khoa",
+      "Ngoại khoa",
+      "Sản phụ khoa",
+      "Nhi khoa",
+      "Cấp cứu",
+      "Tai Mũi Họng",
+      "Răng Hàm Mặt"
+    ],
+    "strengths": [
+      "Khám chữa bệnh tổng quát",
+      "Chăm sóc sức khỏe cộng đồng",
+      "Phẫu thuật cơ bản",
+      "Y học gia đình"
+    ],
+    "medical_keywords": [
+      "Đau bụng",
+      "Sốt",
+      "Ho",
+      "Cảm cúm",
+      "Tai nạn",
+      "Khám sức khỏe định kỳ",
+      "Tiêm chủng",
+      "Viêm họng"
+    ]
+  },
+  {
+    "id": "a8bfa645",
+    "name": "Bệnh viện Quận 6",
+    "address": "Đ. Chợ Lớn, Phường 11, Quận 6, Thành phố Hồ Chí Minh, Việt Nam",
+    "phone": "Không có",
+    "image": "https://lh3.googleusercontent.com/gps-cs-s/AG0ilSywDRp0iY4ISlCCnHG5ETS8QHs3qd514S9tF4vftrK3FqRI6hJjjhUr0mP8EkzsuFDg59RBh9sfZp4Vek1WDLD6vqP7SG6IMZCya80yPXcHU97ux4WiC1WTV6Tci4NAosRPK7V74Q=w1080-h1080-no",
+    "location": {
+      "lat": 10.7465528,
+      "lng": 106.6345645
+    },
+    "website": "Không có",
+    "tier": 2,
+    "demographics": {
+      "min_age": 0,
+      "max_age": 120,
+      "gender": "All"
+    },
+    "specialties": [
+      "Nội khoa",
+      "Ngoại khoa",
+      "Sản phụ khoa",
+      "Nhi khoa",
+      "Cấp cứu",
+      "Tai Mũi Họng",
+      "Răng Hàm Mặt"
+    ],
+    "strengths": [
+      "Khám chữa bệnh tổng quát",
+      "Chăm sóc sức khỏe cộng đồng",
+      "Phẫu thuật cơ bản",
+      "Y học gia đình"
+    ],
+    "medical_keywords": [
+      "Đau bụng",
+      "Sốt",
+      "Ho",
+      "Cảm cúm",
+      "Tai nạn",
+      "Khám sức khỏe định kỳ",
+      "Tiêm chủng",
+      "Viêm họng"
+    ]
+  },
+  {
+    "id": "894274ed",
+    "name": "Bệnh viện Quận 7",
+    "address": "101 Đ. Nguyễn Thị Thập, Phường Tân Mỹ, Quận 7, Thành phố Hồ Chí Minh 00700, Việt Nam",
+    "phone": "+84 28 3873 3420",
+    "image": "https://lh3.googleusercontent.com/p/AF1QipMw5Q6AYfU5uZXi5gyAE8vV3NqTLr2nMmtzy3hp=w1080-h1080-no",
+    "location": {
+      "lat": 10.7373313,
+      "lng": 106.7241657
+    },
+    "website": "http://www.benhvienquan7.com.vn/",
+    "tier": 2,
+    "demographics": {
+      "min_age": 0,
+      "max_age": 120,
+      "gender": "All"
+    },
+    "specialties": [
+      "Nội khoa",
+      "Ngoại khoa",
+      "Sản phụ khoa",
+      "Nhi khoa",
+      "Cấp cứu",
+      "Tai Mũi Họng",
+      "Răng Hàm Mặt"
+    ],
+    "strengths": [
+      "Khám chữa bệnh tổng quát",
+      "Chăm sóc sức khỏe cộng đồng",
+      "Phẫu thuật cơ bản",
+      "Y học gia đình"
+    ],
+    "medical_keywords": [
+      "Đau bụng",
+      "Sốt",
+      "Ho",
+      "Cảm cúm",
+      "Tai nạn",
+      "Khám sức khỏe định kỳ",
+      "Tiêm chủng",
+      "Viêm họng"
+    ]
+  },
+  {
+    "id": "cd3632f5",
+    "name": "Bệnh viện Quận 8",
+    "address": "82 Cao Lỗ, Phường 4, Quận 8, Thành phố Hồ Chí Minh, Việt Nam",
+    "phone": "+84 28 3850 6130",
+    "image": "https://lh3.googleusercontent.com/gps-cs-s/AG0ilSyAL7GjFurqLSWhzOMAC8eeReDChR4bvR9ye-28MUw6UU_98KSW41XQbpevGC3cJ7VuG4mYQJIp_RhULN8N2gH1vkqCONkX---Ewx4VXiEbj7eiYgbBWeQzhIEFrOHe0Q77HEKA=w1080-h1080-no",
+    "location": {
+      "lat": 10.7416667,
+      "lng": 106.67638889999999
+    },
+    "website": "http://bvquan8.medinet.gov.vn/Defaultmobile.aspx#",
+    "tier": 2,
+    "demographics": {
+      "min_age": 0,
+      "max_age": 120,
+      "gender": "All"
+    },
+    "specialties": [
+      "Nội khoa",
+      "Ngoại khoa",
+      "Sản phụ khoa",
+      "Nhi khoa",
+      "Cấp cứu",
+      "Tai Mũi Họng",
+      "Răng Hàm Mặt"
+    ],
+    "strengths": [
+      "Khám chữa bệnh tổng quát",
+      "Chăm sóc sức khỏe cộng đồng",
+      "Phẫu thuật cơ bản",
+      "Y học gia đình"
+    ],
+    "medical_keywords": [
+      "Đau bụng",
+      "Sốt",
+      "Ho",
+      "Cảm cúm",
+      "Tai nạn",
+      "Khám sức khỏe định kỳ",
+      "Tiêm chủng",
+      "Viêm họng"
+    ]
+  },
+  {
+    "id": "0404c735",
+    "name": "Bệnh viện Đa khoa Lê Văn Việt",
+    "address": "387 Đ. Lê Văn Việt, Tăng Nhơn Phú A, Thủ Đức, Thành phố Hồ Chí Minh 715143, Việt Nam",
+    "phone": "+84 28 3897 3628",
+    "image": "https://lh3.googleusercontent.com/p/AF1QipPSr579W0W7Rve_5zEUUIiMtJJgo8oqjqAatdDj=w1080-h1080-no",
+    "location": {
+      "lat": 10.8449288,
+      "lng": 106.7900007
+    },
+    "website": "https://benhvienlevanviet.vn/",
+    "tier": 2,
+    "demographics": {
+      "min_age": 0,
+      "max_age": 120,
+      "gender": "All"
+    },
+    "specialties": [
+      "Nội khoa",
+      "Ngoại khoa",
+      "Sản phụ khoa",
+      "Nhi khoa",
+      "Cấp cứu",
+      "Chẩn đoán hình ảnh",
+      "Xét nghiệm",
+      "Da liễu",
+      "Mắt"
+    ],
+    "strengths": [
+      "Khám chữa bệnh đa khoa",
+      "Trang thiết bị hiện đại",
+      "Đội ngũ y bác sĩ chuyên môn",
+      "Phẫu thuật chuyên sâu",
+      "Tư vấn sức khỏe"
+    ],
+    "medical_keywords": [
+      "Khám tổng quát",
+      "Xét nghiệm",
+      "Siêu âm",
+      "Chụp X-quang",
+      "Tiểu đường",
+      "Huyết áp",
+      "Tim mạch",
+      "Tiêu hóa",
+      "Da liễu"
+    ]
+  },
+  {
+    "id": "b047b1b6",
+    "name": "Bệnh viện Quận 10",
+    "address": "571 Sư Vạn Hạnh, Phường 12, Quận 10, Thành phố Hồ Chí Minh, Việt Nam",
+    "phone": "Không có",
+    "image": "https://lh3.googleusercontent.com/gps-cs-s/AG0ilSx84D4GXtt9dsJ5yDm76Ul0oRUlxqUniomEMLlTkID3oK8K9YipH1_-TKD4XoMMxtSZnPhULTSO0Mi4lDM2_Jz3CcmW_F2ZQ5SC174PQE1yDYwYA8jlrIXet-j8q9wRPRI6ftc4=w1080-h1080-no",
+    "location": {
+      "lat": 10.7762318,
+      "lng": 106.6666796
+    },
+    "website": "https://facebook.com/BenhVienQuan10/",
+    "tier": 2,
+    "demographics": {
+      "min_age": 0,
+      "max_age": 120,
+      "gender": "All"
+    },
+    "specialties": [
+      "Nội khoa",
+      "Ngoại khoa",
+      "Sản phụ khoa",
+      "Nhi khoa",
+      "Cấp cứu",
+      "Tai Mũi Họng",
+      "Răng Hàm Mặt"
+    ],
+    "strengths": [
+      "Khám chữa bệnh tổng quát",
+      "Chăm sóc sức khỏe cộng đồng",
+      "Phẫu thuật cơ bản",
+      "Y học gia đình"
+    ],
+    "medical_keywords": [
+      "Đau bụng",
+      "Sốt",
+      "Ho",
+      "Cảm cúm",
+      "Tai nạn",
+      "Khám sức khỏe định kỳ",
+      "Tiêm chủng",
+      "Viêm họng"
+    ]
+  },
+  {
+    "id": "8268144b",
+    "name": "Bệnh viện Lãnh Binh Thăng",
+    "address": "72 Đường Số 5 - Cư xá Bình Thới, Phường 8, Quận 11, Thành phố Hồ Chí Minh, Việt Nam",
+    "phone": "+84 932 711 722",
+    "image": "https://lh3.googleusercontent.com/gps-cs-s/AG0ilSxKs1o_j2WAPgK2c9mCOc1MM6EDFvlgISW1BHuJdNG9wpj5ZgzF5XlsuR6aCGQwBpYcG_l87NoacSyXQ1kSKOsd43bzkbhgBL6ypJ69DaNmVBlGyyyQe9WOpTp1mZOT2dPwFuw=w1080-h1080-no",
+    "location": {
+      "lat": 10.7605706,
+      "lng": 106.64812119999999
+    },
+    "website": "http://benhvienquan11.vn/",
+    "tier": 2,
+    "demographics": {
+      "min_age": 0,
+      "max_age": 120,
+      "gender": "All"
+    },
+    "specialties": [
+      "Nội khoa",
+      "Ngoại khoa",
+      "Sản phụ khoa",
+      "Nhi khoa",
+      "Cấp cứu",
+      "Tai Mũi Họng",
+      "Răng Hàm Mặt"
+    ],
+    "strengths": [
+      "Khám chữa bệnh tổng quát",
+      "Chăm sóc sức khỏe cộng đồng",
+      "Phẫu thuật cơ bản",
+      "Y học gia đình"
+    ],
+    "medical_keywords": [
+      "Đau bụng",
+      "Sốt",
+      "Ho",
+      "Cảm cúm",
+      "Tai nạn",
+      "Khám sức khỏe định kỳ",
+      "Tiêm chủng",
+      "Viêm họng"
+    ]
+  },
+  {
+    "id": "d5aeff85",
+    "name": "Bệnh viện Đa khoa Trung Mỹ Tây",
+    "address": "111 Thị Mười, Tân Chánh Hiệp, Quận 12, Thành phố Hồ Chí Minh 700000, Việt Nam",
+    "phone": "+84 28 6250 7955",
+    "image": "https://lh3.googleusercontent.com/gps-cs-s/AG0ilSwlARa9LnRHgDRJAOLeCXItbxHYAwIfH0PmesS2L283zhGPHnE9BtWlLwSvarsqj9NATUU3lcAUTJi6iyq2bfkqHhoeUxGoWj6zR5Fz1xbwc9kSTBq4rRQDUo_waNZeHYGVVnXA=w1080-h1080-no",
+    "location": {
+      "lat": 10.860610999999999,
+      "lng": 106.6307806
+    },
+    "website": "https://benhvienquan12.vn/",
+    "tier": 2,
+    "demographics": {
+      "min_age": 0,
+      "max_age": 120,
+      "gender": "All"
+    },
+    "specialties": [
+      "Nội khoa",
+      "Ngoại khoa",
+      "Sản phụ khoa",
+      "Nhi khoa",
+      "Cấp cứu",
+      "Chẩn đoán hình ảnh",
+      "Xét nghiệm",
+      "Da liễu",
+      "Mắt"
+    ],
+    "strengths": [
+      "Khám chữa bệnh đa khoa",
+      "Trang thiết bị hiện đại",
+      "Đội ngũ y bác sĩ chuyên môn",
+      "Phẫu thuật chuyên sâu",
+      "Tư vấn sức khỏe"
+    ],
+    "medical_keywords": [
+      "Khám tổng quát",
+      "Xét nghiệm",
+      "Siêu âm",
+      "Chụp X-quang",
+      "Tiểu đường",
+      "Huyết áp",
+      "Tim mạch",
+      "Tiêu hóa",
+      "Da liễu"
+    ]
+  },
+  {
+    "id": "f4ae72e7",
+    "name": "Bệnh Viện Đa Khoa Tân Bình",
+    "address": "605 Đ. Hoàng Văn Thụ, Phường Tân, sơn nhất, Thành phố Hồ Chí Minh 70000, Việt Nam",
+    "phone": "Không có",
+    "image": "https://lh3.googleusercontent.com/gps-cs-s/AG0ilSxcIGkZQnBWAPnbBk1Msjyj87hxcqufFR6JvlgMM1RuVhZFgOs2CYcU6QPp0QEJGI5QPUiXa4z5ij5lNXUJAzxOY8dqaoGfAO35E4noVO8Ap-qq45bLkL_a-OIPBkA3B9w63BGDPw=w1080-h1080-no",
+    "location": {
+      "lat": 10.7945055,
+      "lng": 106.65498559999999
+    },
+    "website": "https://bvtb.org.vn/",
+    "tier": 2,
+    "demographics": {
+      "min_age": 0,
+      "max_age": 120,
+      "gender": "All"
+    },
+    "specialties": [
+      "Nội khoa",
+      "Ngoại khoa",
+      "Sản phụ khoa",
+      "Nhi khoa",
+      "Cấp cứu",
+      "Chẩn đoán hình ảnh",
+      "Xét nghiệm",
+      "Da liễu",
+      "Mắt"
+    ],
+    "strengths": [
+      "Khám chữa bệnh đa khoa",
+      "Trang thiết bị hiện đại",
+      "Đội ngũ y bác sĩ chuyên môn",
+      "Phẫu thuật chuyên sâu",
+      "Tư vấn sức khỏe"
+    ],
+    "medical_keywords": [
+      "Khám tổng quát",
+      "Xét nghiệm",
+      "Siêu âm",
+      "Chụp X-quang",
+      "Tiểu đường",
+      "Huyết áp",
+      "Tim mạch",
+      "Tiêu hóa",
+      "Da liễu"
+    ]
+  },
+  {
+    "id": "72840bdd",
+    "name": "Bệnh Viện Quận Tân Phú",
+    "address": "611 Đ. Âu Cơ, Phú Trung, Tân Phú, Thành phố Hồ Chí Minh, Việt Nam",
+    "phone": "+84 28 5408 8924",
+    "image": "https://lh3.googleusercontent.com/gps-cs-s/AG0ilSyfU-4eS8oEumnDCxtEq9NtfzdWbE-29Vz3oiwySq8d6uCvQwi4UIm6_VFnbeHpe-NY-qgzrZlfBOp7gXEUZS0mDIkH1t7FTzyDWQrJAUkN84RWONZ8oCVU3wt7qDgVDr4n35JQ=w1080-h1080-no",
+    "location": {
+      "lat": 10.783638,
+      "lng": 106.6422004
+    },
+    "website": "http://benhvientanphu.vn/",
+    "tier": 2,
+    "demographics": {
+      "min_age": 0,
+      "max_age": 120,
+      "gender": "All"
+    },
+    "specialties": [
+      "Nội khoa",
+      "Ngoại khoa",
+      "Sản phụ khoa",
+      "Nhi khoa",
+      "Cấp cứu",
+      "Tai Mũi Họng",
+      "Răng Hàm Mặt"
+    ],
+    "strengths": [
+      "Khám chữa bệnh tổng quát",
+      "Chăm sóc sức khỏe cộng đồng",
+      "Phẫu thuật cơ bản",
+      "Y học gia đình"
+    ],
+    "medical_keywords": [
+      "Đau bụng",
+      "Sốt",
+      "Ho",
+      "Cảm cúm",
+      "Tai nạn",
+      "Khám sức khỏe định kỳ",
+      "Tiêm chủng",
+      "Viêm họng"
+    ]
+  },
+  {
+    "id": "3631d2cc",
+    "name": "Bệnh viện Bình Thạnh",
+    "address": "132 Lê Văn Duyệt, Phường 1, Bình Thạnh, Thành phố Hồ Chí Minh, Việt Nam",
+    "phone": "+84 28 3510 8966",
+    "image": "https://lh3.googleusercontent.com/gps-cs-s/AG0ilSzwdCnLPxfwhuIV5TE7vDk83Pf5I2XPV193JwKxkMLkzLat8vXucdsg7DPmMD5Vh0FYnPRiFCnOHCovogI6H4UVryMTMIWUxksBLu6_SkAxHm9zJasUnAM1CJtg_CRBPB_TVXDZdQ=w1080-h1080-no",
+    "location": {
+      "lat": 10.7980298,
+      "lng": 106.6966605
+    },
+    "website": "https://bvbinhthanh.org.vn/khoa",
+    "tier": 2,
+    "demographics": {
+      "min_age": 0,
+      "max_age": 120,
+      "gender": "All"
+    },
+    "specialties": [
+      "Nội khoa",
+      "Ngoại khoa",
+      "Sản phụ khoa",
+      "Nhi khoa",
+      "Cấp cứu"
+    ],
+    "strengths": [
+      "Khám chữa bệnh ban đầu",
+      "Cấp cứu",
+      "Phẫu thuật cơ bản",
+      "Chẩn đoán hình ảnh"
+    ],
+    "medical_keywords": [
+      "sốt",
+      "ho",
+      "đau bụng",
+      "chấn thương nhẹ",
+      "khám sức khỏe định kỳ",
+      "tiểu đường",
+      "huyết áp cao"
+    ]
+  },
+  {
+    "id": "b02721fe",
+    "name": "Bệnh viện Quận Phú Nhuận",
+    "address": "274 Nguyễn Trọng Tuyển, Phường 8, Phú Nhuận, Thành phố Hồ Chí Minh, Việt Nam",
+    "phone": "+84 28 3844 3910",
+    "image": "https://lh3.googleusercontent.com/gps-cs-s/AG0ilSzvYcgB7eADA6yaDdCJW1FV2LgY5UkTL4feTICZFeviJNo8gg3jYR74oeS-ywkWAXwwZyBYCAV1Flr3OeAPxxMC5gZFCSqaMfJMB2e5AKr5DLskBsoj1xQDJSRBGRVTk2GXr_RHtQ=w1080-h1080-no",
+    "location": {
+      "lat": 10.798107,
+      "lng": 106.67182229999999
+    },
+    "website": "https://bvquanphunhuan.medinet.gov.vn/",
+    "tier": 2,
+    "demographics": {
+      "min_age": 0,
+      "max_age": 120,
+      "gender": "All"
+    },
+    "specialties": [
+      "Nội khoa",
+      "Ngoại khoa",
+      "Sản phụ khoa",
+      "Nhi khoa",
+      "Cấp cứu"
+    ],
+    "strengths": [
+      "Khám chữa bệnh ban đầu",
+      "Cấp cứu",
+      "Phẫu thuật cơ bản",
+      "Chẩn đoán hình ảnh"
+    ],
+    "medical_keywords": [
+      "sốt",
+      "ho",
+      "đau bụng",
+      "chấn thương nhẹ",
+      "khám sức khỏe định kỳ",
+      "tiểu đường",
+      "huyết áp cao"
+    ]
+  },
+  {
+    "id": "b1fbbe65",
+    "name": "Bệnh viện Gò Vấp",
+    "address": "Đ. Quang Trung/641 Thông Tây Hội, Phường, Gò Vấp, Thành phố Hồ Chí Minh, Việt Nam",
+    "phone": "+84 28 3589 1799",
+    "image": "https://lh3.googleusercontent.com/gps-cs-s/AG0ilSwLBv4vED6rezOXtHTD5VQgdR7K_xQ2uyzl9E2cEdGEeA6OzwHydcfdaowtDJlS2Al07bsJ5jUGgAdUPT86l_icC_k6NnbDYjUm3lxK5ru2zlyklT7c3AqE8yVUe_1BpHJTps3uqmkR0OHR=w1080-h1080-no",
+    "location": {
+      "lat": 10.8346486,
+      "lng": 106.6615499
+    },
+    "website": "Không có",
+    "tier": 2,
+    "demographics": {
+      "min_age": 0,
+      "max_age": 120,
+      "gender": "All"
+    },
+    "specialties": [
+      "Nội khoa",
+      "Ngoại khoa",
+      "Sản phụ khoa",
+      "Nhi khoa",
+      "Cấp cứu"
+    ],
+    "strengths": [
+      "Khám chữa bệnh ban đầu",
+      "Cấp cứu",
+      "Phẫu thuật cơ bản",
+      "Chẩn đoán hình ảnh"
+    ],
+    "medical_keywords": [
+      "sốt",
+      "ho",
+      "đau bụng",
+      "chấn thương nhẹ",
+      "khám sức khỏe định kỳ",
+      "tiểu đường",
+      "huyết áp cao"
+    ]
+  },
+  {
+    "id": "5297e8bc",
+    "name": "Bệnh viện Đa khoa Bình Tân",
+    "address": "QJ73+86P, 809 HL2, Bình Trị Đông A, Bình Tân, Thành phố Hồ Chí Minh 100000, Việt Nam",
+    "phone": "+84 28 3754 2955",
+    "image": "https://lh3.googleusercontent.com/p/AF1QipNjwAO8wRBa1MTqjF-28n2177rmxWjURwxhCw5U=w1080-h1080-no",
+    "location": {
+      "lat": 10.7643601,
+      "lng": 106.6032103
+    },
+    "website": "http://www.bvbinhtan.vn/",
+    "tier": 2,
+    "demographics": {
+      "min_age": 0,
+      "max_age": 120,
+      "gender": "All"
+    },
+    "specialties": [
+      "Nội khoa",
+      "Ngoại khoa",
+      "Sản phụ khoa",
+      "Nhi khoa",
+      "Cấp cứu"
+    ],
+    "strengths": [
+      "Khám chữa bệnh ban đầu",
+      "Cấp cứu",
+      "Phẫu thuật cơ bản",
+      "Chẩn đoán hình ảnh"
+    ],
+    "medical_keywords": [
+      "sốt",
+      "ho",
+      "đau bụng",
+      "chấn thương nhẹ",
+      "khám sức khỏe định kỳ",
+      "tiểu đường",
+      "huyết áp cao"
+    ]
+  },
+  {
+    "id": "22b5cec6",
+    "name": "BỆNH VIỆN ĐA KHOA CỦ CHI",
+    "address": "1307 Tỉnh Lộ 7, ấp Chợ Cũ, Củ Chi, Thành phố Hồ Chí Minh 700000, Việt Nam",
+    "phone": "+84 837 946 443",
+    "image": "https://lh3.googleusercontent.com/gps-cs-s/AG0ilSzt2rgNlgp8J2-sGIexd0m5_Fo0fD3RyaZgNKfYdOTvMKSViW9IVhzAP-73-vAjt0M8Vo8xO9WUt4GwJgJKYzgK3q2sLvrfFELadN3I3g4kBWhRs_fAg_GH3z8HD5q9iFRyc8c=w1080-h1080-no",
+    "location": {
+      "lat": 11.0854068,
+      "lng": 106.50928449999999
+    },
+    "website": "http://benhvienhuyencuchi.com/",
+    "tier": 2,
+    "demographics": {
+      "min_age": 0,
+      "max_age": 120,
+      "gender": "All"
+    },
+    "specialties": [
+      "Nội khoa",
+      "Ngoại khoa",
+      "Sản phụ khoa",
+      "Nhi khoa",
+      "Cấp cứu"
+    ],
+    "strengths": [
+      "Khám chữa bệnh ban đầu",
+      "Cấp cứu",
+      "Phẫu thuật cơ bản",
+      "Chẩn đoán hình ảnh"
+    ],
+    "medical_keywords": [
+      "sốt",
+      "ho",
+      "đau bụng",
+      "chấn thương nhẹ",
+      "khám sức khỏe định kỳ",
+      "tiểu đường",
+      "huyết áp cao"
+    ]
+  },
+  {
+    "id": "ca33bc9f",
+    "name": "Bệnh viện Đa khoa Bình Chánh",
+    "address": "1 Đường Số 1, Khu trung tâm hành chính huyện, Bình Chánh, Thành phố Hồ Chí Minh, Việt Nam",
+    "phone": "+84 28 3760 2895",
+    "image": "https://lh3.googleusercontent.com/gps-cs-s/AG0ilSwHCv_2zrr9hCGIvIN4wa925VWHI3z0Qj-nquyIK9dgtokTkx_KymmwI8IEkEY-pBAmHGQKgA8pwYBkMnB796pMPDHeUi2AHhXWiFTQpjcmdu8zzt3l_-w1qwMYHun5vIwTNDp7=w1080-h1080-no",
+    "location": {
+      "lat": 10.6908806,
+      "lng": 106.58598269999999
+    },
+    "website": "http://binhchanhhospital.vn/",
+    "tier": 2,
+    "demographics": {
+      "min_age": 0,
+      "max_age": 120,
+      "gender": "All"
+    },
+    "specialties": [
+      "Nội khoa",
+      "Ngoại khoa",
+      "Sản phụ khoa",
+      "Nhi khoa",
+      "Cấp cứu"
+    ],
+    "strengths": [
+      "Khám chữa bệnh ban đầu",
+      "Cấp cứu",
+      "Phẫu thuật cơ bản",
+      "Chẩn đoán hình ảnh"
+    ],
+    "medical_keywords": [
+      "sốt",
+      "ho",
+      "đau bụng",
+      "chấn thương nhẹ",
+      "khám sức khỏe định kỳ",
+      "tiểu đường",
+      "huyết áp cao"
+    ]
+  },
+  {
+    "id": "3ab75aab",
+    "name": "Bệnh viện Đa khoa Nhà Bè",
+    "address": "281A Lê Văn Lương, Ấp 3, Nhà Bè, Thành phố Hồ Chí Minh 70000, Việt Nam",
+    "phone": "+84 28 3781 5558",
+    "image": "https://lh3.googleusercontent.com/gps-cs-s/AG0ilSzZ9fuIJv5NabQhIJjSt-Y7e7l6FNkHGqCimDrEv0inz_ZuNB_x3f-U_EL84hjsYD5e8YkaHXPCVQ3Hg-R_0P3NeN2rrdoMB9NqZ8m8GxF59ZD3HC7K_HPg5zyDqleab5k9BSKs1w=w1080-h1080-no",
+    "location": {
+      "lat": 10.7044461,
+      "lng": 106.704459
+    },
+    "website": "http://www.benhviennhabe.vn/",
+    "tier": 2,
+    "demographics": {
+      "min_age": 0,
+      "max_age": 120,
+      "gender": "All"
+    },
+    "specialties": [
+      "Nội khoa",
+      "Ngoại khoa",
+      "Sản phụ khoa",
+      "Nhi khoa",
+      "Cấp cứu"
+    ],
+    "strengths": [
+      "Khám chữa bệnh ban đầu",
+      "Cấp cứu",
+      "Phẫu thuật cơ bản",
+      "Chẩn đoán hình ảnh"
+    ],
+    "medical_keywords": [
+      "sốt",
+      "ho",
+      "đau bụng",
+      "chấn thương nhẹ",
+      "khám sức khỏe định kỳ",
+      "tiểu đường",
+      "huyết áp cao"
+    ]
+  },
+  {
+    "id": "705fc749",
+    "name": "Bệnh viện huyện Cần Giờ",
+    "address": "CW4P+3XP, TT. Cần Thạnh, Cần Giờ, Thành phố Hồ Chí Minh, Việt Nam",
+    "phone": "Không có",
+    "image": "Không có",
+    "location": {
+      "lat": 10.4052473,
+      "lng": 106.9372803
+    },
+    "website": "Không có",
+    "tier": 2,
+    "demographics": {
+      "min_age": 0,
+      "max_age": 120,
+      "gender": "All"
+    },
+    "specialties": [
+      "Nội khoa",
+      "Ngoại khoa",
+      "Sản phụ khoa",
+      "Nhi khoa",
+      "Cấp cứu"
+    ],
+    "strengths": [
+      "Khám chữa bệnh ban đầu",
+      "Cấp cứu",
+      "Phẫu thuật cơ bản",
+      "Chẩn đoán hình ảnh"
+    ],
+    "medical_keywords": [
+      "sốt",
+      "ho",
+      "đau bụng",
+      "chấn thương nhẹ",
+      "khám sức khỏe định kỳ",
+      "tiểu đường",
+      "huyết áp cao"
+    ]
+  },
+  {
+    "id": "fbfe497a",
+    "name": "Bệnh viện Đa khoa Khu vực Hóc Môn",
+    "address": "65/2B Bà Triệu, TT. Hóc Môn, Hóc Môn, Thành phố Hồ Chí Minh, Việt Nam",
+    "phone": "+84 28 3891 4208",
+    "image": "https://lh3.googleusercontent.com/gps-cs-s/AG0ilSwtgSF36aGNQ9TfIve7Hkmg_gGysMk2KKpSOOSL1CK9FZ5dQUWrdTJWsFQla0CdMll0WUG9iU-dDWI9e7vUUs2iaTxBNUrUTJ-BP-38K-7tk8amHOaRPwJl3V3YYEdsJlblV9ApxQ=w1080-h1080-no",
+    "location": {
+      "lat": 10.8825665,
+      "lng": 106.593391
+    },
+    "website": "http://bvdkhocmon.vn/",
+    "tier": 2,
+    "demographics": {
+      "min_age": 0,
+      "max_age": 120,
+      "gender": "All"
+    },
+    "specialties": [
+      "Nội khoa",
+      "Ngoại khoa",
+      "Sản phụ khoa",
+      "Nhi khoa",
+      "Cấp cứu"
+    ],
+    "strengths": [
+      "Khám chữa bệnh ban đầu",
+      "Cấp cứu",
+      "Phẫu thuật cơ bản",
+      "Chẩn đoán hình ảnh"
+    ],
+    "medical_keywords": [
+      "sốt",
+      "ho",
+      "đau bụng",
+      "chấn thương nhẹ",
+      "khám sức khỏe định kỳ",
+      "tiểu đường",
+      "huyết áp cao"
+    ]
+  },
+  {
+    "id": "45e717fc",
+    "name": "Bệnh viện Đa khoa khu vực Thủ Đức",
+    "address": "64 Lê Văn Chí, Phường Linh Trung, Thủ Đức, Thành phố Hồ Chí Minh, Việt Nam",
+    "phone": "+84 28 3514 1115",
+    "image": "https://lh3.googleusercontent.com/gps-cs-s/AG0ilSw5oE56dGs2Qutvj6aHpfhJv8A-nWmlq-n2cABT2OKruRiUZXsoNnOM9O7uJVuttcwQXwBe9Z7LYjPqlTamyIZu2jY0DIcvXzZmKey1Kh96VkyfVnC-xnKWT6bE2BZgKbPZmUY=w1080-h1080-no",
+    "location": {
+      "lat": 10.8614915,
+      "lng": 106.7804391
+    },
+    "website": "http://www.benhvienkhuvucthuduc.vn/",
+    "tier": 2,
+    "demographics": {
+      "min_age": 0,
+      "max_age": 120,
+      "gender": "All"
+    },
+    "specialties": [
+      "Nội khoa",
+      "Ngoại khoa",
+      "Sản phụ khoa",
+      "Nhi khoa",
+      "Cấp cứu"
+    ],
+    "strengths": [
+      "Khám chữa bệnh ban đầu",
+      "Cấp cứu",
+      "Phẫu thuật cơ bản",
+      "Chẩn đoán hình ảnh"
+    ],
+    "medical_keywords": [
+      "sốt",
+      "ho",
+      "đau bụng",
+      "chấn thương nhẹ",
+      "khám sức khỏe định kỳ",
+      "tiểu đường",
+      "huyết áp cao"
+    ]
+  },
+  {
+    "id": "6e369fa1",
+    "name": "Bệnh viện Đa khoa khu vực Củ Chi",
+    "address": "9A Nguyễn Văn Hoài, Ấp Bàu Tre 2, Củ Chi, Thành phố Hồ Chí Minh, Việt Nam",
+    "phone": "+84 28 3892 0583",
+    "image": "https://lh3.googleusercontent.com/gps-cs-s/AG0ilSxmOC2NVtqu429tYdPZKxo1MCw6Kml53fadsXayj-fHBSYthAh24HzNrvcPTZb9eN5KNyNYrwY1SxGB8d1fC2MGUI5Zcph-LAwHL3SBXUXa_4kwt6VMNCu0ORl7QGlzkXcmvMA=w1080-h1080-no",
+    "location": {
+      "lat": 10.9757269,
+      "lng": 106.4770729
+    },
+    "website": "http://bvdkkvcuchi.vn/",
+    "tier": 2,
+    "demographics": {
+      "min_age": 0,
+      "max_age": 100,
+      "gender": "All"
+    },
+    "specialties": [
+      "Nội tổng quát",
+      "Ngoại tổng quát",
+      "Cấp cứu",
+      "Sản phụ khoa",
+      "Nhi khoa"
+    ],
+    "strengths": [
+      "Chăm sóc sức khỏe cộng đồng",
+      "Cấp cứu ban đầu",
+      "Khám chữa bệnh đa khoa"
+    ],
+    "medical_keywords": [
+      "Đau bụng",
+      "Sốt",
+      "Ho",
+      "Chấn thương nhẹ",
+      "Khám sức khỏe định kỳ"
+    ]
+  },
+  {
+    "id": "d2d13275",
+    "name": "Bệnh Viện Đa Khoa Thủ Đức",
+    "address": "29 Phú Châu, Tam Phú, Thủ Đức, Thành phố Hồ Chí Minh 70000, Việt Nam",
+    "phone": "+84 966 331 010",
+    "image": "https://lh3.googleusercontent.com/gps-cs-s/AG0ilSxzo6jEfeCU9lI-5zH2Y56w8Q3KjoLTalqUwwNrFe7m2kK0wJIYbrwGpDj8IY_S8Far9GeG_eTBPbDUaYdlvIfqczLSoraU5rGy22kANTKYeoDOth2-u609yKBR4SvNfk_eJ7mG=w1080-h1080-no",
+    "location": {
+      "lat": 10.864435499999999,
+      "lng": 106.7456897
+    },
+    "website": "https://benhvienthuduc.vn/",
+    "tier": 2,
+    "demographics": {
+      "min_age": 0,
+      "max_age": 100,
+      "gender": "All"
+    },
+    "specialties": [
+      "Nội tổng quát",
+      "Ngoại tổng quát",
+      "Cấp cứu",
+      "Sản phụ khoa",
+      "Nhi khoa",
+      "Da liễu"
+    ],
+    "strengths": [
+      "Khám chữa bệnh ban đầu",
+      "Chăm sóc sức khỏe địa phương",
+      "Phẫu thuật cơ bản"
+    ],
+    "medical_keywords": [
+      "Cảm cúm",
+      "Viêm họng",
+      "Tiêu chảy",
+      "Đau khớp",
+      "Kiểm tra sức khỏe"
+    ]
+  },
+  {
+    "id": "a419f0a3",
+    "name": "Bệnh viện Quân Dân Y Miền Đông",
+    "address": "50 Đ. Lê Văn Việt, Hiệp Phú, Thủ Đức, Thành phố Hồ Chí Minh, Việt Nam",
+    "phone": "+84 28 3730 7125",
+    "image": "https://lh3.googleusercontent.com/gps-cs-s/AG0ilSyiqpPQn-VXBcvrbP8IJHhP9wuQPOsBr9NgaOa5tTE-zpupqdn9soTG4fbtUfuPZAlPHYJI9R-bHqa0mdgVTlLiiiqFK5uwnugf2OuMkoIigS6-0_81LmGGy6mUg0-HaY4b5_nUQQ=w1080-h1080-no",
+    "location": {
+      "lat": 10.8459577,
+      "lng": 106.7784882
+    },
+    "website": "http://benhvien7c.com/",
+    "tier": 2,
+    "demographics": {
+      "min_age": 0,
+      "max_age": 100,
+      "gender": "All"
+    },
+    "specialties": [
+      "Nội tổng quát",
+      "Ngoại tổng quát",
+      "Chấn thương chỉnh hình",
+      "Vật lý trị liệu",
+      "Phục hồi chức năng"
+    ],
+    "strengths": [
+      "Điều trị chấn thương",
+      "Phục hồi chức năng",
+      "Khám sức khỏe quân nhân và dân sự"
+    ],
+    "medical_keywords": [
+      "Gãy xương",
+      "Đau lưng",
+      "Tai nạn",
+      "Vết thương",
+      "Vật lý trị liệu"
+    ]
+  },
+  {
+    "id": "dfd3362c",
+    "name": "Bệnh viện Bưu Điện",
+    "address": "Bệnh viện Bưu Điện 2 Nguyễn Duy Hiệu, Thảo Điền, Thủ Đức, Thành phố Hồ Chí Minh, Việt Nam",
+    "phone": "+84 28 3519 0579",
+    "image": "https://lh3.googleusercontent.com/gps-cs-s/AG0ilSz5DRtZY0Rm6BwDut19OKSl93FWsFKD0cY3zKKEcg9tgL-OWdaGtPxPL155GZRf55QcviwN9S3h7MMfYtMv_yta3Iqv8DNzJWKL2HcE2XHYqMivr4dys9j6zgslBxpHsEpXaaGi=w1080-h1080-no",
+    "location": {
+      "lat": 10.802830499999999,
+      "lng": 106.7373461
+    },
+    "website": "https://bvdkbuudien.com.vn/",
+    "tier": 2,
+    "demographics": {
+      "min_age": 0,
+      "max_age": 100,
+      "gender": "All"
+    },
+    "specialties": [
+      "Nội tổng quát",
+      "Tiêu hóa",
+      "Tim mạch",
+      "Hô hấp",
+      "Ngoại tổng quát"
+    ],
+    "strengths": [
+      "Khám chữa bệnh nội khoa",
+      "Chẩn đoán hình ảnh",
+      "Xét nghiệm"
+    ],
+    "medical_keywords": [
+      "Đau dạ dày",
+      "Ho kéo dài",
+      "Khó thở",
+      "Huyết áp cao",
+      "Tiểu đường"
+    ]
+  },
+  {
+    "id": "98c6a6af",
+    "name": "Bệnh Viện Giao Thông Vận Tải TP.HCM - Phòng Khám Đa khoa 136",
+    "address": "136 Cách Mạng Tháng Tám, Phường 9, Quận 3, Thành phố Hồ Chí Minh, Việt Nam",
+    "phone": "+84 28 2253 5600",
+    "image": "https://lh3.googleusercontent.com/p/AF1QipPIoR0DTfdY1JNFBYEeW2Fz8Tul0juyytPg6nv_=w1080-h1080-no",
+    "location": {
+      "lat": 10.778798799999999,
+      "lng": 106.68001559999999
+    },
+    "website": "/url?q=https://bvgiaothongtphcm.vn/&opi=79508299&sa=U&ved=0ahUKEwiDyMXnt86RAxVTKFkFHbJCHIgQ61gIHigR&usg=AOvVaw3x6AXcuftgDZfPIiDUNln0",
+    "tier": 3,
+    "demographics": {
+      "min_age": 0,
+      "max_age": 100,
+      "gender": "All"
+    },
+    "specialties": [
+      "Khám tổng quát",
+      "Nội khoa",
+      "Tai Mũi Họng",
+      "Mắt",
+      "Răng Hàm Mặt"
+    ],
+    "strengths": [
+      "Khám sức khỏe định kỳ",
+      "Tư vấn sức khỏe",
+      "Điều trị bệnh thông thường"
+    ],
+    "medical_keywords": [
+      "Sổ mũi",
+      "Đau mắt",
+      "Đau răng",
+      "Kiểm tra sức khỏe lái xe",
+      "Tiêm chủng"
+    ]
+  },
+  {
+    "id": "1e3117cb",
+    "name": "Bệnh viện FV",
+    "address": "6 Nguyễn Lương Bằng, Phường Tân Mỹ, Quận 7, Thành phố Hồ Chí Minh 70000, Việt Nam",
+    "phone": "+84 28 3511 3333",
+    "image": "https://lh3.googleusercontent.com/p/AF1QipNVEBiONgeN5oBk_i7BDdzf58s7Hg4781AlGRfI=w1080-h1080-no",
+    "location": {
+      "lat": 10.7325029,
+      "lng": 106.7180068
+    },
+    "website": "https://www.fvhospital.com/",
+    "tier": 1,
+    "demographics": {
+      "min_age": 0,
+      "max_age": 100,
+      "gender": "All"
+    },
+    "specialties": [
+      "Ung bướu",
+      "Tim mạch",
+      "Phẫu thuật tổng quát",
+      "Sản phụ khoa",
+      "Nhi khoa",
+      "Chấn thương chỉnh hình",
+      "Thần kinh"
+    ],
+    "strengths": [
+      "Tiêu chuẩn quốc tế",
+      "Công nghệ hiện đại",
+      "Đội ngũ bác sĩ chuyên môn cao",
+      "Chăm sóc toàn diện"
+    ],
+    "medical_keywords": [
+      "Ung thư",
+      "Bệnh tim",
+      "Phẫu thuật phức tạp",
+      "Khám sức khỏe cao cấp",
+      "Y học thể thao"
+    ]
+  },
+  {
+    "id": "24b7df36",
+    "name": "Bệnh viện Đa khoa Quốc tế Vinmec Central Park",
+    "address": "208 Nguyễn Hữu Cảnh, Vinhomes Tân Cảng, Bình Thạnh, Thành phố Hồ Chí Minh 700000, Việt Nam",
+    "phone": "+84 28 3622 1166",
+    "image": "https://lh3.googleusercontent.com/p/AF1QipPpsWyD2gkMktwLEty1zJjTuTkWHkpToRU0itKo=w1080-h1080-no",
+    "location": {
+      "lat": 10.7939771,
+      "lng": 106.72034819999999
+    },
+    "website": "https://www.vinmec.com/vie/co-so-y-te/benh-vien-da-khoa-quoc-te-vinmec-central-park-10890-vi-hoi-suc-cap-cuu",
+    "tier": 1,
+    "demographics": {
+      "min_age": 0,
+      "max_age": 100,
+      "gender": "All"
+    },
+    "specialties": [
+      "Ung bướu",
+      "Tim mạch",
+      "Hỗ trợ sinh sản (IVF)",
+      "Nhi khoa",
+      "Sản phụ khoa",
+      "Phẫu thuật robot"
+    ],
+    "strengths": [
+      "Cơ sở vật chất hiện đại",
+      "Dịch vụ cao cấp",
+      "Công nghệ tiên tiến",
+      "Phác đồ điều trị cá nhân hóa"
+    ],
+    "medical_keywords": [
+      "Vô sinh",
+      "Bệnh lý tim mạch",
+      "Ung thư",
+      "Khám sức khỏe tổng quát",
+      "Phẫu thuật nội soi"
+    ]
+  },
+  {
+    "id": "cb1f4fa5",
+    "name": "Bệnh viện Đa khoa Quốc tế Hạnh Phúc",
+    "address": "18 Đại lộ Bình Dương, Binh Hoà, Thuận An, Bình Dương, Việt Nam",
+    "phone": "+84 1900 6765",
+    "image": "https://lh3.googleusercontent.com/p/AF1QipO6xD7_H-yQOQ1i5khDH4PvyVlSBuC-7zEc7NMR=w1080-h1080-no",
+    "location": {
+      "lat": 10.868258899999999,
+      "lng": 106.71446309999999
+    },
+    "website": "https://www.hanhphuchospital.com/",
+    "tier": 1,
+    "demographics": {
+      "min_age": 0,
+      "max_age": 100,
+      "gender": "All"
+    },
+    "specialties": [
+      "Sản phụ khoa",
+      "Nhi khoa",
+      "Sơ sinh",
+      "Hỗ trợ sinh sản (IVF)",
+      "Khám tiền sản"
+    ],
+    "strengths": [
+      "Chăm sóc mẹ và bé",
+      "Điều trị vô sinh hiếm muộn",
+      "Phòng sinh hiện đại",
+      "Chăm sóc sơ sinh chuyên sâu"
+    ],
+    "medical_keywords": [
+      "Mang thai",
+      "Sinh con",
+      "Vô sinh",
+      "Khám thai",
+      "Bệnh trẻ em",
+      "Tiêm chủng cho bé"
+    ]
+  },
+  {
+    "id": "2a6de565",
+    "name": "Bệnh viện Đa Khoa Hoàn Mỹ Sài Gòn",
+    "address": "60-60A Phan Xích Long, Phường 1, Phú Nhuận, Thành phố Hồ Chí Minh, Việt Nam",
+    "phone": "+84 28 3990 2468",
+    "image": "https://lh3.googleusercontent.com/gps-cs-s/AG0ilSygRR3tYbBl4tPHO-4qYoqfryIlm03e11G0dTpLLesLZndWzNdG8TWw0sOlD4N2RLq6hsrg_CdiVo9pMv26-UXjWrJ8mgRKtk-vJbRgbDyN8_thito7WH7pcEtUekY0LrI16HGe=w1080-h1080-no",
+    "location": {
+      "lat": 10.800128599999999,
+      "lng": 106.684241
+    },
+    "website": "https://hoanmy.com/saigon/",
+    "tier": 1,
+    "demographics": {
+      "min_age": 0,
+      "max_age": 100,
+      "gender": "All"
+    },
+    "specialties": [
+      "Nội tổng quát",
+      "Ngoại tổng quát",
+      "Tim mạch",
+      "Tiêu hóa",
+      "Chấn thương chỉnh hình",
+      "Thận tiết niệu"
+    ],
+    "strengths": [
+      "Dịch vụ y tế chất lượng cao",
+      "Đa dạng chuyên khoa",
+      "Chẩn đoán chính xác",
+      "Phẫu thuật an toàn"
+    ],
+    "medical_keywords": [
+      "Đau ngực",
+      "Sỏi thận",
+      "Viêm ruột thừa",
+      "Thoái hóa khớp",
+      "Khám sức khỏe định kỳ"
+    ]
+  },
+  {
+    "id": "9f2a25d2",
+    "name": "Bệnh viện Đa khoa Tâm Anh",
+    "address": "RM38+5R4, 2B Đ. Phổ Quang, Phường 2, Tân Bình, Thành phố Hồ Chí Minh 700000, Việt Nam",
+    "phone": "+84 28 7102 6789",
+    "image": "https://lh3.googleusercontent.com/gps-cs-s/AG0ilSztogj3Au56Lk-8B52byceQJQcZYnmFqn6WQPlRInxvAfJuDkLgkmoIgNeJ2xqwD2tXhxiZNjNu1iF504ThaYkHluWZf7lu8PTu9dCxLb7XV8B6efFelvlFERd2z6RkiCPeY7oa6Q=w1080-h1080-no",
+    "location": {
+      "lat": 10.802484999999999,
+      "lng": 106.6660436
+    },
+    "website": "https://tamanhhospital.vn/",
+    "tier": 1,
+    "demographics": {
+      "min_age": 0,
+      "max_age": 100,
+      "gender": "All"
+    },
+    "specialties": [
+      "Cơ xương khớp",
+      "Nam học",
+      "Sản phụ khoa",
+      "Hỗ trợ sinh sản (IVF)",
+      "Thần kinh",
+      "Tiêu hóa - Gan mật"
+    ],
+    "strengths": [
+      "Trung tâm chuyên sâu",
+      "Công nghệ cao",
+      "Đội ngũ giáo sư, tiến sĩ",
+      "Phác đồ điều trị tiên tiến"
+    ],
+    "medical_keywords": [
+      "Đau vai gáy",
+      "Vô sinh nam",
+      "Hiếm muộn",
+      "U xơ tử cung",
+      "Đột quỵ",
+      "Viêm gan"
+    ]
+  },
+  {
+    "id": "40bc4a37",
+    "name": "Bệnh viện đa khoa Xuyên Á",
+    "address": "42 QL22, ấp Chợ, Củ Chi, Thành phố Hồ Chí Minh, Việt Nam",
+    "phone": "+84 1800 9075",
+    "image": "https://lh3.googleusercontent.com/p/AF1QipNfNPtHvONrTPu4LIFqeTpHhY2A8DJtKJizQjZq=w1080-h1080-no",
+    "location": {
+      "lat": 10.928019599999999,
+      "lng": 106.55815919999999
+    },
+    "website": "http://www.bvxuyena.com.vn/",
+    "tier": 2,
+    "demographics": {
+      "min_age": 0,
+      "max_age": 120,
+      "gender": "All"
+    },
+    "specialties": [
+      "Nội tổng quát",
+      "Ngoại tổng quát",
+      "Sản phụ khoa",
+      "Nhi khoa",
+      "Cấp cứu"
+    ],
+    "strengths": [
+      "Khám chữa bệnh đa khoa",
+      "Cấp cứu 24/7",
+      "Phẫu thuật tổng quát"
+    ],
+    "medical_keywords": [
+      "khám tổng quát",
+      "cấp cứu",
+      "bệnh thông thường",
+      "phẫu thuật"
+    ]
+  },
+  {
+    "id": "9bfdfc9e",
+    "name": "Bệnh Viện Đa Khoa Quốc Tế Nam Sài Gòn",
+    "address": "88 Đường Số 8, Khu dân cư Trung Sơn, Bình Chánh, Thành phố Hồ Chí Minh, Việt Nam",
+    "phone": "+84 1800 6767",
+    "image": "https://lh3.googleusercontent.com/p/AF1QipPbSxA0z7jd0FbR8OQoncsSopFNtW6_HXe5QpRG=w1080-h1080-no",
+    "location": {
+      "lat": 10.735866099999999,
+      "lng": 106.69086709999999
+    },
+    "website": "/url?q=https://benhviennamsaigon.com/&opi=79508299&sa=U&ved=0ahUKEwje_tX2t86RAxUaQzABHa1lFYQQ61gIFygS&usg=AOvVaw2pl_Wmrh87xVub2zkpemfO",
+    "tier": 2,
+    "demographics": {
+      "min_age": 0,
+      "max_age": 120,
+      "gender": "All"
+    },
+    "specialties": [
+      "Nội tổng quát",
+      "Ngoại tổng quát",
+      "Sản phụ khoa",
+      "Nhi khoa",
+      "Khám sức khỏe tổng quát"
+    ],
+    "strengths": [
+      "Dịch vụ y tế quốc tế",
+      "Trang thiết bị hiện đại",
+      "Chăm sóc toàn diện"
+    ],
+    "medical_keywords": [
+      "khám tổng quát",
+      "cấp cứu",
+      "bệnh thông thường",
+      "tiêu chuẩn quốc tế"
+    ]
+  },
+  {
+    "id": "a449489d",
+    "name": "Bệnh viện Quốc tế City",
+    "address": "3 Đường Số 17A, Bình Trị Đông B, Bình Tân, Thành phố Hồ Chí Minh 700000, Việt Nam",
+    "phone": "+84 1900 8146",
+    "image": "https://lh3.googleusercontent.com/p/AF1QipPj6Ygs46jmUXWem1gg3-WTxsH3jKpyZjUIrYDj=w1080-h1080-no",
+    "location": {
+      "lat": 10.7410166,
+      "lng": 106.60912499999999
+    },
+    "website": "https://cih.com.vn/",
+    "tier": 2,
+    "demographics": {
+      "min_age": 0,
+      "max_age": 120,
+      "gender": "All"
+    },
+    "specialties": [
+      "Nội tổng quát",
+      "Ngoại tổng quát",
+      "Sản phụ khoa",
+      "Nhi khoa",
+      "Chẩn đoán hình ảnh"
+    ],
+    "strengths": [
+      "Cơ sở vật chất hiện đại",
+      "Đội ngũ y bác sĩ chuyên môn cao",
+      "Dịch vụ chăm sóc khách hàng"
+    ],
+    "medical_keywords": [
+      "khám tổng quát",
+      "cấp cứu",
+      "bệnh thông thường",
+      "tiêu chuẩn quốc tế",
+      "chẩn đoán hình ảnh"
+    ]
+  },
+  {
+    "id": "8c15c341",
+    "name": "Bệnh viện An Sinh",
+    "address": "10 Đ. Trần Huy Liệu, P, Phú Nhuận, Thành phố Hồ Chí Minh, Việt Nam",
+    "phone": "+84 28 3845 7777",
+    "image": "https://lh3.googleusercontent.com/p/AF1QipNV00X9UdiXOyeFR-aC_qIWF-0NggmkTxXfjgVG=w1080-h1080-no",
+    "location": {
+      "lat": 10.7913068,
+      "lng": 106.6784508
+    },
+    "website": "http://www.ansinh.com.vn/",
+    "tier": 2,
+    "demographics": {
+      "min_age": 0,
+      "max_age": 120,
+      "gender": "All"
+    },
+    "specialties": [
+      "Nội tổng quát",
+      "Ngoại tổng quát",
+      "Sản phụ khoa",
+      "Nhi khoa",
+      "Cấp cứu"
+    ],
+    "strengths": [
+      "Chăm sóc sức khỏe gia đình",
+      "Khám chữa bệnh đa khoa",
+      "Dịch vụ y tế thân thiện"
+    ],
+    "medical_keywords": [
+      "khám tổng quát",
+      "cấp cứu",
+      "bệnh thông thường"
+    ]
+  },
+  {
+    "id": "b748905f",
+    "name": "Bệnh viện Triều An",
+    "address": "425 Đ. Kinh Dương Vương, An Lạc, Bình Tân, Thành phố Hồ Chí Minh 71906, Việt Nam",
+    "phone": "+84 28 3750 8888",
+    "image": "https://lh3.googleusercontent.com/p/AF1QipO-1sUgdqQg9DupX5w8y6DvuR45qWYhNEiV8y8J=w1080-h1080-no",
+    "location": {
+      "lat": 10.7390823,
+      "lng": 106.61715729999999
+    },
+    "website": "https://trieuanhospital.vn/",
+    "tier": 2,
+    "demographics": {
+      "min_age": 0,
+      "max_age": 120,
+      "gender": "All"
+    },
+    "specialties": [
+      "Nội tổng quát",
+      "Ngoại tổng quát",
+      "Sản phụ khoa",
+      "Nhi khoa",
+      "Tim mạch",
+      "Tiêu hóa"
+    ],
+    "strengths": [
+      "Bệnh viện đa khoa lớn",
+      "Cấp cứu 24/7",
+      "Phẫu thuật chuyên sâu"
+    ],
+    "medical_keywords": [
+      "khám tổng quát",
+      "cấp cứu",
+      "bệnh thông thường",
+      "phẫu thuật"
+    ]
+  },
+  {
+    "id": "b58d74e6",
+    "name": "Bệnh viện Đa khoa Mỹ Đức",
+    "address": "4 Đ. Núi Thành, Phường Tân Bình, Tân Bình, Thành phố Hồ Chí Minh 70000, Việt Nam",
+    "phone": "+84 28 7308 5885",
+    "image": "https://lh3.googleusercontent.com/gps-cs-s/AG0ilSxuTBTXc9AJkGECp99qisIPCQUBiaJ2SmV5oIKMYHdMniGiuX-kdZxVV2cSs1mCiXMYoS4M7DqCjZrF0gD550pu3cYP97UEHKphreIjSnBDaUFqfZ0SRm8_zY6OGIA_8KYDmYA=w1080-h1080-no",
+    "location": {
+      "lat": 10.7999169,
+      "lng": 106.6415827
+    },
+    "website": "http://myduchospital.vn/",
+    "tier": 2,
+    "demographics": {
+      "min_age": 0,
+      "max_age": 120,
+      "gender": "All"
+    },
+    "specialties": [
+      "Sản phụ khoa",
+      "Hiếm muộn",
+      "Nhi sơ sinh",
+      "Khám tổng quát"
+    ],
+    "strengths": [
+      "Chuyên sâu về sản phụ khoa",
+      "Điều trị vô sinh hiếm muộn",
+      "Chăm sóc thai sản"
+    ],
+    "medical_keywords": [
+      "mang thai",
+      "sinh con",
+      "vô sinh",
+      "hiếm muộn",
+      "phụ khoa",
+      "khám thai"
+    ]
+  },
+  {
+    "id": "5eee5e6f",
+    "name": "Bệnh viện phụ sản Quốc Tế Sài Gòn",
+    "address": "63 Bùi Thị Xuân, Phường Phạm Ngũ Lão, Quận 1, Thành phố Hồ Chí Minh 700000, Việt Nam",
+    "phone": "+84 899 909 268",
+    "image": "https://lh3.googleusercontent.com/p/AF1QipNHiuWP7s3BBj68jehR_F7LYZaa26_frAvm07zV=w1080-h1080-no",
+    "location": {
+      "lat": 10.7697542,
+      "lng": 106.68860289999999
+    },
+    "website": "/url?q=https://www.sihospital.com.vn/&opi=79508299&sa=U&ved=0ahUKEwibsrb_t86RAxX_BEQIHZ0QMvUQ61gIFygS&usg=AOvVaw1L-_gtqpFMcPk0o5dFbc65",
+    "tier": 2,
+    "demographics": {
+      "min_age": 0,
+      "max_age": 60,
+      "gender": "Female"
+    },
+    "specialties": [
+      "Sản khoa",
+      "Phụ khoa",
+      "Nhi sơ sinh",
+      "Kế hoạch hóa gia đình"
+    ],
+    "strengths": [
+      "Chăm sóc thai sản chất lượng cao",
+      "Dịch vụ sinh nở quốc tế",
+      "Khám và điều trị bệnh phụ khoa"
+    ],
+    "medical_keywords": [
+      "mang thai",
+      "sinh con",
+      "khám thai",
+      "phụ khoa",
+      "vô sinh",
+      "hiếm muộn",
+      "sức khỏe sinh sản"
+    ]
+  },
+  {
+    "id": "a6df8434",
+    "name": "Mắt Sài Gòn Lê Thị Riêng",
+    "address": "100 Lê Thị Riêng, Phường Bến Thành, Quận 1, Thành phố Hồ Chí Minh 700000, Việt Nam",
+    "phone": "+84 949 678 080",
+    "image": "https://lh3.googleusercontent.com/gps-cs-s/AG0ilSwmK7t6SfflcGpzdxdFRq3zABoJNo-ktgvTiZsXccgW-48_gixkPbEf5yERpOh_ZIv9eNEOKrWiu0INNtdTXKOS0Cmfvvm1FRGjPwpIuPNhYhGodvUTv0RzQDnDEZGd3m9eZz_E=w1080-h1080-no",
+    "location": {
+      "lat": 10.7713042,
+      "lng": 106.6909857
+    },
+    "website": "/url?q=https://matsaigonlethirieng.com/&opi=79508299&sa=U&ved=0ahUKEwiCsLK8uc6RAxWZ1fACHfINK-0Q61gIFygS&usg=AOvVaw0B4BhegKy9XrtC9Wu5zPL6",
+    "tier": 2,
+    "demographics": {
+      "min_age": 0,
+      "max_age": 120,
+      "gender": "All"
+    },
+    "specialties": [
+      "Nhãn khoa",
+      "Phẫu thuật mắt",
+      "Khúc xạ"
+    ],
+    "strengths": [
+      "Khám và điều trị các bệnh về mắt",
+      "Phẫu thuật Lasik",
+      "Phẫu thuật đục thủy tinh thể"
+    ],
+    "medical_keywords": [
+      "mắt",
+      "khám mắt",
+      "cận thị",
+      "viễn thị",
+      "loạn thị",
+      "đục thủy tinh thể",
+      "phẫu thuật LASIK"
+    ]
+  },
+  {
+    "id": "9f1eaba5",
+    "name": "Mắt Sài Gòn Cách Mạng Tháng Tám",
+    "address": "473 Cách Mạng Tháng Tám, Phường Hòa Hưng, Quận 10, Thành phố Hồ Chí Minh 700000, Việt Nam",
+    "phone": "+84 966 231 010",
+    "image": "https://lh3.googleusercontent.com/p/AF1QipOWhQWDdjq8fJ9pVE-dRWZWIPQLLVYsheMzaYYI=w1080-h1080-no",
+    "location": {
+      "lat": 10.781686599999999,
+      "lng": 106.6738809
+    },
+    "website": "https://dakhoamatsaigon.com/",
+    "tier": 2,
+    "demographics": {
+      "min_age": 0,
+      "max_age": 120,
+      "gender": "All"
+    },
+    "specialties": [
+      "Nhãn khoa",
+      "Phẫu thuật mắt",
+      "Khúc xạ"
+    ],
+    "strengths": [
+      "Khám và điều trị các bệnh về mắt",
+      "Phẫu thuật Lasik",
+      "Phẫu thuật đục thủy tinh thể"
+    ],
+    "medical_keywords": [
+      "mắt",
+      "khám mắt",
+      "cận thị",
+      "viễn thị",
+      "loạn thị",
+      "đục thủy tinh thể",
+      "phẫu thuật LASIK"
+    ]
+  },
+  {
+    "id": "7d9da2bf",
+    "name": "Bệnh viện Răng Hàm Mặt Trung ương Thành phố Hồ Chí Minh",
+    "address": "201A Nguyễn Chí Thanh, Phường 12, Quận 5, Thành phố Hồ Chí Minh 70000, Việt Nam",
+    "phone": "+84 28 3855 6732",
+    "image": "https://lh3.googleusercontent.com/p/AF1QipMimm_pYcBY13I9eauM8Kb6f4T5nPSyJNlWkkLv=w1080-h1080-no",
+    "location": {
+      "lat": 10.7579557,
+      "lng": 106.6605166
+    },
+    "website": "http://benhvienranghammat.vn/",
+    "tier": 1,
+    "demographics": {
+      "min_age": 0,
+      "max_age": 120,
+      "gender": "All"
+    },
+    "specialties": [
+      "Răng Hàm Mặt",
+      "Nha khoa tổng quát",
+      "Nắn chỉnh răng",
+      "Cấy ghép Implant",
+      "Phẫu thuật hàm mặt"
+    ],
+    "strengths": [
+      "Chuyên khoa Răng Hàm Mặt hàng đầu",
+      "Điều trị phức tạp về răng hàm mặt",
+      "Nghiên cứu và đào tạo"
+    ],
+    "medical_keywords": [
+      "răng",
+      "miệng",
+      "nướu",
+      "sâu răng",
+      "nhổ răng",
+      "trồng răng",
+      "niềng răng",
+      "chỉnh nha",
+      "viêm nướu",
+      "hôi miệng"
+    ]
+  },
+  {
+    "id": "c9d03676",
+    "name": "Bệnh Viện JW Hàn Quốc",
+    "address": "50 Tôn Thất Tùng, Phường Phạm Ngũ Lão, Quận 1, Thành phố Hồ Chí Minh 700000, Việt Nam",
+    "phone": "+84 968 681 111",
+    "image": "https://lh3.googleusercontent.com/p/AF1QipPs8q9-LqU6XQtQQfocNVfXe9OfGq1xsOH0dKER=w1080-h1080-no",
+    "location": {
+      "lat": 10.7695502,
+      "lng": 106.6891521
+    },
+    "website": "https://benhvienjw.vn/",
+    "tier": 2,
+    "demographics": {
+      "min_age": 18,
+      "max_age": 65,
+      "gender": "All"
+    },
+    "specialties": [
+      "Thẩm mỹ",
+      "Phẫu thuật thẩm mỹ",
+      "Da liễu thẩm mỹ",
+      "Nha khoa thẩm mỹ"
+    ],
+    "strengths": [
+      "Phẫu thuật thẩm mỹ",
+      "Nâng mũi",
+      "Cắt mí",
+      "Hút mỡ",
+      "Nâng ngực",
+      "Chăm sóc da",
+      "Nha khoa thẩm mỹ"
+    ],
+    "medical_keywords": [
+      "Làm đẹp",
+      "Thẩm mỹ",
+      "Phẫu thuật",
+      "Da",
+      "Răng",
+      "Mũi",
+      "Mắt",
+      "Ngực",
+      "Hút mỡ",
+      "Trẻ hóa"
+    ]
+  },
+  {
+    "id": "e2d37178",
+    "name": "Bệnh Viện Thẩm Mỹ Kangnam Hàn Quốc",
+    "address": "666 Cách Mạng Tháng Tám, Phường 11, Tân Bình, Thành phố Hồ Chí Minh, Việt Nam",
+    "phone": "+84 968 999 777",
+    "image": "https://lh3.googleusercontent.com/gps-cs-s/AG0ilSxi-TPZx8n8iJUDpANzjd5H4MraucF0Vrh75nZcm0OoJyM_ShnuaKC5BQUCVsbwAUndHmUHMoFMaTQrI8ZiyHd69ri_UwwUWAi8Ybq02ASbq7eFv0DV88DAOAe_A0fsZ2GaWRBxzQ=w1080-h1080-no",
+    "location": {
+      "lat": 10.7872112,
+      "lng": 106.66432119999999
+    },
+    "website": "https://benhvienthammykangnam.com.vn/uu-dai/",
+    "tier": 2,
+    "demographics": {
+      "min_age": 18,
+      "max_age": 65,
+      "gender": "All"
+    },
+    "specialties": [
+      "Thẩm mỹ",
+      "Phẫu thuật thẩm mỹ",
+      "Da liễu thẩm mỹ",
+      "Nha khoa thẩm mỹ"
+    ],
+    "strengths": [
+      "Phẫu thuật thẩm mỹ",
+      "Nâng mũi",
+      "Cắt mí",
+      "Hút mỡ",
+      "Nâng ngực",
+      "Chăm sóc da",
+      "Nha khoa thẩm mỹ",
+      "Công nghệ Hàn Quốc"
+    ],
+    "medical_keywords": [
+      "Làm đẹp",
+      "Thẩm mỹ",
+      "Phẫu thuật",
+      "Da",
+      "Răng",
+      "Mũi",
+      "Mắt",
+      "Ngực",
+      "Hút mỡ",
+      "Trẻ hóa"
+    ]
+  },
+  {
+    "id": "60340c42",
+    "name": "Bệnh viện STO Phương Đông",
+    "address": "79 Đ. Thành Thái, Phường Diên Hồng, Quận 10, Thành phố Hồ Chí Minh, Việt Nam",
+    "phone": "+84 28 3868 6386",
+    "image": "https://lh3.googleusercontent.com/gps-cs-s/AG0ilSw-qyEvj9LhWU_xcFQ1GxuUgJlNa6wOZx8cFYFLSeS5hX3a2-qKSDW9z0dJ_BY4Hw_h9siJV3rcaXjGQLqzbt_LVYBtoVAJJu-ZmXdcVwQkuKEClx3pQAfeOpFMaT3Cjgy56c8-=w1080-h1080-no",
+    "location": {
+      "lat": 10.7731926,
+      "lng": 106.6644797
+    },
+    "website": "Không có",
+    "tier": 2,
+    "demographics": {
+      "min_age": 0,
+      "max_age": 100,
+      "gender": "All"
+    },
+    "specialties": [
+      "Chấn thương chỉnh hình",
+      "Cơ xương khớp",
+      "Phẫu thuật cột sống",
+      "Phục hồi chức năng"
+    ],
+    "strengths": [
+      "Phẫu thuật xương khớp",
+      "Điều trị chấn thương",
+      "Thay khớp",
+      "Nội soi khớp",
+      "Vật lý trị liệu"
+    ],
+    "medical_keywords": [
+      "Xương khớp",
+      "Chấn thương",
+      "Cột sống",
+      "Đau khớp",
+      "Gãy xương",
+      "Thoái hóa",
+      "Phục hồi chức năng"
+    ]
+  },
+  {
+    "id": "deb1d98e",
+    "name": "Bệnh viện Đa Khoa Hồng Đức II",
+    "address": "259 An Phú Đông 3, An Phú Đông, Quận 12, Thành phố Hồ Chí Minh, Việt Nam",
+    "phone": "+84 28 8886 9999",
+    "image": "https://lh3.googleusercontent.com/gps-cs-s/AG0ilSyr6HVf8zY3HnINHs6njqGGtQhRIBhi8a6JiXUA7jmKzlG5HZHc0qEC8w4tW6LsfRbU1YVe54hqSnfld8Nlfsfs4aciKAaodq1mUP4qBDc875P80oqT5pfGnYZDGBo9A1uu7ipalQ=w1080-h1080-no",
+    "location": {
+      "lat": 10.8533049,
+      "lng": 106.70429279999999
+    },
+    "website": "https://bvhongduc.vn/",
+    "tier": 2,
+    "demographics": {
+      "min_age": 0,
+      "max_age": 100,
+      "gender": "All"
+    },
+    "specialties": [
+      "Nội tổng quát",
+      "Ngoại tổng quát",
+      "Sản phụ khoa",
+      "Nhi khoa",
+      "Cấp cứu",
+      "Khám sức khỏe tổng quát"
+    ],
+    "strengths": [
+      "Khám chữa bệnh đa khoa",
+      "Cấp cứu 24/7",
+      "Chẩn đoán hình ảnh",
+      "Xét nghiệm"
+    ],
+    "medical_keywords": [
+      "Đau bụng",
+      "Sốt",
+      "Ho",
+      "Cảm cúm",
+      "Khám tổng quát",
+      "Tiêu hóa",
+      "Hô hấp",
+      "Tim mạch",
+      "Sản khoa",
+      "Nhi khoa"
+    ]
+  },
+  {
+    "id": "753302da",
+    "name": "Bệnh Viện Đa Khoa Hồng Đức III",
+    "address": "32/2 Đ. Thống Nhất, Phường 10, Gò Vấp, Thành phố Hồ Chí Minh, Việt Nam",
+    "phone": "+84 28 3996 9999",
+    "image": "https://lh3.googleusercontent.com/gps-cs-s/AG0ilSzUyVYWVNPJm4O0em6MS2G_i5R_fcZUu_hhvY3O59AjEJJQCSuaKPd_8Z76ajwUj-JRI0EFVzW18tyw4ODhntp3YrPh3pNc-t4UQSzM-rbA_uVRq4blef1WCNsspbUCxqAMKhdT=w1080-h1080-no",
+    "location": {
+      "lat": 10.833058999999999,
+      "lng": 106.66453709999999
+    },
+    "website": "http://www.hongduchospital.vn/",
+    "tier": 2,
+    "demographics": {
+      "min_age": 0,
+      "max_age": 100,
+      "gender": "All"
+    },
+    "specialties": [
+      "Nội tổng quát",
+      "Ngoại tổng quát",
+      "Sản phụ khoa",
+      "Nhi khoa",
+      "Cấp cứu",
+      "Khám sức khỏe tổng quát"
+    ],
+    "strengths": [
+      "Khám chữa bệnh đa khoa",
+      "Cấp cứu 24/7",
+      "Chẩn đoán hình ảnh",
+      "Xét nghiệm"
+    ],
+    "medical_keywords": [
+      "Đau bụng",
+      "Sốt",
+      "Ho",
+      "Cảm cúm",
+      "Khám tổng quát",
+      "Tiêu hóa",
+      "Hô hấp",
+      "Tim mạch",
+      "Sản khoa",
+      "Nhi khoa"
+    ]
+  },
+  {
+    "id": "0e4aa854",
+    "name": "Bệnh viện Đa khoa Vạn Hạnh",
+    "address": "B1-B3-B5, Hẻm 781 Lê Hồng Phong, Phường 12, Quận 10, Thành phố Hồ Chí Minh, Việt Nam",
+    "phone": "+84 28 3863 2553",
+    "image": "https://lh3.googleusercontent.com/p/AF1QipMze-F7bYrl0pxufFNxhYfOHudXNEtSwpFlHQkt=w1080-h1080-no",
+    "location": {
+      "lat": 10.771797099999999,
+      "lng": 106.6713769
+    },
+    "website": "http://benhvienvanhanh.vn/",
+    "tier": 2,
+    "demographics": {
+      "min_age": 0,
+      "max_age": 100,
+      "gender": "All"
+    },
+    "specialties": [
+      "Nội tổng quát",
+      "Ngoại tổng quát",
+      "Sản phụ khoa",
+      "Nhi khoa",
+      "Cấp cứu",
+      "Khám sức khỏe tổng quát",
+      "Ung bướu",
+      "Tim mạch"
+    ],
+    "strengths": [
+      "Khám chữa bệnh đa khoa",
+      "Cấp cứu 24/7",
+      "Chẩn đoán hình ảnh",
+      "Xét nghiệm",
+      "Phẫu thuật"
+    ],
+    "medical_keywords": [
+      "Đau bụng",
+      "Sốt",
+      "Ho",
+      "Cảm cúm",
+      "Khám tổng quát",
+      "Tiêu hóa",
+      "Hô hấp",
+      "Tim mạch",
+      "Ung thư",
+      "Sản khoa",
+      "Nhi khoa"
+    ]
+  }
+]

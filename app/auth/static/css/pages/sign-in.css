@@ -1,0 +1,37 @@
+/* CONTAINER SIGN IN (Flexbox Center) */
+.signin-card {
+  width: 100%;
+  max-width: 400px;
+  background: var(--bg-card);
+  border-radius: var(--radius-card);
+  padding: 40px 32px;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.signin-logo {
+  width: 64px;
+  margin: 0 auto 20px auto;
+  display: block;
+}
+
+.signin-title {
+  font-size: 24px;
+  font-weight: 800;
+  color: var(--text-main);
+  margin-bottom: 28px;
+  letter-spacing: -0.5px;
+}
+
+.forgot-link {
+  font-size: 12px;
+  color: var(--brand);
+  font-weight: 600;
+}
+.forgot-link:hover {
+  text-decoration: underline;
+  color: var(--brand-dark);
+}

@@ -48,7 +48,19 @@ def reset_pass_info_required(function):
         return function(*args, **kwargs)
     return wrapper
 
+def clear_auth_session(function):
+    @wraps(function)
+    def wrapper(*args, **kwargs):
+        session.pop("verification", None)
+        session.pop("verification_last_sent", None)
+        session.pop('signup_info', None) 
+        session.pop('google_signup_data', None) 
+        session.pop("reset_pass_info", None)
+        return function(*args, **kwargs)
+    return wrapper
+
 def login_user_session(user: User):
+    session.permanent = True
     session["user_id"] = user.id
     session["fullname"] = user.fullname
     session["avatar"] = user.avatar_url
@@ -59,10 +71,6 @@ def logout_user_session():
     session.pop("fullname", None)
     session.pop("avatar", None)
     session.pop("user_email", None)
-
-def get_user_by_email(email: str) -> User | None:
-    stmt = select(User).where(User.email == email)
-    return db.session.scalars(stmt).first()
 
 def get_user_by_google_sub_or_email(google_sub: str, email: str) -> User | None:
     stmt = select(User).where(
@@ -120,9 +128,3 @@ def get_session_data(session_key: str) -> dict | None:
     
     return session_data
 
-def clear_signup_signin_session():
-    session.pop("verification", None)
-    session.pop("verification_last_sent", None)
-    session.pop('signup_info', None) 
-    session.pop('google_signup_data', None) 
-    session.pop("reset_pass_info", None)

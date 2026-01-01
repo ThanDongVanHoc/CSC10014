@@ -1,107 +1,640 @@
-{% extends "layout.html" %} 
+{% extends "layout.html" %}
+
+{% block title %}EmergencyCare HCMC - Medical Support for Foreigners{% endblock %}
+
 {% block css %}
-<link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
+<!-- Tailwind CSS (CDN for Development - In production, compile this) -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,typography,aspect-ratio,container-queries"></script>
+<!-- Google Fonts -->
+<link
+  href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap"
+  rel="stylesheet" />
+<!-- Icons -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+  rel="stylesheet" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+<script>
+  tailwind.config = {
+    darkMode: "class",
+    theme: {
+      extend: {
+        colors: {
+          "medical-blue": "#0ea5e9", /* Sky 500 */
+          "medical-dark": "#0284c7", /* Sky 600 */
+          "alert-red": "#ef4444",
+          "safe-green": "#10b981",
+          "glass-border": "rgba(255, 255, 255, 0.4)",
+          "glass-surface": "rgba(255, 255, 255, 0.65)",
+          "text-main": "#0f172a",
+          "text-secondary": "#475569",
+        },
+        fontFamily: {
+          "display": ["Space Grotesk", "sans-serif"],
+          "body": ["Inter", "sans-serif"],
+        },
+        boxShadow: {
+          'glass': '0 8px 32px 0 rgba(31, 38, 135, 0.07)',
+          'floating': '0 20px 40px -10px rgba(14, 165, 233, 0.15), 0 0 0 1px rgba(255,255,255,0.5) inset',
+          'card-hover': '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)',
+        },
+        animation: {
+          'float': 'float 6s ease-in-out infinite',
+          'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+          'slide-up': 'slideUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards',
+        },
+        keyframes: {
+          float: {
+            '0%, 100%': { transform: 'translateY(0)' },
+            '50%': { transform: 'translateY(-15px)' },
+          },
+          slideUp: {
+            '0%': { transform: 'translateY(40px)', opacity: '0' },
+            '100%': { transform: 'translateY(0)', opacity: '1' },
+          }
+        }
+      },
+    },
+  }
+</script>
+
+<style>
+  /* Custom Scrollbar */
+  ::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: #f1f1f1;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 4px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: #94a3b8;
+  }
+
+  /* Utilities */
+  .glass-nav {
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+  }
+
+  .text-gradient-primary {
+    background: linear-gradient(135deg, #0ea5e9 0%, #3b82f6 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  /* OS Card Specific Styles */
+  .os-card {
+    cursor: pointer;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .os-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 20px 40px -5px rgba(14, 165, 233, 0.25);
+  }
+
+  .os-card::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.4) 0%, rgba(255, 255, 255, 0) 100%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  .os-card:hover::after {
+    opacity: 1;
+  }
+
+  /* Button Medical Blue */
+  .btn-medical-blue {
+    background: linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%);
+    color: white;
+    padding: 0.75rem 1.5rem;
+    border-radius: 9999px;
+    font-weight: 600;
+    box-shadow: 0 4px 14px 0 rgba(14, 165, 233, 0.39);
+    transition: transform 0.2s, box-shadow 0.2s;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .btn-medical-blue:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(14, 165, 233, 0.23);
+  }
+
+  /* Scroll Reveal */
+  .reveal-on-scroll {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 1s cubic-bezier(0.5, 0, 0, 1);
+  }
+
+  .reveal-on-scroll.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+</style>
 {% endblock %}
 
 {% block content %}
-        <main class = "container">
-        <section class = "container-section">
-            <div class = "introduction">
-                <div style = "display:inline-block;padding:6px 10px;border-radius:999px;background:rgba(0,0,0,0.04);font-weight:600">Ho Chi Minh City • Multilingual • 24/7</div>
-                
-                <h1>Security, healthcare and administrative assistance for foreign residents in Ho Chi Minh City — powered by AI & people.</h1>
-                <p>VietConnect combines an AI chatbot, multilingual agents and local resources to help foreign residents access medical care, safety services and administrative processes quickly and clearly.</p>
+<div
+  class="relative min-h-screen bg-slate-50 text-text-main font-body overflow-x-hidden selection:bg-medical-blue selection:text-white">
 
-                <div style = "display : flex; gap : 12px; margin-top : 22px;">
-                    <button  class = "main-button get-started" href = "{{url_for('chat.chat_page')}}">Get Started - It's free</button>
-                    <button  class = "main-button learn-more" href="404.html"  id="learnMore">Learn More</button>
-                </div>
+  <!-- Ambient Background -->
+  <div class="fixed top-0 left-0 w-full h-full overflow-hidden -z-10 pointer-events-none">
+    <div
+      class="absolute top-[-10%] right-[-5%] w-[800px] h-[800px] bg-sky-200/30 rounded-full blur-[120px] mix-blend-multiply animate-pulse-slow">
+    </div>
+    <div
+      class="absolute bottom-[-10%] left-[-10%] w-[600px] h-[600px] bg-teal-100/40 rounded-full blur-[100px] mix-blend-multiply">
+    </div>
+  </div>
 
-                <div style = "color : --var(muted); margin-top:12px;">Safe. Fast. Vietnamese + English + 中文 + 日本語</div>
+  <!-- Navigation -->
+  <nav class="fixed top-0 w-full z-50 glass-nav transition-all duration-300" id="mainNav">
+    <div class="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between items-center h-20">
+        <!-- Logo -->
+        <!-- UPDATED: Changed url_for('index') to url_for('home_page') to match your backend function name -->
+        <a href="{{ url_for('home_page') }}" class="flex items-center gap-3 group">
+          <div
+            class="size-10 bg-gradient-to-br from-medical-blue to-blue-600 rounded-xl flex items-center justify-center text-white shadow-lg group-hover:scale-105 transition-transform">
+            <span class="material-symbols-outlined text-[24px]">local_hospital</span>
+          </div>
+          <div class="flex flex-col">
+            <span class="font-display font-bold text-xl tracking-tight text-text-main leading-none">EmergencyCare</span>
+            <span class="text-[10px] font-medium text-text-secondary uppercase tracking-widest">HCMC Support</span>
+          </div>
+        </a>
 
+        <!-- Desktop Menu -->
+        <div class="hidden lg:flex items-center gap-8">
+          <a href="#features"
+            class="text-sm font-medium text-text-secondary hover:text-medical-blue transition-colors">Services</a>
+          <a href="#heatmap"
+            class="text-sm font-medium text-text-secondary hover:text-medical-blue transition-colors">Heatmap</a>
+          <a href="#how-it-works"
+            class="text-sm font-medium text-text-secondary hover:text-medical-blue transition-colors">How it works</a>
+
+          <!-- Price Check Logic -->
+          <a href="{{url_for('price_filter.price_filter')}}"
+            class="text-sm font-medium text-text-secondary hover:text-medical-blue transition-colors flex items-center gap-1">
+            <span class="material-symbols-outlined text-[18px]">payments</span>
+            Price check
+          </a>
+        </div>
+
+        <!-- CTA Actions -->
+        <div class="hidden md:flex items-center gap-4">
+          <!-- Profile/History Button (Requested) -->
+          <a href="{{ url_for('profile.profile') }}#medical-history" class="btn-medical-blue text-sm">
+            <span class="material-symbols-outlined text-[20px]">history_edu</span>
+            Medical Profile
+          </a>
+        </div>
+
+        <!-- Mobile Menu Button -->
+        <button class="lg:hidden p-2 text-text-secondary hover:bg-slate-100 rounded-full">
+          <span class="material-symbols-outlined">menu</span>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <main class="pt-24 pb-12">
+
+    <!-- Hero Section -->
+    <section
+      class="max-w-[1400px] mx-auto px-4 md:px-8 lg:px-12 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center min-h-[80vh]">
+      <div class="space-y-8 reveal-on-scroll">
+        <div
+          class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/60 border border-white/80 backdrop-blur-md shadow-sm w-fit animate-slide-up">
+          <span class="flex h-2 w-2 relative">
+            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+            <span class="relative inline-flex rounded-full h-2 w-2 bg-red-500"></span>
+          </span>
+          <span class="text-xs font-bold text-text-secondary uppercase tracking-wider">24/7 AI Triage Available</span>
+        </div>
+
+        <h1 class="text-5xl md:text-6xl lg:text-7xl font-display font-bold leading-[1.1] text-text-main">
+          Your Safety, <br />
+          <span class="text-gradient-primary">Reimagined.</span>
+        </h1>
+
+        <p class="text-lg text-text-secondary max-w-lg leading-relaxed font-body font-light">
+          Navigating healthcare in Ho Chi Minh City shouldn't be a risk.
+          We connect foreigners to the right hospital with real-time wait times, price transparency, and AI translation.
+        </p>
+
+        <div class="flex flex-wrap gap-4">
+          <a href="#features"
+            class="bg-text-main text-white px-8 py-4 rounded-2xl font-bold shadow-lg hover:bg-slate-800 transition-all flex items-center gap-2">
+            Get Started
+            <span class="material-symbols-outlined">arrow_downward</span>
+          </a>
+          <div class="flex items-center gap-[-10px]">
+            <div class="flex -space-x-4">
+              <img class="w-10 h-10 rounded-full border-2 border-white" src="https://i.pravatar.cc/100?img=33" alt="">
+              <img class="w-10 h-10 rounded-full border-2 border-white" src="https://i.pravatar.cc/100?img=47" alt="">
+              <img class="w-10 h-10 rounded-full border-2 border-white" src="https://i.pravatar.cc/100?img=12" alt="">
             </div>
+            <span class="ml-6 text-sm font-medium text-text-secondary">Trusted by 2,000+ Expats</span>
+          </div>
+        </div>
+      </div>
 
+      <!-- Hero Image/Visual -->
+      <div class="relative h-full min-h-[500px] lg:h-[600px] reveal-on-scroll" style="transition-delay: 0.2s">
+        <div
+          class="absolute inset-0 bg-gradient-to-tr from-sky-100 to-transparent rounded-[3rem] transform rotate-3 scale-95 opacity-50">
+        </div>
+        <img src="https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?q=80&w=2070&auto=format&fit=crop"
+          alt="Doctor consulting patient"
+          class="w-full h-full object-cover rounded-[3rem] shadow-floating relative z-10 animate-slide-up">
 
+        <!-- Floating Badge -->
+        <div
+          class="absolute bottom-10 -left-6 bg-white/90 backdrop-blur-xl p-5 rounded-2xl shadow-xl z-20 animate-float">
+          <div class="flex items-center gap-3">
+            <div class="bg-green-100 p-2 rounded-full text-green-600">
+              <span class="material-symbols-outlined">verified</span>
+            </div>
             <div>
-                <img style = "width : 500px; "src="{{ url_for('static', filename='images/logo.png') }}">
+              <div class="text-sm font-bold text-text-main">Verified Hospitals</div>
+              <div class="text-xs text-text-secondary">Updated Real-time</div>
             </div>
+          </div>
+        </div>
+      </div>
+    </section>
 
+    <!-- CORE FEATURES (OS CARDS GRID) -->
+    <!-- This section implements the logic requested by the user: 4 specific links/divs -->
+    <section id="features" class="py-20 max-w-[1400px] mx-auto px-4 md:px-8">
+      <div class="text-center mb-16 reveal-on-scroll">
+        <span class="text-medical-blue font-bold text-sm uppercase tracking-wider">The Ecosystem</span>
+        <h2 class="text-4xl font-display font-bold text-text-main mt-2">EmergencyOS Dashboard</h2>
+        <p class="text-text-secondary mt-4 max-w-lg mx-auto">Access all critical tools from one secure interface. Click
+          a card to launch the module.</p>
+      </div>
 
-        </section>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
 
+        <!-- 1. CHAT MODULE (Requested Logic) -->
+        <div class="os-card bg-white rounded-[2rem] p-8 border border-slate-100 shadow-glass reveal-on-scroll group"
+          data-href="{{ url_for('chat.chat_page') }}">
+          <div
+            class="size-16 rounded-2xl bg-sky-50 text-medical-blue flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+            <span class="material-symbols-outlined text-4xl">smart_toy</span>
+          </div>
+          <h3 class="text-2xl font-display font-bold text-text-main mb-2">AI Triage Chat</h3>
+          <p class="text-text-secondary text-sm mb-6">Describe symptoms in any language. Our AI classifies urgency and
+            prepares a medical report.</p>
+          <div class="flex items-center text-medical-blue font-bold text-sm gap-2">
+            Start Chat <span class="material-symbols-outlined text-lg">arrow_forward</span>
+          </div>
+        </div>
 
-        <section class = "features">
-            <div class = "card">
-                <div class = "icon"></div>
-                <div>
-                    <h3>Security & Emergency</h3>
-                    <p>Alert system, emergency call, and help communicating with local authorities in your language.</p>
+        <!-- 2. TRANSLATE MODULE (Requested Logic) -->
+        <div class="os-card bg-white rounded-[2rem] p-8 border border-slate-100 shadow-glass reveal-on-scroll group"
+          style="transition-delay: 100ms;" data-href="{{ url_for('translate.translate_page') }}">
+          <div
+            class="size-16 rounded-2xl bg-purple-50 text-purple-600 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+            <span class="material-symbols-outlined text-4xl">translate</span>
+          </div>
+          <h3 class="text-2xl font-display font-bold text-text-main mb-2">Medical Translate</h3>
+          <p class="text-text-secondary text-sm mb-6">Live two-way translation specialized for medical terms.
+            Communicate with doctors confidently.</p>
+          <div class="flex items-center text-purple-600 font-bold text-sm gap-2">
+            Open Translator <span class="material-symbols-outlined text-lg">mic</span>
+          </div>
+        </div>
+
+        <!-- 3. HEATMAP / FINDER (Contextual Logic) -->
+        <div class="os-card bg-white rounded-[2rem] p-8 border border-slate-100 shadow-glass reveal-on-scroll group"
+          style="transition-delay: 200ms;" data-href="{{ url_for('map.map') }}">
+          <div
+            class="size-16 rounded-2xl bg-orange-50 text-orange-500 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+            <span class="material-symbols-outlined text-4xl">location_on</span>
+          </div>
+          <h3 class="text-2xl font-display font-bold text-text-main mb-2">Hospital Heatmap</h3>
+          <p class="text-text-secondary text-sm mb-6">Find the nearest SAFE hospital based on wait times and capacity.
+            Not just distance.</p>
+          <div class="flex items-center text-orange-500 font-bold text-sm gap-2">
+            View Map <span class="material-symbols-outlined text-lg">map</span>
+          </div>
+        </div>
+
+        <!-- 4. PRICE CHECK (Requested Logic) -->
+        <div class="os-card bg-white rounded-[2rem] p-8 border border-slate-100 shadow-glass reveal-on-scroll group"
+          style="transition-delay: 300ms;" data-href="{{url_for('price_filter.price_filter')}}">
+          <div
+            class="size-16 rounded-2xl bg-green-50 text-green-600 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+            <span class="material-symbols-outlined text-4xl">attach_money</span>
+          </div>
+          <h3 class="text-2xl font-display font-bold text-text-main mb-2">Price Check</h3>
+          <p class="text-text-secondary text-sm mb-6">Estimate costs for X-rays, blood tests, and ER visits before you
+            go to avoid surprises.</p>
+          <div class="flex items-center text-green-600 font-bold text-sm gap-2">
+            Check Prices <span class="material-symbols-outlined text-lg">search</span>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- COMPUTATIONAL THINKING SHOWCASE (Heatmap Logic) -->
+    <section id="heatmap-demo" class="py-24 bg-white relative overflow-hidden">
+      <div class="absolute top-0 right-0 w-[500px] h-[500px] bg-slate-50 rounded-full blur-3xl -z-10"></div>
+
+      <div class="max-w-[1400px] mx-auto px-4 md:px-8 grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+        <!-- Visual Map Representation -->
+        <div
+          class="relative rounded-[2.5rem] overflow-hidden shadow-2xl border border-slate-200 aspect-[4/3] reveal-on-scroll group">
+          <!-- Static Map Image Background -->
+          <img src="https://images.unsplash.com/photo-1524661135-423995f22d0b?q=80&w=2074&auto=format&fit=crop"
+            class="w-full h-full object-cover opacity-30 grayscale group-hover:grayscale-0 transition-all duration-700">
+
+          <!-- Overlay UI -->
+          <div class="absolute inset-0 bg-gradient-to-t from-slate-900/80 to-transparent flex flex-col justify-end p-8">
+            <div class="space-y-4">
+              <!-- Hospital A (Red) -->
+              <div
+                class="bg-white/10 backdrop-blur-md border border-red-500/50 p-4 rounded-xl flex items-center justify-between transform translate-x-4 opacity-80 hover:opacity-100 hover:bg-white/20 transition-all">
+                <div class="flex items-center gap-3">
+                  <span class="material-symbols-outlined text-red-500">local_hospital</span>
+                  <div class="text-white">
+                    <div class="font-bold">City General (Hospital A)</div>
+                    <div class="text-xs opacity-70">0.5 km away</div>
+                  </div>
                 </div>
-            </div>
-
-            <div class = "card">
-                <div class = "icon"></div>
-                <div>
-                    <h3>Healthcare Assistance</h3>
-                    <p>Appointment booking, medical translation, first-aid guidance and connections to trusted clinics.</p>
+                <div class="text-right">
+                  <div class="text-red-400 font-bold">45 min wait</div>
+                  <div class="text-xs text-white bg-red-500/20 px-2 py-0.5 rounded">Overloaded</div>
                 </div>
-            </div>
+              </div>
 
-            <div class = "card">
-                <div class = "icon"></div>
-                <div>
-                    <h3>Administrative Help</h3>
-                    <p>Support for residency registration, documentation, job applications and administrative checklists & templates.</p>
+              <!-- Hospital B (Green - Recommended) -->
+              <div
+                class="bg-white/90 backdrop-blur-md border border-green-500 p-4 rounded-xl flex items-center justify-between shadow-floating scale-105">
+                <div class="flex items-center gap-3">
+                  <span class="material-symbols-outlined text-green-600">verified</span>
+                  <div class="text-text-main">
+                    <div class="font-bold">International Clinic (Hospital B)</div>
+                    <div class="text-xs text-text-secondary">2.0 km away</div>
+                  </div>
                 </div>
-            </div>
-        </section>
-
-
-
-        <section style = "display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; margin-top: 36px;">
-            <div class = "how-it-work">
-                <h3 style = "font-size: 18px; ">How it works</h3>
-                <ol style="margin-top:12px; padding-left:18px; color:var(--muted);">
-                    <li style = "margin-top: 20px;"><strong>Chat & AI triage:</strong> Quick replies and emergency level classification.</li>
-                    <li style = "margin-top: 16px;"><strong>Agent handoff:</strong> Escalation to multilingual human agents when needed.</li>
-                    <li style = "margin-top: 16px;"><strong>Local network:</strong> Connections to hospitals, police and local services.</li>
-                </ol>
-            </div>
-
-
-            <div style = "display: flex; flex-direction: column; gap: 12px; padding : 0 4px; ">
-                <div  style = "flex : 1; align-items: center;" class = "card">
-                    <div>
-                        <h3>Multilingual support</h3>
-                        <p>Live translation and multilingual support when you need it.</p>
-                    </div>
+                <div class="text-right">
+                  <div class="text-green-600 font-bold">5 min wait</div>
+                  <div class="text-xs text-white bg-green-500 px-2 py-0.5 rounded">Recommended</div>
                 </div>
+              </div>
+            </div>
+          </div>
+        </div>
 
-                <div style = "flex : 1; align-items: center;" class = "card">
-                    <div>
-                        <h3>Privacy first</h3>
-                        <p>User data is encrypted and shared only with user consent.</p>
-                    </div>
+        <!-- Text Content -->
+        <div class="reveal-on-scroll">
+          <span class="text-medical-blue font-bold text-sm uppercase tracking-wider">Algorithmic Thinking</span>
+          <h2 class="text-4xl font-display font-bold text-text-main mt-4 mb-6">Why we recommend further hospitals?</h2>
 
-                </div>
+          <div class="space-y-8">
+            <div class="flex gap-4">
+              <div class="size-12 rounded-full bg-slate-100 flex items-center justify-center shrink-0">
+                <span class="material-symbols-outlined text-slate-600">timer</span>
+              </div>
+              <div>
+                <h4 class="text-xl font-bold mb-2">Real-time Wait Analysis</h4>
+                <p class="text-text-secondary text-sm leading-relaxed">
+                  We analyze current ER traffic. A hospital 2km away with a 5-minute wait is medically safer than a
+                  hospital 500m away with a 45-minute wait.
+                </p>
+              </div>
             </div>
 
-        </section>
-
-        
-        <footer style = "margin-top: 48px; padding: 32px; border-radius: 14px; color:var(--muted); font-size:14px">
-            <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap">
-                <div>
-                <strong>VietConnect</strong>
-                <div style = "color : --var(muted)">© 2025 VietConnect • Designed for foreign residents in Ho Chi Minh City</div>
-                </div>
-                <div style = "color : --var(muted); font-size: 16px;">Need help? <a href="support.html">Contact support</a></div>
+            <div class="flex gap-4">
+              <div class="size-12 rounded-full bg-slate-100 flex items-center justify-center shrink-0">
+                <span class="material-symbols-outlined text-slate-600">pattern</span>
+              </div>
+              <div>
+                <h4 class="text-xl font-bold mb-2">Pattern Recognition</h4>
+                <p class="text-text-secondary text-sm leading-relaxed">
+                  Our system detects temporal spikes in local hospital occupancy (e.g., traffic accident hours) to route
+                  you away from congestion.
+                </p>
+              </div>
             </div>
-        </footer>
-    </main>
+          </div>
+
+          <a href="#features"
+            class="mt-8 inline-block text-medical-blue font-bold border-b-2 border-medical-blue pb-1 hover:text-medical-dark transition-colors">
+            Try the Algorithm
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- USER JOURNEY (Alex Persona) -->
+    <section id="how-it-works" class="py-24 bg-slate-50">
+      <div class="max-w-[1400px] mx-auto px-4 md:px-8">
+        <div class="text-center mb-16">
+          <span class="text-medical-blue font-bold text-sm uppercase tracking-wider">User Scenario</span>
+          <h2 class="text-4xl font-display font-bold text-text-main mt-2">Alex's Journey</h2>
+          <p class="text-text-secondary mt-2">How EmergencyCare saves time during an allergic reaction.</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+          <!-- Step 1 -->
+          <div
+            class="bg-white p-6 rounded-2xl shadow-sm hover:shadow-md transition-shadow relative overflow-hidden group">
+            <div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+              <span class="material-symbols-outlined text-6xl">warning</span>
+            </div>
+            <div class="size-10 rounded-full bg-red-100 text-red-500 flex items-center justify-center mb-4 font-bold">1
+            </div>
+            <h4 class="font-bold text-lg mb-2">The Emergency</h4>
+            <p class="text-sm text-text-secondary">Alex (German, 32) suffers an anaphylactic shock. He can't speak
+              Vietnamese and is panicking.</p>
+          </div>
+
+          <!-- Step 2 -->
+          <div
+            class="bg-white p-6 rounded-2xl shadow-sm hover:shadow-md transition-shadow relative overflow-hidden group">
+            <div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+              <span class="material-symbols-outlined text-6xl">map</span>
+            </div>
+            <div
+              class="size-10 rounded-full bg-orange-100 text-orange-500 flex items-center justify-center mb-4 font-bold">
+              2</div>
+            <h4 class="font-bold text-lg mb-2">Decision</h4>
+            <p class="text-sm text-text-secondary">App recommends Hospital B (Green) over Hospital A (Red) despite
+              distance, saving 40 mins.</p>
+          </div>
+
+          <!-- Step 3 -->
+          <div
+            class="bg-white p-6 rounded-2xl shadow-sm hover:shadow-md transition-shadow relative overflow-hidden group">
+            <div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+              <span class="material-symbols-outlined text-6xl">badge</span>
+            </div>
+            <div
+              class="size-10 rounded-full bg-purple-100 text-purple-500 flex items-center justify-center mb-4 font-bold">
+              3</div>
+            <h4 class="font-bold text-lg mb-2">Triage</h4>
+            <p class="text-sm text-text-secondary">Alex shows his <strong>Translation Card</strong>: "Allergy: Aspirin".
+              Nurses understand immediately.</p>
+          </div>
+
+          <!-- Step 4 -->
+          <div
+            class="bg-white p-6 rounded-2xl shadow-sm hover:shadow-md transition-shadow relative overflow-hidden group">
+            <div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+              <span class="material-symbols-outlined text-6xl">receipt_long</span>
+            </div>
+            <div
+              class="size-10 rounded-full bg-green-100 text-green-500 flex items-center justify-center mb-4 font-bold">4
+            </div>
+            <h4 class="font-bold text-lg mb-2">Post-Care</h4>
+            <p class="text-sm text-text-secondary">Doctor prescribes Epinephrine. App OCR scans the prescription into
+              his Health Passport.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="py-24 max-w-5xl mx-auto px-4">
+      <div
+        class="bg-gradient-to-br from-slate-900 to-slate-800 rounded-[2.5rem] p-12 text-center text-white shadow-2xl relative overflow-hidden">
+        <div
+          class="absolute top-0 left-0 w-full h-full bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10">
+        </div>
+
+        <h2 class="text-3xl md:text-5xl font-display font-bold mb-6 relative z-10">Prepared for the Unexpected?</h2>
+        <p class="text-slate-300 max-w-xl mx-auto mb-10 text-lg relative z-10">Create your Medical Profile today. It
+          takes 2 minutes and could save your life in an emergency.</p>
+
+        <div class="flex flex-col sm:flex-row gap-4 justify-center relative z-10">
+          <a href="{{ url_for('profile.profile') }}"
+            class="bg-medical-blue hover:bg-white hover:text-medical-blue text-white px-8 py-4 rounded-xl font-bold transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-1">
+            Create Health Passport
+          </a>
+          <a href="{{ url_for('chat.chat_page') }}"
+            class="bg-transparent border border-white/30 hover:bg-white/10 text-white px-8 py-4 rounded-xl font-bold transition-all">
+            Talk to AI Assistant
+          </a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="bg-white border-t border-slate-100 pt-16 pb-8 text-sm">
+    <div class="max-w-[1400px] mx-auto px-4 md:px-8">
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
+        <div class="col-span-1 md:col-span-2">
+          <div class="flex items-center gap-2 mb-4">
+            <span class="material-symbols-outlined text-medical-blue text-3xl">local_hospital</span>
+            <span class="font-display font-bold text-xl text-text-main">EmergencyCare HCMC</span>
+          </div>
+          <p class="text-text-secondary max-w-sm leading-relaxed">
+            Security, healthcare, and administrative assistance for foreign residents in Ho Chi Minh City — powered by
+            AI & people.
+          </p>
+        </div>
+
+        <div>
+          <h4 class="font-bold text-text-main mb-4">Features</h4>
+          <ul class="space-y-3 text-text-secondary">
+            <li><a href="#" class="hover:text-medical-blue">AI Triage</a></li>
+            <li><a href="#" class="hover:text-medical-blue">Hospital Heatmap</a></li>
+            <li><a href="#" class="hover:text-medical-blue">Price Check</a></li>
+            <li><a href="#" class="hover:text-medical-blue">Medical Translation</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 class="font-bold text-text-main mb-4">Support</h4>
+          <ul class="space-y-3 text-text-secondary">
+            <li><a href="#" class="hover:text-medical-blue">Emergency Numbers</a></li>
+            <li><a href="#" class="hover:text-medical-blue">Contact Admin</a></li>
+            <li><a href="#" class="hover:text-medical-blue">Privacy Policy</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div
+        class="border-t border-slate-100 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-text-secondary">
+        <p>© 2025 EmergencyCare HCMC. All rights reserved.</p>
+        <div class="flex gap-4">
+          <a href="#" class="text-lg hover:text-medical-blue"><i class="fab fa-facebook"></i></a>
+          <a href="#" class="text-lg hover:text-medical-blue"><i class="fab fa-twitter"></i></a>
+          <a href="#" class="text-lg hover:text-medical-blue"><i class="fab fa-instagram"></i></a>
+        </div>
+      </div>
+    </div>
+  </footer>
+</div>
 {% endblock %}
 
-
 {% block script %}
-    <script src="{{ url_for('static', filename='script/index.js') }}"></script>
+<script>
+  // Animation Observer
+  const observerOptions = {
+    root: null,
+    rootMargin: '0px',
+    threshold: 0.1
+  };
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('is-visible');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, observerOptions);
+
+  document.querySelectorAll('.reveal-on-scroll').forEach((element) => {
+    observer.observe(element);
+  });
+
+  // Handle OS Cards Click (Logic Wrapper for data-href)
+  document.querySelectorAll('.os-card').forEach(card => {
+    card.addEventListener('click', function () {
+      const url = this.getAttribute('data-href');
+      if (url) {
+        window.location.href = url;
+      }
+    });
+  });
+
+  // Navbar Scroll Effect
+  window.addEventListener('scroll', () => {
+    const nav = document.getElementById('mainNav');
+    if (window.scrollY > 20) {
+      nav.classList.add('shadow-glass');
+    } else {
+      nav.classList.remove('shadow-glass');
+    }
+  });
+</script>
 {% endblock %}
